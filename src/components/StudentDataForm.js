@@ -10,9 +10,16 @@ import {
 } from "@mui/material";
 
 const classOptions = [
-  { value: "I-II", label: "Class I-II" },
-  { value: "III-V", label: "Class III-V" },
-  { value: "VI-X", label: "Class VI-X" },
+  { value: "I", label: "I" },
+  { value: "II", label: "II" },
+  { value: "III", label: "III" },
+  { value: "IV", label: "IV" },
+  { value: "V", label: "V" },
+  { value: "VI", label: "VI" },
+  { value: "VII", label: "VII" },
+  { value: "VIII", label: "VIII" },
+  { value: "IX", label: "IX" },
+  { value: "X", label: "X" },
 ];
 
 export default function StudentDataForm({ onSubmit, submitting }) {

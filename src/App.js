@@ -4,21 +4,21 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 
 import Navbar from "./components/Navbar";
+
 import HomePage from "./pages/HomePage";
 import ChallengesPage from "./pages/ChallengesPage";
-
 import HubPage from "./pages/HubPage";
-
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-
 import ContactPage from "./pages/ContactPage";
-
 import WinnersPage from "./pages/WinnersPage";
-
 import DashboardPage from "./pages/DashboardPage";
-
 import LeaderboardsPage from "./pages/LeaderboardsPage";
+
+import SkillAssessmentPage from "./pages/SkillAssessmentPage";
+
+import SkillAssessmentSpelling from './pages/SkillAssessmentSpelling';
+
 
 // Import other page components as you create them
 
@@ -46,7 +46,11 @@ function App() {
          <Route path="/contact" element={<ContactPage />} />
          <Route path="/dashboard" element={<DashboardPage />} />
 
-<Route path="/leaderboards" element={<LeaderboardsPage />} />
+        <Route path="/leaderboards" element={<LeaderboardsPage />} />
+
+        <Route path="/skill-assessment" element={<SkillAssessmentPage />} />
+
+        <Route path="/skill-assessment/spelling" element={<SkillAssessmentSpelling />} />
 
         {/* Add other routes here as you add the pages */}
       </Routes>

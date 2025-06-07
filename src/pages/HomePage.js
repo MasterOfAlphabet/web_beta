@@ -461,12 +461,12 @@ function HomePage() {
           variant="contained"
           startIcon={<BarChart />}
           component={RouterLink}
-          to="/diagnostic"
+          to="/skill-assessment"
           color="success"
           sx={{ fontWeight: 700, borderRadius: 2, py: 1.5, fontSize: 18 }}
           fullWidth
         >
-          Start Diagnostic Test
+          Start Skills Assessment
         </Button>
       </Box>
 
