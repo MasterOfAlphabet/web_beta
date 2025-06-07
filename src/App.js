@@ -14,11 +14,10 @@ import ContactPage from "./pages/ContactPage";
 import WinnersPage from "./pages/WinnersPage";
 import DashboardPage from "./pages/DashboardPage";
 import LeaderboardsPage from "./pages/LeaderboardsPage";
-
 import SkillAssessmentPage from "./pages/SkillAssessmentPage";
-
 import SkillAssessmentSpelling from './pages/SkillAssessmentSpelling';
 
+import TestSpellingSkills from './pages/TestSpellingSkills';
 
 // Import other page components as you create them
 
@@ -51,6 +50,8 @@ function App() {
         <Route path="/skill-assessment" element={<SkillAssessmentPage />} />
 
         <Route path="/skill-assessment/spelling" element={<SkillAssessmentSpelling />} />
+
+ <Route path="/test-spelling-skills" element={<TestSpellingSkills />} />
 
         {/* Add other routes here as you add the pages */}
       </Routes>

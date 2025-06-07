@@ -574,3 +574,5 @@ export default function SkillsAssessmentPage() {
     </Box>
   );
 }
+
+export { StudentDataForm };

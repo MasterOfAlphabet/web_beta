@@ -2,16 +2,12 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
   Paper,
+  Stack,
   Chip,
   Button,
-  Stack,
+  Grid,
+  Divider,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
@@ -76,6 +72,24 @@ const challenges = [
   },
 ];
 
+const classGroupsMeta = [
+  {
+    label: "Class I/II",
+    value: 0,
+    chipColor: "info",
+  },
+  {
+    label: "Class III to V",
+    value: 1,
+    chipColor: "primary",
+  },
+  {
+    label: "Class VI to X",
+    value: 2,
+    chipColor: "success",
+  },
+];
+
 const typeColor = {
   Daily: "success",
   Weekly: "primary",
@@ -100,135 +114,157 @@ function CountdownCell({ targetTime }) {
 export default function ChallengesPage() {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const [selectedGroup, setSelectedGroup] = useState(0);
+
+  const challenge = challenges[selectedGroup];
 
   return (
     <Box maxWidth="md" mx="auto" mt={5} px={2}>
       <Typography variant="h4" fontWeight={700} mb={2} textAlign="center">
-        🔥 DWMS Spelling Challenge <Chip label="Weekly" color="primary" sx={{ ml: 2 }} />
+        🔥 DWMS Spelling Challenge
+        <Chip label="Weekly" color="primary" sx={{ ml: 2 }} />
       </Typography>
-      <Typography color="text.secondary" mb={4} textAlign="center">
+      <Typography color="text.secondary" mb={3} textAlign="center">
         Participate in your class group and win amazing prizes!
       </Typography>
-      <TableContainer
-        component={Paper}
-        elevation={3}
-        sx={{
-          borderRadius: 3,
-          overflowX: "auto",
-          width: "100%",
-          // Responsive fix: always allow horizontal scroll only if needed
-        }}
-      >
-        <Table
-          sx={{
-            minWidth: 700,
-            tableLayout: "auto",
-            "& td, & th": { whiteSpace: "nowrap", maxWidth: 180, overflow: "hidden", textOverflow: "ellipsis" },
-          }}
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">Class Group</TableCell>
-              <TableCell align="center">Mini Competition</TableCell>
-              <TableCell align="center">Type</TableCell>
-              <TableCell align="center">Time Left</TableCell>
-              <TableCell align="center">Prize</TableCell>
-              <TableCell align="center">Submissions</TableCell>
-              <TableCell align="center">Winners</TableCell>
-              <TableCell align="center">Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {challenges.map((ch, idx) => (
-              <TableRow key={idx}>
-                <TableCell align="center">
-                  <Chip
-                    icon={<Groups />}
-                    label={ch.classGroup}
-                    color="info"
-                    sx={{ fontWeight: 700, fontSize: isSm ? 12 : 14 }}
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <Chip
-                    icon={<Edit />}
-                    label={ch.miniCompetition}
-                    color="secondary"
-                    sx={{ fontWeight: 700, fontSize: isSm ? 12 : 14 }}
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <Chip
-                    icon={<EmojiEvents />}
-                    label={ch.type}
-                    color={typeColor[ch.type] || "default"}
-                    sx={{ fontWeight: 700, fontSize: isSm ? 12 : 14 }}
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <CountdownCell targetTime={ch.timeLeft} />
-                </TableCell>
-                <TableCell align="center">
-                  <Chip
-                    icon={<CardGiftcard />}
-                    label={ch.prize}
-                    color="success"
-                    sx={{
-                      bgcolor: "#fffde7",
-                      color: "#ff9800",
-                      fontWeight: 700,
-                      fontSize: isSm ? 12 : 14,
-                      maxWidth: 140,
-                    }}
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <Chip
-                    icon={<HourglassEmpty />}
-                    label={ch.submissions}
-                    color="primary"
-                    sx={{ fontWeight: 700, fontSize: isSm ? 12 : 14 }}
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  {ch.winnersAnnounced ? (
-                    <Button
-                      variant="outlined"
-                      color="success"
-                      size="small"
-                      startIcon={<Visibility />}
-                      component={RouterLink}
-                      to="/winners"
-                    >
-                      View Winners
-                    </Button>
-                  ) : (
-                    <Chip
-                      icon={<HourglassEmpty />}
-                      label="Not Announced"
-                      color="warning"
-                      variant="outlined"
-                      sx={{ fontWeight: 700, fontSize: isSm ? 12 : 14 }}
-                    />
-                  )}
-                </TableCell>
-                <TableCell align="center">
-                  <Button
-                    variant="contained"
-                    color="info"
-                    size="small"
-                    startIcon={<Edit />}
-                    component={RouterLink}
-                    to={`/challenge/${idx + 1}`}
-                  >
-                    Answer Challenge
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+
+      {/* Class Group Selection */}
+      <Stack direction="row" justifyContent="center" spacing={3} mb={4}>
+        {classGroupsMeta.map((group, idx) => (
+          <Chip
+            key={group.label}
+            icon={<Groups />}
+            label={group.label}
+            color={selectedGroup === idx ? group.chipColor : "default"}
+            variant={selectedGroup === idx ? "filled" : "outlined"}
+            onClick={() => setSelectedGroup(idx)}
+            sx={{
+              fontSize: 17,
+              fontWeight: 800,
+              px: 2.5,
+              py: 2,
+              minWidth: 120,
+              minHeight: 48,
+              boxShadow: selectedGroup === idx ? 2 : 0,
+              cursor: "pointer",
+              bgcolor: selectedGroup === idx ? undefined : "#f6faff",
+              transition: "0.18s",
+            }}
+          />
+        ))}
+      </Stack>
+
+      {/* The selected Challenge Card */}
+      <Grid container justifyContent="center">
+        <Grid item xs={12} md={8}>
+          <Paper
+            elevation={5}
+            sx={{
+              borderRadius: 5,
+              p: 3,
+              mb: 2,
+              bgcolor: "#fafcfd",
+              border: "2px solid #e3eefa",
+              minHeight: 260,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <Stack direction="row" spacing={2} alignItems="center" mb={2}>
+              <Chip
+                icon={<Groups />}
+                label={challenge.classGroup}
+                color="info"
+                sx={{ fontWeight: 700, fontSize: isSm ? 12 : 15 }}
+              />
+              <Chip
+                icon={<Edit />}
+                label={challenge.miniCompetition}
+                color="secondary"
+                sx={{ fontWeight: 700, fontSize: isSm ? 12 : 15 }}
+              />
+              <Chip
+                icon={<EmojiEvents />}
+                label={challenge.type}
+                color={typeColor[challenge.type] || "default"}
+                sx={{ fontWeight: 700, fontSize: isSm ? 12 : 15 }}
+              />
+            </Stack>
+            <Divider sx={{ mb: 2 }} />
+            <Stack direction="row" spacing={4} flexWrap="wrap" mb={2}>
+              <Stack spacing={1} direction="row" alignItems="center">
+                <Typography fontWeight={600} color="primary">
+                  Time Left:
+                </Typography>
+                <CountdownCell targetTime={challenge.timeLeft} />
+              </Stack>
+              <Stack spacing={1} direction="row" alignItems="center">
+                <Typography fontWeight={600} color="success.dark">
+                  Submissions:
+                </Typography>
+                <Chip
+                  icon={<HourglassEmpty />}
+                  label={challenge.submissions}
+                  color="primary"
+                  sx={{ fontWeight: 700, fontSize: isSm ? 12 : 15 }}
+                />
+              </Stack>
+            </Stack>
+            <Stack direction="row" spacing={2} flexWrap="wrap" mb={2}>
+              <Chip
+                icon={<CardGiftcard />}
+                label={challenge.prize}
+                color="success"
+                sx={{
+                  bgcolor: "#fffde7",
+                  color: "#ff9800",
+                  fontWeight: 700,
+                  fontSize: isSm ? 12 : 15,
+                }}
+              />
+              {challenge.winnersAnnounced ? (
+                <Button
+                  variant="outlined"
+                  color="success"
+                  size="small"
+                  startIcon={<Visibility />}
+                  component={RouterLink}
+                  to="/winners"
+                  sx={{ fontWeight: 700, letterSpacing: 1 }}
+                >
+                  View Winners
+                </Button>
+              ) : (
+                <Chip
+                  icon={<HourglassEmpty />}
+                  label="Not Announced"
+                  color="warning"
+                  variant="outlined"
+                  sx={{ fontWeight: 700, fontSize: isSm ? 12 : 15 }}
+                />
+              )}
+            </Stack>
+            <Stack direction="row" justifyContent="flex-end">
+              <Button
+                variant="contained"
+                color="info"
+                size="large"
+                startIcon={<Edit />}
+                component={RouterLink}
+                to={`/challenge/${selectedGroup + 1}`}
+                sx={{
+                  borderRadius: 3,
+                  fontWeight: 700,
+                  px: 4,
+                }}
+              >
+                Answer Challenge
+              </Button>
+            </Stack>
+          </Paper>
+        </Grid>
+      </Grid>
     </Box>
   );
 }
