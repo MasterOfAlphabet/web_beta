@@ -16,8 +16,10 @@ import DashboardPage from "./pages/DashboardPage";
 import LeaderboardsPage from "./pages/LeaderboardsPage";
 import SkillAssessmentPage from "./pages/SkillAssessmentPage";
 import SkillAssessmentSpelling from './pages/SkillAssessmentSpelling';
-
 import TestSpellingSkills from './pages/TestSpellingSkills';
+
+import ChallengeAttemptPage from "./pages/ChallengeAttemptPage";
+import ChallengeSubmissionPage from "./pages/ChallengeSubmissionPage";
 
 // Import other page components as you create them
 
@@ -52,6 +54,9 @@ function App() {
         <Route path="/skill-assessment/spelling" element={<SkillAssessmentSpelling />} />
 
  <Route path="/test-spelling-skills" element={<TestSpellingSkills />} />
+
+ <Route path="/challenge/:groupId" element={<ChallengeAttemptPage />} />
+ <Route path="/challenge/:groupId/submit" element={<ChallengeSubmissionPage />} />
 
         {/* Add other routes here as you add the pages */}
       </Routes>

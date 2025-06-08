@@ -419,12 +419,94 @@ function getLearningLevel(score) {
   if (score <= 18) return "Prodigy";
   return "Wizard";
 }
+
+// Replace your existing speak(text) function with this improved version:
+
+/**
+function getPreferredVoice() {
+  const voices = window.speechSynthesis.getVoices();
+
+  // Try to find Indian English Female
+  let preferredVoice = voices.find(
+    v =>
+      v.lang === "en-IN" &&
+      (v.name.toLowerCase().includes("female") ||
+       v.name.toLowerCase().includes("aditi"))
+  );
+
+  // Fallback: any Indian English voice
+  if (!preferredVoice) {
+    preferredVoice = voices.find(v => v.lang === "en-IN");
+  }
+
+  // Fallback: any English female
+  if (!preferredVoice) {
+    preferredVoice = voices.find(
+      v =>
+        v.lang.startsWith("en") &&
+        v.name.toLowerCase().includes("female")
+    );
+  }
+
+  // Fallback: any English
+  if (!preferredVoice) {
+    preferredVoice = voices.find(v => v.lang.startsWith("en"));
+  }
+
+  return preferredVoice;
+}
+*/
+
+function getPreferredVoice() {
+  const voices = window.speechSynthesis.getVoices();
+
+  // Try to find American English Female
+  let preferredVoice = voices.find(
+    v =>
+      (v.lang === "en-US" || v.lang.startsWith("en-US")) &&
+      v.name.toLowerCase().includes("female")
+  );
+
+  // Fallback: any American English voice
+  if (!preferredVoice) {
+    preferredVoice = voices.find(v => v.lang === "en-US" || v.lang.startsWith("en-US"));
+  }
+
+  // Fallback: any English female
+  if (!preferredVoice) {
+    preferredVoice = voices.find(
+      v =>
+        v.lang.startsWith("en") &&
+        v.name.toLowerCase().includes("female")
+    );
+  }
+
+  // Fallback: any English
+  if (!preferredVoice) {
+    preferredVoice = voices.find(v => v.lang.startsWith("en"));
+  }
+
+  return preferredVoice;
+}
+
 function speak(text) {
   if ("speechSynthesis" in window) {
     window.speechSynthesis.cancel();
     const utter = new window.SpeechSynthesisUtterance(text);
-    utter.lang = "en-US";
-    window.speechSynthesis.speak(utter);
+
+    // Wait for voices to be loaded (they load async sometimes)
+    const setVoiceAndSpeak = () => {
+      const voice = getPreferredVoice();
+      if (voice) utter.voice = voice;
+      utter.lang = voice ? voice.lang : "en-IN";
+      window.speechSynthesis.speak(utter);
+    };
+
+    if (window.speechSynthesis.getVoices().length === 0) {
+      window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
+    } else {
+      setVoiceAndSpeak();
+    }
   }
 }
 
