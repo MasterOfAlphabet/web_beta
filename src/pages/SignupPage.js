@@ -8,7 +8,6 @@ import {
   Button,
   Divider,
   IconButton,
-  InputAdornment,
   LinearProgress,
   Fade,
   Tooltip,
@@ -17,8 +16,10 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { firestore, auth } from "../services/firebase";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
-// Helper: password strength (returns 0-100)
 function passwordStrength(pwd) {
   let score = 0;
   if (!pwd) return 0;
@@ -47,20 +48,25 @@ function getStrengthLabel(score) {
 }
 
 const classOptions = [
-  { value: "I-II", label: "Class I-II" },
-  { value: "III-V", label: "Class III-V" },
-  { value: "VI-X", label: "Class VI-X" },
+  { value: "I", label: "I" },
+  { value: "II", label: "II" },
+  { value: "III", label: "III" },
+  { value: "IV", label: "IV" },
+  { value: "V", label: "V" },
+  { value: "VI", label: "VI" },
+  { value: "VII", label: "VII" },
+  { value: "VIII", label: "VIII" },
+  { value: "IX", label: "IX" },
+  { value: "X", label: "X" },
 ];
 
 export default function SignupPage() {
-  // Section 1: Student Info
   const [form, setForm] = useState({
     name: "",
     classLevel: "",
-    parentMobile: "",
     city: "",
     school: "",
-    email: "",
+    parentMobile: "",
     password: "",
     confirmPassword: "",
   });
@@ -71,17 +77,14 @@ export default function SignupPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  // Validation
   const validate = () => {
     let err = {};
     if (!form.name) err.name = "Name is required";
     if (!form.classLevel) err.classLevel = "Class is required";
-    if (!form.parentMobile || !/^\d{10}$/.test(form.parentMobile))
-      err.parentMobile = "Valid 10-digit mobile # required";
     if (!form.city) err.city = "City is required";
     if (!form.school) err.school = "School is required";
-    if (!form.email || !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(form.email))
-      err.email = "Valid email is required";
+    if (!form.parentMobile || !/^\d{10}$/.test(form.parentMobile))
+      err.parentMobile = "Valid 10-digit mobile # required";
     if (!form.password || form.password.length < 8)
       err.password = "Password must be at least 8 characters";
     if (form.password && passwordStrength(form.password) < 50)
@@ -102,14 +105,36 @@ export default function SignupPage() {
     validate();
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      setSubmitting(true);
-      setTimeout(() => {
-        setSubmitting(false);
-        setSubmitted(true);
-      }, 1200);
+    if (!validate()) return;
+    setSubmitting(true);
+    setError({});
+    try {
+      const syntheticEmail = `${form.parentMobile}@rankgenie.in`;
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        syntheticEmail,
+        form.password
+      );
+      const user = userCredential.user;
+      await setDoc(doc(firestore, "students", user.uid), {
+        uid: user.uid,
+        name: form.name,
+        classLevel: form.classLevel,
+        parentMobile: form.parentMobile,
+        city: form.city,
+        school: form.school,
+        email: syntheticEmail,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        status: "active",
+      });
+      setSubmitting(false);
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitting(false);
+      setError({ submit: err.message });
     }
   };
 
@@ -120,7 +145,6 @@ export default function SignupPage() {
   const pwdScore = passwordStrength(form.password);
   const pwdStrength = getStrengthLabel(pwdScore);
 
-  // Main UI
   return (
     <Box
       sx={{
@@ -157,7 +181,7 @@ export default function SignupPage() {
                 Signup Successful!
               </Typography>
               <Typography>
-                Welcome, <b>{form.name}</b>. You can now log in with your email.
+                Welcome, <b>{form.name}</b>. You can now log in using parent mobile number and your password.
               </Typography>
               <Button
                 variant="contained"
@@ -232,33 +256,6 @@ export default function SignupPage() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <input
-                    name="parentMobile"
-                    value={form.parentMobile}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder="Parent's Mobile #"
-                    required
-                    maxLength={10}
-                    style={{
-                      width: "100%",
-                      padding: "12px",
-                      fontSize: "16px",
-                      borderRadius: "8px",
-                      border: error.parentMobile && touched.parentMobile
-                        ? "2px solid #f44336"
-                        : "1px solid #d3d3d3",
-                      marginBottom: "6px",
-                      background: "#f8f9fa",
-                    }}
-                  />
-                  {touched.parentMobile && error.parentMobile && (
-                    <Typography fontSize={12} color="error">
-                      {error.parentMobile}
-                    </Typography>
-                  )}
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <input
                     name="city"
                     value={form.city}
                     onChange={handleChange}
@@ -283,7 +280,7 @@ export default function SignupPage() {
                     </Typography>
                   )}
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6}>
                   <input
                     name="school"
                     value={form.school}
@@ -319,28 +316,28 @@ export default function SignupPage() {
               <Grid container spacing={2} mb={1}>
                 <Grid item xs={12}>
                   <input
-                    name="email"
-                    type="email"
-                    value={form.email}
+                    name="parentMobile"
+                    value={form.parentMobile}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    placeholder="Email Address"
+                    placeholder="Parent's Mobile #"
                     required
+                    maxLength={10}
                     style={{
                       width: "100%",
                       padding: "12px",
                       fontSize: "16px",
                       borderRadius: "8px",
-                      border: error.email && touched.email
+                      border: error.parentMobile && touched.parentMobile
                         ? "2px solid #f44336"
                         : "1px solid #d3d3d3",
                       marginBottom: "6px",
                       background: "#f8f9fa",
                     }}
                   />
-                  {touched.email && error.email && (
+                  {touched.parentMobile && error.parentMobile && (
                     <Typography fontSize={12} color="error">
-                      {error.email}
+                      {error.parentMobile}
                     </Typography>
                   )}
                 </Grid>
@@ -386,7 +383,6 @@ export default function SignupPage() {
                       {error.password}
                     </Typography>
                   )}
-                  {/* Password strength meter */}
                   {form.password && (
                     <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 0.5 }}>
                       <Box sx={{ flex: 1 }}>
@@ -447,9 +443,13 @@ export default function SignupPage() {
                   )}
                 </Grid>
               </Grid>
+              {error.submit && (
+                <Typography fontSize={13} color="error" mb={1}>
+                  {error.submit}
+                </Typography>
+              )}
               <Divider sx={{ my: 2 }} />
 
-              {/* Section 3: Actions */}
               <Stack
                 direction="row"
                 spacing={2}

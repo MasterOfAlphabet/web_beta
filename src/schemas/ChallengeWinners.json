@@ -1,0 +1,26 @@
+{
+  "id": "winner-uid-abcdef",
+  "userId": "user-uid-12345",
+  "userDisplayName": "Aditi Sharma",
+  "userGroup": "Class I/II",
+  "userAvatarUrl": "https://.../avatar.jpg",
+  "deviceType": "web",
+  "rank": 1,
+  "score": 30,
+  "percentage": 100,
+  "timeTaken": 25,
+  "submissionId": "submission-uid-abcdef",
+  "prize": {
+    "title": "1st Place",
+    "description": "Amazon Voucher + Certificate",
+    "value": "₹500",
+    "badge": "gold",
+    "claimed": false
+  },
+  "awardedAt": "2025-06-16T10:00:00Z",
+  "notified": false,
+  "certificateUrl": null,
+  "createdAt": "2025-06-16T10:00:00Z",
+  "updatedAt": "2025-06-16T10:00:00Z",
+  "metadata": {}
+}

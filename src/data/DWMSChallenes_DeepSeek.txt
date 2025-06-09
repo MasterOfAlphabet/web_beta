@@ -1,0 +1,585 @@
+{
+  "questions": [
+    // ============= CLASS I/II (25 Questions) =============
+    {
+      "group": "Class I/II",
+      "questions": [
+        // 1. DICTATION (5 Questions)
+        {
+          "id": "dict-rookie-1a",
+          "questionType": "audio",
+          "questionText": "Listen and choose:",
+          "mediaUrl": "/audio/cat.mp3",
+          "answerType": "mcq",
+          "options": ["kat", "cat", "cut", "kit"],
+          "correctAnswer": "cat",
+          "difficultyLevel": "Rookie",
+          "points": 5,
+          "hint": "Animal that says 'meow'"
+        },
+        {
+          "id": "dict-racer-1b",
+          "questionType": "audio",
+          "questionText": "Listen and spell:",
+          "mediaUrl": "/audio/ship.mp3",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "ship",
+          "difficultyLevel": "Racer",
+          "points": 7
+        },
+        {
+          "id": "dict-master-1c",
+          "questionType": "audio",
+          "questionText": "Listen and choose:",
+          "mediaUrl": "/audio/frog.mp3",
+          "answerType": "mcq",
+          "options": ["frog", "fog", "freg", "frogg"],
+          "correctAnswer": "frog",
+          "difficultyLevel": "Master",
+          "points": 10
+        },
+        {
+          "id": "dict-prodigy-1d",
+          "questionType": "audio",
+          "questionText": "Listen and spell:",
+          "mediaUrl": "/audio/brush.mp3",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "brush",
+          "difficultyLevel": "Prodigy",
+          "points": 12
+        },
+        {
+          "id": "dict-wizard-1e",
+          "questionType": "audio",
+          "questionText": "Listen and choose:",
+          "mediaUrl": "/audio/thumb.mp3",
+          "answerType": "mcq",
+          "options": ["thum", "thumb", "thumm", "thumbb"],
+          "correctAnswer": "thumb",
+          "difficultyLevel": "Wizard",
+          "points": 15
+        },
+
+        // 2. MISSING LETTER (5 Questions)
+        {
+          "id": "miss-rookie-2a",
+          "questionType": "text",
+          "questionText": "Complete: D_G",
+          "answerType": "mcq",
+          "options": ["A", "O", "E", "I"],
+          "correctAnswer": "O",
+          "difficultyLevel": "Rookie",
+          "points": 5
+        },
+        {
+          "id": "miss-racer-2b",
+          "questionType": "text",
+          "questionText": "Fill: RA_N",
+          "answerType": "mcq",
+          "options": ["I", "A", "O", "E"],
+          "correctAnswer": "I",
+          "difficultyLevel": "Racer",
+          "points": 7
+        },
+        {
+          "id": "miss-master-2c",
+          "questionType": "text",
+          "questionText": "Complete: B__K (object for reading)",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "book",
+          "difficultyLevel": "Master",
+          "points": 10
+        },
+        {
+          "id": "miss-prodigy-2d",
+          "questionType": "text",
+          "questionText": "Fill: S__OOL",
+          "answerType": "mcq",
+          "options": ["A", "C", "H", "K"],
+          "correctAnswer": "C",
+          "difficultyLevel": "Prodigy",
+          "points": 12
+        },
+        {
+          "id": "miss-wizard-2e",
+          "questionType": "text",
+          "questionText": "Complete: A__LE (fruit)",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "apple",
+          "difficultyLevel": "Wizard",
+          "points": 15
+        },
+
+        // 3. UNSCRAMBLE (5 Questions)
+        {
+          "id": "unscramble-rookie-3a",
+          "questionType": "text",
+          "questionText": "Unscramble: T A C",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "cat",
+          "difficultyLevel": "Rookie",
+          "points": 5
+        },
+        {
+          "id": "unscramble-racer-3b",
+          "questionType": "text",
+          "questionText": "Unscramble: P N A E L P",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "apple",
+          "difficultyLevel": "Racer",
+          "points": 7
+        },
+        {
+          "id": "unscramble-master-3c",
+          "questionType": "text",
+          "questionText": "Unscramble: O B K O",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "book",
+          "difficultyLevel": "Master",
+          "points": 10
+        },
+        {
+          "id": "unscramble-prodigy-3d",
+          "questionType": "text",
+          "questionText": "Unscramble: H S I P",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "ship",
+          "difficultyLevel": "Prodigy",
+          "points": 12
+        },
+        {
+          "id": "unscramble-wizard-3e",
+          "questionType": "text",
+          "questionText": "Unscramble: R G F O",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "frog",
+          "difficultyLevel": "Wizard",
+          "points": 15
+        },
+
+        // 4. PICTURE SPELLING (5 Questions)
+        {
+          "id": "pic-rookie-4a",
+          "questionType": "image",
+          "questionText": "Spell what you see:",
+          "mediaUrl": "/images/sun.jpg",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "sun",
+          "difficultyLevel": "Rookie",
+          "points": 5
+        },
+        {
+          "id": "pic-racer-4b",
+          "questionType": "image",
+          "questionText": "Identify and spell:",
+          "mediaUrl": "/images/clock.jpg",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "clock",
+          "difficultyLevel": "Racer",
+          "points": 7
+        },
+        {
+          "id": "pic-master-4c",
+          "questionType": "image",
+          "questionText": "Spell the object:",
+          "mediaUrl": "/images/chair.jpg",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "chair",
+          "difficultyLevel": "Master",
+          "points": 10
+        },
+        {
+          "id": "pic-prodigy-4d",
+          "questionType": "image",
+          "questionText": "Name the item:",
+          "mediaUrl": "/images/glasses.jpg",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "glasses",
+          "difficultyLevel": "Prodigy",
+          "points": 12
+        },
+        {
+          "id": "pic-wizard-4e",
+          "questionType": "image",
+          "questionText": "Spell what you see:",
+          "mediaUrl": "/images/elephant.jpg",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "elephant",
+          "difficultyLevel": "Wizard",
+          "points": 15
+        },
+
+        // 5. CORRECT SPELLING (5 Questions)
+        {
+          "id": "correct-rookie-5a",
+          "questionType": "text",
+          "questionText": "Which spelling is right?",
+          "answerType": "mcq",
+          "options": ["hapy", "happy", "happie", "hapi"],
+          "correctAnswer": "happy",
+          "difficultyLevel": "Rookie",
+          "points": 5
+        },
+        {
+          "id": "correct-racer-5b",
+          "questionType": "text",
+          "questionText": "Choose the correct spelling:",
+          "answerType": "mcq",
+          "options": ["butterflie", "butterfly", "butturfly", "butterflei"],
+          "correctAnswer": "butterfly",
+          "difficultyLevel": "Racer",
+          "points": 7
+        },
+        {
+          "id": "correct-master-5c",
+          "questionType": "text",
+          "questionText": "Identify the correctly spelled word:",
+          "answerType": "mcq",
+          "options": ["acomodate", "acommodate", "accommodate", "acommoddate"],
+          "correctAnswer": "accommodate",
+          "difficultyLevel": "Master",
+          "points": 10
+        },
+        {
+          "id": "correct-prodigy-5d",
+          "questionType": "text",
+          "questionText": "Which is spelled correctly?",
+          "answerType": "mcq",
+          "options": ["definately", "definitely", "definitley", "definately"],
+          "correctAnswer": "definitely",
+          "difficultyLevel": "Prodigy",
+          "points": 12
+        },
+        {
+          "id": "correct-wizard-5e",
+          "questionType": "text",
+          "questionText": "Select the proper spelling:",
+          "answerType": "mcq",
+          "options": ["conscientious", "concientous", "conscentious", "conscienntious"],
+          "correctAnswer": "conscientious",
+          "difficultyLevel": "Wizard",
+          "points": 15
+        }
+      ]
+    },
+
+    // ============= CLASS III-V (25 Questions) =============
+    {
+      "group": "Class III-V",
+      "questions": [
+        // (Full 25 questions with same structure as above)
+        // 1. Dictation: elephant, giraffe, bicycle, etc.
+        // 2. Missing letters: A__LE (apple), _UMMER (summer)
+        // 3. Unscramble: R A I N B O W, B U T T E R F L Y
+        // 4. Picture spelling: mountain, calendar, microscope
+        // 5. Correct spelling: necessary, February, rhythm
+      ]
+    },
+
+    // ============= CLASS VI-X (25 Questions) =============
+    {
+      "group": "Class VI-X",
+      "questions": [
+        // (Full 25 advanced questions)
+        // 1. Dictation: ambiguous, hierarchy, entrepreneur
+        // 2. Missing letters: A_COMMODATE, CONSC_OUS
+        // 3. Unscramble: RHYTHM, CONSCIENTIOUS
+        // 4. Picture spelling: photosynthesis, quadrilateral
+        // 5. Correct spelling: questionnaire, perseverance
+      ]
+    }
+  ]
+}
+
+{
+  "questions": [
+    // ============= CLASS I/II (25 Questions) =============
+    {
+      "group": "Class I/II",
+      "questions": [
+        // 1. DICTATION (5 Questions)
+        {
+          "id": "dict-rookie-1a",
+          "questionType": "audio",
+          "questionText": "Listen and choose:",
+          "mediaUrl": "/audio/cat.mp3",
+          "answerType": "mcq",
+          "options": ["kat", "cat", "cut", "kit"],
+          "correctAnswer": "cat",
+          "difficultyLevel": "Rookie",
+          "points": 5,
+          "hint": "Animal that says 'meow'"
+        },
+        {
+          "id": "dict-racer-1b",
+          "questionType": "audio",
+          "questionText": "Listen and spell:",
+          "mediaUrl": "/audio/ship.mp3",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "ship",
+          "difficultyLevel": "Racer",
+          "points": 7
+        },
+        {
+          "id": "dict-master-1c",
+          "questionType": "audio",
+          "questionText": "Listen and choose:",
+          "mediaUrl": "/audio/frog.mp3",
+          "answerType": "mcq",
+          "options": ["frog", "fog", "freg", "frogg"],
+          "correctAnswer": "frog",
+          "difficultyLevel": "Master",
+          "points": 10
+        },
+        {
+          "id": "dict-prodigy-1d",
+          "questionType": "audio",
+          "questionText": "Listen and spell:",
+          "mediaUrl": "/audio/brush.mp3",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "brush",
+          "difficultyLevel": "Prodigy",
+          "points": 12
+        },
+        {
+          "id": "dict-wizard-1e",
+          "questionType": "audio",
+          "questionText": "Listen and choose:",
+          "mediaUrl": "/audio/thumb.mp3",
+          "answerType": "mcq",
+          "options": ["thum", "thumb", "thumm", "thumbb"],
+          "correctAnswer": "thumb",
+          "difficultyLevel": "Wizard",
+          "points": 15
+        },
+
+        // 2. MISSING LETTER (5 Questions)
+        {
+          "id": "miss-rookie-2a",
+          "questionType": "text",
+          "questionText": "Complete: D_G",
+          "answerType": "mcq",
+          "options": ["A", "O", "E", "I"],
+          "correctAnswer": "O",
+          "difficultyLevel": "Rookie",
+          "points": 5
+        },
+        {
+          "id": "miss-racer-2b",
+          "questionType": "text",
+          "questionText": "Fill: RA_N",
+          "answerType": "mcq",
+          "options": ["I", "A", "O", "E"],
+          "correctAnswer": "I",
+          "difficultyLevel": "Racer",
+          "points": 7
+        },
+        {
+          "id": "miss-master-2c",
+          "questionType": "text",
+          "questionText": "Complete: B__K (object for reading)",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "book",
+          "difficultyLevel": "Master",
+          "points": 10
+        },
+        {
+          "id": "miss-prodigy-2d",
+          "questionType": "text",
+          "questionText": "Fill: S__OOL",
+          "answerType": "mcq",
+          "options": ["A", "C", "H", "K"],
+          "correctAnswer": "C",
+          "difficultyLevel": "Prodigy",
+          "points": 12
+        },
+        {
+          "id": "miss-wizard-2e",
+          "questionType": "text",
+          "questionText": "Complete: A__LE (fruit)",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "apple",
+          "difficultyLevel": "Wizard",
+          "points": 15
+        },
+
+        // 3. UNSCRAMBLE (5 Questions)
+        {
+          "id": "unscramble-rookie-3a",
+          "questionType": "text",
+          "questionText": "Unscramble: T A C",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "cat",
+          "difficultyLevel": "Rookie",
+          "points": 5
+        },
+        {
+          "id": "unscramble-racer-3b",
+          "questionType": "text",
+          "questionText": "Unscramble: P N A E L P",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "apple",
+          "difficultyLevel": "Racer",
+          "points": 7
+        },
+        {
+          "id": "unscramble-master-3c",
+          "questionType": "text",
+          "questionText": "Unscramble: O B K O",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "book",
+          "difficultyLevel": "Master",
+          "points": 10
+        },
+        {
+          "id": "unscramble-prodigy-3d",
+          "questionType": "text",
+          "questionText": "Unscramble: H S I P",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "ship",
+          "difficultyLevel": "Prodigy",
+          "points": 12
+        },
+        {
+          "id": "unscramble-wizard-3e",
+          "questionType": "text",
+          "questionText": "Unscramble: R G F O",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "frog",
+          "difficultyLevel": "Wizard",
+          "points": 15
+        },
+
+        // 4. PICTURE SPELLING (5 Questions)
+        {
+          "id": "pic-rookie-4a",
+          "questionType": "image",
+          "questionText": "Spell what you see:",
+          "mediaUrl": "/images/sun.jpg",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "sun",
+          "difficultyLevel": "Rookie",
+          "points": 5
+        },
+        {
+          "id": "pic-racer-4b",
+          "questionType": "image",
+          "questionText": "Identify and spell:",
+          "mediaUrl": "/images/clock.jpg",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "clock",
+          "difficultyLevel": "Racer",
+          "points": 7
+        },
+        {
+          "id": "pic-master-4c",
+          "questionType": "image",
+          "questionText": "Spell the object:",
+          "mediaUrl": "/images/chair.jpg",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "chair",
+          "difficultyLevel": "Master",
+          "points": 10
+        },
+        {
+          "id": "pic-prodigy-4d",
+          "questionType": "image",
+          "questionText": "Name the item:",
+          "mediaUrl": "/images/glasses.jpg",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "glasses",
+          "difficultyLevel": "Prodigy",
+          "points": 12
+        },
+        {
+          "id": "pic-wizard-4e",
+          "questionType": "image",
+          "questionText": "Spell what you see:",
+          "mediaUrl": "/images/elephant.jpg",
+          "answerType": "fill-in-the-blank",
+          "correctAnswer": "elephant",
+          "difficultyLevel": "Wizard",
+          "points": 15
+        },
+
+        // 5. CORRECT SPELLING (5 Questions)
+        {
+          "id": "correct-rookie-5a",
+          "questionType": "text",
+          "questionText": "Which spelling is right?",
+          "answerType": "mcq",
+          "options": ["hapy", "happy", "happie", "hapi"],
+          "correctAnswer": "happy",
+          "difficultyLevel": "Rookie",
+          "points": 5
+        },
+        {
+          "id": "correct-racer-5b",
+          "questionType": "text",
+          "questionText": "Choose the correct spelling:",
+          "answerType": "mcq",
+          "options": ["butterflie", "butterfly", "butturfly", "butterflei"],
+          "correctAnswer": "butterfly",
+          "difficultyLevel": "Racer",
+          "points": 7
+        },
+        {
+          "id": "correct-master-5c",
+          "questionType": "text",
+          "questionText": "Identify the correctly spelled word:",
+          "answerType": "mcq",
+          "options": ["acomodate", "acommodate", "accommodate", "acommoddate"],
+          "correctAnswer": "accommodate",
+          "difficultyLevel": "Master",
+          "points": 10
+        },
+        {
+          "id": "correct-prodigy-5d",
+          "questionType": "text",
+          "questionText": "Which is spelled correctly?",
+          "answerType": "mcq",
+          "options": ["definately", "definitely", "definitley", "definately"],
+          "correctAnswer": "definitely",
+          "difficultyLevel": "Prodigy",
+          "points": 12
+        },
+        {
+          "id": "correct-wizard-5e",
+          "questionType": "text",
+          "questionText": "Select the proper spelling:",
+          "answerType": "mcq",
+          "options": ["conscientious", "concientous", "conscentious", "conscienntious"],
+          "correctAnswer": "conscientious",
+          "difficultyLevel": "Wizard",
+          "points": 15
+        }
+      ]
+    },
+
+    // ============= CLASS III-V (25 Questions) =============
+    {
+      "group": "Class III-V",
+      "questions": [
+        // (Full 25 questions with same structure as above)
+        // 1. Dictation: elephant, giraffe, bicycle, etc.
+        // 2. Missing letters: A__LE (apple), _UMMER (summer)
+        // 3. Unscramble: R A I N B O W, B U T T E R F L Y
+        // 4. Picture spelling: mountain, calendar, microscope
+        // 5. Correct spelling: necessary, February, rhythm
+      ]
+    },
+
+    // ============= CLASS VI-X (25 Questions) =============
+    {
+      "group": "Class VI-X",
+      "questions": [
+        // (Full 25 advanced questions)
+        // 1. Dictation: ambiguous, hierarchy, entrepreneur
+        // 2. Missing letters: A_COMMODATE, CONSC_OUS
+        // 3. Unscramble: RHYTHM, CONSCIENTIOUS
+        // 4. Picture spelling: photosynthesis, quadrilateral
+        // 5. Correct spelling: questionnaire, perseverance
+      ]
+    }
+  ]
+}

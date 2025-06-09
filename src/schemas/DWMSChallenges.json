@@ -1,0 +1,107 @@
+{
+  "id": "weekly-2025-06-09-class-1-2",
+  "title": "Weekly Spelling Challenge (Class I/II)",
+  "description": "Spell the toughest words and win exciting prizes!",
+  "challengeType": "weekly",
+  "moduleName": "Module 3: Vowel Sound Mastery",
+  "group": "Class I/II",
+  "startTime": "2025-06-09T00:00:00Z",
+  "endTime": "2025-06-15T23:59:59Z",
+  "publishedStatus": true,
+  "publishedDate": "2025-06-08T12:00:00Z",
+  "difficultyLevel": "Rookie",
+  "tags": ["vowels", "phonics", "listening"],
+  "featured": true,
+  "totalQuestions": 10,
+  "attemptLimit": 1,
+  "timeLimitSeconds": 300,
+  "language": "en",
+  "averageScore": 85.5,
+  "completionRate": 72,
+  "avgTimeTaken": 185,
+  "shuffleQuestions": true,
+  "rating": 4.7,
+  "numRatings": 23,
+  "leaderboardEnabled": true,
+  "submissionsCount": 0,
+  "winnersAnnounced": false,
+  "winnersAnnouncedAt": null,
+  "createdAt": "2025-06-08T12:00:00Z",
+  "updatedAt": "2025-06-08T12:00:00Z",
+  "createdBy": "admin-uid-1234",
+  "questions": [
+    {
+      "id": "q1",
+      "questionType": "text",
+      "questionText": "Spell the word for: To provide with something desired or needed.",
+      "hint": "It starts with 'a' and has 11 letters.",
+      "explanation": "The word is 'accommodate', often misspelled because of the double 'c' and double 'm'.",
+      "mediaUrl": null,
+      "answerType": "fill-in-the-blank",
+      "options": null,
+      "shuffleOptions": false,
+      "correctAnswer": "accommodate",
+      "points": 10
+    },
+    {
+      "id": "q2",
+      "questionType": "audio",
+      "questionText": "Listen and spell the word you hear.",
+      "hint": "It's a musical term with 6 letters.",
+      "explanation": "The word 'rhythm' is tricky due to the silent 'h' and no vowels after 'r'.",
+      "mediaUrl": "https://.../audio-file.mp3",
+      "answerType": "fill-in-the-blank",
+      "options": null,
+      "shuffleOptions": false,
+      "correctAnswer": "rhythm",
+      "points": 10
+    },
+    {
+      "id": "q3",
+      "questionType": "image",
+      "questionText": "Identify and spell the object in the image.",
+      "hint": "It's an insect with transparent wings.",
+      "explanation": "Dragonflies are known for their clear wings and elongated bodies.",
+      "mediaUrl": "https://.../image-file.jpg",
+      "answerType": "mcq",
+      "options": ["butterfly", "dragonfly", "ladybug", "grasshopper"],
+      "shuffleOptions": true,
+      "correctAnswer": "dragonfly",
+      "points": 10
+    },
+    {
+      "id": "q4",
+      "questionType": "text",
+      "questionText": "Is 'accommodate' spelled correctly? (True/False)",
+      "hint": "Check each letter carefully!",
+      "explanation": "Yes, 'accommodate' is correct with double 'c' and double 'm'.",
+      "mediaUrl": null,
+      "answerType": "true-false",
+      "options": ["True", "False"],
+      "shuffleOptions": true,
+      "correctAnswer": "True",
+      "points": 10
+    }
+  ],
+  "rewards": {
+    "place1": {
+      "title": "1st Place",
+      "description": "Amazon Voucher + Certificate",
+      "value": "₹500",
+      "badge": "gold"
+    },
+    "place2": {
+      "title": "2nd Place",
+      "description": "Amazon Voucher + Certificate",
+      "value": "₹250",
+      "badge": "silver"
+    },
+    "place3": {
+      "title": "3rd Place",
+      "description": "Certificate",
+      "value": "",
+      "badge": "bronze"
+    }
+  },
+  "extra": {}
+}

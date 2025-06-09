@@ -1,0 +1,50 @@
+.challenge-thankyou-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background: #f7f7fd;
+}
+
+.challenge-thankyou-card {
+  background: #fff;
+  border-radius: 1.1rem;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+  padding: 2.7rem 2rem;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.challenge-thankyou-share-btn {
+  display: inline-flex;
+  align-items: center;
+  background: #25d366;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.1em;
+  border-radius: 999px;
+  padding: 0.7em 1.5em;
+  margin: 1.2em 0 0.7em 0;
+  text-decoration: none;
+  transition: background 0.18s;
+}
+.challenge-thankyou-share-btn:hover {
+  background: #128c7e;
+}
+
+.challenge-thankyou-home-btn {
+  background: #44318d;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.7em 2em;
+  font-size: 1.05em;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.7em;
+  transition: background 0.18s;
+}
+.challenge-thankyou-home-btn:hover {
+  background: #2d3142;
+}

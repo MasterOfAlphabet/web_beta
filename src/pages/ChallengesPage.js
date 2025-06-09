@@ -1,269 +1,323 @@
 import React, { useEffect, useState } from "react";
+import { firestore } from "../services/firebase";
+import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import StudentDataForm from "../components/StudentDataForm";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
-  Paper,
-  Stack,
-  Chip,
+  Card,
+  CardContent,
+  CardActions,
   Button,
-  Grid,
+  Chip,
+  Avatar,
   Divider,
-  useTheme,
-  useMediaQuery,
+  Modal,
+  CircularProgress,
+  IconButton,
+  Tooltip,
+  Grid,
+  Paper
 } from "@mui/material";
-import {
-  EmojiEvents,
-  AccessTime,
-  CardGiftcard,
-  Groups,
-  HourglassEmpty,
-  Edit,
-  Visibility,
-} from "@mui/icons-material";
-import { Link as RouterLink } from "react-router-dom";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import PeopleIcon from "@mui/icons-material/People";
+import SchoolIcon from "@mui/icons-material/School";
+import { styled } from "@mui/material/styles";
+import { formatDistanceToNow } from "date-fns";
 
-// Helper for countdown
-function useCountdown(targetTime) {
-  const getTime = () => {
-    const now = new Date();
-    const diff = Math.max(0, targetTime - now);
-    const hours = Math.floor(diff / 1000 / 60 / 60);
-    const minutes = Math.floor((diff / 1000 / 60) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-    return { hours, minutes, seconds, isOver: diff === 0 };
-  };
-  const [time, setTime] = useState(getTime());
-  useEffect(() => {
-    if (time.isOver) return;
-    const timer = setInterval(() => setTime(getTime()), 1000);
-    return () => clearInterval(timer);
-  }, [targetTime, time.isOver]);
-  return time;
-}
+// Styled components
+const GradientCard = styled(Card)(({ theme, gradient }) => ({
+  background: gradient,
+  borderRadius: theme.shape.borderRadius * 2,
+  boxShadow: theme.shadows[4],
+  transition: "transform 0.3s, box-shadow 0.3s",
+  "&:hover": {
+    transform: "translateY(-4px)",
+    boxShadow: theme.shadows[8]
+  }
+}));
 
-// Example data for all three groups
-const challenges = [
+const HeroSection = styled(Paper)(({ theme }) => ({
+  background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
+  color: theme.palette.common.white,
+  borderRadius: theme.shape.borderRadius * 2,
+  padding: theme.spacing(4),
+  marginBottom: theme.spacing(4),
+  textAlign: "center"
+}));
+
+const CLASS_GROUPS = [
   {
-    classGroup: "Class I/II",
-    miniCompetition: "Spelling",
-    type: "Weekly",
-    timeLeft: new Date(Date.now() + 3 * 60 * 60 * 1000 + 8 * 60 * 1000 + 7 * 1000),
-    prize: "Top 3 get Goodies!",
-    submissions: 42,
-    winnersAnnounced: false,
+    key: "Class I/II",
+    gradient: "linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)",
+    title: "Little Champs",
+    subtitle: "Class I-II",
+    icon: <SchoolIcon fontSize="large" />
   },
   {
-    classGroup: "Class III to V",
-    miniCompetition: "Spelling",
-    type: "Weekly",
-    timeLeft: new Date(Date.now() + 23 * 60 * 60 * 1000 + 13 * 60 * 1000 + 7 * 1000),
-    prize: "Top 3 get Amazon vouchers and a Certificate!",
-    submissions: 128,
-    winnersAnnounced: false,
+    key: "Class III-V",
+    gradient: "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",
+    title: "Rising Stars",
+    subtitle: "Class III-V",
+    icon: <EmojiEventsIcon fontSize="large" />
   },
   {
-    classGroup: "Class VI to X",
-    miniCompetition: "Spelling",
-    type: "Weekly",
-    timeLeft: new Date(Date.now() + 7 * 60 * 60 * 1000 + 40 * 60 * 1000 + 5 * 1000),
-    prize: "Top 3 get Gift Cards!",
-    submissions: 61,
-    winnersAnnounced: true,
-  },
+    key: "Class VI-X",
+    gradient: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
+    title: "Word Wizards",
+    subtitle: "Class VI-X",
+    icon: <PeopleIcon fontSize="large" />
+  }
 ];
 
-const classGroupsMeta = [
-  {
-    label: "Class I/II",
-    value: 0,
-    chipColor: "info",
-  },
-  {
-    label: "Class III to V",
-    value: 1,
-    chipColor: "primary",
-  },
-  {
-    label: "Class VI to X",
-    value: 2,
-    chipColor: "success",
-  },
-];
-
-const typeColor = {
-  Daily: "success",
-  Weekly: "primary",
-  Monthly: "warning",
-  Special: "error",
+const CATEGORY_COLORS = {
+  "Dictation": "#FF7043",
+  "Find the correct spelling": "#42A5F5",
+  "Find the missing letter": "#66BB6A",
+  "Unscramble": "#FFA726",
+  "Spell the pic": "#AB47BC",
+  "Correct Spelling": "#EC407A",
+  "Spelling": "#EC407A"
 };
 
-function CountdownCell({ targetTime }) {
-  const time = useCountdown(targetTime);
-  return (
-    <Stack direction="row" alignItems="center" spacing={1}>
-      <AccessTime color="action" fontSize="small" />
-      <Typography fontFamily="monospace" fontWeight={700}>
-        {`${time.hours.toString().padStart(2, "0")}:${time.minutes
-          .toString()
-          .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`}
-      </Typography>
-    </Stack>
-  );
-}
-
 export default function ChallengesPage() {
-  const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const [selectedGroup, setSelectedGroup] = useState(0);
+  const [challenges, setChallenges] = useState({});
+  const [showFormFor, setShowFormFor] = useState(null);
+  const [stats, setStats] = useState({});
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const challenge = challenges[selectedGroup];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch challenges
+        const docRef = doc(firestore, "MoAChallenges", "DWMSChallenges");
+        const docSnap = await getDoc(docRef);
+        
+        // Fetch challenge stats
+        const statsRef = collection(firestore, "ChallengeStats");
+        const statsQuery = query(statsRef, where("active", "==", true));
+        const statsSnapshot = await getDocs(statsQuery);
+        
+        const statsData = {};
+        statsSnapshot.forEach(doc => {
+          statsData[doc.id] = doc.data();
+        });
+
+        if (docSnap.exists()) {
+          const allQuestions = docSnap.data().questions || [];
+          const byClass = {};
+          
+          CLASS_GROUPS.forEach(({ key }) => {
+            byClass[key] = allQuestions.find(
+              q => (q.classGroup === key || q.classGroup === key.replace("-", "/")) &&
+              q.difficultyLevel === "Rookie"
+            );
+          });
+
+          setChallenges(byClass);
+          setStats(statsData);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleStudentRegistration = (classGroup, data) => {
+    navigate(`/challenge/rookie/${encodeURIComponent(classGroup)}`, {
+      state: { student: data }
+    });
+  };
+
+  const getWhatsAppShareUrl = (challengeTitle, classGroup) => {
+    const text = encodeURIComponent(
+      `Can you solve the "${challengeTitle}" challenge for ${classGroup}? Try it now on Master of Alphabet!`
+    );
+    return `https://wa.me/?text=${text}`;
+  };
+
+  const calculateTimeLeft = (endTime) => {
+    if (!endTime) return "Challenge ended";
+    return formatDistanceToNow(new Date(endTime.toDate()), { addSuffix: true });
+  };
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+        <CircularProgress size={60} />
+      </Box>
+    );
+  }
 
   return (
-    <Box maxWidth="md" mx="auto" mt={5} px={2}>
-      <Typography variant="h4" fontWeight={700} mb={2} textAlign="center">
-        🔥 DWMS Spelling Challenge
-        <Chip label="Weekly" color="primary" sx={{ ml: 2 }} />
-      </Typography>
-      <Typography color="text.secondary" mb={3} textAlign="center">
-        Participate in your class group and win amazing prizes!
-      </Typography>
+    <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
+      <HeroSection elevation={6}>
+        <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
+          Master of Alphabet Challenges
+        </Typography>
+        <Typography variant="h5" component="h2" gutterBottom>
+          Test Your Spelling Skills and Win Exciting Prizes!
+        </Typography>
+        <Typography variant="body1" sx={{ fontSize: '1.1rem', mt: 2 }}>
+          Top performers receive special rewards. Weekly challenges with new opportunities to win!
+        </Typography>
+      </HeroSection>
 
-      {/* Class Group Selection */}
-      <Stack direction="row" justifyContent="center" spacing={3} mb={4}>
-        {classGroupsMeta.map((group, idx) => (
-          <Chip
-            key={group.label}
-            icon={<Groups />}
-            label={group.label}
-            color={selectedGroup === idx ? group.chipColor : "default"}
-            variant={selectedGroup === idx ? "filled" : "outlined"}
-            onClick={() => setSelectedGroup(idx)}
-            sx={{
-              fontSize: 17,
-              fontWeight: 800,
-              px: 2.5,
-              py: 2,
-              minWidth: 120,
-              minHeight: 48,
-              boxShadow: selectedGroup === idx ? 2 : 0,
-              cursor: "pointer",
-              bgcolor: selectedGroup === idx ? undefined : "#f6faff",
-              transition: "0.18s",
-            }}
-          />
-        ))}
-      </Stack>
+      <Grid container spacing={4}>
+        {CLASS_GROUPS.map(({ key, gradient, title, subtitle, icon }) => {
+          const challenge = challenges[key];
+          const challengeStats = stats[key] || {};
+          
+          return (
+            <Grid item xs={12} key={key}>
+              <GradientCard gradient={gradient}>
+                <CardContent>
+                  <Box display="flex" alignItems="center" mb={2}>
+                    <Avatar sx={{ bgcolor: 'rgba(255,255,255,0.2)', mr: 2 }}>
+                      {icon}
+                    </Avatar>
+                    <Box>
+                      <Typography variant="h5" component="h3" sx={{ fontWeight: 600 }}>
+                        {title}
+                      </Typography>
+                      <Typography variant="subtitle1" color="text.secondary">
+                        {subtitle}
+                      </Typography>
+                    </Box>
+                  </Box>
 
-      {/* The selected Challenge Card */}
-      <Grid container justifyContent="center">
-        <Grid item xs={12} md={8}>
-          <Paper
-            elevation={5}
-            sx={{
-              borderRadius: 5,
-              p: 3,
-              mb: 2,
-              bgcolor: "#fafcfd",
-              border: "2px solid #e3eefa",
-              minHeight: 260,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
-          >
-            <Stack direction="row" spacing={2} alignItems="center" mb={2}>
-              <Chip
-                icon={<Groups />}
-                label={challenge.classGroup}
-                color="info"
-                sx={{ fontWeight: 700, fontSize: isSm ? 12 : 15 }}
-              />
-              <Chip
-                icon={<Edit />}
-                label={challenge.miniCompetition}
-                color="secondary"
-                sx={{ fontWeight: 700, fontSize: isSm ? 12 : 15 }}
-              />
-              <Chip
-                icon={<EmojiEvents />}
-                label={challenge.type}
-                color={typeColor[challenge.type] || "default"}
-                sx={{ fontWeight: 700, fontSize: isSm ? 12 : 15 }}
-              />
-            </Stack>
-            <Divider sx={{ mb: 2 }} />
-            <Stack direction="row" spacing={4} flexWrap="wrap" mb={2}>
-              <Stack spacing={1} direction="row" alignItems="center">
-                <Typography fontWeight={600} color="primary">
-                  Time Left:
-                </Typography>
-                <CountdownCell targetTime={challenge.timeLeft} />
-              </Stack>
-              <Stack spacing={1} direction="row" alignItems="center">
-                <Typography fontWeight={600} color="success.dark">
-                  Submissions:
-                </Typography>
-                <Chip
-                  icon={<HourglassEmpty />}
-                  label={challenge.submissions}
-                  color="primary"
-                  sx={{ fontWeight: 700, fontSize: isSm ? 12 : 15 }}
-                />
-              </Stack>
-            </Stack>
-            <Stack direction="row" spacing={2} flexWrap="wrap" mb={2}>
-              <Chip
-                icon={<CardGiftcard />}
-                label={challenge.prize}
-                color="success"
-                sx={{
-                  bgcolor: "#fffde7",
-                  color: "#ff9800",
-                  fontWeight: 700,
-                  fontSize: isSm ? 12 : 15,
-                }}
-              />
-              {challenge.winnersAnnounced ? (
-                <Button
-                  variant="outlined"
-                  color="success"
-                  size="small"
-                  startIcon={<Visibility />}
-                  component={RouterLink}
-                  to="/winners"
-                  sx={{ fontWeight: 700, letterSpacing: 1 }}
-                >
-                  View Winners
-                </Button>
-              ) : (
-                <Chip
-                  icon={<HourglassEmpty />}
-                  label="Not Announced"
-                  color="warning"
-                  variant="outlined"
-                  sx={{ fontWeight: 700, fontSize: isSm ? 12 : 15 }}
-                />
-              )}
-            </Stack>
-            <Stack direction="row" justifyContent="flex-end">
-              <Button
-                variant="contained"
-                color="info"
-                size="large"
-                startIcon={<Edit />}
-                component={RouterLink}
-                to={`/challenge/${selectedGroup + 1}`}
-                sx={{
-                  borderRadius: 3,
-                  fontWeight: 700,
-                  px: 4,
-                }}
+                  <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
+                    <Chip
+                      label={challenge?.category || "Spelling"}
+                      size="small"
+                      sx={{
+                        backgroundColor: CATEGORY_COLORS[challenge?.category] || "#EC407A",
+                        color: "white"
+                      }}
+                    />
+                    <Chip
+                      label="Weekly Challenge"
+                      size="small"
+                      color="primary"
+                      icon={<EmojiEventsIcon fontSize="small" />}
+                    />
+                  </Box>
+
+                  <Divider sx={{ my: 2 }} />
+
+                  {challenge ? (
+                    <>
+                      <Box mb={3}>
+                        <Typography variant="body1" sx={{ fontStyle: 'italic', mb: 2 }}>
+                          "Can you solve this week's challenge?"
+                        </Typography>
+                      </Box>
+
+                      <Box display="flex" flexWrap="wrap" gap={3} mt={3}>
+                        <Box display="flex" alignItems="center">
+                          <AccessTimeIcon color="action" sx={{ mr: 1 }} />
+                          <Typography variant="body2">
+                            {calculateTimeLeft(challengeStats.endTime)}
+                          </Typography>
+                        </Box>
+
+                        <Box display="flex" alignItems="center">
+                          <PeopleIcon color="action" sx={{ mr: 1 }} />
+                          <Typography variant="body2">
+                            {challengeStats.submissions || 0} submissions
+                          </Typography>
+                        </Box>
+
+                        <Box display="flex" alignItems="center">
+                          <EmojiEventsIcon color="action" sx={{ mr: 1 }} />
+                          <Typography variant="body2">
+                            {challengeStats.prizes || "5 prizes available"}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </>
+                  ) : (
+                    <Typography variant="body1" color="text.secondary">
+                      Challenge coming soon...
+                    </Typography>
+                  )}
+                </CardContent>
+
+                <CardActions sx={{ justifyContent: 'space-between', p: 2 }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    onClick={() => setShowFormFor(key)}
+                    sx={{ fontWeight: 600 }}
+                  >
+                    Take Challenge
+                  </Button>
+
+                  <Tooltip title="Share on WhatsApp">
+                    <IconButton
+                      href={challenge ? getWhatsAppShareUrl(challenge.questionText, challenge.classGroup) : "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Share on WhatsApp"
+                      color="primary"
+                      sx={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+                    >
+                      <WhatsAppIcon />
+                    </IconButton>
+                  </Tooltip>
+                </CardActions>
+              </GradientCard>
+
+              {/* Registration Modal */}
+              <Modal
+                open={showFormFor === key}
+                onClose={() => setShowFormFor(null)}
+                aria-labelledby="registration-modal-title"
               >
-                Answer Challenge
-              </Button>
-            </Stack>
-          </Paper>
-        </Grid>
+                <Box sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: { xs: '90%', sm: 500 },
+                  bgcolor: 'background.paper',
+                  boxShadow: 24,
+                  p: 4,
+                  borderRadius: 2
+                }}>
+                  <Typography id="registration-modal-title" variant="h6" component="h2" gutterBottom>
+                    Register for {title} Challenge
+                  </Typography>
+                  <StudentDataForm
+                    showClassDropdown
+                    allowedClasses={key}
+                    onSubmit={(data) => handleStudentRegistration(key, data)}
+                    onCancel={() => setShowFormFor(null)}
+                    requireParentMobile
+                  />
+                  <Box mt={2} display="flex" justifyContent="flex-end">
+                    <Button
+                      onClick={() => setShowFormFor(null)}
+                      variant="outlined"
+                      color="secondary"
+                    >
+                      Cancel
+                    </Button>
+                  </Box>
+                </Box>
+              </Modal>
+            </Grid>
+          );
+        })}
       </Grid>
     </Box>
   );

@@ -11,22 +11,21 @@ import {
   IconButton,
   Snackbar,
   Alert,
-  MenuItem,
   Stack,
   CircularProgress,
 } from "@mui/material";
-import { Visibility, VisibilityOff, Email, Lock, AccountCircle } from "@mui/icons-material";
-import { AuthContext } from "../App"; // Update path as per your structure, e.g., '../App'
+import { Visibility, VisibilityOff, PhoneAndroid, Lock, AccountCircle } from "@mui/icons-material";
+import { AuthContext } from "../App";
 import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../services/firebase";
 
-// Dummy language options
 const LANGUAGES = [
   { label: "English", value: "en" },
   { label: "हिन्दी", value: "hi" },
   { label: "తెలుగు", value: "te" },
 ];
 
-// Password strength checker
 function getPasswordStrength(pw) {
   if (!pw) return { label: "", color: "" };
   if (pw.length < 6) return { label: "Weak", color: "#e53935" };
@@ -35,29 +34,28 @@ function getPasswordStrength(pw) {
 }
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [parentMobile, setParentMobile] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
   const [language, setLanguage] = useState("en");
-  const [emailError, setEmailError] = useState("");
+  const [mobileError, setMobileError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const { setLoggedInUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const passwordStrength = getPasswordStrength(password);
 
-  // Dummy sign-in handler (replace with your backend/Firebase)
   const handleLogin = async (e) => {
     e.preventDefault();
-    setEmailError("");
+    setMobileError("");
     setPasswordError("");
 
     let valid = true;
-    if (!email.trim()) {
-      setEmailError("Email is required");
+    if (!parentMobile.trim() || !/^\d{10}$/.test(parentMobile.trim())) {
+      setMobileError("Valid 10-digit mobile # required");
       valid = false;
     }
     if (!password.trim()) {
@@ -68,15 +66,16 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
-      // TODO: Replace with your backend/Firebase logic
-      // Simulate async login
-      await new Promise((res) => setTimeout(res, 1200));
-      // Simulate user object
-      setLoggedInUser({ email, role: "student" });
+      const syntheticEmail = `${parentMobile.trim()}@rankgenie.in`;
+      const userCredential = await signInWithEmailAndPassword(auth, syntheticEmail, password);
+      setLoggedInUser({ email: syntheticEmail, role: "student", uid: userCredential.user.uid });
       setSnackbar({ open: true, message: "Login successful!", severity: "success" });
       navigate("/");
     } catch (error) {
-      setSnackbar({ open: true, message: "Login failed. Please try again.", severity: "error" });
+      let message = "Login failed. Please try again.";
+      if (error.code === "auth/user-not-found") message = "No account found with this mobile #";
+      if (error.code === "auth/wrong-password") message = "Incorrect password";
+      setSnackbar({ open: true, message, severity: "error" });
     } finally {
       setLoading(false);
     }
@@ -111,22 +110,23 @@ export default function LoginPage() {
         </Typography>
         <form onSubmit={handleLogin} autoComplete="on">
           <TextField
-            label="Username or Email"
-            type="email"
-            value={email}
+            label="Parent's Mobile #"
+            value={parentMobile}
             onChange={(e) => {
-              setEmail(e.target.value);
-              setEmailError("");
+              const val = e.target.value.replace(/\D/g, "");
+              setParentMobile(val);
+              setMobileError("");
             }}
-            error={!!emailError}
-            helperText={emailError}
+            error={!!mobileError}
+            helperText={mobileError}
             fullWidth
             margin="normal"
             autoComplete="username"
+            inputProps={{ maxLength: 10 }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <Email />
+                  <PhoneAndroid />
                 </InputAdornment>
               ),
             }}
@@ -200,6 +200,16 @@ export default function LoginPage() {
               Forgot password?
             </Button>
           </Stack>
+           <Stack direction="row" justifyContent="center" alignItems="center" mt={1}>
+                      <Button
+            type="button"
+            variant="outlined"
+            fullWidth
+            sx={{ fontWeight: "bold", fontSize: 16, py: 1, borderRadius: 2, mb: 1 }}
+            onClick={() => navigate(-1)}
+          >
+            Cancel
+          </Button>
           <Button
             type="submit"
             variant="contained"
@@ -211,15 +221,8 @@ export default function LoginPage() {
           >
             {loading ? "Signing In..." : "Sign In"}
           </Button>
-          <Button
-            type="button"
-            variant="outlined"
-            fullWidth
-            sx={{ fontWeight: "bold", fontSize: 16, py: 1, borderRadius: 2, mb: 1 }}
-            onClick={() => navigate(-1)}
-          >
-            Cancel
-          </Button>
+
+          </Stack>
         </form>
         <Stack direction="row" justifyContent="center" alignItems="center" mt={1}>
           <Typography fontSize={15}>Don't have an account?</Typography>
@@ -232,40 +235,7 @@ export default function LoginPage() {
             Register
           </Button>
         </Stack>
-        <Button
-          variant="text"
-          size="small"
-          sx={{ mt: 1, color: "#607d8b", fontSize: 13 }}
-          onClick={() => navigate("/support")}
-        >
-          Need help?
-        </Button>
-        {/* Language Switcher */}
-        <Stack direction="row" alignItems="center" spacing={1} justifyContent="center" mt={2}>
-          <Typography fontSize={13} color="text.secondary">
-            Language:
-          </Typography>
-          {LANGUAGES.map((lang) => (
-            <Button
-              key={lang.value}
-              size="small"
-              variant={language === lang.value ? "contained" : "text"}
-              onClick={() => setLanguage(lang.value)}
-              sx={{
-                minWidth: 36,
-                px: 1.5,
-                bgcolor: language === lang.value ? "primary.main" : "transparent",
-                color: language === lang.value ? "#fff" : "primary.main",
-                fontWeight: language === lang.value ? "bold" : "normal",
-                fontSize: 13,
-                borderRadius: 2,
-              }}
-            >
-              {lang.label}
-            </Button>
-          ))}
-        </Stack>
-        {/* Snackbar */}
+        
         <Snackbar
           open={snackbar.open}
           autoHideDuration={2500}
