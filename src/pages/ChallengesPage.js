@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { firestore } from "../services/firebase";
+import { firestore, auth } from "../services/firebase"; // Added auth
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import StudentDataForm from "../components/StudentDataForm";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,8 @@ import {
   IconButton,
   Tooltip,
   Grid,
-  Paper
+  Paper,
+  Stack
 } from "@mui/material";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -27,6 +28,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import SchoolIcon from "@mui/icons-material/School";
 import { styled } from "@mui/material/styles";
 import { formatDistanceToNow } from "date-fns";
+import { onAuthStateChanged } from "firebase/auth"; // Added onAuthStateChanged
 
 // Styled components
 const GradientCard = styled(Card)(({ theme, gradient }) => ({
@@ -88,20 +90,19 @@ export default function ChallengesPage() {
   const [showFormFor, setShowFormFor] = useState(null);
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null); // Added user state
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch challenges
         const docRef = doc(firestore, "MoAChallenges", "DWMSChallenges");
         const docSnap = await getDoc(docRef);
-        
-        // Fetch challenge stats
+
         const statsRef = collection(firestore, "ChallengeStats");
         const statsQuery = query(statsRef, where("active", "==", true));
         const statsSnapshot = await getDocs(statsQuery);
-        
+
         const statsData = {};
         statsSnapshot.forEach(doc => {
           statsData[doc.id] = doc.data();
@@ -110,7 +111,7 @@ export default function ChallengesPage() {
         if (docSnap.exists()) {
           const allQuestions = docSnap.data().questions || [];
           const byClass = {};
-          
+
           CLASS_GROUPS.forEach(({ key }) => {
             byClass[key] = allQuestions.find(
               q => (q.classGroup === key || q.classGroup === key.replace("-", "/")) &&
@@ -131,9 +132,19 @@ export default function ChallengesPage() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
   const handleStudentRegistration = (classGroup, data) => {
-    navigate(`/challenge/rookie/${encodeURIComponent(classGroup)}`, {
-      state: { student: data }
+    const challengeType = "daily";
+    const studentData = { ...data, classGroup };
+
+    navigate(`/challenge/${challengeType}`, {
+      state: { student: studentData }
     });
   };
 
@@ -171,14 +182,61 @@ export default function ChallengesPage() {
         </Typography>
       </HeroSection>
 
+      {/* Dynamic greeting or prompt */}
+      {user ? (
+        <Paper
+          elevation={3}
+          sx={{
+            bgcolor: "#e0f7fa",
+            p: 2,
+            mb: 3,
+            borderRadius: 2,
+            textAlign: "center"
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            Hey! Welcome, {user.displayName || user.email}!
+          </Typography>
+          <Typography variant="body2">
+            Be excited to participate & win. Challenges are about to start. Stay tuned!
+          </Typography>
+        </Paper>
+      ) : (
+        <Paper
+          elevation={3}
+          sx={{
+            bgcolor: "#fff3e0",
+            p: 2,
+            mb: 3,
+            borderRadius: 2,
+            textAlign: "center"
+          }}
+        >
+          <Typography variant="body2" gutterBottom>
+            🛈 Log in to save time and get a chance to answer the challenge quickly.
+          </Typography>
+          <Stack direction="row" spacing={2} justifyContent="center" sx={{ my: 1 }}>
+            <Button variant="contained" color="primary" onClick={() => navigate("/login")}>
+              Login
+            </Button>
+            <Button variant="outlined" color="primary" onClick={() => navigate("/register")}>
+              Register
+            </Button>
+          </Stack>
+          <Typography variant="caption">
+            If you don’t want to register or forgot login credentials, no worries! You can still participate in the challenge — just register your details for this challenge below and you’re ready to participate.
+          </Typography>
+        </Paper>
+      )}
+
       <Grid container spacing={4}>
         {CLASS_GROUPS.map(({ key, gradient, title, subtitle, icon }) => {
           const challenge = challenges[key];
           const challengeStats = stats[key] || {};
-          
+
           return (
             <Grid item xs={12} key={key}>
-              <GradientCard gradient={gradient}>
+             <GradientCard gradient={gradient}>
                 <CardContent>
                   <Box display="flex" alignItems="center" mb={2}>
                     <Avatar sx={{ bgcolor: 'rgba(255,255,255,0.2)', mr: 2 }}>

@@ -20,9 +20,9 @@ import BoltIcon from "@mui/icons-material/Bolt";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import SchoolIcon from "@mui/icons-material/School";
 import TodayIcon from "@mui/icons-material/Today";
+import StarIcon from "@mui/icons-material/Star";
 import { useNavigate } from "react-router-dom";
 
-// Tips per module (rotate daily or randomly)
 const skillTips = [
   {
     module: "Spelling",
@@ -66,14 +66,12 @@ const skillTips = [
   },
 ];
 
-// Simulate task list
 const tasks = [
   { text: "Take a Spelling Test", done: false },
   { text: "Practice Reading Skills", done: false },
   { text: "Complete today's Word of the Day", done: true },
 ];
 
-// Announcements
 const announcements = [
   {
     title: "June Challenge Winners!",
@@ -89,7 +87,6 @@ const announcements = [
   },
 ];
 
-// Updates
 const updates = [
   {
     text: "10 new Grammar Test questions added for Class VI-X.",
@@ -109,9 +106,7 @@ export default function HomePage() {
   const [tipIndex, setTipIndex] = useState(0);
   const navigate = useNavigate();
 
-  // Rotate tips daily (or every X hours)
   useEffect(() => {
-    // Change tip daily based on date, or every few hours
     const now = new Date();
     setTipIndex(now.getDate() % skillTips.length);
   }, []);
@@ -126,6 +121,34 @@ export default function HomePage() {
       }}
     >
       <Box sx={{ maxWidth: 1100, mx: "auto" }}>
+        {/* Hero Section */}
+        <Box
+          sx={{
+            mb: 4,
+            p: { xs: 3, md: 6 },
+            borderRadius: 4,
+            textAlign: "center",
+            bgcolor: "linear-gradient(135deg, #1976d2 0%, #2196f3 100%)",
+            color: "#fff",
+          }}
+        >
+          <Typography variant="h3" fontWeight={800} gutterBottom sx={{ textShadow: "1px 1px 3px rgba(0,0,0,0.3)" }}>
+            Welcome to the Master of Alphabet Competition
+          </Typography>
+          <Typography variant="h6" sx={{ maxWidth: 700, mx: "auto", opacity: 0.9 }}>
+            Hone your English skills across spelling, grammar, pronunciation and more—every day is a new opportunity to shine!
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
+            color="warning"
+            sx={{ mt: 3, borderRadius: 3, fontWeight: 700, px: 5 }}
+            onClick={() => navigate("/daily-challenge")}
+          >
+            Join Today’s Challenge
+          </Button>
+        </Box>
+
         <Grid container spacing={4}>
           {/* Skill Spotlight */}
           <Grid item xs={12} md={8}>
@@ -152,7 +175,7 @@ export default function HomePage() {
               </Box>
             </Paper>
 
-            {/* Skills Assessment Call-to-action */}
+            {/* Skills Assessment CTA */}
             <Paper
               elevation={3}
               sx={{
@@ -186,7 +209,7 @@ export default function HomePage() {
               </Button>
             </Paper>
 
-            {/* Tasks to Complete */}
+            {/* Tasks */}
             <Paper
               elevation={3}
               sx={{
@@ -209,7 +232,7 @@ export default function HomePage() {
                     <Chip
                       size="small"
                       color={task.done ? "success" : "default"}
-                      icon={task.done ? <BoltIcon /> : null}
+                      icon={task.done ? <StarIcon /> : null}
                       label={task.done ? "Done" : ""}
                     />
                     <Typography

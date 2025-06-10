@@ -26,13 +26,6 @@ const LANGUAGES = [
   { label: "తెలుగు", value: "te" },
 ];
 
-function getPasswordStrength(pw) {
-  if (!pw) return { label: "", color: "" };
-  if (pw.length < 6) return { label: "Weak", color: "#e53935" };
-  if (/[A-Z]/.test(pw) && /\d/.test(pw) && pw.length >= 8) return { label: "Strong", color: "#43a047" };
-  return { label: "Medium", color: "#fbc02d" };
-}
-
 export default function LoginPage() {
   const [parentMobile, setParentMobile] = useState("");
   const [password, setPassword] = useState("");
@@ -46,7 +39,6 @@ export default function LoginPage() {
   const { setLoggedInUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const passwordStrength = getPasswordStrength(password);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -166,18 +158,7 @@ export default function LoginPage() {
             }}
             size="medium"
           />
-          {password && (
-            <Typography
-              fontSize={13}
-              fontWeight={700}
-              mt={-0.5}
-              mb={1}
-              color={passwordStrength.color}
-              sx={{ textAlign: "left" }}
-            >
-              Password Strength: {passwordStrength.label}
-            </Typography>
-          )}
+         
           <Stack direction="row" justifyContent="space-between" alignItems="center" mt={1} mb={1.5}>
             <FormControlLabel
               control={
