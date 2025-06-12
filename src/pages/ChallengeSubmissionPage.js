@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Box, Typography, Button, Paper, RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import { Box, Typography, Paper, RadioGroup, FormControlLabel, Radio, Button, CircularProgress } from "@mui/material";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { firestore } from "../services/firebase";
+
+const generateStudentId = () => {
+  // Generate a unique ID using Firestore's built-in ID generator
+  const tempDocRef = doc(firestore, "temp", "placeholder");
+  return tempDocRef.id;
+};
 
 export default function ChallengeSubmissionPage() {
   const { type } = useParams();
@@ -11,39 +19,79 @@ export default function ChallengeSubmissionPage() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Load sample questions for testing
   useEffect(() => {
     const loadQuestions = () => {
       if (type === "daily") {
         setQuestions([
-          { id: "q1", text: "Spell the fruit 🍎", options: ["apple", "aple", "appel"], correct: "apple" },
-          { id: "q2", text: "Spell the animal 🐯", options: ["tiger", "tigar", "tigger"], correct: "tiger" }
-        ]);
-      } else if (type === "weekly") {
-        setQuestions([
-          { id: "q1", text: "Weekly Challenge: Color of sky?", options: ["blue", "red", "green"], correct: "blue" }
+          { id: "q1", text: "Spell the fruit 🍎", options: ["apple", "aple", "appel"] },
+          { id: "q2", text: "Spell the animal 🐯", options: ["tiger", "tigar", "tigger"] }
         ]);
       }
-      // Add more types as needed...
+      // Extend for other challenge types...
       setLoading(false);
     };
     loadQuestions();
   }, [type]);
 
   const handleAnswer = (qId, ans) => {
-    setAnswers(prev => ({ ...prev, [qId]: ans }));
+    setAnswers((prev) => ({ ...prev, [qId]: ans }));
   };
 
-  const handleSubmit = () => {
-    console.log("Student:", student);
-    console.log("Answers:", answers);
+  const handleSubmit = async () => {
+    const startTime = student.startTime || new Date().toISOString();
+    const endTime = new Date().toISOString();
+    const timeSpent = Math.floor((new Date(endTime) - new Date(startTime)) / 1000);
 
-    // In real usage: save to Firestore here
-    // For testing, just navigate to Thank You page
-    navigate("/challenge/thank-you", { state: { student, score: 100 } });
+    const processedAnswers = questions.map((q) => ({
+      questionId: q.id,
+      selectedAnswer: answers[q.id] || ""
+    }));
+
+    const tempStudentId = generateStudentId();
+
+    const submission = {
+
+      studentId: student?.studentId || tempStudentId,
+      answers: processedAnswers,
+      score: 0,
+      timestamp: serverTimestamp(),
+      startTime,
+      endTime,
+      timeSpent,
+      rank: 0,
+      challengeRating: 0,
+      challengeReview: "",
+      submissionDevice: "web"
+    };
+
+    try {
+      const submissionRef = doc(
+        firestore,
+        `challenge_submissions/${type}_20250610/submissions/${tempStudentId}`
+      );
+      await setDoc(submissionRef, submission);
+      navigate("/challenge/thank-you", {
+        state: {
+          student,
+          challenge: {
+            challengeType: type,
+            classGroup: student.classGroup,
+            category: "Spelling"
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error saving submission:", error);
+    }
   };
 
-  if (loading) return <Typography>Loading...</Typography>;
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+        <CircularProgress size={60} />
+      </Box>
+    );
+  }
 
   if (questions.length === 0) {
     return <Typography>Challenge not found.</Typography>;
@@ -54,14 +102,14 @@ export default function ChallengeSubmissionPage() {
       <Typography variant="h4" gutterBottom>
         Challenge: {type.toUpperCase()}
       </Typography>
-      {questions.map(q => (
+      {questions.map((q) => (
         <Paper key={q.id} sx={{ p: 2, my: 2 }}>
           <Typography variant="subtitle1">{q.text}</Typography>
           <RadioGroup
             value={answers[q.id] || ""}
             onChange={(e) => handleAnswer(q.id, e.target.value)}
           >
-            {q.options.map(opt => (
+            {q.options.map((opt) => (
               <FormControlLabel key={opt} value={opt} control={<Radio />} label={opt} />
             ))}
           </RadioGroup>

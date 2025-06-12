@@ -21,6 +21,8 @@ import TestSpellingSkills from './pages/TestSpellingSkills';
 import ChallengeSubmissionPage from "./pages/ChallengeSubmissionPage";
 import ChallengeThankYouPage from "./pages/ChallengeThankYouPage";
 
+import WordOfTheDayCard from "./pages/WordOfTheDayCard";
+
 // Import other page components as you create them
 
 // 1. Create and export the AuthContext
@@ -51,6 +53,8 @@ function App() {
         <Route path="/challenges" element={<ChallengesPage />} />
         <Route path="/challenge/:type" element={<ChallengeSubmissionPage />} />
         <Route path="/challenge/thank-you" element={<ChallengeThankYouPage />} />
+
+        <Route path="/word-of-the-day" element={<WordOfTheDayCard/>} />
 
 
         {/* Add other routes here as you add the pages */}

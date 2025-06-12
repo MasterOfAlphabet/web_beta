@@ -1,0 +1,61 @@
+{
+  "questionId": "q1001",
+  "classGroup": "Class I-II",
+  "module": "Spelling",
+  "category": "Dictation",
+  "studentsAttempted": {
+    "total": 100,
+    "class-I": 70,
+    "class-II": 30
+  },
+  "correctResponses": {
+    "total": 85,
+    "class-I": 30,
+    "class-II": 55
+  },
+  "feedback": {
+    "total": {
+      "easy": 40,
+      "challenging": 20,
+      "fun": 40
+    },
+    "class-I": {
+      "easy": 25,
+      "challenging": 10,
+      "fun": 35
+    },
+    "class-II": {
+      "easy": 15,
+      "challenging": 10,
+      "fun": 5
+    }
+  },
+  "averageRating": {
+    "total": 4.2,
+    "class-I": 4.4,
+    "class-II": 4.0
+  },
+  "deviceUsed": {
+    "total": {
+      "web": 70,
+      "mobile": 30
+    },
+    "class-I": {
+      "web": 50,
+      "mobile": 20
+    },
+    "class-II": {
+      "web": 20,
+      "mobile": 10
+    }
+  },
+  "averageTimeTaken": {
+    "total": 45,
+    "class-I": 40,
+    "class-II": 50
+  },
+  "lastUpdated": [
+    "2025-06-15T00:00:00Z",
+    "2025-06-17T12:00:00Z"
+  ]
+}

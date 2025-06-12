@@ -1,0 +1,28 @@
+{
+  "id": "q1001",
+  "questionText": "Spell the fruit 🍎",
+  "answerType": "multiple-choice",
+  "options": ["apple", "aple", "appel"],
+  "shuffleOptions": true,
+  "correctAnswer": "apple",
+  "hint": "Double P and L.",
+  "explanation": "The correct spelling has two P’s and one L.",
+  "difficulty": "Rookie",
+  "mediaUrl": null,
+  "points": 10,
+  "module": "Spelling",
+  "category": "Dictation",
+  "usage": {
+    "learn": true,
+    "practice": true,
+    "test": true,
+    "battle": false,
+    "challenge": true,
+    "competition": false
+  },
+  "createdAt": "2025-06-11T00:00:00Z",
+  "lastUpdatedAt": [
+    "2025-06-11T00:00:00Z",
+    "2025-06-12T10:00:00Z"
+  ]
+}

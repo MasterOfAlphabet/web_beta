@@ -1,33 +1,22 @@
 {
-  "id": "submission-uid-abcdef",                
-  "challengeId": "weekly-2025-06-09-class-1-2",
-  "userId": "user-uid-12345",                   
-  "userDisplayName": "Aditi Sharma",           
-  "userGroup": "Class I/II",                   
-  "submittedAt": "2025-06-09T09:50:59Z",       
+  "studentId": "abc123",
   "answers": [
     {
       "questionId": "q1",
-      "response": "accommodate",
-      "isCorrect": true,
-      "answerTime": 12                         
+      "selectedAnswer": "apple"
     },
     {
       "questionId": "q2",
-      "response": "rhythm",
-      "isCorrect": true,
-      "answerTime": 18
+      "selectedAnswer": "pear"
     }
-
   ],
-  "score": 20,                                 
-  "percentage": 100,                          
-  "timeTaken": 30,                         
-  "completed": true,                           
-  "ratingGiven": 5,                            
-  "feedback": "Loved it! Super fun.",        
-  "rank": null,                              
-  "reviewed": false,                           
-  "createdAt": "2025-06-09T09:50:59Z",
-  "updatedAt": "2025-06-09T09:50:59Z"
+  "score": 0,
+  "timestamp": "<Firestore serverTimestamp>",
+  "startTime": "2025-06-10T14:25:00Z",
+  "endTime": "2025-06-10T14:30:00Z",
+  "timeSpent": 300,
+  "rank": 0,
+  "challengeRating": 0,
+  "challengeReview": "",
+  "submissionDevice": "web"
 }

@@ -1,0 +1,33 @@
+{
+  "id": "submission-uid-abcdef",                
+  "challengeId": "weekly-2025-06-09-class-1-2",
+  "userId": "user-uid-12345",                   
+  "userDisplayName": "Aditi Sharma",           
+  "userGroup": "Class I/II",                   
+  "submittedAt": "2025-06-09T09:50:59Z",       
+  "answers": [
+    {
+      "questionId": "q1",
+      "response": "accommodate",
+      "isCorrect": true,
+      "answerTime": 12                         
+    },
+    {
+      "questionId": "q2",
+      "response": "rhythm",
+      "isCorrect": true,
+      "answerTime": 18
+    }
+
+  ],
+  "score": 20,                                 
+  "percentage": 100,                          
+  "timeTaken": 30,                         
+  "completed": true,                           
+  "ratingGiven": 5,                            
+  "feedback": "Loved it! Super fun.",        
+  "rank": null,                              
+  "reviewed": false,                           
+  "createdAt": "2025-06-09T09:50:59Z",
+  "updatedAt": "2025-06-09T09:50:59Z"
+}

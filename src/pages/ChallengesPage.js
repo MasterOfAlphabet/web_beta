@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { firestore, auth } from "../services/firebase"; // Added auth
+import { firestore, auth } from "../services/firebase";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import StudentDataForm from "../components/StudentDataForm";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +28,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import SchoolIcon from "@mui/icons-material/School";
 import { styled } from "@mui/material/styles";
 import { formatDistanceToNow } from "date-fns";
-import { onAuthStateChanged } from "firebase/auth"; // Added onAuthStateChanged
+import { onAuthStateChanged } from "firebase/auth";
 
 // Styled components
 const GradientCard = styled(Card)(({ theme, gradient }) => ({
@@ -90,7 +90,7 @@ export default function ChallengesPage() {
   const [showFormFor, setShowFormFor] = useState(null);
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null); // Added user state
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -139,13 +139,27 @@ export default function ChallengesPage() {
     return () => unsubscribe();
   }, []);
 
+  // Direct navigation to challenge (for both logged-in and guest registration)
   const handleStudentRegistration = (classGroup, data) => {
     const challengeType = "daily";
     const studentData = { ...data, classGroup };
-
     navigate(`/challenge/${challengeType}`, {
       state: { student: studentData }
     });
+  };
+
+  // Main handler for Take Challenge button
+  const handleTakeChallenge = (classGroup) => {
+    if (user) {
+      const studentData = {
+        name: user.displayName || user.email || "Anonymous",
+        studentId: user.uid,
+        classGroup,
+      };
+      handleStudentRegistration(classGroup, studentData);
+    } else {
+      setShowFormFor(classGroup);
+    }
   };
 
   const getWhatsAppShareUrl = (challengeTitle, classGroup) => {
@@ -182,7 +196,7 @@ export default function ChallengesPage() {
         </Typography>
       </HeroSection>
 
-      {/* Dynamic greeting or prompt */}
+      {/* Greeting or prompt */}
       {user ? (
         <Paper
           elevation={3}
@@ -198,7 +212,7 @@ export default function ChallengesPage() {
             Hey! Welcome, {user.displayName || user.email}!
           </Typography>
           <Typography variant="body2">
-            Be excited to participate & win. Challenges are about to start. Stay tuned!
+            Be excited to participate & win. Challenges are about to start. Stay Tuned !!!
           </Typography>
         </Paper>
       ) : (
@@ -213,18 +227,18 @@ export default function ChallengesPage() {
           }}
         >
           <Typography variant="body2" gutterBottom>
-            🛈 Log in to save time and get a chance to answer the challenge quickly.
+            🛈 LogIn to save time and a chance to answer the challenge quickly.
           </Typography>
           <Stack direction="row" spacing={2} justifyContent="center" sx={{ my: 1 }}>
             <Button variant="contained" color="primary" onClick={() => navigate("/login")}>
               Login
             </Button>
-            <Button variant="outlined" color="primary" onClick={() => navigate("/register")}>
+            <Button variant="outlined" color="primary" onClick={() => navigate("/signup")}>
               Register
             </Button>
           </Stack>
           <Typography variant="caption">
-            If you don’t want to register or forgot login credentials, no worries! You can still participate in the challenge — just register your details for this challenge below and you’re ready to participate.
+            If you don't want to register or forgot login credentials, no worries ... you can still participate in the challenge. Just register your details just for this challenge and you are ready to participate.
           </Typography>
         </Paper>
       )}
@@ -236,7 +250,7 @@ export default function ChallengesPage() {
 
           return (
             <Grid item xs={12} key={key}>
-             <GradientCard gradient={gradient}>
+              <GradientCard gradient={gradient}>
                 <CardContent>
                   <Box display="flex" alignItems="center" mb={2}>
                     <Avatar sx={{ bgcolor: 'rgba(255,255,255,0.2)', mr: 2 }}>
@@ -314,7 +328,7 @@ export default function ChallengesPage() {
                     variant="contained"
                     color="primary"
                     size="large"
-                    onClick={() => setShowFormFor(key)}
+                    onClick={() => handleTakeChallenge(key)}
                     sx={{ fontWeight: 600 }}
                   >
                     Take Challenge
@@ -358,7 +372,10 @@ export default function ChallengesPage() {
                   <StudentDataForm
                     showClassDropdown
                     allowedClasses={key}
-                    onSubmit={(data) => handleStudentRegistration(key, data)}
+                    onSubmit={(data) => {
+                      handleStudentRegistration(key, data);
+                      setShowFormFor(null);
+                    }}
                     onCancel={() => setShowFormFor(null)}
                     requireParentMobile
                   />
