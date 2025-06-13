@@ -26,8 +26,9 @@ import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 import VoiceSelector from "../components/VoiceSelector";
 import wordData from "./WordOfTheDayData";
 
+import ReviewRatingFeedbackSection from "../components/ReviewRatingFeedbackSection";
+
 import TodayIcon from "@mui/icons-material/Today";
-// ...other imports
 
 const fieldIconMap = {
   word: <EmojiObjectsIcon sx={{ color: "#1976d2" }} />,
@@ -514,68 +515,17 @@ export default function WordOfTheDayCard() {
         </CardContent>
       </Card>
 
+
       {/* Feedback / Review / Rating / Comment */}
-      <Box
-        sx={{
-          bgcolor: "#f1f8e9",
-          borderRadius: 3,
-          p: { xs: 2, md: 4 },
-          mt: 2,
-          mb: 3,
-          boxShadow: 2,
-        }}
-      >
-        <Typography fontWeight={700} fontSize={18} mb={1}>
-          Share your thoughts!
-        </Typography>
-        <Typography fontSize={14} color="text.secondary" mb={1}>
-          How did you find this word?
-        </Typography>
-        <Stack direction="row" flexWrap="wrap" gap={1} justifyContent="center" mb={2}>
-          {reviewOptions.map((opt) => (
-            <Chip
-              key={opt}
-              label={opt}
-              clickable
-              color={review === opt ? "primary" : "default"}
-              onClick={() => handleReviewSelect(opt)}
-              sx={{ fontWeight: 600, fontSize: 15 }}
-            />
-          ))}
-        </Stack>
-        <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-          <Typography mr={1} fontSize={16}>
-            Rate this word:
-          </Typography>
-          <Rating
-            name="word-rating"
-            value={rating}
-            onChange={(_, newValue) => setRating(newValue)}
-            sx={{ mr: 2 }}
-            disabled={isSpeaking}
-          />
-        </Box>
-        <TextField
-          label="Comment / Feedback"
-          multiline
-          size="small"
-          fullWidth
-          value={comment}
-          onChange={e => setComment(e.target.value)}
-          variant="outlined"
-          sx={{ bgcolor: "white", my: 1 }}
-          disabled={isSpeaking}
-        />
-        <Button
-          variant="contained"
-          color="success"
-          onClick={handleSave}
-          disabled={saving || isSpeaking}
-          sx={{ mt: 1, fontWeight: 700, px: 4 }}
-        >
-          {saving ? "Saving..." : "Submit"}
-        </Button>
-      </Box>
+     <ReviewRatingFeedbackSection 
+  onSubmit={(data) => {
+    console.log('User feedback:', data);
+    // Handle submission (API call, state update, etc.)
+  }}
+  isSubmitting={saving}
+  isSpeaking={isSpeaking}
+/>
+
     </Box>
   );
 }

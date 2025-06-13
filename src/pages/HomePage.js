@@ -13,7 +13,9 @@ import {
   Link as MUILink,
 } from "@mui/material";
 
-import { 
+import { Trophy} from "lucide-react";
+
+import {
   CheckCircle as CheckCircleIcon,
   FiberManualRecord as FiberManualRecordIcon
 } from "@mui/icons-material";
@@ -40,6 +42,7 @@ import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 import LoyaltyIcon from "@mui/icons-material/Loyalty";
 import PaidIcon from "@mui/icons-material/Paid";
 import { useNavigate } from "react-router-dom";
+import Footer from "./Footer";
 
 const offerImage =
   "https://img.freepik.com/free-vector/special-offer-discount-sale-banner-design_1017-31299.jpg?w=826&t=st=1718150000~exp=1718150600~hmac=8f6c8c1a2e9b6f6c6c1c0e6fbf2f1d379c8a1b1e1e8b6c8e3a3e9b8c2a5a4c7e";
@@ -124,14 +127,15 @@ const updates = [
 ];
 
 const modules = [
-  { label: "Spelling", icon: <EmojiObjectsIcon color="primary" />, path: "/modules/spelling" },
-  { label: "Reading", icon: <BookIcon color="success" />, path: "/modules/reading" },
-  { label: "Grammar", icon: <EditNoteIcon color="secondary" />, path: "/modules/grammar" },
-  { label: "Writing", icon: <SchoolIcon color="primary" />, path: "/modules/writing" },
-  { label: "Listening", icon: <BoltIcon color="warning" />, path: "/modules/listening" },
-  { label: "Pronunciation", icon: <RecordVoiceOverIcon color="info" />, path: "/modules/pronunciation" },
-  { label: "Vocabulary", icon: <QuizIcon color="error" />, path: "/modules/vocabulary" },
-  { label: "S.H.A.R.P", icon: <WorkspacePremiumIcon color="secondary" />, path: "/modules/sharp" },
+  { label: "Spelling", icon: <EmojiObjectsIcon color="primary" />, path: "/spelling" },
+  { label: "Reading", icon: <BookIcon color="success" />, path: "/reading" },
+  { label: "Grammar", icon: <EditNoteIcon color="secondary" />, path: "/grammar" },
+  { label: "Writing", icon: <SchoolIcon color="primary" />, path: "/writing" },
+  { label: "Listening", icon: <BoltIcon color="warning" />, path: "/listening" },
+  { label: "Pronunciation", icon: <RecordVoiceOverIcon color="info" />, path: "/pronunciation" },
+  { label: "Vocabulary", icon: <QuizIcon color="error" />, path: "/vocabulary" },
+  { label: "S.H.A.R.P", icon: <WorkspacePremiumIcon color="secondary" />, path: "/sharp" },
+  { label: "8-In-1", icon: <WorkspacePremiumIcon color="secondary" />, path: "/all-modules" },
 ];
 
 const improveSkills = [
@@ -141,6 +145,42 @@ const improveSkills = [
   { label: "Battles", icon: <SportsKabaddiIcon />, color: "secondary", path: "/battles" },
   { label: "Challenges", icon: <EmojiEventsIcon />, color: "error", path: "/challenges" },
 ];
+
+// --- HeroSection Component ---
+function HeroSection() {
+  return (
+    <section className="bg-gradient-to-tr from-blue-50 to-pink-100 py-12 md:py-16">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 gap-8">
+        <div className="flex-1 flex flex-col items-start md:items-start">
+          <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
+            Welcome to <span className="bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">Master Of Alphabet!</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-700 mb-6 md:max-w-lg">
+            Unlock your English skills with <span className="font-bold text-blue-700">Spelling</span>, <span className="font-bold text-pink-600">Grammar</span>, <span className="font-bold text-orange-500">Pronunciation</span>, and more. Every day is a new opportunity to <span className="font-bold text-purple-600">shine</span>!
+          </p>
+          <div className="flex gap-4">
+            <a href="/learn" className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold shadow hover:bg-blue-700 transition">
+              Start Learning
+            </a>
+            <a href="/word-of-the-day" className="flex items-center gap-2 bg-pink-500 text-white px-6 py-3 rounded-xl font-semibold shadow hover:bg-pink-600 transition">
+              <Trophy className="w-5 h-5" /> Word of the Day
+            </a>
+          </div>
+        </div>
+        <div className="flex-1 flex justify-center md:justify-end relative">
+          <img
+            src="https://cdn.pixabay.com/photo/2017/01/31/19/17/avatar-2026510_1280.png"
+            alt="Student Celebrating"
+            className="w-64 md:w-80 rounded-3xl shadow-xl border-4 border-white bg-gradient-to-tr from-blue-100 to-pink-200"
+          />
+          <div className="absolute md:static mt-[-3.5rem] ml-[-2rem] flex items-center">
+            <Trophy className="w-12 h-12 text-yellow-400 drop-shadow-lg" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function HomePage() {
   const [tipIndex, setTipIndex] = useState(0);
@@ -153,42 +193,9 @@ export default function HomePage() {
 
   return (
     <Box
-      sx={{
-        minHeight: "100vh",
-        bgcolor: "#f6f8fc",
-        py: { xs: 2, md: 5 },
-        px: { xs: 1, md: 3 },
-      }}
+      
     >
-      <Box sx={{ maxWidth: 1200, mx: "auto" }}>
-        {/* Hero Section */}
-        <Box
-          sx={{
-            mb: 4,
-            p: { xs: 3, md: 6 },
-            pt: { xs: 2, md: 3 },
-            borderRadius: 4,
-            textAlign: "center",
-            bgcolor: "linear-gradient(135deg, #1976d2 0%, #2196f3 100%)",
-            color: "#fff",
-            boxShadow: 4,
-          }}
-        >
-          <Typography
-            variant="h3"
-            fontWeight={800}
-            gutterBottom
-            sx={{
-              textShadow: "1px 1px 3px rgba(0,0,0,0.3)",
-              mt: 0,
-            }}
-          >
-            Welcome to Master Of Alphabet!
-          </Typography>
-          <Typography variant="h6" sx={{ maxWidth: 700, mx: "auto", opacity: 0.9 }}>
-            Unlock your English skills with Spelling, Grammar, Pronunciation, and more. Every day is a new opportunity to shine!
-          </Typography>
-        </Box>
+      <HeroSection />
 
         {/* Specials, Offers, Promotions or Coupons Section */}
         <Box
@@ -329,8 +336,23 @@ export default function HomePage() {
         fontSize: 14,
         lineHeight: 1.4
       }}>
-        <b>{skillTips[tipIndex].module}:</b> {skillTips[tipIndex].tip}
+        Today's Module : <b>{skillTips[tipIndex].module}:</b>
       </Typography>
+      <Button
+        size="small"
+        sx={{
+          mt: 'auto',
+          alignSelf: 'center',
+          px: 0,
+          textTransform: 'none',
+          fontSize: 14,
+          color: '#7b1fa2',
+          fontWeight: 600
+        }}
+        onClick={() => navigate('/skill-spotlight')}
+      >
+        Explore Tips
+      </Button>
     </Paper>
   </Grid>
 
@@ -366,7 +388,7 @@ export default function HomePage() {
         size="small"
         sx={{
           mt: 'auto',
-          alignSelf: 'flex-start',
+          alignSelf: 'center',
           px: 0,
           textTransform: 'none',
           fontSize: 14,
@@ -412,7 +434,7 @@ export default function HomePage() {
         size="small"
         sx={{
           mt: 'auto',
-          alignSelf: 'flex-start',
+          alignSelf: 'center',
           px: 0,
           textTransform: 'none',
           fontSize: 14,
@@ -458,7 +480,7 @@ export default function HomePage() {
         size="small"
         sx={{
           mt: 'auto',
-          alignSelf: 'flex-start',
+          alignSelf: 'center',
           px: 0,
           textTransform: 'none',
           fontSize: 14,
@@ -502,7 +524,7 @@ export default function HomePage() {
             variant="contained"
             color="primary"
             sx={{ borderRadius: 3, fontWeight: 700, px: 5 }}
-            onClick={() => navigate("/skill-assessment/hub")}
+            onClick={() => navigate("/skill-assessment")}
           >
             Start Assessment
           </Button>
@@ -606,9 +628,9 @@ export default function HomePage() {
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
         <ChecklistIcon color="warning" sx={{ flexShrink: 0 }} />
-        <Typography 
-          variant="h6" 
-          fontWeight={700} 
+        <Typography
+          variant="h6"
+          fontWeight={700}
           ml={1}
           sx={{
             whiteSpace: 'nowrap',
@@ -619,8 +641,8 @@ export default function HomePage() {
           Things to Do
         </Typography>
       </Box>
-      <Box sx={{ 
-        '& > *': { 
+      <Box sx={{
+        '& > *': {
           fontSize: 14,
           lineHeight: 1.5,
           wordBreak: 'break-word'
@@ -628,10 +650,10 @@ export default function HomePage() {
       }}>
         <Stack spacing={1.5}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box sx={{ 
-              width: 24, 
-              height: 24, 
-              border: '1px solid', 
+            <Box sx={{
+              width: 24,
+              height: 24,
+              border: '1px solid',
               borderColor: 'grey.400',
               borderRadius: '4px',
               mr: 1.5,
@@ -640,10 +662,10 @@ export default function HomePage() {
             <Typography fontWeight={600}>Take a Spelling Test</Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box sx={{ 
-              width: 24, 
-              height: 24, 
-              border: '1px solid', 
+            <Box sx={{
+              width: 24,
+              height: 24,
+              border: '1px solid',
               borderColor: 'grey.400',
               borderRadius: '4px',
               mr: 1.5,
@@ -675,9 +697,9 @@ export default function HomePage() {
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
         <CampaignIcon color="primary" sx={{ flexShrink: 0 }} />
-        <Typography 
-          variant="h6" 
-          fontWeight={700} 
+        <Typography
+          variant="h6"
+          fontWeight={700}
           ml={1}
           sx={{
             whiteSpace: 'nowrap',
@@ -689,8 +711,8 @@ export default function HomePage() {
         </Typography>
       </Box>
       <Stack spacing={2}>
-        <Box sx={{ 
-          borderLeft: '3px solid', 
+        <Box sx={{
+          borderLeft: '3px solid',
           borderColor: 'warning.main',
           pl: 1.5,
           py: 0.5
@@ -725,9 +747,9 @@ export default function HomePage() {
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
         <BoltIcon color="success" sx={{ flexShrink: 0 }} />
-        <Typography 
-          variant="h6" 
-          fontWeight={700} 
+        <Typography
+          variant="h6"
+          fontWeight={700}
           ml={1}
           sx={{
             whiteSpace: 'nowrap',
@@ -740,12 +762,12 @@ export default function HomePage() {
       </Box>
       <Stack spacing={2}>
         <Box sx={{ display: 'flex' }}>
-          <FiberManualRecordIcon sx={{ 
-            fontSize: 8, 
-            color: 'success.main', 
-            mt: 0.8, 
+          <FiberManualRecordIcon sx={{
+            fontSize: 8,
+            color: 'success.main',
+            mt: 0.8,
             mr: 1.5,
-            flexShrink: 0 
+            flexShrink: 0
           }} />
           <Box>
             <Typography fontSize={14} sx={{ wordBreak: 'break-word' }}>
@@ -761,7 +783,7 @@ export default function HomePage() {
     </Paper>
   </Grid>
 </Grid>
+ <Footer />
       </Box>
-    </Box>
   );
 }
