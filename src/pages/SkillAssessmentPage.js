@@ -278,7 +278,7 @@ const modules = [
     desc: "Test your spelling accuracy and word recognition.",
     icon: <SpellcheckIcon sx={{ fontSize: 38, color: purple[400] }} />,
     color: purple[200],
-    navigationPath: "/skills-assessment/spelling",
+    navigationPath: "/skill-assessment/spelling",
   },
   {
     key: "reading",
@@ -286,7 +286,7 @@ const modules = [
     desc: "Analyze your reading comprehension and fluency.",
     icon: <BookIcon sx={{ fontSize: 38, color: blue[400] }} />,
     color: blue[200],
-    navigationPath: "/skills-assessment/Reading",
+    navigationPath: "/skill-assessment/Reading",
   },
   {
     key: "pronunciation",
@@ -294,7 +294,7 @@ const modules = [
     desc: "Evaluate your pronunciation and clarity.",
     icon: <VolumeUpIcon sx={{ fontSize: 38, color: orange[400] }} />,
     color: orange[200],
-    navigationPath: "/skills-assessment/pronunciation",
+    navigationPath: "/skill-assessment/pronunciation",
   },
   {
     key: "grammar",
@@ -302,7 +302,7 @@ const modules = [
     desc: "Challenge your grammar and usage knowledge.",
     icon: <MenuBookIcon sx={{ fontSize: 38, color: green[400] }} />,
     color: green[200],
-    navigationPath: "/skills-assessment/grammar",
+    navigationPath: "/skill-assessment/grammar",
   },
   {
     key: "writing",
@@ -310,7 +310,7 @@ const modules = [
     desc: "Assess your writing skills and expression.",
     icon: <EditNoteIcon sx={{ fontSize: 38, color: pink[400] }} />,
     color: pink[200],
-    navigationPath: "/skills-assessment/writing",
+    navigationPath: "/skill-assessment/writing",
   },
   {
     key: "listening",
@@ -318,7 +318,7 @@ const modules = [
     desc: "Test your listening comprehension.",
     icon: <HearingIcon sx={{ fontSize: 38, color: lime[600] }} />,
     color: lime[200],
-    navigationPath: "/skills-assessment/listening",
+    navigationPath: "/skill-assessment/listening",
   },
   {
     key: "vocabulary",
@@ -326,7 +326,7 @@ const modules = [
     desc: "Measure your vocabulary and word usage.",
     icon: <AutoStoriesIcon sx={{ fontSize: 38, color: deepPurple[400] }} />,
     color: deepPurple[200],
-    navigationPath: "/skills-assessment/vocabulary",
+    navigationPath: "/skill-assessment/vocabulary",
   },
   {
     key: "sharp",
@@ -334,7 +334,7 @@ const modules = [
     desc: "Synonyms, Homonyms, Antonyms, Rhyming, Plurals.",
     icon: <GroupWorkIcon sx={{ fontSize: 38, color: cyan[400] }} />,
     color: cyan[200],
-    navigationPath: "/skills-assessment/sharp",
+    navigationPath: "/skill-assessment/sharp",
   },
   {
     key: "8-in-1",
@@ -342,7 +342,7 @@ const modules = [
     desc: "All 8 modules in a single assessment.",
     icon: <EmojiEventsIcon sx={{ fontSize: 38, color: orange[400] }} />,
     color: orange[300],
-    navigationPath: "/skills-assessment/8-in-1",
+    navigationPath: "/skill-assessment/8-in-1",
   },
 ];
 
@@ -363,6 +363,7 @@ export default function SkillsAssessmentPage() {
   const selectedClassValue = selectedClass != null ? classGroups[selectedClass].value : null;
 
   // New: On button click, navigate to spelling assessment page and pass state
+  /**
   const handleStart = () => {
     const modKey = modules[selectedModule].key;
     if (modKey === "spelling") {
@@ -375,6 +376,17 @@ export default function SkillsAssessmentPage() {
     } else {
       setStep(2);
     }
+  };
+
+  */
+
+  const handleStart = () => {
+      navigate(modules[selectedModule].navigationPath, {
+        state: {
+          student: student,
+          classGroup: selectedClassValue,
+        },
+      });
   };
 
   return (

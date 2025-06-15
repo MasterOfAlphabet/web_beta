@@ -11,11 +11,22 @@ import {
   LinearProgress,
   Fade,
   Tooltip,
+  TextField,
+  MenuItem,
+  InputAdornment,
+  Card,
+  CardContent,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import PersonIcon from "@mui/icons-material/Person";
+import SchoolIcon from "@mui/icons-material/School";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import MapIcon from "@mui/icons-material/Map";
+import PhoneIcon from "@mui/icons-material/Phone";
+import LockIcon from "@mui/icons-material/Lock";
 import { firestore, auth } from "../services/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -48,16 +59,55 @@ function getStrengthLabel(score) {
 }
 
 const classOptions = [
-  { value: "I", label: "I" },
-  { value: "II", label: "II" },
-  { value: "III", label: "III" },
-  { value: "IV", label: "IV" },
-  { value: "V", label: "V" },
-  { value: "VI", label: "VI" },
-  { value: "VII", label: "VII" },
-  { value: "VIII", label: "VIII" },
-  { value: "IX", label: "IX" },
-  { value: "X", label: "X" },
+  { value: "I", label: "Class I" },
+  { value: "II", label: "Class II" },
+  { value: "III", label: "Class III" },
+  { value: "IV", label: "Class IV" },
+  { value: "V", label: "Class V" },
+  { value: "VI", label: "Class VI" },
+  { value: "VII", label: "Class VII" },
+  { value: "VIII", label: "Class VIII" },
+  { value: "IX", label: "Class IX" },
+  { value: "X", label: "Class X" },
+];
+
+const indianStates = [
+  { value: "andhra-pradesh", label: "Andhra Pradesh" },
+  { value: "arunachal-pradesh", label: "Arunachal Pradesh" },
+  { value: "assam", label: "Assam" },
+  { value: "bihar", label: "Bihar" },
+  { value: "chhattisgarh", label: "Chhattisgarh" },
+  { value: "goa", label: "Goa" },
+  { value: "gujarat", label: "Gujarat" },
+  { value: "haryana", label: "Haryana" },
+  { value: "himachal-pradesh", label: "Himachal Pradesh" },
+  { value: "jharkhand", label: "Jharkhand" },
+  { value: "karnataka", label: "Karnataka" },
+  { value: "kerala", label: "Kerala" },
+  { value: "madhya-pradesh", label: "Madhya Pradesh" },
+  { value: "maharashtra", label: "Maharashtra" },
+  { value: "manipur", label: "Manipur" },
+  { value: "meghalaya", label: "Meghalaya" },
+  { value: "mizoram", label: "Mizoram" },
+  { value: "nagaland", label: "Nagaland" },
+  { value: "odisha", label: "Odisha" },
+  { value: "punjab", label: "Punjab" },
+  { value: "rajasthan", label: "Rajasthan" },
+  { value: "sikkim", label: "Sikkim" },
+  { value: "tamil-nadu", label: "Tamil Nadu" },
+  { value: "telangana", label: "Telangana" },
+  { value: "tripura", label: "Tripura" },
+  { value: "uttar-pradesh", label: "Uttar Pradesh" },
+  { value: "uttarakhand", label: "Uttarakhand" },
+  { value: "west-bengal", label: "West Bengal" },
+  { value: "andaman-nicobar", label: "Andaman and Nicobar Islands" },
+  { value: "chandigarh", label: "Chandigarh" },
+  { value: "dadra-nagar-haveli", label: "Dadra and Nagar Haveli and Daman and Diu" },
+  { value: "delhi", label: "Delhi" },
+  { value: "jammu-kashmir", label: "Jammu and Kashmir" },
+  { value: "ladakh", label: "Ladakh" },
+  { value: "lakshadweep", label: "Lakshadweep" },
+  { value: "puducherry", label: "Puducherry" },
 ];
 
 export default function SignupPage() {
@@ -65,6 +115,7 @@ export default function SignupPage() {
     name: "",
     classLevel: "",
     city: "",
+    state: "",
     school: "",
     parentMobile: "",
     password: "",
@@ -82,6 +133,7 @@ export default function SignupPage() {
     if (!form.name) err.name = "Name is required";
     if (!form.classLevel) err.classLevel = "Class is required";
     if (!form.city) err.city = "City is required";
+    if (!form.state) err.state = "State is required";
     if (!form.school) err.school = "School is required";
     if (!form.parentMobile || !/^\d{10}$/.test(form.parentMobile))
       err.parentMobile = "Valid 10-digit mobile # required";
@@ -124,6 +176,7 @@ export default function SignupPage() {
         classLevel: form.classLevel,
         parentMobile: form.parentMobile,
         city: form.city,
+        state: form.state,
         school: form.school,
         email: syntheticEmail,
         createdAt: serverTimestamp(),
@@ -149,337 +202,494 @@ export default function SignupPage() {
     <Box
       sx={{
         minHeight: "100vh",
-        bgcolor: "#f6f8fc",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        py: 3,
       }}
     >
       <Fade in>
         <Paper
-          elevation={6}
+          elevation={24}
           sx={{
-            borderRadius: 5,
-            p: { xs: 2, sm: 5 },
-            maxWidth: 580,
+            borderRadius: 4,
+            p: { xs: 3, sm: 5 },
+            maxWidth: 680,
             width: "100%",
-            boxShadow: "0 10px 36px 0 rgba(80,130,250,.13)",
+            background: "linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%)",
+            boxShadow: "0 20px 60px rgba(102, 126, 234, 0.3)",
+            position: "relative",
+            overflow: "hidden",
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "4px",
+              background: "linear-gradient(90deg, #667eea, #764ba2, #667eea)",
+            },
           }}
         >
-          <Typography variant="h4" fontWeight={900} color="primary" align="center" mb={1}>
-            Student Signup
-          </Typography>
-          <Typography fontSize={18} color="text.secondary" textAlign="center" mb={3}>
-            Create your new account
-          </Typography>
-          <Divider sx={{ mb: 4 }} />
+          <Box sx={{ textAlign: "center", mb: 4 }}>
+            <Typography 
+              variant="h3" 
+              sx={{
+                fontWeight: 900,
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                mb: 1,
+              }}
+            >
+              ✨ Student Signup
+            </Typography>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                color: "text.secondary",
+                fontWeight: 500,
+              }}
+            >
+              Join our learning community today
+            </Typography>
+          </Box>
 
           {submitted ? (
-            <Stack alignItems="center" spacing={3} py={3}>
-              <CheckCircleIcon color="success" sx={{ fontSize: 60 }} />
-              <Typography variant="h5" fontWeight={700} color="primary">
-                Signup Successful!
-              </Typography>
-              <Typography>
-                Welcome, <b>{form.name}</b>. You can now log in using parent mobile number and your password.
-              </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                href="/login"
-                sx={{ borderRadius: 2, px: 5, mt: 2 }}
-              >
-                Go to Login
-              </Button>
-            </Stack>
+            <Card
+              sx={{
+                background: "linear-gradient(135deg, #e8f5e8 0%, #f1f8e9 100%)",
+                border: "2px solid #4caf50",
+                borderRadius: 3,
+              }}
+            >
+              <CardContent>
+                <Stack alignItems="center" spacing={3} py={2}>
+                  <CheckCircleIcon color="success" sx={{ fontSize: 80 }} />
+                  <Typography variant="h4" fontWeight={700} color="success.main">
+                    🎉 Welcome Aboard!
+                  </Typography>
+                  <Typography variant="h6" textAlign="center">
+                    Congratulations, <strong>{form.name}</strong>! Your account has been created successfully.
+                  </Typography>
+                  <Typography color="text.secondary" textAlign="center">
+                    You can now log in using your parent's mobile number and password to start your learning journey.
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    href="/login"
+                    sx={{ 
+                      borderRadius: 3, 
+                      px: 5, 
+                      py: 1.5,
+                      background: "linear-gradient(135deg, #4caf50 0%, #45a049 100%)",
+                      fontWeight: "bold",
+                      fontSize: "1.1rem",
+                    }}
+                  >
+                    Start Learning →
+                  </Button>
+                </Stack>
+              </CardContent>
+            </Card>
           ) : (
             <form autoComplete="off" onSubmit={handleSubmit}>
               {/* Section 1: Student Info */}
-              <Typography variant="h6" fontWeight={700} color="primary" mb={1}>
-                Student Info
-              </Typography>
-              <Grid container spacing={2} mb={2}>
-                <Grid item xs={12} sm={6}>
-                  <input
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder="Full Name"
-                    required
-                    style={{
-                      width: "100%",
-                      padding: "12px",
-                      fontSize: "16px",
-                      borderRadius: "8px",
-                      border: error.name && touched.name ? "2px solid #f44336" : "1px solid #d3d3d3",
-                      marginBottom: "6px",
-                      background: "#f8f9fa",
-                    }}
-                  />
-                  {touched.name && error.name && (
-                    <Typography fontSize={12} color="error">
-                      {error.name}
-                    </Typography>
-                  )}
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <select
-                    name="classLevel"
-                    value={form.classLevel}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    required
-                    style={{
-                      width: "100%",
-                      padding: "12px",
-                      fontSize: "16px",
-                      borderRadius: "8px",
-                      border: error.classLevel && touched.classLevel ? "2px solid #f44336" : "1px solid #d3d3d3",
-                      color: form.classLevel ? "#222" : "#888",
-                      marginBottom: "6px",
-                      background: "#f8f9fa",
+              <Card
+                sx={{
+                  mb: 3,
+                  background: "linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%)",
+                  border: "1px solid rgba(102, 126, 234, 0.2)",
+                  borderRadius: 3,
+                }}
+              >
+                <CardContent>
+                  <Typography 
+                    variant="h5" 
+                    sx={{
+                      fontWeight: 700,
+                      color: "#5e35b1",
+                      mb: 3,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
                     }}
                   >
-                    <option value="">Select Class</option>
-                    {classOptions.map((op) => (
-                      <option key={op.value} value={op.value}>
-                        {op.label}
-                      </option>
-                    ))}
-                  </select>
-                  {touched.classLevel && error.classLevel && (
-                    <Typography fontSize={12} color="error">
-                      {error.classLevel}
-                    </Typography>
-                  )}
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <input
-                    name="city"
-                    value={form.city}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder="City"
-                    required
-                    style={{
-                      width: "100%",
-                      padding: "12px",
-                      fontSize: "16px",
-                      borderRadius: "8px",
-                      border: error.city && touched.city
-                        ? "2px solid #f44336"
-                        : "1px solid #d3d3d3",
-                      marginBottom: "6px",
-                      background: "#f8f9fa",
-                    }}
-                  />
-                  {touched.city && error.city && (
-                    <Typography fontSize={12} color="error">
-                      {error.city}
-                    </Typography>
-                  )}
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <input
-                    name="school"
-                    value={form.school}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder="School"
-                    required
-                    style={{
-                      width: "100%",
-                      padding: "12px",
-                      fontSize: "16px",
-                      borderRadius: "8px",
-                      border: error.school && touched.school
-                        ? "2px solid #f44336"
-                        : "1px solid #d3d3d3",
-                      marginBottom: "6px",
-                      background: "#f8f9fa",
-                    }}
-                  />
-                  {touched.school && error.school && (
-                    <Typography fontSize={12} color="error">
-                      {error.school}
-                    </Typography>
-                  )}
-                </Grid>
-              </Grid>
-              <Divider sx={{ my: 2 }} />
+                    👤 Student Information
+                  </Typography>
+                  
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        name="name"
+                        label="Full Name"
+                        value={form.name}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!(touched.name && error.name)}
+                        helperText={touched.name && error.name}
+                        required
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <PersonIcon color="primary" />
+                            </InputAdornment>
+                          ),
+                        }}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: 2,
+                            background: "rgba(255, 255, 255, 0.8)",
+                          },
+                        }}
+                      />
+                    </Grid>
+                    
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        select
+                        name="classLevel"
+                        label="Class"
+                        value={form.classLevel}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!(touched.classLevel && error.classLevel)}
+                        helperText={touched.classLevel && error.classLevel}
+                        required
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <SchoolIcon color="primary" />
+                            </InputAdornment>
+                          ),
+                        }}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: 2,
+                            background: "rgba(255, 255, 255, 0.8)",
+                          },
+                        }}
+                      >
+                        {classOptions.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        name="city"
+                        label="City"
+                        value={form.city}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!(touched.city && error.city)}
+                        helperText={touched.city && error.city}
+                        required
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <LocationOnIcon color="primary" />
+                            </InputAdornment>
+                          ),
+                        }}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: 2,
+                            background: "rgba(255, 255, 255, 0.8)",
+                          },
+                        }}
+                      />
+                    </Grid>
+                    
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        select
+                        name="state"
+                        label="State"
+                        value={form.state}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!(touched.state && error.state)}
+                        helperText={touched.state && error.state}
+                        required
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <MapIcon color="primary" />
+                            </InputAdornment>
+                          ),
+                        }}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: 2,
+                            background: "rgba(255, 255, 255, 0.8)",
+                          },
+                        }}
+                      >
+                        {indianStates.map((state) => (
+                          <MenuItem key={state.value} value={state.value}>
+                            {state.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        name="school"
+                        label="School Name"
+                        value={form.school}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!(touched.school && error.school)}
+                        helperText={touched.school && error.school}
+                        required
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <SchoolIcon color="primary" />
+                            </InputAdornment>
+                          ),
+                        }}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: 2,
+                            background: "rgba(255, 255, 255, 0.8)",
+                          },
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
 
               {/* Section 2: Account Info */}
-              <Typography variant="h6" fontWeight={700} color="primary" mb={1}>
-                Account Info
-              </Typography>
-              <Grid container spacing={2} mb={1}>
-                <Grid item xs={12}>
-                  <input
-                    name="parentMobile"
-                    value={form.parentMobile}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder="Parent's Mobile #"
-                    required
-                    maxLength={10}
-                    style={{
-                      width: "100%",
-                      padding: "12px",
-                      fontSize: "16px",
-                      borderRadius: "8px",
-                      border: error.parentMobile && touched.parentMobile
-                        ? "2px solid #f44336"
-                        : "1px solid #d3d3d3",
-                      marginBottom: "6px",
-                      background: "#f8f9fa",
+              <Card
+                sx={{
+                  mb: 3,
+                  background: "linear-gradient(135deg, #fff3e0 0%, #fce4ec 100%)",
+                  border: "1px solid rgba(255, 152, 0, 0.2)",
+                  borderRadius: 3,
+                }}
+              >
+                <CardContent>
+                  <Typography 
+                    variant="h5" 
+                    sx={{
+                      fontWeight: 700,
+                      color: "#e65100",
+                      mb: 3,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
                     }}
-                  />
-                  {touched.parentMobile && error.parentMobile && (
-                    <Typography fontSize={12} color="error">
-                      {error.parentMobile}
-                    </Typography>
-                  )}
-                </Grid>
-                <Grid item xs={12}>
-                  <Box position="relative">
-                    <input
-                      name="password"
-                      type={showPwd ? "text" : "password"}
-                      value={form.password}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      placeholder="Password"
-                      required
-                      style={{
-                        width: "100%",
-                        padding: "12px 42px 12px 12px",
-                        fontSize: "16px",
-                        borderRadius: "8px",
-                        border: error.password && touched.password
-                          ? "2px solid #f44336"
-                          : "1px solid #d3d3d3",
-                        marginBottom: "6px",
-                        background: "#f8f9fa",
-                      }}
-                    />
-                    <IconButton
-                      aria-label={showPwd ? "Hide password" : "Show password"}
-                      onClick={() => setShowPwd((s) => !s)}
-                      edge="end"
-                      size="small"
-                      sx={{
-                        position: "absolute",
-                        right: 6,
-                        top: 8,
-                        color: "#888",
-                      }}
-                    >
-                      {showPwd ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </Box>
-                  {touched.password && error.password && (
-                    <Typography fontSize={12} color="error">
-                      {error.password}
-                    </Typography>
-                  )}
-                  {form.password && (
-                    <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 0.5 }}>
-                      <Box sx={{ flex: 1 }}>
-                        <LinearProgress
-                          variant="determinate"
-                          value={pwdScore}
-                          color={pwdStrength.color}
-                          sx={{ height: 7, borderRadius: 3 }}
-                        />
-                      </Box>
-                      <Typography fontSize={12} color={`${pwdStrength.color}.main`} minWidth={74}>
-                        {pwdStrength.label}
-                      </Typography>
-                    </Stack>
-                  )}
-                </Grid>
-                <Grid item xs={12}>
-                  <Box position="relative">
-                    <input
-                      name="confirmPassword"
-                      type={showCPwd ? "text" : "password"}
-                      value={form.confirmPassword}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      placeholder="Confirm Password"
-                      required
-                      style={{
-                        width: "100%",
-                        padding: "12px 42px 12px 12px",
-                        fontSize: "16px",
-                        borderRadius: "8px",
-                        border: error.confirmPassword && touched.confirmPassword
-                          ? "2px solid #f44336"
-                          : "1px solid #d3d3d3",
-                        marginBottom: "6px",
-                        background: "#f8f9fa",
-                      }}
-                    />
-                    <IconButton
-                      aria-label={showCPwd ? "Hide" : "Show"}
-                      onClick={() => setShowCPwd((s) => !s)}
-                      edge="end"
-                      size="small"
-                      sx={{
-                        position: "absolute",
-                        right: 6,
-                        top: 8,
-                        color: "#888",
-                      }}
-                    >
-                      {showCPwd ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </Box>
-                  {touched.confirmPassword && error.confirmPassword && (
-                    <Typography fontSize={12} color="error">
-                      {error.confirmPassword}
-                    </Typography>
-                  )}
-                </Grid>
-              </Grid>
+                  >
+                    🔐 Account Security
+                  </Typography>
+                  
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        name="parentMobile"
+                        label="Parent's Mobile Number"
+                        value={form.parentMobile}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!(touched.parentMobile && error.parentMobile)}
+                        helperText={touched.parentMobile && error.parentMobile}
+                        required
+                        inputProps={{ maxLength: 10 }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <PhoneIcon color="primary" />
+                            </InputAdornment>
+                          ),
+                        }}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: 2,
+                            background: "rgba(255, 255, 255, 0.8)",
+                          },
+                        }}
+                      />
+                    </Grid>
+                    
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        name="password"
+                        type={showPwd ? "text" : "password"}
+                        label="Password"
+                        value={form.password}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!(touched.password && error.password)}
+                        helperText={touched.password && error.password}
+                        required
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <LockIcon color="primary" />
+                            </InputAdornment>
+                          ),
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => setShowPwd(!showPwd)}
+                                edge="end"
+                              >
+                                {showPwd ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: 2,
+                            background: "rgba(255, 255, 255, 0.8)",
+                          },
+                        }}
+                      />
+                      {form.password && (
+                        <Box sx={{ mt: 1 }}>
+                          <Stack direction="row" alignItems="center" spacing={1}>
+                            <Box sx={{ flex: 1 }}>
+                              <LinearProgress
+                                variant="determinate"
+                                value={pwdScore}
+                                color={pwdStrength.color}
+                                sx={{ 
+                                  height: 8, 
+                                  borderRadius: 4,
+                                  backgroundColor: "rgba(0,0,0,0.1)",
+                                }}
+                              />
+                            </Box>
+                            <Typography fontSize={12} color={`${pwdStrength.color}.main`} fontWeight="bold" minWidth={60}>
+                              {pwdStrength.label}
+                            </Typography>
+                          </Stack>
+                        </Box>
+                      )}
+                    </Grid>
+                    
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        name="confirmPassword"
+                        type={showCPwd ? "text" : "password"}
+                        label="Confirm Password"
+                        value={form.confirmPassword}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!(touched.confirmPassword && error.confirmPassword)}
+                        helperText={touched.confirmPassword && error.confirmPassword}
+                        required
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <LockIcon color="primary" />
+                            </InputAdornment>
+                          ),
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => setShowCPwd(!showCPwd)}
+                                edge="end"
+                              >
+                                {showCPwd ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: 2,
+                            background: "rgba(255, 255, 255, 0.8)",
+                          },
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
+
               {error.submit && (
-                <Typography fontSize={13} color="error" mb={1}>
-                  {error.submit}
-                </Typography>
+                <Box
+                  sx={{
+                    p: 2,
+                    mb: 3,
+                    borderRadius: 2,
+                    background: "linear-gradient(135deg, #ffebee 0%, #fce4ec 100%)",
+                    border: "1px solid #f44336",
+                  }}
+                >
+                  <Typography color="error.main" fontWeight="bold">
+                    ❌ {error.submit}
+                  </Typography>
+                </Box>
               )}
-              <Divider sx={{ my: 2 }} />
 
               <Stack
                 direction="row"
-                spacing={2}
+                spacing={3}
                 justifyContent="center"
-                mt={2}
-                mb={1}
+                mt={4}
               >
                 <Button
                   type="submit"
                   variant="contained"
                   size="large"
-                  color="primary"
                   disabled={submitting}
-                  sx={{ borderRadius: 2, px: 5, fontWeight: "bold" }}
+                  sx={{ 
+                    borderRadius: 3, 
+                    px: 6, 
+                    py: 1.5,
+                    fontWeight: "bold",
+                    fontSize: "1.1rem",
+                    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    boxShadow: "0 8px 25px rgba(102, 126, 234, 0.4)",
+                    "&:hover": {
+                      background: "linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)",
+                      boxShadow: "0 12px 35px rgba(102, 126, 234, 0.5)",
+                      transform: "translateY(-2px)",
+                    },
+                    transition: "all 0.3s ease",
+                  }}
                 >
-                  {submitting ? "Signing up..." : "Sign Up"}
+                  {submitting ? "Creating Account..." : "🚀 Create Account"}
                 </Button>
-                <Tooltip title="Cancel Signup and go to Home">
+                
+                <Tooltip title="Cancel and return to homepage">
                   <Button
                     type="button"
-                    variant="text"
+                    variant="outlined"
                     size="large"
-                    color="inherit"
                     startIcon={<CancelIcon />}
                     onClick={handleCancel}
                     sx={{
-                      borderRadius: 2,
-                      px: 3,
+                      borderRadius: 3,
+                      px: 4,
+                      py: 1.5,
                       fontWeight: "bold",
-                      color: "#888",
+                      borderColor: "#ccc",
+                      color: "#666",
+                      "&:hover": {
+                        borderColor: "#999",
+                        backgroundColor: "rgba(0,0,0,0.04)",
+                      },
                     }}
                   >
                     Cancel

@@ -13,7 +13,7 @@ import {
   Link as MUILink,
 } from "@mui/material";
 
-import { Trophy} from "lucide-react";
+import { Trophy, Star, Users, Award, PenTool, BookOpen, Mic, Eye, Lightbulb, MessageCircle, Volume2, FileText } from 'lucide-react';
 
 import {
   CheckCircle as CheckCircleIcon,
@@ -43,6 +43,7 @@ import LoyaltyIcon from "@mui/icons-material/Loyalty";
 import PaidIcon from "@mui/icons-material/Paid";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
+import SubscriptionBanner from "../components/SubscriptionBanner";
 
 const offerImage =
   "https://img.freepik.com/free-vector/special-offer-discount-sale-banner-design_1017-31299.jpg?w=826&t=st=1718150000~exp=1718150600~hmac=8f6c8c1a2e9b6f6c6c1c0e6fbf2f1d379c8a1b1e1e8b6c8e3a3e9b8c2a5a4c7e";
@@ -147,34 +148,85 @@ const improveSkills = [
 ];
 
 // --- HeroSection Component ---
+
 function HeroSection() {
   return (
     <section className="bg-gradient-to-tr from-blue-50 to-pink-100 py-12 md:py-16">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 gap-8">
         <div className="flex-1 flex flex-col items-start md:items-start">
-          <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 mb-2 leading-tight whitespace-nowrap">
             Welcome to <span className="bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">Master Of Alphabet!</span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-700 mb-6 md:max-w-lg">
-            Unlock your English skills with <span className="font-bold text-blue-700">Spelling</span>, <span className="font-bold text-pink-600">Grammar</span>, <span className="font-bold text-orange-500">Pronunciation</span>, and more. Every day is a new opportunity to <span className="font-bold text-purple-600">shine</span>!
-          </p>
-          <div className="flex gap-4">
-            <a href="/learn" className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold shadow hover:bg-blue-700 transition">
-              Start Learning
-            </a>
-            <a href="/word-of-the-day" className="flex items-center gap-2 bg-pink-500 text-white px-6 py-3 rounded-xl font-semibold shadow hover:bg-pink-600 transition">
-              <Trophy className="w-5 h-5" /> Word of the Day
-            </a>
+          <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-orange-600 mb-6 whitespace-nowrap">
+            National Level English Language Skills 8-in-1 Mega Competition
+          </h2>
+          <div className="mb-8 md:max-w-2xl">
+            <p className="text-base md:text-lg text-gray-700 mb-4">
+              Master all 8 English language skills in our comprehensive competition:
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="flex items-center gap-2 bg-white/70 rounded-lg px-3 py-2 shadow-sm">
+                <PenTool className="w-4 h-4 text-blue-600" />
+                <span className="text-sm font-semibold text-gray-800">Spelling</span>
+              </div>
+                            <div className="flex items-center gap-2 bg-white/70 rounded-lg px-3 py-2 shadow-sm">
+                <Eye className="w-4 h-4 text-orange-600" />
+                <span className="text-sm font-semibold text-gray-800">Reading</span>
+              </div>
+                            <div className="flex items-center gap-2 bg-white/70 rounded-lg px-3 py-2 shadow-sm">
+                <Mic className="w-4 h-4 text-purple-600" />
+                <span className="text-sm font-semibold text-gray-800">Pronunciation</span>
+              </div>
+
+              <div className="flex items-center gap-2 bg-white/70 rounded-lg px-3 py-2 shadow-sm">
+                <BookOpen className="w-4 h-4 text-green-600" />
+                <span className="text-sm font-semibold text-gray-800">Grammar</span>
+              </div>
+
+              <div className="flex items-center gap-2 bg-white/70 rounded-lg px-3 py-2 shadow-sm">
+                <FileText className="w-4 h-4 text-red-600" />
+                <span className="text-sm font-semibold text-gray-800">Writing</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/70 rounded-lg px-3 py-2 shadow-sm">
+                <Volume2 className="w-4 h-4 text-indigo-600" />
+                <span className="text-sm font-semibold text-gray-800">Listening</span>
+              </div>
+                            <div className="flex items-center gap-2 bg-white/70 rounded-lg px-3 py-2 shadow-sm">
+                <Lightbulb className="w-4 h-4 text-yellow-600" />
+                <span className="text-sm font-semibold text-gray-800">Vocabulary</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/70 rounded-lg px-3 py-2 shadow-sm">
+                <MessageCircle className="w-4 h-4 text-pink-600" />
+                <span className="text-sm font-semibold text-gray-800"> S.H.A.R.P</span>
+              </div>
+
+            </div>
           </div>
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <button className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2">
+              <Award className="w-5 h-5" />
+              Register for Competition
+            </button>
+            <button className="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2">
+              <Users className="w-5 h-5" />
+              Start Learning with Subscription
+            </button>
+          </div>
+      
         </div>
         <div className="flex-1 flex justify-center md:justify-end relative">
-          <img
-            src="https://cdn.pixabay.com/photo/2017/01/31/19/17/avatar-2026510_1280.png"
-            alt="Student Celebrating"
-            className="w-64 md:w-80 rounded-3xl shadow-xl border-4 border-white bg-gradient-to-tr from-blue-100 to-pink-200"
-          />
-          <div className="absolute md:static mt-[-3.5rem] ml-[-2rem] flex items-center">
-            <Trophy className="w-12 h-12 text-yellow-400 drop-shadow-lg" />
+          <div className="relative">
+            <img
+              src="https://cdn.pixabay.com/photo/2017/01/31/19/17/avatar-2026510_1280.png"
+              alt="Student Celebrating with Trophy"
+              className="w-64 md:w-80 rounded-3xl shadow-xl border-4 border-white bg-gradient-to-tr from-blue-100 to-pink-200"
+            />
+            <div className="absolute -top-4 -right-4 bg-yellow-400 p-3 rounded-full shadow-lg animate-bounce">
+              <Trophy className="w-8 h-8 text-yellow-800" />
+            </div>
+            <div className="absolute -bottom-2 -left-2 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+              #1 Champion
+            </div>
           </div>
         </div>
       </div>
@@ -195,306 +247,221 @@ export default function HomePage() {
     <Box
       
     >
+      <SubscriptionBanner />
+
       <HeroSection />
 
-        {/* Specials, Offers, Promotions or Coupons Section */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            width: "100%",
-            bgcolor: "linear-gradient(90deg,#fbc2eb 0%,#a6c1ee 100%)",
-            borderRadius: 4,
-            mb: 4,
-            overflow: "hidden",
-            boxShadow: 3,
-            alignItems: "stretch",
-          }}
-        >
-          {/* Offer Image */}
-          <Box
-            sx={{
-              flex: 1,
-              minHeight: 220,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              bgcolor: "#fff",
-            }}
-          >
-            <img
-              src={offerImage}
-              alt="Specials, Offers, Promotions"
-              style={{
-                maxWidth: "92%",
-                borderRadius: 16,
-                boxShadow: "0 2px 24px #9995",
-              }}
-            />
+ 
+{/* Container for the 4 Boxes with proper spacing and title */}
+<Box sx={{ mt: 4, mb: 4 }}>
+  <Paper sx={{
+    p: 3,
+    borderRadius: 4,
+    bgcolor: '#ffffff',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+    border: '1px solid #f0f0f0'
+  }}>
+    {/* Section Title */}
+    <Typography 
+      variant="h5" 
+      fontWeight={700} 
+      sx={{ 
+        mb: 3, 
+        color: '#2d3748',
+        textAlign: 'center'
+      }}
+    >
+      Quick Access Dashboard
+    </Typography>
+
+    {/* Top 4 Boxes - Perfectly Equal Size */}
+    <Grid container spacing={3}>
+      {/* Skill Spotlight */}
+      <Grid item xs={12} sm={6} md={3}>
+        <Paper sx={{
+          height: '100%',
+          minHeight: 160,
+          display: 'flex',
+          flexDirection: 'column',
+          p: 2,
+          bgcolor: '#f2f7ff',
+          borderRadius: 3,
+          boxSizing: 'border-box'
+        }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, minHeight: 32 }}>
+            <TipsAndUpdatesIcon sx={{ fontSize: 28, color: '#ffb300' }} />
+            <Typography variant="h6" fontWeight={700} ml={1} color="primary">
+              Skill Spotlight
+            </Typography>
           </Box>
-          {/* Offer Buttons and GiveAway */}
-          <Box
+          <Typography sx={{
+            flexGrow: 1,
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word',
+            hyphens: 'auto',
+            fontSize: 14,
+            lineHeight: 1.4
+          }}>
+            Today's Module : <b>{skillTips[tipIndex].module}:</b>
+          </Typography>
+          <Button
+            size="small"
             sx={{
-              flex: 1,
-              py: 4,
-              px: { xs: 2, md: 5 },
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 2,
+              mt: 'auto',
+              alignSelf: 'center',
+              px: 0,
+              textTransform: 'none',
+              fontSize: 14,
+              color: '#7b1fa2',
+              fontWeight: 600
             }}
+            onClick={() => navigate('/skill-spotlight')}
           >
-            <Stack direction="column" spacing={2} alignItems="center" sx={{ width: "100%" }}>
-              {/* Top two buttons */}
-              <Stack direction="row" spacing={2} sx={{ width: "100%", justifyContent: "center" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<PaidIcon />}
-                  sx={{ fontWeight: 700, flex: 1, fontSize: 17, borderRadius: 3 }}
-                >
-                  Pre-launch Price
-                </Button>
-                <Button
-                  variant="contained"
-                  color="success"
-                  startIcon={<LoyaltyIcon />}
-                  sx={{ fontWeight: 700, flex: 1, fontSize: 17, borderRadius: 3 }}
-                >
-                  Exclusive Coupon
-                </Button>
-              </Stack>
-              {/* Special GiveAway */}
-              <Button
-                variant="contained"
-                color="secondary"
-                startIcon={<CardGiftcardIcon sx={{ fontSize: 32 }} />}
-                sx={{
-                  fontWeight: 800,
-                  fontSize: 20,
-                  borderRadius: 4,
-                  py: 2,
-                  width: "90%",
-                  background: "linear-gradient(90deg,#fbc02d 0%,#ff8a65 100%)",
-                  color: "#5d4037",
-                  boxShadow: 3,
-                  my: 2,
-                }}
-              >
-                Special GiveAway
-              </Button>
-              {/* Bottom two buttons */}
-              <Stack direction="row" spacing={2} sx={{ width: "100%", justifyContent: "center" }}>
-                <Button
-                  variant="contained"
-                  color="warning"
-                  startIcon={<LockOpenIcon />}
-                  sx={{ fontWeight: 700, flex: 1, fontSize: 17, borderRadius: 3 }}
-                >
-                  Unlock Rewards
-                </Button>
-                <Button
-                  variant="contained"
-                  color="info"
-                  startIcon={<GroupWorkIcon />}
-                  sx={{ fontWeight: 700, flex: 1, fontSize: 17, borderRadius: 3 }}
-                >
-                  Collab Challenges
-                </Button>
-              </Stack>
-            </Stack>
+            Explore Tips
+          </Button>
+        </Paper>
+      </Grid>
+
+      {/* Word of The Day */}
+      <Grid item xs={12} sm={6} md={3}>
+        <Paper sx={{
+          height: '100%',
+          minHeight: 160,
+          display: 'flex',
+          flexDirection: 'column',
+          p: 2,
+          bgcolor: '#fffde7',
+          borderRadius: 3,
+          boxSizing: 'border-box'
+        }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, minHeight: 32 }}>
+            <WorkspacePremiumIcon sx={{ fontSize: 28, color: '#ab47bc' }} />
+            <Typography variant="h6" fontWeight={700} ml={1} color="secondary">
+              Word of The Day
+            </Typography>
           </Box>
-        </Box>
+          <Typography sx={{
+            flexGrow: 1,
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word',
+            hyphens: 'auto',
+            fontSize: 14,
+            lineHeight: 1.4
+          }}>
+            Discover, learn, and use a new word every day!
+          </Typography>
+          <Button
+            size="small"
+            sx={{
+              mt: 'auto',
+              alignSelf: 'center',
+              px: 0,
+              textTransform: 'none',
+              fontSize: 14,
+              color: '#7b1fa2',
+              fontWeight: 600
+            }}
+            onClick={() => navigate('/word-of-the-day')}
+          >
+            Explore Series
+          </Button>
+        </Paper>
+      </Grid>
 
+      {/* Daily Learning */}
+      <Grid item xs={12} sm={6} md={3}>
+        <Paper sx={{
+          height: '100%',
+          minHeight: 160,
+          display: 'flex',
+          flexDirection: 'column',
+          p: 2,
+          bgcolor: '#e0f2f1',
+          borderRadius: 3,
+          boxSizing: 'border-box'
+        }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, minHeight: 32 }}>
+            <BookIcon sx={{ fontSize: 28, color: '#00bfae' }} />
+            <Typography variant="h6" fontWeight={700} ml={1} color="primary">
+              Daily Learning
+            </Typography>
+          </Box>
+          <Typography sx={{
+            flexGrow: 1,
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word',
+            hyphens: 'auto',
+            fontSize: 14,
+            lineHeight: 1.4
+          }}>
+            Bite-sized lessons, every single day!
+          </Typography>
+          <Button
+            size="small"
+            sx={{
+              mt: 'auto',
+              alignSelf: 'center',
+              px: 0,
+              textTransform: 'none',
+              fontSize: 14,
+              color: '#00bfae',
+              fontWeight: 600
+            }}
+            onClick={() => navigate('/learn')}
+          >
+            Start Learning
+          </Button>
+        </Paper>
+      </Grid>
 
-{/* Top 4 Boxes - Perfectly Equal Size */}
-<Grid container spacing={3} sx={{ mb: 3 }}>
-  {/* Skill Spotlight */}
-  <Grid item xs={12} sm={6} md={3}>
-    <Paper sx={{
-      height: '100%',
-      minHeight: 160,
-      display: 'flex',
-      flexDirection: 'column',
-      p: 2,
-      bgcolor: '#f2f7ff',
-      borderRadius: 3,
-      boxSizing: 'border-box'
-    }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, minHeight: 32 }}>
-        <TipsAndUpdatesIcon sx={{ fontSize: 28, color: '#ffb300' }} />
-        <Typography variant="h6" fontWeight={700} ml={1} color="primary">
-          Skill Spotlight
-        </Typography>
-      </Box>
-      <Typography sx={{
-        flexGrow: 1,
-        wordWrap: 'break-word',
-        overflowWrap: 'break-word',
-        hyphens: 'auto',
-        fontSize: 14,
-        lineHeight: 1.4
-      }}>
-        Today's Module : <b>{skillTips[tipIndex].module}:</b>
-      </Typography>
-      <Button
-        size="small"
-        sx={{
-          mt: 'auto',
-          alignSelf: 'center',
-          px: 0,
-          textTransform: 'none',
-          fontSize: 14,
-          color: '#7b1fa2',
-          fontWeight: 600
-        }}
-        onClick={() => navigate('/skill-spotlight')}
-      >
-        Explore Tips
-      </Button>
-    </Paper>
-  </Grid>
-
-  {/* Word of The Day */}
-  <Grid item xs={12} sm={6} md={3}>
-    <Paper sx={{
-      height: '100%',
-      minHeight: 160,
-      display: 'flex',
-      flexDirection: 'column',
-      p: 2,
-      bgcolor: '#fffde7',
-      borderRadius: 3,
-      boxSizing: 'border-box'
-    }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, minHeight: 32 }}>
-        <WorkspacePremiumIcon sx={{ fontSize: 28, color: '#ab47bc' }} />
-        <Typography variant="h6" fontWeight={700} ml={1} color="secondary">
-          Word of The Day
-        </Typography>
-      </Box>
-      <Typography sx={{
-        flexGrow: 1,
-        wordWrap: 'break-word',
-        overflowWrap: 'break-word',
-        hyphens: 'auto',
-        fontSize: 14,
-        lineHeight: 1.4
-      }}>
-        Discover, learn, and use a new word every day!
-      </Typography>
-      <Button
-        size="small"
-        sx={{
-          mt: 'auto',
-          alignSelf: 'center',
-          px: 0,
-          textTransform: 'none',
-          fontSize: 14,
-          color: '#7b1fa2',
-          fontWeight: 600
-        }}
-        onClick={() => navigate('/word-of-the-day')}
-      >
-        Explore Series
-      </Button>
-    </Paper>
-  </Grid>
-
-  {/* Daily Learning */}
-  <Grid item xs={12} sm={6} md={3}>
-    <Paper sx={{
-      height: '100%',
-      minHeight: 160,
-      display: 'flex',
-      flexDirection: 'column',
-      p: 2,
-      bgcolor: '#e0f2f1',
-      borderRadius: 3,
-      boxSizing: 'border-box'
-    }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, minHeight: 32 }}>
-        <BookIcon sx={{ fontSize: 28, color: '#00bfae' }} />
-        <Typography variant="h6" fontWeight={700} ml={1} color="primary">
-          Daily Learning
-        </Typography>
-      </Box>
-      <Typography sx={{
-        flexGrow: 1,
-        wordWrap: 'break-word',
-        overflowWrap: 'break-word',
-        hyphens: 'auto',
-        fontSize: 14,
-        lineHeight: 1.4
-      }}>
-        Bite-sized lessons, every single day!
-      </Typography>
-      <Button
-        size="small"
-        sx={{
-          mt: 'auto',
-          alignSelf: 'center',
-          px: 0,
-          textTransform: 'none',
-          fontSize: 14,
-          color: '#00bfae',
-          fontWeight: 600
-        }}
-        onClick={() => navigate('/learn')}
-      >
-        Start Learning
-      </Button>
-    </Paper>
-  </Grid>
-
-  {/* Daily Challenges */}
-  <Grid item xs={12} sm={6} md={3}>
-    <Paper sx={{
-      height: '100%',
-      minHeight: 160,
-      display: 'flex',
-      flexDirection: 'column',
-      p: 2,
-      bgcolor: '#e3f2fd',
-      borderRadius: 3,
-      boxSizing: 'border-box'
-    }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, minHeight: 32 }}>
-        <EmojiEventsIcon sx={{ fontSize: 28, color: '#f57c00' }} />
-        <Typography variant="h6" fontWeight={700} ml={1} color="warning.dark">
-          Daily Challenges
-        </Typography>
-      </Box>
-      <Typography sx={{
-        flexGrow: 1,
-        wordWrap: 'break-word',
-        overflowWrap: 'break-word',
-        hyphens: 'auto',
-        fontSize: 14,
-        lineHeight: 1.4
-      }}>
-        Compete, have fun, and win rewards!
-      </Typography>
-      <Button
-        size="small"
-        sx={{
-          mt: 'auto',
-          alignSelf: 'center',
-          px: 0,
-          textTransform: 'none',
-          fontSize: 14,
-          color: '#f57c00',
-          fontWeight: 600
-        }}
-        onClick={() => navigate('/challenges')}
-      >
-        View Challenges
-      </Button>
-    </Paper>
-  </Grid>
-</Grid>
-
+      {/* Daily Challenges */}
+      <Grid item xs={12} sm={6} md={3}>
+        <Paper sx={{
+          height: '100%',
+          minHeight: 160,
+          display: 'flex',
+          flexDirection: 'column',
+          p: 2,
+          bgcolor: '#e3f2fd',
+          borderRadius: 3,
+          boxSizing: 'border-box'
+        }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, minHeight: 32 }}>
+            <EmojiEventsIcon sx={{ fontSize: 28, color: '#f57c00' }} />
+            <Typography variant="h6" fontWeight={700} ml={1} color="warning.dark">
+              Daily Challenges
+            </Typography>
+          </Box>
+          <Typography sx={{
+            flexGrow: 1,
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word',
+            hyphens: 'auto',
+            fontSize: 14,
+            lineHeight: 1.4
+          }}>
+            Compete, have fun, and win rewards!
+          </Typography>
+          <Button
+            size="small"
+            sx={{
+              mt: 'auto',
+              alignSelf: 'center',
+              px: 0,
+              textTransform: 'none',
+              fontSize: 14,
+              color: '#f57c00',
+              fontWeight: 600
+            }}
+            onClick={() => navigate('/challenges')}
+          >
+            View Challenges
+          </Button>
+        </Paper>
+      </Grid>
+    </Grid>
+  </Paper>
+</Box>
 
         {/* Skills Assessment (full width) */}
         <Paper

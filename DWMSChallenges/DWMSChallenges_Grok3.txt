@@ -1,0 +1,677 @@
+[
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Rookie",
+    "questionText": "Listen and select the correct spelling: /ˈkæt/ (Dictation)",
+    "options": ["kat", "cat", "ct", "katt"],
+    "correctAnswer": "cat"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Rookie",
+    "questionText": "Choose the correct spelling of a small insect.",
+    "options": ["bgu", "bug", "bg", "buge"],
+    "correctAnswer": "bug"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Rookie",
+    "questionText": "Select the correct spelling for 's _ n' (Hint: It shines in the sky).",
+    "options": ["sn", "sun", "snu", "usn"],
+    "correctAnswer": "sun"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Rookie",
+    "questionText": "Unscramble 'epn' to spell a writing tool.",
+    "options": ["nep", "pne", "pen", "enp"],
+    "correctAnswer": "pen"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Rookie",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["bal", "ball", "bl", "bll"],
+    "correctAnswer": "ball"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Racer",
+    "questionText": "Listen and select the correct spelling: /ˈdʌk/ (Dictation)",
+    "options": ["duk", "duck", "dcuk", "dck"],
+    "correctAnswer": "duck"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Racer",
+    "questionText": "Choose the correct spelling of a place to sleep.",
+    "options": ["bde", "bed", "ebd", "db"],
+    "correctAnswer": "bed"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Racer",
+    "questionText": "Select the correct spelling for 'b _ k' (Hint: You read it).",
+    "options": ["bok", "book", "bko", "kb"],
+    "correctAnswer": "book"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Racer",
+    "questionText": "Unscramble 'odf' to spell something you eat.",
+    "options": ["ofd", "fod", "food", "dfo"],
+    "correctAnswer": "food"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Racer",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["forg", "frog", "frg", "rfog"],
+    "correctAnswer": "frog"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Master",
+    "questionText": "Listen and select the correct spelling: /ˈtreɪn/ (Dictation)",
+    "options": ["trian", "train", "trani", "tarn"],
+    "correctAnswer": "train"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Master",
+    "questionText": "Choose the correct spelling of a place to live.",
+    "options": ["huose", "hose", "house", "hosue"],
+    "correctAnswer": "house"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Master",
+    "questionText": "Select the correct spelling for 'st _ r' (Hint: It shines at night).",
+    "options": ["tsar", "star", "satr", "stra"],
+    "correctAnswer": "star"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Master",
+    "questionText": "Unscramble 'ilems' to spell a happy expression.",
+    "options": ["slime", "smile", "miles", "islem"],
+    "correctAnswer": "smile"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Master",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["brid", "bird", "bidr", "ibdr"],
+    "correctAnswer": "bird"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Listen and select the correct spelling: /ˈflɑʊər/ (Dictation)",
+    "options": ["flour", "flowr", "flower", "folwer"],
+    "correctAnswer": "flower"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Choose the correct spelling of a sweet fruit.",
+    "options": ["appel", "aple", "apple", "tree"],
+    "correctAnswer": "apple"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Select the correct spelling for 'tr _ _' (Hint: It grows outside).",
+    "options": ["tre", "tree", "tere", "rtee"],
+    "correctAnswer": "tree"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Unscramble 'owdniw' to spell something you look through.",
+    "options": ["widnow", "window", "winodw", "owindw"],
+    "correctAnswer": "window"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["acr", "car", "cra", "arc"],
+    "correctAnswer": "car"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Wizard",
+    "questionText": "Listen and select the correct spelling: /ˈmʌŋki/ (Dictation)",
+    "options": ["monky", "monkey", "mokney", "mnoeky"],
+    "correctAnswer": "monkey"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Wizard",
+    "questionText": "Choose the correct spelling of a sweet treat.",
+    "options": ["cndy", "candy", "candee", "cadny"],
+    "correctAnswer": "candy"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Wizard",
+    "questionText": "Select the correct spelling for 'cl _ ck' (Hint: It tells time).",
+    "options": ["clok", "clock", "clck", "kolc"],
+    "correctAnswer": "clock"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Wizard",
+    "questionText": "Unscramble 'kcoos' to spell something you wear.",
+    "options": ["kocs", "sock", "coks", "ksoc"],
+    "correctAnswer": "sock"
+  },
+  {
+    "classGroup": "Class I-II",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Wizard",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["sn", "sun", "usn", "snu"],
+    "correctAnswer": "sun"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Rookie",
+    "questionText": "Listen and select the correct spelling: /ˈskul/ (Dictation)",
+    "options": ["skool", "school", "schol", "scool"],
+    "correctAnswer": "school"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Rookie",
+    "questionText": "Choose the correct spelling of a yellow fruit.",
+    "options": ["bannana", "banana", "banan", "bnana"],
+    "correctAnswer": "banana"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Rookie",
+    "questionText": "Select the correct spelling for 'b _ tter' (Hint: You spread it on bread).",
+    "options": ["buter", "butter", "btter", "ubtter"],
+    "correctAnswer": "butter"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Rookie",
+    "questionText": "Unscramble 'ractro' to spell a vegetable.",
+    "options": ["croat", "carot", "carrot", "racto"],
+    "correctAnswer": "carrot"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Rookie",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["libary", "library", "librry", "lbibrary"],
+    "correctAnswer": "library"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Racer",
+    "questionText": "Listen and select the correct spelling: /ˈɡɑːrdən/ (Dictation)",
+    "options": ["gardn", "gaden", "garden", "grden"],
+    "correctAnswer": "garden"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Racer",
+    "questionText": "Choose the correct spelling of a striped animal.",
+    "options": ["tigar", "tiger", "tigre", "itger"],
+    "correctAnswer": "tiger"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Racer",
+    "questionText": "Select the correct spelling for 'w _ ter' (Hint: You drink it).",
+    "options": ["watr", "water", "wter", "awter"],
+    "correctAnswer": "water"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Racer",
+    "questionText": "Unscramble 'rufit' to spell something you eat.",
+    "options": ["fuit", "fruit", "rfuit", "ufrt"],
+    "correctAnswer": "fruit"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Racer",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["giraff", "giraffe", "girafe", "igraff"],
+    "correctAnswer": "giraffe"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Master",
+    "questionText": "Listen and select the correct spelling: /ˈelɪfənt/ (Dictation)",
+    "options": ["elefant", "elephnt", "elephant", "elphant"],
+    "correctAnswer": "elephant"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Master",
+    "questionText": "Choose the correct spelling of a soft animal.",
+    "options": ["flufy", "fluffy", "flufi", "fluffi"],
+    "correctAnswer": "fluffy"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Master",
+    "questionText": "Select the correct spelling for 'sn _ ke' (Hint: It slithers).",
+    "options": ["snak", "snake", "snke", "sanek"],
+    "correctAnswer": "snake"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Master",
+    "questionText": "Unscramble 'egrpa' to spell a small fruit.",
+    "options": ["prage", "grape", "gpera", "ragpe"],
+    "correctAnswer": "grape"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Master",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["plan", "plane", "palne", "plnae"],
+    "correctAnswer": "plane"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Listen and select the correct spelling: /ˈbæskɪt/ (Dictation)",
+    "options": ["baskit", "basket", "bsaket", "absket"],
+    "correctAnswer": "basket"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Choose the correct spelling of a place with swings.",
+    "options": ["playgrond", "playground", "palyground", "plyground"],
+    "correctAnswer": "playground"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Select the correct spelling for 'p _ mpkin' (Hint: It’s orange).",
+    "options": ["pupmkin", "pumpkin", "pmpkin", "ubmpkin"],
+    "correctAnswer": "pumpkin"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Unscramble 'tejakc' to spell something you wear.",
+    "options": ["jcket", "jacket", "ajcket", "jactek"],
+    "correctAnswer": "jacket"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["snak", "snake", "snke", "sanek"],
+    "correctAnswer": "snake"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Wizard",
+    "questionText": "Listen and select the correct spelling: /ˈvækjuːm/ (Dictation)",
+    "options": ["vacum", "vaccum", "vacuum", "vauccm"],
+    "correctAnswer": "vacuum"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Wizard",
+    "questionText": "Choose the correct spelling of a place to learn music.",
+    "options": ["acadmy", "academy", "acadey", "aacdemy"],
+    "correctAnswer": "academy"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Wizard",
+    "questionText": "Select the correct spelling for 'b _ cycle' (Hint: You ride it).",
+    "options": ["bicyle", "bicycle", "bycicle", "ibcycle"],
+    "correctAnswer": "bicycle"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Wizard",
+    "questionText": "Unscramble 'rtain' to spell a vehicle.",
+    "options": ["tirna", "train", "rtani", "nitar"],
+    "correctAnswer": "train"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Wizard",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["pencel", "pencil", "penicl", "epncil"],
+    "correctAnswer": "pencil"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Rookie",
+    "questionText": "Listen and select the correct spelling: /ˈænɪməl/ (Dictation)",
+    "options": ["anmal", "animal", "animl", "amnial"],
+    "correctAnswer": "animal"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Rookie",
+    "questionText": "Choose the correct spelling of a large building.",
+    "options": ["bilding", "building", "bulding", "biulding"],
+    "correctAnswer": "building"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Rookie",
+    "questionText": "Select the correct spelling for 'd _ ctionary' (Hint: It’s a book of words).",
+    "options": ["dictonary", "dictionary", "dcitionary", "idctionary"],
+    "correctAnswer": "dictionary"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Rookie",
+    "questionText": "Unscramble 'rytconu' to spell a place.",
+    "options": ["contryu", "country", "ocuntyr", "yrtnocu"],
+    "correctAnswer": "country"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Rookie",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["rhinocerous", "rhinoceros", "rhinoceors", "rihnoceros"],
+    "correctAnswer": "rhinoceros"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Racer",
+    "questionText": "Listen and select the correct spelling: /kəˈmjuːnɪti/ (Dictation)",
+    "options": ["comunity", "community", "commnity", "ocmmunity"],
+    "correctAnswer": "community"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Racer",
+    "questionText": "Choose the correct spelling of a subject you study.",
+    "options": ["scienc", "science", "scince", "seicnce"],
+    "correctAnswer": "science"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Racer",
+    "questionText": "Select the correct spelling for 'n _ighbor' (Hint: They live nearby).",
+    "options": ["neghbor", "neighbor", "nighbor", "nieghbor"],
+    "correctAnswer": "neighbor"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Racer",
+    "questionText": "Unscramble 'snoitats' to spell a place for trains.",
+    "options": ["tsation", "station", "satiton", "otstian"],
+    "correctAnswer": "station"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Racer",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["bech", "beach", "baech", "ebach"],
+    "correctAnswer": "beach"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Master",
+    "questionText": "Listen and select the correct spelling: /ˌɪnfərˈmeɪʃn/ (Dictation)",
+    "options": ["informtion", "information", "infomration", "infromation"],
+    "correctAnswer": "information"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Master",
+    "questionText": "Choose the correct spelling of a person who performs.",
+    "options": ["actr", "actor", "aotr", "atcor"],
+    "correctAnswer": "actor"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Master",
+    "questionText": "Select the correct spelling for 'd _ fficult' (Hint: It means hard).",
+    "options": ["dificult", "difficult", "diffcult", "idfficult"],
+    "correctAnswer": "difficult"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Master",
+    "questionText": "Unscramble 'noitacude' to spell something you get at school.",
+    "options": ["eductaion", "education", "eudcation", "oduection"],
+    "correctAnswer": "education"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Master",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["shovl", "shovel", "sohvel", "hsovel"],
+    "correctAnswer": "shovel"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Listen and select the correct spelling: /ˌækəˈdemɪk/ (Dictation)",
+    "options": ["acadmic", "academic", "acedemic", "acdamic"],
+    "correctAnswer": "academic"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Choose the correct spelling of a scientific study.",
+    "options": ["experimnt", "experiment", "expiriment", "xepriment"],
+    "correctAnswer": "experiment"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Select the correct spelling for 'c _ nstitution' (Hint: It’s a set of laws).",
+    "options": ["consttution", "constitution", "conitution", "ocnstitution"],
+    "correctAnswer": "constitution"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Unscramble 'tsevni' to spell something you do with money.",
+    "options": ["vniest", "invest", "ivnest", "tsivne"],
+    "correctAnswer": "invest"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["ocen", "ocean", "oecan", "coean"],
+    "correctAnswer": "ocean"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Wizard",
+    "questionText": "Listen and select the correct spelling: /əˈkweɪntəns/ (Dictation)",
+    "options": ["aquantance", "acquaintance", "acqaintance", "acquaitnance"],
+    "correctAnswer": "acquaintance"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Find the Correct Spelling",
+    "difficultyLevel": "Wizard",
+    "questionText": "Choose the correct spelling of a word meaning required.",
+    "options": ["necesary", "necessary", "neccesary", "encessary"],
+    "correctAnswer": "necessary"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Find the Missing Letter",
+    "difficultyLevel": "Wizard",
+    "questionText": "Select the correct spelling for 'r _ commend' (Hint: It means suggest).",
+    "options": ["reccomend", "recommend", "recomend", "ercommend"],
+    "correctAnswer": "recommend"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Wizard",
+    "questionText": "Unscramble 'noitacifitnedi' to spell a process of proving identity.",
+    "options": ["identfication", "identification", "idnetification", "ifdentication"],
+    "correctAnswer": "identification"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Spell the Pic",
+    "difficultyLevel": "Wizard",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "options": ["telphone", "telephone", "telepone", "etelphone"],
+    "correctAnswer": "telephone"
+  }
+]

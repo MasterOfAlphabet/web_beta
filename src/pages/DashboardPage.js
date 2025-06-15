@@ -1,579 +1,402 @@
-import React from "react";
-import {
-  Box,
-  Paper,
-  Typography,
-  Stack,
-  Avatar,
-  LinearProgress,
-  Chip,
-  Button,
-  Card,
-  CardContent,
-  CardActions,
-  Grid,
-  Divider,
-  Tooltip,
-  Badge,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  IconButton,
-  Alert,
-  useTheme,
-} from "@mui/material";
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import StarIcon from "@mui/icons-material/Star";
-import WhatshotIcon from "@mui/icons-material/Whatshot";
-import LeaderboardIcon from "@mui/icons-material/Leaderboard";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import SchoolIcon from "@mui/icons-material/School";
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import NewReleasesIcon from "@mui/icons-material/NewReleases";
-import { amber, blue, green, orange, deepPurple, pink } from "@mui/material/colors";
+import React, { useState, useEffect } from "react";
 
 // --- MOCK DATA ---
-
 const user = {
   name: "Aanya Sharma",
   avatar: "",
-  level: "Word Wizard",
-  streak: 5,
-  points: 560,
-  progress: 0.7,
+  class: "IV",
+  city: "Bangalore",
+  state: "Karnataka",
 };
-
-const activeChallenges = [
-  {
-    id: 1,
-    title: "Spelling Blitz",
-    progress: 0.6,
-    type: "Daily",
-    due: "2h left",
-    color: orange[400],
-  },
-  {
-    id: 2,
-    title: "Vocab Sprint",
-    progress: 0.2,
-    type: "Weekly",
-    due: "1 day left",
-    color: blue[400],
-  },
-];
 
 const achievements = [
-  {
-    id: 1,
-    icon: <EmojiEventsIcon sx={{ color: amber[800] }} />,
-    title: "1st Place: Spelling Blitz",
-    date: "2025-06-05",
-  },
-  {
-    id: 2,
-    icon: <CheckCircleIcon sx={{ color: blue[400] }} />,
-    title: "New Badge: Grammar Guru",
-    date: "2025-06-03",
-  },
+  { id: 1, title: "1st Place: Spelling Blitz", badge: "🥇", date: "2025-06-05" },
+  { id: 2, title: "Grammar Guru Badge", badge: "📘", date: "2025-06-03" },
 ];
 
-const leaderboard = {
-  rank: 8,
-  top: [
-    { name: "Simran Kaur", avatar: "", rank: 1 },
-    { name: "Rahul Singh", avatar: "", rank: 2 },
-    { name: "Krishna Rao", avatar: "", rank: 3 },
-  ],
-};
-
-const recommendations = [
-  {
-    id: 1,
-    icon: <AssignmentTurnedInIcon sx={{ color: green[700] }} />,
-    text: 'Try "Word Builders" challenge',
-  },
-  {
-    id: 2,
-    icon: <TipsAndUpdatesIcon sx={{ color: deepPurple[400] }} />,
-    text: 'Watch: "5 Tips for Spelling Bees"',
-  },
+const gamifiedRewards = [
+  { id: 1, title: "Daily Streak - 5 Days", emoji: "🔥" },
+  { id: 2, title: "Word Wizard", emoji: "🪄" },
 ];
 
-const activity = [
-  {
-    id: 1,
-    icon: <CalendarMonthIcon sx={{ color: pink[400] }} />,
-    text: "Joined Word Builders",
-    date: "Today",
-  },
-  {
-    id: 2,
-    icon: <AssignmentTurnedInIcon sx={{ color: blue[400] }} />,
-    text: "Completed Reading Marathon",
-    date: "Yesterday",
-  },
+const dailyDose = [
+  { id: 1, type: "Skill Spotlight", title: "Pronunciation", desc: "Improve your word clarity", icon: "🎯" },
+  { id: 2, type: "Challenge", title: "Vocab Sprint", desc: "Complete today's new set", icon: "⚡" },
+  { id: 3, type: "Word of the Day", title: "Quixotic", desc: "Meaning: exceedingly idealistic", icon: "💎" },
 ];
 
-const notifications = [
-  {
-    id: 1,
-    type: "announcement",
-    icon: <NewReleasesIcon color="warning" />,
-    message: "Mega Quiz on June 15th!",
-    date: "Today",
-  },
-  {
-    id: 2,
-    type: "reminder",
-    icon: <NotificationsActiveIcon color="primary" />,
-    message: "Vocab Sprint: 1 day left to participate!",
-    date: "2h ago",
-  },
+const skillsAssessment = [
+  { name: "Spelling", value: 88, history: [70, 80, 85, 88], color: "from-purple-400 to-pink-400" },
+  { name: "Reading", value: 82, history: [75, 78, 80, 82], color: "from-blue-400 to-cyan-400" },
+  { name: "Pronunciation", value: 91, history: [80, 85, 90, 91], color: "from-green-400 to-emerald-400" },
+  { name: "Grammar", value: 84, history: [70, 80, 82, 84], color: "from-yellow-400 to-orange-400" },
+  { name: "Writing", value: 79, history: [60, 72, 75, 79], color: "from-red-400 to-pink-400" },
+  { name: "Listening", value: 86, history: [73, 80, 84, 86], color: "from-indigo-400 to-purple-400" },
+  { name: "Vocabulary", value: 90, history: [82, 87, 89, 90], color: "from-teal-400 to-cyan-400" },
+  { name: "S.H.A.R.P", value: 76, history: [50, 60, 68, 76], color: "from-amber-400 to-yellow-400" },
+  { name: "8-in-1", value: 83, history: [70, 74, 80, 83], color: "from-rose-400 to-pink-400" },
 ];
 
-// --- COMPONENTS ---
+const progressSummary = [
+  { type: "Learn", value: 88, history: [60, 75, 80, 88], icon: "📚", color: "from-blue-500 to-purple-600" },
+  { type: "Practice", value: 92, history: [70, 80, 85, 92], icon: "🎯", color: "from-green-500 to-emerald-600" },
+  { type: "Test", value: 85, history: [60, 70, 75, 85], icon: "📝", color: "from-orange-500 to-red-600" },
+  { type: "Battle", value: 80, history: [40, 60, 70, 80], icon: "⚔️", color: "from-purple-500 to-pink-600" },
+  { type: "Challenge", value: 90, history: [70, 75, 85, 90], icon: "🏆", color: "from-yellow-500 to-orange-600" },
+  { type: "Competition", value: 73, history: [40, 65, 70, 73], icon: "🎪", color: "from-indigo-500 to-blue-600" },
+];
 
-function DashboardCard({ title, icon, children, actions, ...rest }) {
+const suggestions = [
+  { id: 1, text: "Practice your spelling skills", type: "Practice", priority: "high" },
+  { id: 2, text: "Take today's Pronunciation Challenge", type: "Challenge", priority: "medium" },
+  { id: 3, text: "Revise new vocabulary words", type: "Vocab", priority: "low" },
+];
+
+// --- ENHANCED COMPONENTS ---
+function AnimatedCounter({ value, suffix = "%" }) {
+  const [count, setCount] = useState(0);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (count < value) {
+        setCount(prev => Math.min(prev + 2, value));
+      }
+    }, 30);
+    return () => clearTimeout(timer);
+  }, [count, value]);
+
+  return <span>{count}{suffix}</span>;
+}
+
+function ProgressBar({ value, className = "" }) {
   return (
-    <Card
-      elevation={4}
-      sx={{
-        borderRadius: 4,
-        mb: 2,
-        p: 0,
-        overflow: "visible",
-        ...rest.sx,
-      }}
-    >
-      <CardContent sx={{ pb: 1.5 }}>
-        <Stack direction="row" alignItems="center" spacing={1} mb={1}>
-          {icon}
-          <Typography fontWeight={700} fontSize={18}>
-            {title}
-          </Typography>
-        </Stack>
-        {children}
-      </CardContent>
-      {actions && <CardActions sx={{ pt: 0, pb: 1 }}>{actions}</CardActions>}
-    </Card>
+    <div className={`w-full h-2 bg-gray-200 rounded-full overflow-hidden ${className}`}>
+      <div 
+        className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transform transition-all duration-1000 ease-out"
+        style={{ width: `${value}%`, transform: `translateX(-${100 - value}%)` }}
+      />
+    </div>
   );
 }
 
-function ChallengeProgress({ challenge }) {
+function BoxTitle({ children, className = "" }) {
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        bgcolor: "#fff",
-        borderRadius: 2,
-        mb: 1.5,
-        p: 1.5,
-        borderLeft: `5px solid ${challenge.color}`,
-        minWidth: 0,
-      }}
+    <div className={`text-xl font-bold text-gray-800 mb-4 flex items-center gap-3 ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+function FloatingCard({ children, className = "", delay = 0 }) {
+  return (
+    <div 
+      className={`bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 ${className}`}
+      style={{ animationDelay: `${delay}ms` }}
     >
-      <Stack direction="row" alignItems="center" spacing={2}>
-        <Stack flex={1} minWidth={0}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography fontWeight={600} fontSize={16} noWrap maxWidth={180}>
-              {challenge.title}
-            </Typography>
-            <Chip
-              label={challenge.type}
-              size="small"
-              sx={{
-                fontWeight: 500,
-                bgcolor: challenge.type === "Daily" ? orange[50] : blue[50],
-                color: challenge.type === "Daily" ? orange[700] : blue[700],
-              }}
-            />
-          </Stack>
-          <LinearProgress
-            variant="determinate"
-            value={challenge.progress * 100}
-            sx={{
-              height: 6,
-              borderRadius: 3,
-              mt: 1,
-              bgcolor: "#eee",
-              "& .MuiLinearProgress-bar": {
-                bgcolor: challenge.color,
-              },
-            }}
-          />
-          <Stack direction="row" justifyContent="space-between">
-            <Typography fontSize={13} color="text.secondary" mt={0.5}>
-              {Math.round(challenge.progress * 100)}% complete
-            </Typography>
-            <Typography fontSize={13} color="text.secondary" mt={0.5}>
-              {challenge.due}
-            </Typography>
-          </Stack>
-        </Stack>
-        <Button
-          variant="contained"
-          size="small"
-          color="primary"
-          sx={{ fontWeight: 700, borderRadius: 2, ml: 2, minWidth: 90 }}
+      {children}
+    </div>
+  );
+}
+
+function AchievementSummary({ achievements, gamifiedRewards }) {
+  const [showAll, setShowAll] = useState(false);
+  
+  return (
+    <FloatingCard className="p-6 mb-6" delay={200}>
+      <BoxTitle>
+        <span className="text-2xl">🏆</span>
+        <span className="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+          Achievements & Rewards
+        </span>
+        <button
+          onClick={() => setShowAll(s => !s)}
+          className="ml-auto px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm rounded-full hover:shadow-lg transition-all duration-300 transform hover:scale-105"
         >
-          {challenge.progress < 1 ? "Continue" : "View"}
-        </Button>
-      </Stack>
-    </Paper>
-  );
-}
-
-function AchievementItem({ achievement }) {
-  return (
-    <Stack direction="row" alignItems="center" spacing={1.2} mb={1}>
-      {achievement.icon}
-      <Typography fontWeight={600} fontSize={15} color="text.primary">
-        {achievement.title}
-      </Typography>
-      <Typography fontSize={13} color="text.secondary">
-        ({achievement.date})
-      </Typography>
-    </Stack>
-  );
-}
-
-function LeaderboardMini({ leaderboard }) {
-  return (
-    <Box>
-      <Typography fontSize={14} color="text.secondary" mb={1}>
-        You’re <b>#{leaderboard.rank}</b> in your class this week!
-      </Typography>
-      <Stack direction="row" spacing={2} alignItems="center" mb={1}>
-        {leaderboard.top.map((item, idx) => (
-          <Tooltip title={`#${item.rank} ${item.name}`} key={item.name}>
-            <Badge
-              badgeContent={item.rank}
-              color={idx === 0 ? "warning" : idx === 1 ? "secondary" : "info"}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-            >
-              <Avatar sx={{ bgcolor: [amber[200], blue[100], deepPurple[100]][idx] }}>
-                {item.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
-              </Avatar>
-            </Badge>
-          </Tooltip>
+          {showAll ? "Hide" : "View All"}
+        </button>
+      </BoxTitle>
+      
+      <div className="flex flex-wrap gap-4">
+        {[...achievements, ...gamifiedRewards].slice(0, showAll ? undefined : 3).map((a, idx) => (
+          <div 
+            key={a.id || a.title} 
+            className="group flex items-center px-4 py-3 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-100 hover:from-blue-100 hover:to-indigo-200 border border-blue-200/50 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            style={{ animationDelay: `${idx * 100}ms` }}
+          >
+            <span className="text-3xl mr-3 transform group-hover:scale-110 transition-transform duration-300">
+              {a.badge || a.emoji}
+            </span>
+            <div className="flex flex-col">
+              <span className="text-blue-900 font-bold">{a.title}</span>
+              {a.date && <span className="text-xs text-blue-600 opacity-70">{a.date}</span>}
+            </div>
+          </div>
         ))}
-      </Stack>
-      <Button
-        variant="outlined"
-        size="small"
-        color="primary"
-        endIcon={<ArrowForwardIosIcon fontSize="small" />}
-        href="/leaderboards"
-        sx={{ fontWeight: 600, mt: 1 }}
-      >
-        See All
-      </Button>
-    </Box>
+      </div>
+    </FloatingCard>
   );
 }
 
-function RecommendationList({ recommendations }) {
+function DailyDose({ dailyDose }) {
   return (
-    <List dense disablePadding>
-      {recommendations.map((rec) => (
-        <ListItem key={rec.id} dense disableGutters sx={{ pl: 0 }}>
-          <ListItemAvatar sx={{ minWidth: 34 }}>{rec.icon}</ListItemAvatar>
-          <ListItemText
-            primary={
-              <Typography fontSize={14} fontWeight={500}>
-                {rec.text}
-              </Typography>
-            }
-          />
-        </ListItem>
-      ))}
-    </List>
-  );
-}
-
-function ActivityList({ activity }) {
-  return (
-    <List dense disablePadding>
-      {activity.map((item) => (
-        <ListItem key={item.id} dense disableGutters sx={{ pl: 0 }}>
-          <ListItemAvatar sx={{ minWidth: 34 }}>{item.icon}</ListItemAvatar>
-          <ListItemText
-            primary={
-              <Typography fontSize={14} fontWeight={500}>
-                {item.text}
-              </Typography>
-            }
-            secondary={
-              <Typography fontSize={12} color="text.secondary">
-                {item.date}
-              </Typography>
-            }
-          />
-        </ListItem>
-      ))}
-    </List>
-  );
-}
-
-function NotificationPanel({ notifications }) {
-  if (!notifications.length) return null;
-  return (
-    <Stack spacing={1} mt={2}>
-      {notifications.map((notif) => (
-        <Alert
-          key={notif.id}
-          icon={notif.icon}
-          severity={notif.type === "announcement" ? "success" : "info"}
-          sx={{ fontWeight: 500, borderRadius: 2, alignItems: "center", py: 0.5, pl: 1.2 }}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      {dailyDose.map((item, idx) => (
+        <FloatingCard 
+          key={item.id} 
+          className="p-6 bg-gradient-to-br from-white/90 to-blue-50/90 hover:from-white hover:to-blue-100/90 group cursor-pointer"
+          delay={idx * 150}
         >
-          {notif.message}
-          <Typography
-            component="span"
-            fontSize={12}
-            color="text.secondary"
-            sx={{ ml: 1.5, fontWeight: 400 }}
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-3xl transform group-hover:scale-110 transition-transform duration-300">
+              {item.icon}
+            </span>
+            <div className="font-semibold text-indigo-700 text-sm uppercase tracking-wide">
+              {item.type}
+            </div>
+          </div>
+          <div className="text-xl font-bold text-gray-800 mb-2 group-hover:text-indigo-800 transition-colors">
+            {item.title}
+          </div>
+          <div className="text-sm text-gray-600 leading-relaxed">{item.desc}</div>
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <button className="text-indigo-600 font-semibold text-sm hover:text-indigo-800 transition-colors">
+              Start Now →
+            </button>
+          </div>
+        </FloatingCard>
+      ))}
+    </div>
+  );
+}
+
+function SkillsAssessment({ skillsAssessment }) {
+  return (
+    <FloatingCard className="p-6 mb-8" delay={300}>
+      <BoxTitle>
+        <span className="text-2xl">📊</span>
+        <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+          Skills Assessment Status
+        </span>
+      </BoxTitle>
+      
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {skillsAssessment.map((skill, idx) => (
+          <div 
+            key={skill.name} 
+            className="group flex flex-col items-center p-4 rounded-xl bg-gradient-to-br from-gray-50 to-white border border-gray-200/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer"
+            style={{ animationDelay: `${idx * 50}ms` }}
           >
-            {notif.date}
-          </Typography>
-        </Alert>
-      ))}
-    </Stack>
-  );
-}
-
-// --- MAIN DASHBOARD ---
-export default function Dashboard() {
-  const theme = useTheme();
-
-  return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        bgcolor: "#f6f8fc",
-        pb: 6,
-        pt: { xs: 2, sm: 5 },
-      }}
-    >
-      <Box
-        sx={{
-          maxWidth: 960,
-          mx: "auto",
-          px: { xs: 1, sm: 2 },
-        }}
-      >
-        {/* Welcome Block */}
-        <Paper
-          elevation={6}
-          sx={{
-            borderRadius: 5,
-            p: { xs: 2, sm: 4 },
-            mb: 4,
-            bgcolor: "#fff",
-            boxShadow: "0 10px 36px 0 rgba(80,130,250,.12)",
-          }}
-        >
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} sm={8}>
-              <Stack direction="row" alignItems="center" spacing={2}>
-                <Avatar
-                  src={user.avatar}
-                  sx={{
-                    width: 64,
-                    height: 64,
-                    bgcolor: blue[100],
-                    fontSize: 32,
-                    border: `2px solid ${theme.palette.primary.main}`,
-                  }}
-                >
-                  {user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
-                </Avatar>
-                <Box>
-                  <Typography variant="h5" fontWeight={700} mb={0.5}>
-                    Hi, {user.name}!
-                  </Typography>
-                  <Stack direction="row" spacing={1} alignItems="center" mb={0.2}>
-                    <Chip
-                      icon={<StarIcon sx={{ color: amber[700] }} />}
-                      label={user.level}
-                      color="warning"
-                      sx={{ fontWeight: 700, fontSize: 14 }}
-                    />
-                    <Chip
-                      icon={<WhatshotIcon sx={{ color: orange[700] }} />}
-                      label={`Streak: ${user.streak} days`}
-                      sx={{
-                        bgcolor: orange[50],
-                        color: orange[900],
-                        fontWeight: 600,
-                        fontSize: 14,
-                      }}
-                    />
-                  </Stack>
-                  <Typography fontSize={15} color="text.secondary" fontWeight={500}>
-                    Keep up your excellent progress!
-                  </Typography>
-                </Box>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={4} mt={{ xs: 2, sm: 0 }}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 2,
-                  borderRadius: 3,
-                  bgcolor: blue[50],
-                  textAlign: "center",
-                }}
-              >
-                <Typography fontWeight={600} fontSize={17} color={blue[800]}>
-                  Points
-                </Typography>
-                <Typography fontWeight={800} fontSize={25} color={blue[700]}>
-                  {user.points} <StarIcon fontSize="small" sx={{ color: amber[600], mb: "-4px" }} />
-                </Typography>
-                <Typography fontSize={14} color="text.secondary" mt={1}>
-                  Progress to next level
-                </Typography>
-                <LinearProgress
-                  variant="determinate"
-                  value={user.progress * 100}
-                  sx={{
-                    height: 8,
-                    borderRadius: 4,
-                    mt: 0.5,
-                    "& .MuiLinearProgress-bar": {
-                      bgcolor: blue[400],
-                    },
-                  }}
+            <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${skill.color} flex items-center justify-center mb-3 shadow-lg group-hover:shadow-xl transition-all duration-300`}>
+              <span className="text-white font-bold text-lg">
+                <AnimatedCounter value={skill.value} />
+              </span>
+            </div>
+            
+            <span className="font-bold text-gray-800 text-center mb-2 group-hover:text-indigo-800 transition-colors">
+              {skill.name}
+            </span>
+            
+            <ProgressBar value={skill.value} className="mb-2" />
+            
+            <div className="flex gap-1">
+              {skill.history.slice(-4).map((h, i) => (
+                <div
+                  key={i}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    h >= 85 ? "bg-green-400 shadow-green-400/50" : 
+                    h >= 75 ? "bg-yellow-400 shadow-yellow-400/50" : 
+                    "bg-red-400 shadow-red-400/50"
+                  } shadow-md`}
+                  style={{ animationDelay: `${i * 100}ms` }}
                 />
-              </Paper>
-            </Grid>
-          </Grid>
-        </Paper>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </FloatingCard>
+  );
+}
 
-        <Grid container spacing={3}>
-          {/* Left Column */}
-          <Grid item xs={12} md={8}>
-            {/* Active Challenges */}
-            <DashboardCard
-              title="Your Active Challenges"
-              icon={<AssignmentTurnedInIcon color="primary" />}
-              actions={
-                <Button variant="text" size="small" color="primary" href="/challenges">
-                  Join New Challenge
-                </Button>
-              }
-            >
-              {activeChallenges.length ? (
-                activeChallenges.map((c) => <ChallengeProgress key={c.id} challenge={c} />)
-              ) : (
-                <Typography fontSize={14} color="text.secondary" my={2}>
-                  No active challenges. <Button href="/challenges">Join one now!</Button>
-                </Typography>
-              )}
-            </DashboardCard>
-
-            {/* Achievements */}
-            <DashboardCard
-              title="Recent Achievements"
-              icon={<EmojiEventsIcon sx={{ color: amber[800] }} />}
-              actions={
-                <Button variant="text" size="small" color="primary" href="/achievements">
-                  View All
-                </Button>
-              }
-            >
-              {achievements.length ? (
-                achievements.map((a) => <AchievementItem achievement={a} key={a.id} />)
-              ) : (
-                <Typography fontSize={14} color="text.secondary" my={2}>
-                  No achievements yet. Complete a challenge to earn one!
-                </Typography>
-              )}
-            </DashboardCard>
-
-            {/* Leaderboard */}
-            <DashboardCard
-              title="Leaderboard"
-              icon={<LeaderboardIcon color="secondary" />}
-            >
-              <LeaderboardMini leaderboard={leaderboard} />
-            </DashboardCard>
-          </Grid>
-
-          {/* Right Column */}
-          <Grid item xs={12} md={4}>
-            {/* Recommendations */}
-            <DashboardCard
-              title="Suggestions For You"
-              icon={<TipsAndUpdatesIcon sx={{ color: deepPurple[400] }} />}
-              sx={{ bgcolor: deepPurple[50] }}
-            >
-              <RecommendationList recommendations={recommendations} />
-            </DashboardCard>
-
-            {/* Activity Timeline */}
-            <DashboardCard
-              title="Recent Activity"
-              icon={<SchoolIcon color="success" />}
-              sx={{ bgcolor: green[50] }}
-              actions={
-                <Button variant="text" size="small" color="success" href="/activity">
-                  View All
-                </Button>
-              }
-            >
-              <ActivityList activity={activity} />
-            </DashboardCard>
-          </Grid>
-        </Grid>
-
-        {/* Notifications / Announcements */}
-        <NotificationPanel notifications={notifications} />
-
-        {/* Quick Actions / Footer */}
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={2} mt={5} alignItems="center" justifyContent="center">
-          <Button
-            variant="contained"
-            size="large"
-            color="primary"
-            href="/challenges"
-            startIcon={<AssignmentTurnedInIcon />}
-            sx={{ borderRadius: 2, fontWeight: 700, minWidth: 170 }}
+function ProgressSummary({ progressSummary }) {
+  return (
+    <FloatingCard className="p-6 mb-8" delay={400}>
+      <BoxTitle>
+        <span className="text-2xl">📈</span>
+        <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          Progress Summary
+        </span>
+      </BoxTitle>
+      
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+        {progressSummary.map((prog, idx) => (
+          <div 
+            key={prog.type} 
+            className="group p-5 rounded-xl bg-gradient-to-br from-white to-gray-50 border border-gray-200/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer"
+            style={{ animationDelay: `${idx * 100}ms` }}
           >
-            Join New Challenge
-          </Button>
-          <Button
-            variant="outlined"
-            size="large"
-            color="secondary"
-            href="/certificates"
-            startIcon={<InsertEmoticonIcon />}
-            sx={{ borderRadius: 2, fontWeight: 700, minWidth: 170 }}
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-2xl transform group-hover:scale-110 transition-transform duration-300">
+                {prog.icon}
+              </span>
+              <div className={`px-3 py-1 rounded-full text-white text-sm font-bold bg-gradient-to-r ${prog.color} shadow-lg`}>
+                <AnimatedCounter value={prog.value} />
+              </div>
+            </div>
+            
+            <div className="font-bold text-gray-800 text-lg mb-2 group-hover:text-indigo-800 transition-colors">
+              {prog.type}
+            </div>
+            
+            <ProgressBar value={prog.value} className="mb-3" />
+            
+            <div className="flex justify-between items-center">
+              <div className="flex gap-1">
+                {prog.history.slice(-3).map((h, i) => (
+                  <div
+                    key={i}
+                    className={`w-2 h-2 rounded-full ${
+                      h >= 85 ? "bg-green-400" : h >= 75 ? "bg-yellow-400" : "bg-red-400"
+                    } shadow-md`}
+                  />
+                ))}
+              </div>
+              <span className="text-xs text-gray-500 hover:text-indigo-600 cursor-pointer transition-colors">
+                View Details
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </FloatingCard>
+  );
+}
+
+function Suggestions({ suggestions }) {
+  return (
+    <FloatingCard className="p-6 mb-8" delay={500}>
+      <BoxTitle>
+        <span className="text-2xl">🌱</span>
+        <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+          Personalized Learning Journey
+        </span>
+      </BoxTitle>
+      
+      <div className="space-y-4">
+        <div className="font-semibold text-gray-700 mb-4 text-lg">Suggestions For You</div>
+        {suggestions.map((s, idx) => (
+          <div 
+            key={s.id} 
+            className={`group flex items-center gap-4 p-4 rounded-xl transition-all duration-300 transform hover:scale-105 cursor-pointer border-l-4 ${
+              s.priority === 'high' ? 'bg-gradient-to-r from-red-50 to-pink-50 hover:from-red-100 hover:to-pink-100 border-red-400' :
+              s.priority === 'medium' ? 'bg-gradient-to-r from-yellow-50 to-orange-50 hover:from-yellow-100 hover:to-orange-100 border-yellow-400' :
+              'bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 border-blue-400'
+            } shadow-lg hover:shadow-xl`}
+            style={{ animationDelay: `${idx * 150}ms` }}
           >
-            View Certificates
-          </Button>
-          <Button
-            variant="outlined"
-            size="large"
-            color="info"
-            href="/support"
-            startIcon={<NotificationsActiveIcon />}
-            sx={{ borderRadius: 2, fontWeight: 700, minWidth: 170 }}
-          >
-            Support
-          </Button>
-        </Stack>
-      </Box>
-    </Box>
+            <div className="flex items-center gap-3">
+              <span className="text-2xl transform group-hover:scale-110 transition-transform duration-300">
+                {s.type === "Practice" ? "📝" : s.type === "Challenge" ? "🏁" : "🧠"}
+              </span>
+              <span className="font-semibold text-gray-800 group-hover:text-indigo-800 transition-colors">
+                {s.text}
+              </span>
+            </div>
+            <div className="ml-auto">
+              <div className={`px-3 py-1 rounded-full text-xs font-bold ${
+                s.priority === 'high' ? 'bg-red-100 text-red-800' :
+                s.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                'bg-blue-100 text-blue-800'
+              }`}>
+                {s.priority.toUpperCase()}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </FloatingCard>
+  );
+}
+
+// --- ENHANCED MAIN DASHBOARD ---
+export default function DashboardPage() {
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 p-4 md:p-8 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-10 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute top-0 right-0 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{animationDelay: '4s'}}></div>
+      </div>
+
+      <div className="relative z-10">
+        {/* Enhanced Profile Section */}
+        <div className="flex flex-col lg:flex-row gap-6 mb-8">
+          {/* Student Info Box */}
+          <FloatingCard className="flex-1 p-6 bg-gradient-to-r from-white/95 to-blue-50/95">
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full border-4 border-white shadow-xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
+                  {user.avatar ? 
+                    <img src={user.avatar} alt="Avatar" className="w-full h-full object-cover" /> :
+                    user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
+                  }
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-400 rounded-full border-2 border-white shadow-md"></div>
+              </div>
+              
+              <div className="flex flex-col gap-3 text-center md:text-left">
+                <div className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-indigo-800 bg-clip-text text-transparent">
+                  {user.name}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                  <div className="flex items-center gap-2 justify-center md:justify-start">
+                    <span className="font-semibold text-gray-600">Class:</span>
+                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full font-bold">
+                      {user.class}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 justify-center md:justify-start">
+                    <span className="font-semibold text-gray-600">City:</span>
+                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full font-bold">
+                      {user.city}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 justify-center md:justify-start">
+                    <span className="font-semibold text-gray-600">State:</span>
+                    <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full font-bold">
+                      {user.state}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FloatingCard>
+          
+          {/* Achievements */}
+          <div className="flex-1 min-w-[320px]">
+            <AchievementSummary achievements={achievements} gamifiedRewards={gamifiedRewards} />
+          </div>
+        </div>
+
+        {/* Daily Dose */}
+        <DailyDose dailyDose={dailyDose} />
+        
+        {/* Skills Assessment */}
+        <SkillsAssessment skillsAssessment={skillsAssessment} />
+        
+        {/* Progress Summary */}
+        <ProgressSummary progressSummary={progressSummary} />
+        
+        {/* Suggestions */}
+        <Suggestions suggestions={suggestions} />
+      </div>
+    </div>
   );
 }

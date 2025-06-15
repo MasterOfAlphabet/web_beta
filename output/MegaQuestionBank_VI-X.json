@@ -1,0 +1,4448 @@
+[
+  {
+    "questionId": "VI-X_Spelling_Dictation_Rookie_00001",
+    "questionText": "Listen and choose:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "ambiguous",
+      "ambigous",
+      "ambigious",
+      "ambigiuos"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "ambiguous",
+    "hint": "This word describes something that has more than one possible meaning or interpretation.",
+    "explanation": "The correct spelling is 'ambiguous'. It means unclear or open to different interpretations.",
+    "mediaType": "text",
+    "mediaUrl": "/audio/ambiguous.mp3",
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Racer_00001",
+    "questionText": "Listen and spell:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "hierarchy",
+    "hint": "This refers to a system or organization in which people or groups are ranked one above the other according to status or authority.",
+    "explanation": "The correct spelling is 'hierarchy'. It's a system of ranking.",
+    "mediaType": "text",
+    "mediaUrl": "/audio/hierarchy.mp3",
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Master_00001",
+    "questionText": "Listen and choose:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "entreprenuer",
+      "entrepreneur",
+      "entrepeneur",
+      "entreprenur"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "entrepreneur",
+    "hint": "This is a person who organizes and operates a business or businesses, taking on greater than normal financial risks in order to do so.",
+    "explanation": "The correct spelling is 'entrepreneur'. It refers to someone who starts a new business.",
+    "mediaType": "text",
+    "mediaUrl": "/audio/entrepreneur.mp3",
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Prodigy_00001",
+    "questionText": "Listen and spell:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "photosynthesis",
+    "hint": "This is the process by which green plants and some other organisms use sunlight to synthesize foods from carbon dioxide and water.",
+    "explanation": "The correct spelling is 'photosynthesis'. It's how plants make their food.",
+    "mediaType": "text",
+    "mediaUrl": "/audio/photosynthesis.mp3",
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Wizard_00001",
+    "questionText": "Listen and choose:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "conscientous",
+      "conscientious",
+      "conscentious",
+      "concientious"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "conscientious",
+    "hint": "This describes a person who wishes to do what is right, especially to do one's work or duty well and thoroughly.",
+    "explanation": "The correct spelling is 'conscientious'. It means diligent and careful.",
+    "mediaType": "text",
+    "mediaUrl": "/audio/conscientious.mp3",
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_MissingLetters_Rookie_00001",
+    "questionText": "Complete: A_COMMODATE",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "accommodate",
+    "hint": "This word means to provide lodging or space for.",
+    "explanation": "The correct spelling is 'accommodate'. It means to make room for or adapt to.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_MissingLetters_Racer_00001",
+    "questionText": "Fill: CONSC_OUS",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "conscious",
+    "hint": "This word means aware of one's own existence, sensations, and thoughts.",
+    "explanation": "The correct spelling is 'conscious'. It means being awake and aware.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_MissingLetters_Master_00001",
+    "questionText": "Complete: P_R_VERANCE (continued effort)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "perseverance",
+    "hint": "This word refers to persistence in doing something despite difficulty or delay in achieving success.",
+    "explanation": "The correct spelling is 'perseverance'. It means to keep trying even when it's hard.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_MissingLetters_Prodigy_00001",
+    "questionText": "Fill: Q_ESTIONNAI_E",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "questionnaire",
+    "hint": "This is a set of printed or written questions with a choice of answers, devised for the purposes of a survey or statistical study.",
+    "explanation": "The correct spelling is 'questionnaire'. It's a list of questions to gather information.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_MissingLetters_Wizard_00001",
+    "questionText": "Complete: _NEC_SS_RILY",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "necessarily",
+    "hint": "This adverb means as a necessary result; inevitably.",
+    "explanation": "The correct spelling is 'necessarily'. It means something that must happen.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Rookie_00001",
+    "questionText": "Unscramble: R H Y T H M",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "rhythm",
+    "hint": "This is a strong, regular, repeated pattern of movement or sound.",
+    "explanation": "The unscrambled word is 'rhythm'. It's a repeated pattern in music or movement.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Racer_00001",
+    "questionText": "Unscramble: C O N S C I E N T I O U S",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "conscientious",
+    "hint": "This word describes a person who is careful and diligent in their work.",
+    "explanation": "The unscrambled word is 'conscientious'. It means doing your work well and carefully.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Master_00001",
+    "questionText": "Unscramble: P E R S E V E R A N C E",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "perseverance",
+    "hint": "This word means persistence in doing something despite difficulty or delay.",
+    "explanation": "The unscrambled word is 'perseverance'. It means to keep trying and never give up.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Prodigy_00001",
+    "questionText": "Unscramble: Q U E S T I O N N A I R E",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "questionnaire",
+    "hint": "This is a research instrument consisting of a series of questions for the purpose of gathering information from respondents.",
+    "explanation": "The unscrambled word is 'questionnaire'. It's a form with many questions.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Wizard_00001",
+    "questionText": "Unscramble: P H O T O S Y N T H E S I S",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "photosynthesis",
+    "hint": "This is the process used by plants, algae and cyanobacteria to convert light energy into chemical energy, through a process that converts water and carbon dioxide into sugars and oxygen.",
+    "explanation": "The unscrambled word is 'photosynthesis'. It's how plants use sunlight to make food.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Rookie_00001",
+    "questionText": "Spell what you see:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "photosynthesis",
+    "hint": "Look at the picture! It's the process plants use to make food from sunlight.",
+    "explanation": "The correct spelling is 'photosynthesis'. It is a key biological process.",
+    "mediaType": "text",
+    "mediaUrl": "/images/photosynthesis.jpg",
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Racer_00001",
+    "questionText": "Identify and spell:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "quadrilateral",
+    "hint": "Observe the image! It's a polygon with four sides and four vertices.",
+    "explanation": "The correct spelling is 'quadrilateral'. It is a shape with four sides.",
+    "mediaType": "text",
+    "mediaUrl": "/images/quadrilateral.jpg",
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Master_00001",
+    "questionText": "Spell the object:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "microscope",
+    "hint": "Look closely at the image! This instrument is used for viewing very small objects.",
+    "explanation": "The correct spelling is 'microscope'. It helps us see tiny things.",
+    "mediaType": "text",
+    "mediaUrl": "/images/microscope.jpg",
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Prodigy_00001",
+    "questionText": "Name the concept:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "mitochondria",
+    "hint": "Check the picture! This is an organelle found in large numbers in most cells, in which the biochemical processes of respiration and energy production occur.",
+    "explanation": "The correct spelling is 'mitochondria'. It is the powerhouse of the cell.",
+    "mediaType": "text",
+    "mediaUrl": "/images/mitochondria.jpg",
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Wizard_00001",
+    "questionText": "Spell what you see:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "parallelogram",
+    "hint": "Look at the picture! This is a quadrilateral with two pairs of parallel sides.",
+    "explanation": "The correct spelling is 'parallelogram'. It is a geometric shape.",
+    "mediaType": "text",
+    "mediaUrl": "/images/parallelogram.jpg",
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Rookie_00001",
+    "questionText": "Which spelling is right?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "questionnaire",
+      "questionaire",
+      "questionnair",
+      "questionare"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "questionnaire",
+    "hint": "This word is a set of printed or written questions with a choice of answers.",
+    "explanation": "The correct spelling is 'questionnaire'. It is used for surveys.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Racer_00001",
+    "questionText": "Choose the correct spelling:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "perseverance",
+      "perseverence",
+      "perseveranse",
+      "preserverance"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "perseverance",
+    "hint": "This word means persistence in doing something despite difficulty.",
+    "explanation": "The correct spelling is 'perseverance'. It means to continue working hard.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Master_00001",
+    "questionText": "Identify the correctly spelled word:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "entrepreneur",
+      "entreprenuer",
+      "entrepeneur",
+      "entreprenur"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "entrepreneur",
+    "hint": "This is a person who sets up a business, taking on financial risks in the hope of profit.",
+    "explanation": "The correct spelling is 'entrepreneur'. It is a business person.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Prodigy_00001",
+    "questionText": "Which is spelled correctly?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "conscientious",
+      "concientious",
+      "conscentious",
+      "conscienntious"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "conscientious",
+    "hint": "This describes a person who is careful to do things correctly and thoroughly.",
+    "explanation": "The correct spelling is 'conscientious'. It means being careful and precise.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Wizard_00001",
+    "questionText": "Select the proper spelling:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "infinitesimal",
+      "infinitessimal",
+      "infinitesimal",
+      "infinitesemal"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "infinitesimal",
+    "hint": "This word means extremely small; too small to be measured.",
+    "explanation": "The correct spelling is 'infinitesimal'. It means extremely tiny.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.612Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.612Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Rookie_00002",
+    "questionText": "Choose the correct spelling for: SUN",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "SUN",
+      "sun",
+      "nus",
+      "Sun"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "sun",
+    "hint": "This bright star gives us light and warmth.",
+    "explanation": "The correct spelling of this word is 'sun'. It is the star our planet orbits.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Racer_00002",
+    "questionText": "Choose the correct spelling for: WATER",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Water",
+      "retaw",
+      "water",
+      "WATER"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "water",
+    "hint": "This clear liquid is essential for life.",
+    "explanation": "The correct spelling of this word is 'water'. It is a vital resource.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Master_00002",
+    "questionText": "Choose the correct spelling for: SCHOOL",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "SCHOOL",
+      "loohcs",
+      "school",
+      "School"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "school",
+    "hint": "This is an institution for educating children.",
+    "explanation": "The correct spelling of this word is 'school'. It's where students learn.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Prodigy_00002",
+    "questionText": "Choose the correct spelling for: ELEPHANT",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "elephant",
+      "tnahpele",
+      "ELEPHANT",
+      "Elephant"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "elephant",
+    "hint": "This large mammal is known for its trunk and tusks.",
+    "explanation": "The correct spelling of this word is 'elephant'. It's the largest land animal.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Wizard_00002",
+    "questionText": "Choose the correct spelling for: EXTRAORDINARY",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "EXTRAORDINARY",
+      "yranidroartxe",
+      "Extraordinary",
+      "extraordinary"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "extraordinary",
+    "hint": "This adjective means very unusual or remarkable.",
+    "explanation": "The correct spelling of this word is 'extraordinary'. It describes something exceptional.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Rookie_00001",
+    "questionText": "Choose the correct spelling for: CAT",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "CAT",
+      "Cat",
+      "cat",
+      "tac"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "cat",
+    "hint": "This furry animal is a common house pet.",
+    "explanation": "The correct spelling of this word is 'cat'. It's a small feline.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Racer_00001",
+    "questionText": "Choose the correct spelling for: APPLE",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Apple",
+      "APPLE",
+      "apple",
+      "elppa"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "apple",
+    "hint": "This round fruit is often red or green and grows on trees.",
+    "explanation": "The correct spelling of this word is 'apple'. It is a popular fruit.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Master_00001",
+    "questionText": "Choose the correct spelling for: SCHOOL",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "school",
+      "SCHOOL",
+      "loohcs",
+      "School"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "school",
+    "hint": "This is a place where students go to learn.",
+    "explanation": "The correct spelling of this word is 'school'. It's an educational institution.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Prodigy_00001",
+    "questionText": "Choose the correct spelling for: DIAMOND",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "DIAMOND",
+      "Diamond",
+      "diamond",
+      "dnomaid"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "diamond",
+    "hint": "This is a precious stone, often clear and sparkly, known for its hardness.",
+    "explanation": "The correct spelling of this word is 'diamond'. It's a valuable gemstone.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Wizard_00001",
+    "questionText": "Choose the correct spelling for: EXTRAORDINARY",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "yranidroartxe",
+      "extraordinary",
+      "Extraordinary",
+      "EXTRAORDINARY"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "extraordinary",
+    "hint": "This adjective describes something beyond what is usual, ordinary, or regular.",
+    "explanation": "The correct spelling of this word is 'extraordinary'. It means highly unusual or exceptional.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Rookie_00002",
+    "questionText": "Choose the correct spelling for: CAT",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "CAT",
+      "cat",
+      "Cat",
+      "tac"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "cat",
+    "hint": "Unscramble the letters to find the name of a common pet.",
+    "explanation": "The correct spelling of this word is 'cat'. It's a small domestic animal.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Racer_00002",
+    "questionText": "Choose the correct spelling for: HAPPY",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "HAPPY",
+      "happy",
+      "yppah",
+      "Happy"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "happy",
+    "hint": "Unscramble the letters to find a word that describes feeling pleased or joyful.",
+    "explanation": "The correct spelling of this word is 'happy'. It means full of happiness.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    }
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Master_00002",
+    "questionText": "Choose the correct spelling for: SCHOOL",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "loohcs",
+      "School",
+      "SCHOOL",
+      "school"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "school",
+    "hint": "Unscramble the letters to find the name of a place where children are educated.",
+    "explanation": "The correct spelling of this word is 'school'. It's an educational establishment.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Prodigy_00002",
+    "questionText": "Choose the correct spelling for: DIAMOND",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "diamond",
+      "dnomaid",
+      "Diamond",
+      "DIAMOND"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "diamond",
+    "hint": "Unscramble the letters to find the name of a precious gemstone.",
+    "explanation": "The correct spelling of this word is 'diamond'. It's a very hard and brilliant gem.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Wizard_00002",
+    "questionText": "Choose the correct spelling for: UNBELIEVABLE",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "elbaveilebnu",
+      "Unbelievable",
+      "unbelievable",
+      "UNBELIEVABLE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "unbelievable",
+    "hint": "Unscramble the letters to find a word meaning extraordinary; incredible.",
+    "explanation": "The correct spelling of this word is 'unbelievable'. It describes something truly astounding.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Rookie_00001",
+    "questionText": "Choose the correct spelling for the object shown in the picture:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "CAT",
+      "Cat",
+      "tac",
+      "cat"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "cat",
+    "hint": "Look at the image! It's a common household pet.",
+    "explanation": "The correct spelling of this word is 'cat'. It's a small, furry animal.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Racer_00001",
+    "questionText": "Choose the correct spelling for the object shown in the picture:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "HOUSE",
+      "House",
+      "house",
+      "esuoh"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "house",
+    "hint": "Look at the image! It's a building where people live.",
+    "explanation": "The correct spelling of this word is 'house'. It's a dwelling.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Master_00001",
+    "questionText": "Choose the correct spelling for the object shown in the picture:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Double",
+      "DOUBLE",
+      "elbuod",
+      "double"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "double",
+    "hint": "Look at the image! It means two times the quantity or amount.",
+    "explanation": "The correct spelling of this word is 'double'. It means twice as much.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Prodigy_00001",
+    "questionText": "Choose the correct spelling for the object shown in the picture:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "UMBRELLA",
+      "Umbrella",
+      "allerbmu",
+      "umbrella"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "umbrella",
+    "hint": "Look at the image! It's a device used for protection against rain or sun.",
+    "explanation": "The correct spelling of this word is 'umbrella'. It provides shelter from weather.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Wizard_00001",
+    "questionText": "Choose the correct spelling for the object shown in the picture:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "extraordinary",
+      "EXTRAORDINARY",
+      "Extraordinary",
+      "yranidroartxe"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "extraordinary",
+    "hint": "Look at the image! This word means very unusual or remarkable.",
+    "explanation": "The correct spelling of this word is 'extraordinary'. It describes something exceptional or uncommon.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Rookie_00002",
+    "questionText": "Listen and choose the correct spelling for: SUN",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "SUN",
+      "sun",
+      "nus",
+      "Sun"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "sun",
+    "hint": "This bright object in the sky provides light and heat.",
+    "explanation": "The correct spelling of this word is 'sun'. It's a star at the center of our solar system.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Racer_00002",
+    "questionText": "Listen and choose the correct spelling for: GREEN",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "green",
+      "GREEN",
+      "neerg",
+      "Green"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "green",
+    "hint": "This is a color, like that of grass or emeralds.",
+    "explanation": "The correct spelling of this word is 'green'. It's a primary color.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Master_00002",
+    "questionText": "Listen and choose the correct spelling for: DOUBLE",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "DOUBLE",
+      "double",
+      "elbuod",
+      "Double"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "double",
+    "hint": "This word means twice the amount or number.",
+    "explanation": "The correct spelling of this word is 'double'. It means two times.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Prodigy_00002",
+    "questionText": "Listen and choose the correct spelling for: CALENDAR",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Calendar",
+      "CALENDAR",
+      "radnelac",
+      "calendar"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "calendar",
+    "hint": "This is a system for organizing days, weeks, and months.",
+    "explanation": "The correct spelling of this word is 'calendar'. It helps us keep track of dates.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Wizard_00002",
+    "questionText": "Listen and choose the correct spelling for: ENTHUSIASTIC",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "citsaisuhtne",
+      "ENTHUSIASTIC",
+      "enthusiastic",
+      "Enthusiastic"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "enthusiastic",
+    "hint": "This adjective describes someone who feels or shows intense and eager enjoyment, interest, or approval.",
+    "explanation": "The correct spelling of this word is 'enthusiastic'. It means very excited and passionate.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Rookie_00003",
+    "questionText": "Which of these words is the name of a place where cars are parked?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "HAT",
+      "tah",
+      "hat",
+      "Hat"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "hat",
+    "hint": "This is an item of clothing worn on the head.",
+    "explanation": "The correct spelling of this word is 'hat'. It's a head covering.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Racer_00003",
+    "questionText": "Which word is the name of a natural body of water surrounded by land?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Green",
+      "neerg",
+      "GREEN",
+      "green"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "green",
+    "hint": "This is a color often associated with nature.",
+    "explanation": "The correct spelling of this word is 'green'. It's a color between blue and yellow.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Master_00003",
+    "questionText": "Which word means a thick growth of trees and plants?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "elgnuj",
+      "jungle",
+      "JUNGLE",
+      "Jungle"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "jungle",
+    "hint": "This is a wild land overgrown with dense vegetation.",
+    "explanation": "The correct spelling of this word is 'jungle'. It's a dense forest.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Prodigy_00003",
+    "questionText": "Which word describes an animal that hops and has a pouch?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "diamond",
+      "Diamond",
+      "dnomaid",
+      "DIAMOND"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "diamond",
+    "hint": "This word refers to a very hard, shiny, and valuable stone.",
+    "explanation": "The correct spelling of this word is 'diamond'. It's a precious gem.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_CorrectSpelling_Wizard_00003",
+    "questionText": "Which word means to represent something as being larger, better, or worse than it really is?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "unbelievable",
+      "UNBELIEVABLE",
+      "Unbelievable",
+      "elbaveilebnu"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "unbelievable",
+    "hint": "This word describes something so surprising or unusual that it is difficult to believe.",
+    "explanation": "The correct spelling of this word is 'unbelievable'. It means incredible.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Rookie_00002",
+    "questionText": "Which of these words is the name of a place where cars are parked?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Sun",
+      "SUN",
+      "nus",
+      "sun"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "sun",
+    "hint": "This celestial body is the star at the center of the solar system.",
+    "explanation": "The correct spelling of this word is 'sun'. It's the brightest object in our sky.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Racer_00002",
+    "questionText": "Which word is the name of a natural body of water surrounded by land?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "elppa",
+      "apple",
+      "APPLE",
+      "Apple"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "apple",
+    "hint": "This word refers to a common fruit that can be red or green.",
+    "explanation": "The correct spelling of this word is 'apple'. It's a crisp and juicy fruit.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Master_00002",
+    "questionText": "Which word means a thick growth of trees and plants?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "double",
+      "Double",
+      "elbuod",
+      "DOUBLE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "double",
+    "hint": "This word means twice the amount or quantity.",
+    "explanation": "The correct spelling of this word is 'double'. It signifies multiplication by two.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Prodigy_00002",
+    "questionText": "Which word is something that keeps you dry when it rains?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "ooragnak",
+      "Kangaroo",
+      "kangaroo",
+      "KANGAROO"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "kangaroo",
+    "hint": "This word refers to a large marsupial found in Australia.",
+    "explanation": "The correct spelling of this word is 'kangaroo'. It's an animal known for jumping.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Wizard_00002",
+    "questionText": "Which word means to represent something as being larger, better, or worse than it really is?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "EXAGGERATE",
+      "etareggaxe",
+      "Exaggerate",
+      "exaggerate"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "exaggerate",
+    "hint": "This word means to enlarge beyond bounds or the truth.",
+    "explanation": "The correct spelling of this word is 'exaggerate'. It means to overstate something.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Rookie_00003",
+    "questionText": "Which of these words is the name of a place where cars are parked?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "hat",
+      "Hat",
+      "tah",
+      "HAT"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "hat",
+    "hint": "Unscramble the letters to find a common accessory worn on the head.",
+    "explanation": "The correct spelling of this word is 'hat'. It's a piece of attire.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Racer_00003",
+    "questionText": "Which word is the name of a natural body of water surrounded by land?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Happy",
+      "happy",
+      "yppah",
+      "HAPPY"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "happy",
+    "hint": "Unscramble the letters to find a feeling of pleasure or contentment.",
+    "explanation": "The correct spelling of this word is 'happy'. It indicates joy.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Master_00003",
+    "questionText": "Which word means a thick growth of trees and plants?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "SCHOOL",
+      "School",
+      "loohcs",
+      "school"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "school",
+    "hint": "Unscramble the letters to find a place for learning.",
+    "explanation": "The correct spelling of this word is 'school'. It's an academic institution.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Prodigy_00003",
+    "questionText": "Which word describes an animal that hops and has a pouch?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "UMBRELLA",
+      "umbrella",
+      "allerbmu",
+      "Umbrella"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "umbrella",
+    "hint": "Unscramble the letters to find an item used for protection from rain or sun.",
+    "explanation": "The correct spelling of this word is 'umbrella'. It shields from elements.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Wizard_00003",
+    "questionText": "Which word means hard to believe?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "exaggerate",
+      "EXAGGERATE",
+      "Exaggerate",
+      "etareggaxe"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "exaggerate",
+    "hint": "Unscramble the letters to find a word meaning to represent something as better or worse than it really is.",
+    "explanation": "The correct spelling of this word is 'exaggerate'. It means to make something seem larger or more important.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Rookie_00002",
+    "questionText": "Which of these words is the name of a bright object in the sky?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Dog",
+      "DOG",
+      "dog",
+      "god"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "dog",
+    "hint": "Look at the image! It's a common domesticated animal, a carnivorous mammal.",
+    "explanation": "The correct spelling of this word is 'dog'. It's a loyal pet.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Racer_00002",
+    "questionText": "Which word is a color often found in leaves?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Green",
+      "green",
+      "GREEN",
+      "neerg"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "green",
+    "hint": "Look at the image! This color is between blue and yellow on the spectrum.",
+    "explanation": "The correct spelling of this word is 'green'. It's a secondary color.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Master_00002",
+    "questionText": "Which word means something that happens twice?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "elgnuj",
+      "Jungle",
+      "jungle",
+      "JUNGLE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "jungle",
+    "hint": "Look at the image! This is a dense tropical forest.",
+    "explanation": "The correct spelling of this word is 'jungle'. It's a type of wilderness.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Prodigy_00002",
+    "questionText": "Which word is the name of a large animal with a trunk?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "CALENDAR",
+      "calendar",
+      "radnelac",
+      "Calendar"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "calendar",
+    "hint": "Look at the image! This is a chart or series of pages showing the days, weeks, and months of a particular year.",
+    "explanation": "The correct spelling of this word is 'calendar'. It helps organize time.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture__Wizard_00002",
+    "questionText": "Which word means to give space for someone or something?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "yranidroartxe",
+      "Extraordinary",
+      "extraordinary",
+      "EXTRAORDINARY"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "extraordinary",
+    "hint": "Look at the image! This word means very unusual or remarkable.",
+    "explanation": "The correct spelling of this word is 'extraordinary'. It describes something amazing.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Rookie_00003",
+    "questionText": "Which of these words is the name of something you drink from?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Cat",
+      "tac",
+      "CAT",
+      "cat"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "cat",
+    "hint": "Listen carefully! This word is a common small carnivorous mammal.",
+    "explanation": "The correct spelling of this word is 'cat'. It's a popular domestic animal.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Racer_00003",
+    "questionText": "Which word means 'not sad'?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "green",
+      "GREEN",
+      "neerg",
+      "Green"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "green",
+    "hint": "Listen carefully! This word refers to a color.",
+    "explanation": "The correct spelling of this word is 'green'. It's a vibrant color.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Master_00003",
+    "questionText": "Which word describes a fun game with pieces?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "School",
+      "SCHOOL",
+      "school",
+      "loohcs"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "school",
+    "hint": "Listen carefully! This is a place where you learn.",
+    "explanation": "The correct spelling of this word is 'school'. It's an establishment for education.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Prodigy_00003",
+    "questionText": "Which word is something that keeps you dry when it rains?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "kangaroo",
+      "ooragnak",
+      "KANGAROO",
+      "Kangaroo"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "kangaroo",
+    "hint": "Listen carefully! This is a large marsupial.",
+    "explanation": "The correct spelling of this word is 'kangaroo'. It's a unique Australian animal.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Wizard_00003",
+    "questionText": "Which word means hard to believe?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "etareggaxe",
+      "Exaggerate",
+      "exaggerate",
+      "EXAGGERATE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "exaggerate",
+    "hint": "Listen carefully! This word means to represent as larger or more important than it actually is.",
+    "explanation": "The correct spelling of this word is 'exaggerate'. It means to overstate.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Rookie_00004",
+    "questionText": "Listen and select the correct spelling: /ˈænɪməl/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "anmal",
+      "animal",
+      "animl",
+      "amnial"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "animal",
+    "hint": "This word refers to a living organism that feeds on organic matter, typically having specialized sense organs and a nervous system and able to respond rapidly to stimuli.",
+    "explanation": "The correct spelling is 'animal'. It refers to a living creature.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheCorrectSpelling_Rookie_00001",
+    "questionText": "Choose the correct spelling of a large building.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "bilding",
+      "building",
+      "bulding",
+      "biulding"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "building",
+    "hint": "This refers to a structure with a roof and walls.",
+    "explanation": "The correct spelling is 'building'. It's a constructed edifice.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Rookie_00003",
+    "questionText": "Select the correct spelling for 'd _ ctionary' (Hint: It’s a book of words).",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "dictonary",
+      "dictionary",
+      "dcitionary",
+      "idctionary"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "dictionary",
+    "hint": "This is a book that lists words in alphabetical order and gives their meanings.",
+    "explanation": "The correct spelling is 'dictionary'. It's a reference book.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Rookie_00004",
+    "questionText": "Unscramble 'rytconu' to spell a place.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "contryu",
+      "country",
+      "ocuntyr",
+      "yrtnocu"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "country",
+    "hint": "This refers to a nation or state.",
+    "explanation": "The correct spelling is 'country'. It's a geographical region.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture_Rookie_00001",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "rhinocerous",
+      "rhinoceros",
+      "rhinoceors",
+      "rihnoceros"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "rhinoceros",
+    "hint": "Look at the picture! It's a large, heavily built mammal with one or two horns on its nose.",
+    "explanation": "The correct spelling is 'rhinoceros'. It's a large animal from Africa or Asia.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Racer_00004",
+    "questionText": "Listen and select the correct spelling: /kəˈmjuːnɪti/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "comunity",
+      "community",
+      "commnity",
+      "ocmmunity"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "community",
+    "hint": "This word refers to a group of people living in the same place or having a particular characteristic in common.",
+    "explanation": "The correct spelling is 'community'. It refers to a group of people living together.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheCorrectSpelling_Racer_00001",
+    "questionText": "Choose the correct spelling of a subject you study.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "scienc",
+      "science",
+      "scince",
+      "seicnce"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "science",
+    "hint": "This is the intellectual and practical activity encompassing the systematic study of the structure and behavior of the physical and natural world through observation and experiment.",
+    "explanation": "The correct spelling is 'science'. It's a field of study.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Racer_00003",
+    "questionText": "Select the correct spelling for 'n _ighbor' (Hint: They live nearby).",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "neghbor",
+      "neighbor",
+      "nighbor",
+      "nieghbor"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "neighbor",
+    "hint": "This word refers to a person living near or next door to the speaker or person referred to.",
+    "explanation": "The correct spelling is 'neighbor'. It's someone who lives close by.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Racer_00004",
+    "questionText": "Unscramble 'snoitats' to spell a place for trains.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "tsation",
+      "station",
+      "satiton",
+      "otstian"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "station",
+    "hint": "This is a regular stopping place on a public transportation route, especially one on a railway line with a platform and often a building.",
+    "explanation": "The correct spelling is 'station'. It's a stop on a travel route.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture_Racer_00001",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "bech",
+      "beach",
+      "baech",
+      "ebach"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "beach",
+    "hint": "Look at the picture! It's a sandy or pebbly shore by the sea or a lake.",
+    "explanation": "The correct spelling is 'beach'. It's a coastal landform.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Master_00004",
+    "questionText": "Listen and select the correct spelling: /ˌɪnfərˈmeɪʃn/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "informtion",
+      "information",
+      "infomration",
+      "infromation"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "information",
+    "hint": "This word refers to facts provided or learned about something or someone.",
+    "explanation": "The correct spelling is 'information'. It means knowledge or data.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheCorrectSpelling_Master_00001",
+    "questionText": "Choose the correct spelling of a person who performs.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "actr",
+      "actor",
+      "aotr",
+      "atcor"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "actor",
+    "hint": "This is a person whose profession is acting on the stage, in films, or on television.",
+    "explanation": "The correct spelling is 'actor'. It's someone who plays roles in plays or movies.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Master_00003",
+    "questionText": "Select the correct spelling for 'd _ fficult' (Hint: It means hard).",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "dificult",
+      "difficult",
+      "diffcult",
+      "idfficult"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "difficult",
+    "hint": "This adjective means needing much effort and skill to accomplish, deal with, or understand.",
+    "explanation": "The correct spelling is 'difficult'. It means challenging or not easy.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Master_00004",
+    "questionText": "Unscramble 'noitacude' to spell something you get at school.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "eductaion",
+      "education",
+      "eudcation",
+      "oduection"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "education",
+    "hint": "This is the process of receiving or giving systematic instruction, especially at a school or university.",
+    "explanation": "The correct spelling is 'education'. It refers to the process of learning.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture_Master_00001",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "shovl",
+      "shovel",
+      "sohvel",
+      "hsovel"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "shovel",
+    "hint": "Look at the picture! It's a tool with a broad blade and a handle, used for digging.",
+    "explanation": "The correct spelling is 'shovel'. It's a digging implement.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Prodigy_00004",
+    "questionText": "Listen and select the correct spelling: /ˌækəˈdemɪk/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "acadmic",
+      "academic",
+      "acedemic",
+      "acdamic"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "academic",
+    "hint": "This word relates to education and scholarship.",
+    "explanation": "The correct spelling is 'academic'. It pertains to schooling.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheCorrectSpelling_Prodigy_00001",
+    "questionText": "Choose the correct spelling of a scientific study.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "experimnt",
+      "experiment",
+      "expiriment",
+      "xepriment"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "experiment",
+    "hint": "This is a scientific procedure undertaken to make a discovery, test a hypothesis, or demonstrate a known fact.",
+    "explanation": "The correct spelling is 'experiment'. It's a scientific test.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Prodigy_00003",
+    "questionText": "Select the correct spelling for 'c _ nstitution' (Hint: It’s a set of laws).",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "consttution",
+      "constitution",
+      "conitution",
+      "ocnstitution"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "constitution",
+    "hint": "This is a body of fundamental principles or established precedents according to which a state or other organization is acknowledged to be governed.",
+    "explanation": "The correct spelling is 'constitution'. It's a foundational legal document.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Prodigy_00004",
+    "questionText": "Unscramble 'tsevni' to spell something you do with money.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "vniest",
+      "invest",
+      "ivnest",
+      "tsivne"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "invest",
+    "hint": "This verb means to put money into financial schemes, shares, or property with the expectation of achieving a profit.",
+    "explanation": "The correct spelling is 'invest'. It means to put resources into something for future gain.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture_Prodigy_00001",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "ocen",
+      "ocean",
+      "oecan",
+      "coean"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "ocean",
+    "hint": "Look at the picture! It's a very large expanse of sea.",
+    "explanation": "The correct spelling is 'ocean'. It's a vast body of saltwater.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Wizard_00004",
+    "questionText": "Listen and select the correct spelling: /əˈkweɪntəns/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "aquantance",
+      "acquaintance",
+      "acqaintance",
+      "acquaitnance"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "acquaintance",
+    "hint": "This word refers to a person one knows slightly, but who is not a close friend.",
+    "explanation": "The correct spelling is 'acquaintance'. It's someone you know casually.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheCorrectSpelling_Wizard_00001",
+    "questionText": "Choose the correct spelling of a word meaning required.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "necesary",
+      "necessary",
+      "neccesary",
+      "encessary"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "necessary",
+    "hint": "This adjective means required to be done, achieved, or present; essential.",
+    "explanation": "The correct spelling is 'necessary'. It means essential or crucial.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Wizard_00003",
+    "questionText": "Select the correct spelling for 'r _ commend' (Hint: It means suggest).",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "reccomend",
+      "recommend",
+      "recomend",
+      "ercommend"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "recommend",
+    "hint": "This verb means to suggest or praise as suitable for a particular purpose or role.",
+    "explanation": "The correct spelling is 'recommend'. It means to advise or suggest.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Wizard_00004",
+    "questionText": "Unscramble 'noitacifitnedi' to spell a process of proving identity.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "identfication",
+      "identification",
+      "idnetification",
+      "ifdentication"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "identification",
+    "hint": "This refers to the action or process of identifying someone or something or the fact of being identified.",
+    "explanation": "The correct spelling is 'identification'. It means confirming identity.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture_Wizard_00001",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "telphone",
+      "telephone",
+      "telepone",
+      "etelphone"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "telephone",
+    "hint": "Look at the picture! It's an apparatus, system, or process for transmitting sounds or speech over a distance.",
+    "explanation": "The correct spelling is 'telephone'. It's a communication device.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.643Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.643Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Prodigy_00005",
+    "questionText": "Listen and select the correct spelling: /prɪˈzɛnt/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "presant",
+      "present",
+      "presint",
+      "prezent"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "present",
+    "hint": "This word refers to something given or offered.",
+    "explanation": "The correct spelling is 'present'. It means a gift.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 20,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.662Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.662Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheCorrectSpelling_Prodigy_00002",
+    "questionText": "Choose the correctly spelled word: (Find the Correct Spelling)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "explorar",
+      "explorer",
+      "exploror",
+      "explourer"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "explorer",
+    "hint": "This word describes a person who explores a new or unfamiliar area.",
+    "explanation": "The correct spelling is 'explorer'. It means a person who travels to new places.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 20,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.662Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.662Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Prodigy_00004",
+    "questionText": "Fill in the missing letter: W _ LCOME (Find the Missing Letter)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "WELKOME",
+      "WELCOME",
+      "WILCOME",
+      "WALCOME"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "WELCOME",
+    "hint": "This word is an act of greeting someone warmly.",
+    "explanation": "The correct spelling is 'WELCOME'. It's a friendly greeting.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 20,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.662Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.662Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Prodigy_00005",
+    "questionText": "Unscramble the letters: STTAUE (Unscramble)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "STAUTE",
+      "STATUE",
+      "SATTUE",
+      "STETAU"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "STATUE",
+    "hint": "Unscramble the letters to find a carved or cast figure of a person or animal, especially one that is life-size or larger.",
+    "explanation": "The correct spelling is 'STATUE'. It's a sculpted representation.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 20,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.662Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.662Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture_Prodigy_00002",
+    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionType": "image",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "HASPETAL",
+      "HOSPITAL",
+      "HOSPTAL",
+      "HOSPITOL"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "HOSPITAL",
+    "hint": "Look at the picture! It's an institution providing medical and surgical treatment and nursing care for sick or injured people.",
+    "explanation": "The correct spelling is 'HOSPITAL'. It's a healthcare facility.",
+    "mediaType": "text",
+    "mediaUrl": "hospital.jpg",
+    "points": 20,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Wizard_00005",
+    "questionText": "Listen and select the correct spelling: /ˈkæləndər/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "calender",
+      "calendar",
+      "calandar",
+      "calindar"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "calendar",
+    "hint": "This is a chart or series of pages showing the days, weeks, and months of a particular year.",
+    "explanation": "The correct spelling is 'calendar'. It helps organize time.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 25,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheCorrectSpelling_Wizard_00002",
+    "questionText": "Choose the correctly spelled word: (Find the Correct Spelling)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "sociologist",
+      "sociologyst",
+      "sociolagist",
+      "sociolajist"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "sociologist",
+    "hint": "This word describes an expert in the study of the development, structure, and functioning of human society.",
+    "explanation": "The correct spelling is 'sociologist'. It's a social scientist.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 25,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Wizard_00004",
+    "questionText": "Fill in the missing letter: M _ STERIOUS (Find the Missing Letter)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "MOSTERIOUS",
+      "MYSTERIOUS",
+      "MUSTERIOUS",
+      "MESTERIOUS"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "MYSTERIOUS",
+    "hint": "This adjective describes something difficult or impossible to understand, explain, or identify.",
+    "explanation": "The correct spelling is 'MYSTERIOUS'. It means puzzling or secret.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 25,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Wizard_00005",
+    "questionText": "Unscramble the letters: CYNAGE (Unscramble)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "CAGNEY",
+      "CYNAGE",
+      "CYANGE",
+      "CANGEY"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "CAGNEY",
+    "hint": "This can be a surname, but in the context of synonyms for diplomacy, it refers to a different concept.",
+    "explanation": "The correct spelling is 'CAGNEY'. This word, though a surname, is not typically used as a synonym for diplomacy. It's important to differentiate names from common words.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 25,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Wizard_00006",
+    "questionText": "Unscramble the letters: EROFST (Unscramble)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "FOREST",
+      "FROEST",
+      "FOSTER",
+      "RESTOF"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "FOREST",
+    "hint": "Unscramble the letters to find a large area covered chiefly with trees and undergrowth.",
+    "explanation": "The correct spelling is 'FOREST'. It's a large wooded area.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 25,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture_Wizard_00002",
+    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionType": "image",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "PLANNET",
+      "PLANET",
+      "PLONET",
+      "PLENET"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "PLANET",
+    "hint": "Look at the picture! It's a celestial body moving in an elliptical orbit around a star.",
+    "explanation": "The correct spelling is 'PLANET'. It's a large astronomical body.",
+    "mediaType": "text",
+    "mediaUrl": "planet.jpg",
+    "points": 25,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Master_00005",
+    "questionText": "Listen and select the correct spelling: /ˈɡærɪdʒ/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "garige",
+      "garage",
+      "garege",
+      "garadge"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "garage",
+    "hint": "This word refers to a building or shed for housing a motor vehicle or vehicles.",
+    "explanation": "The correct spelling is 'garage'. It's a place to keep cars.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 15,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheCorrectSpelling_Master_00002",
+    "questionText": "Choose the correctly spelled word: (Find the Correct Spelling)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "roket",
+      "rocket",
+      "rockit",
+      "rockett"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "rocket",
+    "hint": "This word describes a cylindrical projectile that can be propelled to a great height or distance.",
+    "explanation": "The correct spelling is 'rocket'. It's a vehicle for space travel.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 15,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Master_00004",
+    "questionText": "Fill in the missing letter: C _ MPASS (Find the Missing Letter)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "CIMPASS",
+      "COMPASS",
+      "CAMPASS",
+      "CUMPASS"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "COMPASS",
+    "hint": "This is an instrument containing a magnetized pointer that shows the direction of magnetic north and is used for navigation.",
+    "explanation": "The correct spelling is 'COMPASS'. It's a navigation tool.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 15,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Master_00005",
+    "questionText": "Unscramble the letters: ASTRNOA (Unscramble)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "ASTRONAUT",
+      "ASTORNA",
+      "AUSTRONA",
+      "ASTRNOA"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "ASTRONAUT",
+    "hint": "Unscramble the letters to find a person trained to travel in a spacecraft.",
+    "explanation": "The correct spelling is 'ASTRONAUT'. It's a space traveler.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 15,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture_Master_00002",
+    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionType": "image",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "DALPHIN",
+      "DOLPHIN",
+      "DOLFIN",
+      "DOLPHAN"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "DOLPHIN",
+    "hint": "Look at the picture! It's a small toothed whale that typically has a beaklike snout and a curved fin on the back.",
+    "explanation": "The correct spelling is 'DOLPHIN'. It's an intelligent marine mammal.",
+    "mediaType": "text",
+    "mediaUrl": "dolphin.jpg",
+    "points": 15,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Prodigy_00006",
+    "questionText": "Listen and select the correct spelling: /ˈmɛməri/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "memary",
+      "memory",
+      "memmory",
+      "memery"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "memory",
+    "hint": "This word refers to the faculty by which the mind stores and remembers information.",
+    "explanation": "The correct spelling is 'memory'. It's the capacity to recall past experiences.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 20,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheCorrectSpelling_Prodigy_00003",
+    "questionText": "Choose the correctly spelled word: (Find the Correct Spelling)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "vetrinary",
+      "veterinary",
+      "vetinary",
+      "veterinery"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "veterinary",
+    "hint": "This word relates to the medical care of animals.",
+    "explanation": "The correct spelling is 'veterinary'. It pertains to animal health.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 20,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Prodigy_00005",
+    "questionText": "Fill in the missing letter: C _ MPUTER (Find the Missing Letter)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "CAMPUTER",
+      "COMPUTER",
+      "CEMPUTER",
+      "CIMPOTER"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "COMPUTER",
+    "hint": "This is an electronic device for storing and processing data, typically in binary form.",
+    "explanation": "The correct spelling is 'COMPUTER'. It's an electronic device for computations.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 20,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Prodigy_00006",
+    "questionText": "Unscramble the letters: TEALFNOPH (Unscramble)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "ELEPHANT",
+      "EALTHONP",
+      "TELEPHAN",
+      "PHANTELE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "ELEPHANT",
+    "hint": "Unscramble the letters to find a very large herbivorous mammal with a trunk.",
+    "explanation": "The correct spelling is 'ELEPHANT'. It's a majestic and large animal.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 20,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture_Prodigy_00003",
+    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionType": "image",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "LAKE",
+      "LEAK",
+      "LACK",
+      "LAK"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "LAKE",
+    "hint": "Look at the picture! It's a large body of relatively still water surrounded by land.",
+    "explanation": "The correct spelling is 'LAKE'. It's an inland body of water.",
+    "mediaType": "text",
+    "mediaUrl": "lake.jpg",
+    "points": 20,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Dictation_Wizard_00006",
+    "questionText": "Listen and select the correct spelling: /ˈæktɪvəti/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "actavity",
+      "activity",
+      "activety",
+      "actevity"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "activity",
+    "hint": "This word refers to the condition in which things are happening or being done.",
+    "explanation": "The correct spelling is 'activity'. It means engaging in various actions.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 25,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheCorrectSpelling_Wizard_00003",
+    "questionText": "Choose the correctly spelled word: (Find the Correct Spelling)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "camara",
+      "camera",
+      "camerra",
+      "cammera"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "camera",
+    "hint": "This is a device for recording visual images in the form of photographs, film, or video signals.",
+    "explanation": "The correct spelling is 'camera'. It's a photographic device.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 25,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_FindTheMissingLetters_Wizard_00005",
+    "questionText": "Fill in the missing letter: K _ OWLEDGE (Find the Missing Letter)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "KONWLEDGE",
+      "KNOWLEDGE",
+      "KNEWLEDGE",
+      "KNOWLIDGE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "KNOWLEDGE",
+    "hint": "This word refers to facts, information, and skills acquired through experience or education.",
+    "explanation": "The correct spelling is 'KNOWLEDGE'. It means understanding or information.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 25,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_Unscramble_Wizard_00006",
+    "questionText": "Unscramble the letters: EROFST (Unscramble)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "FOREST",
+      "FROEST",
+      "FOSTER",
+      "RESTOF"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "FOREST",
+    "hint": "Unscramble the letters to find a large area of land covered with trees.",
+    "explanation": "The correct spelling is 'FOREST'. It's an extensive woodland.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 25,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  },
+  {
+    "questionId": "VI-X_Spelling_SpellThePicture_Wizard_00003",
+    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionType": "image",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "BRIDGE",
+      "BREGE",
+      "BIRGE",
+      "BRIDG"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "BRIDGE",
+    "hint": "Look at the picture! It's a structure carrying a road, path, railway, etc., across a river, ravine, road, or other obstacle.",
+    "explanation": "The correct spelling is 'BRIDGE'. It's a structure that spans a gap.",
+    "mediaType": "text",
+    "mediaUrl": "bridge.jpg",
+    "points": 25,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.663Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.663Z"
+    ]
+  }
+]

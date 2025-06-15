@@ -34,6 +34,13 @@ import EightInOnePage from "./pages/EightInOnePage";
 
 import SkillSpotlightPage from "./pages/SkillSpotlightPage.tsx";
 
+import PronunciationTool from "./components/PronunciationTool";
+import  SubscriptionBanner from "./components/SubscriptionBanner";
+
+import StoryScrambleGame from "./games/StoryScrambleGame";
+
+import SHARPWordHunt from "./games/SHARPWordHunt";
+
 // Import other page components as you create them
 
 // 1. Create and export the AuthContext
@@ -79,6 +86,12 @@ function App() {
         <Route path="/all-modules" element={<EightInOnePage />} />
 
         <Route path="/skill-spotlight" element={<SkillSpotlightPage />} />
+
+        <Route path="/pronunciation-practice" element={<PronunciationTool />} />
+
+        <Route path="/games/storyscramble" element={<StoryScrambleGame />} />
+
+         <Route path="/games/sharpwordhunt" element={<SHARPWordHunt />} />
 
         {/* Add other routes here as you add the pages */}
       </Routes>

@@ -4,6 +4,7 @@ const wordData = [
   {
     "word": "big",
     "partOfSpeech": "adjective",
+    "pronunciation":"none",
     "meaning": "large in size or amount",
     "sentence": "The elephant is a big animal.",
     "synonyms": "large",

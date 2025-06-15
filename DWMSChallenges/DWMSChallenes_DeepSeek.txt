@@ -1,0 +1,667 @@
+[
+  // ============= CLASS I/II (25 Questions) =============
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Rookie",
+    "questionText": "Listen and choose:",
+    "mediaUrl": "/audio/cat.mp3",
+    "options": ["kat", "cat", "cut", "kit"],
+    "correctAnswer": "cat",
+    "hint": "Animal that says 'meow'"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Racer",
+    "questionText": "Listen and spell:",
+    "mediaUrl": "/audio/ship.mp3",
+    "correctAnswer": "ship"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Master",
+    "questionText": "Listen and choose:",
+    "mediaUrl": "/audio/frog.mp3",
+    "options": ["frog", "fog", "freg", "frogg"],
+    "correctAnswer": "frog"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Listen and spell:",
+    "mediaUrl": "/audio/brush.mp3",
+    "correctAnswer": "brush"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Wizard",
+    "questionText": "Listen and choose:",
+    "mediaUrl": "/audio/thumb.mp3",
+    "options": ["thum", "thumb", "thumm", "thumbb"],
+    "correctAnswer": "thumb"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Rookie",
+    "questionText": "Complete: D_G",
+    "options": ["A", "O", "E", "I"],
+    "correctAnswer": "O"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Racer",
+    "questionText": "Fill: RA_N",
+    "options": ["I", "A", "O", "E"],
+    "correctAnswer": "I"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Master",
+    "questionText": "Complete: B__K (object for reading)",
+    "correctAnswer": "book"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Fill: S__OOL",
+    "options": ["A", "C", "H", "K"],
+    "correctAnswer": "C"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Wizard",
+    "questionText": "Complete: A__LE (fruit)",
+    "correctAnswer": "apple"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Rookie",
+    "questionText": "Unscramble: T A C",
+    "correctAnswer": "cat"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Racer",
+    "questionText": "Unscramble: P N A E L P",
+    "correctAnswer": "apple"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Master",
+    "questionText": "Unscramble: O B K O",
+    "correctAnswer": "book"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Unscramble: H S I P",
+    "correctAnswer": "ship"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Wizard",
+    "questionText": "Unscramble: R G F O",
+    "correctAnswer": "frog"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Rookie",
+    "questionText": "Spell what you see:",
+    "mediaUrl": "/images/sun.jpg",
+    "correctAnswer": "sun"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Racer",
+    "questionText": "Identify and spell:",
+    "mediaUrl": "/images/clock.jpg",
+    "correctAnswer": "clock"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Master",
+    "questionText": "Spell the object:",
+    "mediaUrl": "/images/chair.jpg",
+    "correctAnswer": "chair"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Name the item:",
+    "mediaUrl": "/images/glasses.jpg",
+    "correctAnswer": "glasses"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Wizard",
+    "questionText": "Spell what you see:",
+    "mediaUrl": "/images/elephant.jpg",
+    "correctAnswer": "elephant"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Rookie",
+    "questionText": "Which spelling is right?",
+    "options": ["hapy", "happy", "happie", "hapi"],
+    "correctAnswer": "happy"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Racer",
+    "questionText": "Choose the correct spelling:",
+    "options": ["butterflie", "butterfly", "butturfly", "butterflei"],
+    "correctAnswer": "butterfly"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Master",
+    "questionText": "Identify the correctly spelled word:",
+    "options": ["acomodate", "acommodate", "accommodate", "acommoddate"],
+    "correctAnswer": "accommodate"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Which is spelled correctly?",
+    "options": ["definately", "definitely", "definitley", "definately"],
+    "correctAnswer": "definitely"
+  },
+  {
+    "classGroup": "Class I/II",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Wizard",
+    "questionText": "Select the proper spelling:",
+    "options": ["conscientious", "concientous", "conscentious", "conscienntious"],
+    "correctAnswer": "conscientious"
+  },
+
+  // ============= CLASS III-V (25 Questions) =============
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Rookie",
+    "questionText": "Listen and choose:",
+    "mediaUrl": "/audio/elephant.mp3",
+    "options": ["elefant", "elephant", "elephent", "elephunt"],
+    "correctAnswer": "elephant",
+    "hint": "Large gray animal with a trunk"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Racer",
+    "questionText": "Listen and spell:",
+    "mediaUrl": "/audio/giraffe.mp3",
+    "correctAnswer": "giraffe"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Master",
+    "questionText": "Listen and choose:",
+    "mediaUrl": "/audio/bicycle.mp3",
+    "options": ["bycicle", "bicycle", "bicycel", "bysicle"],
+    "correctAnswer": "bicycle"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Listen and spell:",
+    "mediaUrl": "/audio/umbrella.mp3",
+    "correctAnswer": "umbrella"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Wizard",
+    "questionText": "Listen and choose:",
+    "mediaUrl": "/audio/restaurant.mp3",
+    "options": ["restaurant", "restraunt", "restarent", "restorant"],
+    "correctAnswer": "restaurant"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Rookie",
+    "questionText": "Complete: A__LE (fruit)",
+    "correctAnswer": "apple"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Racer",
+    "questionText": "Fill: _UMMER (season)",
+    "correctAnswer": "summer"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Master",
+    "questionText": "Complete: B__T__FUL (pleasing to the eye)",
+    "correctAnswer": "beautiful"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Fill: C__M__RE (device for taking photos)",
+    "correctAnswer": "camera"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Wizard",
+    "questionText": "Complete: A__OM__LISH (to achieve something)",
+    "correctAnswer": "accomplish"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Rookie",
+    "questionText": "Unscramble: R A I N B O W",
+    "correctAnswer": "rainbow"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Racer",
+    "questionText": "Unscramble: B U T T E R F L Y",
+    "correctAnswer": "butterfly"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Master",
+    "questionText": "Unscramble: C A L E N D A R",
+    "correctAnswer": "calendar"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Unscramble: M O U N T A I N",
+    "correctAnswer": "mountain"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Wizard",
+    "questionText": "Unscramble: E X A G G E R A T E",
+    "correctAnswer": "exaggerate"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Rookie",
+    "questionText": "Spell what you see:",
+    "mediaUrl": "/images/mountain.jpg",
+    "correctAnswer": "mountain"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Racer",
+    "questionText": "Identify and spell:",
+    "mediaUrl": "/images/calendar.jpg",
+    "correctAnswer": "calendar"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Master",
+    "questionText": "Spell the object:",
+    "mediaUrl": "/images/microscope.jpg",
+    "correctAnswer": "microscope"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Name the item:",
+    "mediaUrl": "/images/telescope.jpg",
+    "correctAnswer": "telescope"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Wizard",
+    "questionText": "Spell what you see:",
+    "mediaUrl": "/images/quadrilateral.jpg",
+    "correctAnswer": "quadrilateral"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Rookie",
+    "questionText": "Which spelling is right?",
+    "options": ["necesary", "necessary", "neccessary", "necesarry"],
+    "correctAnswer": "necessary"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Racer",
+    "questionText": "Choose the correct spelling:",
+    "options": ["Febuary", "February", "Februery", "Feburary"],
+    "correctAnswer": "February"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Master",
+    "questionText": "Identify the correctly spelled word:",
+    "options": ["rhythm", "rythm", "rythym", "rhythym"],
+    "correctAnswer": "rhythm"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Which is spelled correctly?",
+    "options": ["occassion", "occasion", "ocassion", "occation"],
+    "correctAnswer": "occasion"
+  },
+  {
+    "classGroup": "Class III-V",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Wizard",
+    "questionText": "Select the proper spelling:",
+    "options": ["mischievous", "mischievious", "mischevious", "mischivous"],
+    "correctAnswer": "mischievous"
+  },
+
+  // ============= CLASS VI-X (25 Questions) =============
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Rookie",
+    "questionText": "Listen and choose:",
+    "mediaUrl": "/audio/ambiguous.mp3",
+    "options": ["ambiguous", "ambigous", "ambigious", "ambigiuos"],
+    "correctAnswer": "ambiguous",
+    "hint": "Having multiple possible meanings"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Racer",
+    "questionText": "Listen and spell:",
+    "mediaUrl": "/audio/hierarchy.mp3",
+    "correctAnswer": "hierarchy"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Master",
+    "questionText": "Listen and choose:",
+    "mediaUrl": "/audio/entrepreneur.mp3",
+    "options": ["entreprenuer", "entrepreneur", "entrepeneur", "entreprenur"],
+    "correctAnswer": "entrepreneur"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Listen and spell:",
+    "mediaUrl": "/audio/photosynthesis.mp3",
+    "correctAnswer": "photosynthesis"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Dictation",
+    "difficultyLevel": "Wizard",
+    "questionText": "Listen and choose:",
+    "mediaUrl": "/audio/conscientious.mp3",
+    "options": ["conscientous", "conscientious", "conscentious", "concientious"],
+    "correctAnswer": "conscientious"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Rookie",
+    "questionText": "Complete: A_COMMODATE",
+    "correctAnswer": "accommodate"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Racer",
+    "questionText": "Fill: CONSC_OUS",
+    "correctAnswer": "conscious"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Master",
+    "questionText": "Complete: P_R_VERANCE (continued effort)",
+    "correctAnswer": "perseverance"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Fill: Q_ESTIONNAI_E",
+    "correctAnswer": "questionnaire"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Missing Letters",
+    "difficultyLevel": "Wizard",
+    "questionText": "Complete: _NEC_SS_RILY",
+    "correctAnswer": "necessarily"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Rookie",
+    "questionText": "Unscramble: R H Y T H M",
+    "correctAnswer": "rhythm"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Racer",
+    "questionText": "Unscramble: C O N S C I E N T I O U S",
+    "correctAnswer": "conscientious"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Master",
+    "questionText": "Unscramble: P E R S E V E R A N C E",
+    "correctAnswer": "perseverance"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Unscramble: Q U E S T I O N N A I R E",
+    "correctAnswer": "questionnaire"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "difficultyLevel": "Wizard",
+    "questionText": "Unscramble: P H O T O S Y N T H E S I S",
+    "correctAnswer": "photosynthesis"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Rookie",
+    "questionText": "Spell what you see:",
+    "mediaUrl": "/images/photosynthesis.jpg",
+    "correctAnswer": "photosynthesis"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Racer",
+    "questionText": "Identify and spell:",
+    "mediaUrl": "/images/quadrilateral.jpg",
+    "correctAnswer": "quadrilateral"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Master",
+    "questionText": "Spell the object:",
+    "mediaUrl": "/images/microscope.jpg",
+    "correctAnswer": "microscope"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Name the concept:",
+    "mediaUrl": "/images/mitochondria.jpg",
+    "correctAnswer": "mitochondria"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Picture Spelling",
+    "difficultyLevel": "Wizard",
+    "questionText": "Spell what you see:",
+    "mediaUrl": "/images/parallelogram.jpg",
+    "correctAnswer": "parallelogram"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Rookie",
+    "questionText": "Which spelling is right?",
+    "options": ["questionnaire", "questionaire", "questionnair", "questionare"],
+    "correctAnswer": "questionnaire"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Racer",
+    "questionText": "Choose the correct spelling:",
+    "options": ["perseverance", "perseverence", "perseveranse", "preserverance"],
+    "correctAnswer": "perseverance"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Master",
+    "questionText": "Identify the correctly spelled word:",
+    "options": ["entrepreneur", "entreprenuer", "entrepeneur", "entreprenur"],
+    "correctAnswer": "entrepreneur"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Prodigy",
+    "questionText": "Which is spelled correctly?",
+    "options": ["conscientious", "concientious", "conscentious", "conscienntious"],
+    "correctAnswer": "conscientious"
+  },
+  {
+    "classGroup": "Class VI-X",
+    "module": "Spelling",
+    "category": "Correct Spelling",
+    "difficultyLevel": "Wizard",
+    "questionText": "Select the proper spelling:",
+    "options": ["infinitesimal", "infinitessimal", "infinitesimal", "infinitesemal"],
+    "correctAnswer": "infinitesimal"
+  }
+]

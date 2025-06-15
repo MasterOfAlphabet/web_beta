@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -6,64 +6,70 @@ import {
   Grid,
   IconButton,
   Button,
-  TextField,
-  Rating,
   Box,
   Tooltip,
   Stack,
-  Chip,
-  Avatar,
-  Divider,
+  Skeleton
 } from "@mui/material";
-import { ArrowBack, ArrowForward, VolumeUp, FavoriteBorder, Favorite, Share, Comment as CommentIcon, BookmarkBorder, Bookmark } from "@mui/icons-material";
+import {
+  ArrowBack,
+  ArrowForward,
+  VolumeUp,
+  FavoriteBorder,
+  Favorite,
+  Share,
+  BookmarkBorder,
+  Bookmark
+} from "@mui/icons-material";
 import SchoolIcon from "@mui/icons-material/School";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 import StarIcon from "@mui/icons-material/Star";
-import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
+import TodayIcon from "@mui/icons-material/Today";
+import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
+import CircularProgress from '@mui/material/CircularProgress';
 import VoiceSelector from "../components/VoiceSelector";
 import wordData from "./WordOfTheDayData";
-
 import ReviewRatingFeedbackSection from "../components/ReviewRatingFeedbackSection";
 
-import TodayIcon from "@mui/icons-material/Today";
-
-const fieldIconMap = {
-  word: <EmojiObjectsIcon sx={{ color: "#1976d2" }} />,
-  partOfSpeech: <PsychologyIcon sx={{ color: "#7b1fa2" }} />,
-  meaning: <AutoAwesomeIcon sx={{ color: "#388e3c" }} />,
-  sentence: <LightbulbIcon sx={{ color: "#fbc02d" }} />,
-  synonyms: <StarIcon sx={{ color: "#0288d1" }} />,
-  homonyms: <RecordVoiceOverIcon sx={{ color: "#d32f2f" }} />,
-  antonyms: <PsychologyIcon sx={{ color: "#f44336" }} />,
-  rhyming: <VolumeUp sx={{ color: "#00897b" }} />,
-  plural: <SchoolIcon sx={{ color: "#ffb300" }} />,
+// Updated to use component references instead of JSX elements
+const FIELD_ICON_MAP = {
+  word: AutoAwesomeIcon,
+  partOfSpeech: PsychologyIcon,
+  pronunciation: VolumeUp,
+  meaning: LightbulbIcon,
+  sentence: FormatQuoteIcon,
+  synonyms: StarIcon,
+  homonyms: RecordVoiceOverIcon,
+  antonyms: PsychologyIcon,
+  rhyming: VolumeUp,
+  plural: SchoolIcon,
 };
 
-const reviewOptions = ["Easy", "Just Right", "Challenging", "Fun", "Loved it!"];
-const cardBgColors = [
-  "#e3f2fd", // Light blue
-  "#f1f8e9", // Light green
-  "#fff8e1", // Light yellow
-  "#fce4ec", // Pink
-  "#ede7f6", // Lavender
+const CARD_BG_COLORS = [
+  "#e3f2fd",
+  "#f1f8e9",
+  "#fff8e1",
+  "#fce4ec",
+  "#ede7f6",
 ];
 
-const fieldsToRead = [
-  { label: "Word", key: "word" },
-  { label: "Part of Speech", key: "partOfSpeech" },
-  { label: "Meaning", key: "meaning" },
-  { label: "Original Sentence", key: "sentence" },
-  { label: "Synonyms", key: "synonyms" },
-  { label: "Homonyms", key: "homonyms" },
-  { label: "Antonyms", key: "antonyms" },
-  { label: "Rhyming", key: "rhyming" },
-  { label: "Plural", key: "plural" },
+const FIELDS_TO_READ = [
+  { label: "Word", key: "word", icon: FIELD_ICON_MAP.word, color: "#FFD700" },
+  { label: "Part of Speech", key: "partOfSpeech", icon: FIELD_ICON_MAP.partOfSpeech, color: "#7B1FA2" },
+  { label: "Pronunciation", key: "pronunciation", icon: FIELD_ICON_MAP.pronunciation, color: "#1E88E5" },
+  { label: "Meaning", key: "meaning", icon: FIELD_ICON_MAP.meaning, color: "#388E3C" },
+  { label: "Example Sentence", key: "sentence", icon: FIELD_ICON_MAP.sentence, color: "#F57C00" },
+  { label: "Synonyms", key: "synonyms", icon: FIELD_ICON_MAP.synonyms, color: "#0288D1" },
+  { label: "Homonyms", key: "homonyms", icon: FIELD_ICON_MAP.homonyms, color: "#D32F2F" },
+  { label: "Antonyms", key: "antonyms", icon: FIELD_ICON_MAP.antonyms, color: "#F44336" },
+  { label: "Rhyming Words", key: "rhyming", icon: FIELD_ICON_MAP.rhyming, color: "#00897B" },
+  { label: "Plural Form", key: "plural", icon: FIELD_ICON_MAP.plural, color: "#FFB300" },
 ];
 
-const DEFAULT_PAUSE_MS = 900;
+const DEFAULT_PAUSE_MS = 1000;
 
 const getSpeechVoices = () =>
   new Promise((resolve) => {
@@ -80,45 +86,33 @@ const getSpeechVoices = () =>
 
 export default function WordOfTheDayCard() {
   const [index, setIndex] = useState(0);
-  const [rating, setRating] = useState(null);
-  const [feedback, setFeedback] = useState("");
-  const [review, setReview] = useState("");
-  const [comment, setComment] = useState("");
-  const [saving, setSaving] = useState(false);
-
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [currentFieldIndex, setCurrentFieldIndex] = useState(null);
-
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
-
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [showCommentBox, setShowCommentBox] = useState(false);
-
+  const [saving, setSaving] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const speechRef = useRef({ cancel: () => {} });
+
+  const wordObj = useMemo(() => wordData[index], [index]);
 
   useEffect(() => {
     getSpeechVoices().then(setVoices);
-  }, []);
-
-  useEffect(() => {
     return () => {
       window.speechSynthesis.cancel();
     };
   }, []);
 
-  const wordObj = wordData[index];
-
   const seriesNumber = index + 1;
-  const classGroup = "Class I-II"; // Change as needed for your system
+  const classGroup = "Class I-II";
   const dateStr = new Date().toLocaleDateString(undefined, {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
 
-  // Speech logic
   const cancelSpeech = () => {
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
@@ -126,42 +120,51 @@ export default function WordOfTheDayCard() {
   };
 
   const speakField = async (fieldIdx, cb) => {
+    if (isSpeaking) return;
+    
     cancelSpeech();
     setCurrentFieldIndex(fieldIdx);
     setIsSpeaking(true);
 
-    const field = fieldsToRead[fieldIdx];
-    const txt = `${field.label}: ${wordObj[field.key]}`;
-    const utter = new window.SpeechSynthesisUtterance(txt);
-    if (selectedVoice) utter.voice = selectedVoice;
+    const field = FIELDS_TO_READ[fieldIdx];
+    const text = wordObj[field.key] ? `${field.label}: ${wordObj[field.key]}` : "";
+    if (!text) {
+      setIsSpeaking(false);
+      setCurrentFieldIndex(null);
+      if (cb) cb();
+      return;
+    }
 
-    utter.onend = () => {
+    const utterance = new window.SpeechSynthesisUtterance(text);
+    if (selectedVoice) utterance.voice = selectedVoice;
+
+    utterance.onend = () => {
       setTimeout(() => {
         setCurrentFieldIndex(null);
         setIsSpeaking(false);
         if (cb) cb();
       }, DEFAULT_PAUSE_MS);
     };
-    utter.onerror = () => {
+
+    utterance.onerror = () => {
       setCurrentFieldIndex(null);
       setIsSpeaking(false);
       if (cb) cb();
     };
 
-    window.speechSynthesis.speak(utter);
-    speechRef.current.cancel = () => {
-      window.speechSynthesis.cancel();
-      setCurrentFieldIndex(null);
-      setIsSpeaking(false);
-    };
+    window.speechSynthesis.speak(utterance);
+    speechRef.current.cancel = cancelSpeech;
   };
 
   const speakAllFieldsSequentially = async () => {
+    if (isSpeaking) return;
+    
     cancelSpeech();
     setIsSpeaking(true);
+    
     let idx = 0;
     const speakNext = () => {
-      if (idx >= fieldsToRead.length) {
+      if (idx >= FIELDS_TO_READ.length) {
         setIsSpeaking(false);
         setCurrentFieldIndex(null);
         return;
@@ -174,73 +177,60 @@ export default function WordOfTheDayCard() {
     speakNext();
   };
 
-  const handleSave = () => {
-    setSaving(true);
-    setTimeout(() => setSaving(false), 800);
-  };
-
   const handleNext = () => {
     cancelSpeech();
     setIndex((prev) => (prev + 1) % wordData.length);
-    setRating(null);
-    setFeedback("");
-    setReview("");
-    setComment("");
-    setLiked(false);
-    setSaved(false);
+    resetCardState();
   };
+
   const handlePrev = () => {
     cancelSpeech();
     setIndex((prev) => (prev - 1 + wordData.length) % wordData.length);
-    setRating(null);
-    setFeedback("");
-    setReview("");
-    setComment("");
+    resetCardState();
+  };
+
+  const resetCardState = () => {
     setLiked(false);
     setSaved(false);
+    setImageLoaded(false);
   };
 
   const handleVoiceChange = (voiceURI) => {
-    const v = voices.find((v) => v.voiceURI === voiceURI);
-    setSelectedVoice(v || null);
+    const voice = voices.find((v) => v.voiceURI === voiceURI);
+    setSelectedVoice(voice || null);
   };
 
+  const handleLike = () => setLiked((prev) => !prev);
+  const handleSaveWord = () => setSaved((prev) => !prev);
+
   const getBoxStyle = (fieldIdx) => ({
-    bgcolor: currentFieldIndex === fieldIdx ? "#b3e5fc" : "white",
+    bgcolor: currentFieldIndex === fieldIdx ? "#b3e5fc" : "background.paper",
     border: currentFieldIndex === fieldIdx ? "2px solid #1976d2" : "1px solid #e0e0e0",
-    boxShadow: currentFieldIndex === fieldIdx ? "0 0 10px #1976d2448" : "none",
+    boxShadow: currentFieldIndex === fieldIdx ? "0 0 10px rgba(25, 118, 210, 0.3)" : "none",
     cursor: isSpeaking ? "not-allowed" : "pointer",
-    transition: "all 0.2s",
+    transition: "all 0.2s ease",
     minHeight: 56,
-    p: 1.2,
+    p: 2,
     borderRadius: 2,
     mb: { xs: 1, sm: 0 },
-    outline: "none",
-    "&:active, &:focus": {
-      outline: "2px solid #1976d2",
+    "&:hover": !isSpeaking && {
+      transform: "translateY(-2px)",
+      boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
     },
     display: "flex",
     alignItems: "center",
-    gap: 1.3,
+    gap: 2,
   });
 
-  // BG color by card
-  const cardBg = cardBgColors[index % cardBgColors.length];
-
-  const handleReviewSelect = (opt) => setReview(opt);
-
-  // Social features
-  const handleLike = () => setLiked((prev) => !prev);
-  const handleSaveWord = () => setSaved((prev) => !prev);
-  const handleShowCommentBox = () => setShowCommentBox((v) => !v);
+  const cardBg = CARD_BG_COLORS[index % CARD_BG_COLORS.length];
 
   return (
-       <Box sx={{ maxWidth: 850, mx: "auto", mt: 3, px: { xs: 1, md: 0 } }}>
-      {/* Hero Section */}
+    <Box sx={{ maxWidth: 850, mx: "auto", mt: 3, px: { xs: 1, md: 0 } }}>
+      {/* Header Section */}
       <Box
         sx={{
-          bgcolor: "#1565c0",
-          color: "#fff",
+          bgcolor: "primary.main",
+          color: "white",
           borderRadius: 4,
           py: 4,
           px: { xs: 2, md: 6 },
@@ -257,15 +247,14 @@ export default function WordOfTheDayCard() {
         </Typography>
       </Box>
 
-      {/* NEW: Series Info Row */}
+      {/* Info Row */}
       <Box
         sx={{
-          bgcolor: "linear-gradient(90deg,#fbc2eb 0%,#a6c1ee 100%)",
+          bgcolor: "background.paper",
           borderRadius: 3,
           py: 2,
-          px: { xs: 2, md: 6 },
-          mb: 2,
-          fontSize: 18,
+          px: { xs: 2, md: 4 },
+          mb: 3,
           boxShadow: 2,
           display: "flex",
           alignItems: "center",
@@ -274,87 +263,142 @@ export default function WordOfTheDayCard() {
           gap: 2,
         }}
       >
-        <Box
-          sx={{
-            fontWeight: 700,
-            fontSize: 19,
-            color: "#6a1b9a",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <AutoAwesomeIcon sx={{ color: "#fbc02d", mr: 1 }} />
-          Series @&nbsp;:&nbsp;{seriesNumber}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <AutoAwesomeIcon color="primary" />
+          <Typography variant="body1" fontWeight={700}>
+            Series: {seriesNumber}
+          </Typography>
         </Box>
-        <Box
-          sx={{
-            fontWeight: 700,
-            fontSize: 17,
-            color: "#1976d2",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <SchoolIcon sx={{ color: "#66bb6a", mr: 1 }} />
-          {classGroup}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <SchoolIcon color="secondary" />
+          <Typography variant="body1" fontWeight={700}>
+            {classGroup}
+          </Typography>
         </Box>
-        <Box
-          sx={{
-            fontWeight: 700,
-            fontSize: 17,
-            color: "#d32f2f",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-    <TodayIcon sx={{ color: "#d32f2f", mr: 1 }} />
-          Date&nbsp;:&nbsp;{dateStr}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <TodayIcon color="error" />
+          <Typography variant="body1" fontWeight={700}>
+            {dateStr}
+          </Typography>
         </Box>
       </Box>
 
-      {/* Instructions block */}
-      <Box
-        sx={{
-          bgcolor: "#e3f2fd",
-          borderRadius: 3,
-          py: 2,
-          px: { xs: 2, md: 6 },
-          mb: 2,
-          fontSize: 16,
-          boxShadow: 1,
-        }}
-      >
-        <Typography sx={{ mb: 0.5 }}>
-          <b>Tip:</b> Click on a box below to listen only to that part or practice your pronunciation. To hear the entire Word of the Day card, use the <b>Read Me!</b> button (choose your preferred voice!).
-        </Typography>
-        <Typography>
-          <b>Don't forget:</b> Submit your rating, review, and feedback/comment at the bottom!
-        </Typography>
-      </Box>
+      {/* Instruction Cards */}
+<Grid container spacing={3} sx={{ mb: 3, display: 'flex', flexWrap: 'nowrap' }}>
+  {/* Box 1 */}
+  <Grid item xs={6} sx={{ minWidth: 0 }}>  
+    <Box sx={{ height: '100%',
+              bgcolor: "info.light",
+              borderRadius: 3,
+              p: 3,
+              height: "100%",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <Typography variant="h6" fontWeight={700} gutterBottom>
+              💡 Listening Tip
+            </Typography>
+            <Typography variant="body1">
+              Click on any box below to listen to that specific part. Use the "Read All" button for 
+              complete pronunciation practice with your chosen voice.
+            </Typography>
+          </Box>
+        </Grid>
+    <Grid item xs={6} sx={{ minWidth: 0 }}>
+    <Box sx={{ height: '100%',
+              bgcolor: "secondary.light",
+              borderRadius: 3,
+              p: 3,
+              height: "100%",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <Typography variant="h6" fontWeight={700} gutterBottom>
+              🌟 Don't Forget
+            </Typography>
+            <Typography variant="body1">
+              Your feedback helps us improve! Please rate the word difficulty and leave comments 
+              at the bottom of the card.
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
 
+      {/* Main Card */}
       <Card
         sx={{
           bgcolor: cardBg,
           p: { xs: 1, sm: 2 },
           borderRadius: 4,
           boxShadow: 4,
-          mb: 2,
+          mb: 3,
           position: "relative",
         }}
       >
         <CardContent>
-          {/* Controls */}
-          <Stack direction="row" alignItems="center" spacing={1} mb={2} justifyContent="flex-end">
+          {/* Word Image */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mb: 3,
+              position: "relative",
+              height: 180,
+              borderRadius: 3,
+              overflow: "hidden",
+              boxShadow: 3,
+            }}
+          >
+            {!imageLoaded && (
+              <Skeleton variant="rectangular" width="100%" height="100%" />
+            )}
+            <img
+              src={`https://source.unsplash.com/random/800x400/?${wordObj.word}`}
+              alt={`Visual representation of ${wordObj.word}`}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: imageLoaded ? "block" : "none",
+              }}
+              onLoad={() => setImageLoaded(true)}
+            />
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                p: 2,
+                background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)",
+                color: "white",
+                textAlign: "center",
+              }}
+            >
+              <Typography variant="h5" fontWeight={700}>
+                {wordObj.word}
+              </Typography>
+              <Typography variant="body2">Master your vocabulary</Typography>
+            </Box>
+          </Box>
+
+          {/* Action Buttons */}
+          <Stack direction="row" spacing={1} justifyContent="center" mb={3}>
             <Tooltip title={liked ? "Unlike" : "Like"}>
-              <IconButton onClick={handleLike} color={liked ? "error" : "default"}>
+              <IconButton
+                onClick={handleLike}
+                color={liked ? "error" : "default"}
+              >
                 {liked ? <Favorite /> : <FavoriteBorder />}
               </IconButton>
             </Tooltip>
             <Tooltip title={saved ? "Unsave" : "Save"}>
-              <IconButton onClick={handleSaveWord} color={saved ? "primary" : "default"}>
+              <IconButton
+                onClick={handleSaveWord}
+                color={saved ? "primary" : "default"}
+              >
                 {saved ? <Bookmark /> : <BookmarkBorder />}
               </IconButton>
             </Tooltip>
@@ -363,169 +407,183 @@ export default function WordOfTheDayCard() {
                 <Share />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Comment">
-              <IconButton onClick={handleShowCommentBox}>
-                <CommentIcon />
+            <Tooltip title="Practice Pronunciation">
+              <IconButton onClick={() => speakField(0)}>
+                <RecordVoiceOverIcon />
               </IconButton>
             </Tooltip>
           </Stack>
 
-          {/* Top row: Word & POS */}
+          {/* Word Details */}
           <Grid container spacing={2} sx={{ mb: 2 }}>
-            <Grid item xs={12} sm={6}>
-              <Box
-                tabIndex={0}
-                sx={getBoxStyle(0)}
-                onClick={() => !isSpeaking && speakField(0)}
-                aria-label="Word"
-              >
-                {fieldIconMap.word}
-                <Box>
-                  <Typography variant="subtitle2" fontWeight={700}>
-                    Word:
-                  </Typography>
-                  <Typography variant="h6">{wordObj.word}</Typography>
-                </Box>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Box
-                tabIndex={0}
-                sx={getBoxStyle(1)}
-                onClick={() => !isSpeaking && speakField(1)}
-                aria-label="Part of Speech"
-              >
-                {fieldIconMap.partOfSpeech}
-                <Box>
-                  <Typography variant="subtitle2" fontWeight={700}>
-                    Part of Speech:
-                  </Typography>
-                  <Typography variant="h6">{wordObj.partOfSpeech}</Typography>
-                </Box>
-              </Box>
-            </Grid>
-          </Grid>
-
-          {/* Meaning & Sentence */}
-          <Grid container spacing={2} sx={{ mb: 2 }}>
-            <Grid item xs={12} sm={6}>
-              <Box
-                tabIndex={0}
-                sx={{ ...getBoxStyle(2), minHeight: 72 }}
-                onClick={() => !isSpeaking && speakField(2)}
-                aria-label="Meaning"
-              >
-                {fieldIconMap.meaning}
-                <Box>
-                  <Typography variant="subtitle2" fontWeight={700}>
-                    Meaning:
-                  </Typography>
-                  <Typography>{wordObj.meaning}</Typography>
-                </Box>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Box
-                tabIndex={0}
-                sx={{ ...getBoxStyle(3), minHeight: 72 }}
-                onClick={() => !isSpeaking && speakField(3)}
-                aria-label="Original Sentence"
-              >
-                {fieldIconMap.sentence}
-                <Box>
-                  <Typography variant="subtitle2" fontWeight={700}>
-                    Original Sentence:
-                  </Typography>
-                  <Typography>{wordObj.sentence}</Typography>
-                </Box>
-              </Box>
-            </Grid>
-          </Grid>
-
-          {/* Other fields */}
-          <Grid container spacing={2} sx={{ mb: 2 }}>
-            {fieldsToRead.slice(4).map((f, idx) => (
-              <Grid item xs={6} sm={2.4} key={f.key}>
-                <Box
-                  tabIndex={0}
-                  sx={getBoxStyle(idx + 4)}
-                  onClick={() => !isSpeaking && speakField(idx + 4)}
-                  aria-label={f.label}
-                >
-                  {fieldIconMap[f.key]}
-                  <Box>
-                    <Typography variant="subtitle2" fontWeight={700}>
-                      {f.label}:
-                    </Typography>
-                    <Typography>{wordObj[f.key]}</Typography>
+            {/* Word, POS, Pronunciation */}
+            {FIELDS_TO_READ.slice(0, 3).map((field, idx) => {
+              const IconComponent = field.icon;
+              return (
+                <Grid item xs={12} sm={4} key={field.key}>
+                  <Box
+                    tabIndex={0}
+                    sx={getBoxStyle(idx)}
+                    onClick={() => !isSpeaking && speakField(idx)}
+                    aria-label={`${field.label}: ${wordObj[field.key] || "Not available"}`}
+                  >
+                    <IconComponent sx={{ color: field.color, fontSize: 28 }} />
+                    <Box>
+                      <Typography variant="subtitle2" fontWeight={700} color="text.secondary">
+                        {field.label}
+                      </Typography>
+                      <Typography variant="h6" sx={{ fontWeight: idx === 0 ? 800 : 600 }}>
+                        {idx === 2 ? `/${wordObj[field.key] || 'none'}/` : wordObj[field.key]}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
-              </Grid>
-            ))}
+                </Grid>
+              );
+            })}
           </Grid>
 
-          {/* Prev / Next & Read Me! */}
-          <Stack direction="row" alignItems="center" spacing={2} mb={2} justifyContent="center">
-            <Tooltip title="Previous Word">
-              <span>
-                <IconButton onClick={handlePrev} disabled={isSpeaking}>
-                  <ArrowBack fontSize="large" />
-                </IconButton>
-              </span>
-            </Tooltip>
-            {/* Voice dropdown left of Read Me! */}
-            <VoiceSelector
-              onVoiceChange={handleVoiceChange}
-              selectedVoice={selectedVoice ? selectedVoice.voiceURI : ""}
-              voices={voices}
-              sx={{ minWidth: 160 }}
-            />
-            <Tooltip title="Read entire card aloud">
-              <span>
-                <Button
-                  onClick={speakAllFieldsSequentially}
-                  variant="contained"
-                  color="primary"
-                  startIcon={<VolumeUp />}
-                  disabled={isSpeaking}
-                  sx={{ fontWeight: 700, ml: 1, mr: 1 }}
-                >
-                  {isSpeaking ? "Reading..." : "Read Me!"}
-                </Button>
-              </span>
-            </Tooltip>
-            <Tooltip title="Next Word">
-              <span>
-                <IconButton onClick={handleNext} disabled={isSpeaking}>
-                  <ArrowForward fontSize="large" />
-                </IconButton>
-              </span>
-            </Tooltip>
-            {isSpeaking && (
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={cancelSpeech}
-                sx={{ ml: 2 }}
+          {/* Meaning and Sentence */}
+          <Grid container spacing={2} sx={{ mb: 2 }}>
+            <Grid item xs={12} md={7}>
+              <Box
+                tabIndex={0}
+                sx={{
+                  ...getBoxStyle(3),
+                  minHeight: 120,
+                  p: 2.5,
+                }}
+                onClick={() => !isSpeaking && speakField(3)}
+                aria-label={`Meaning: ${wordObj.meaning}`}
               >
-                Stop Reading
+                <FIELD_ICON_MAP.meaning sx={{ color: "#388E3C", fontSize: 28, mb: 1 }} />
+                <Box>
+                  <Typography variant="subtitle1" fontWeight={700} color="text.secondary" gutterBottom>
+                    Detailed Meaning
+                  </Typography>
+                  <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
+                    {wordObj.meaning}
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={5}>
+              <Box
+                tabIndex={0}
+                sx={{
+                  ...getBoxStyle(4),
+                  minHeight: 120,
+                  p: 2.5,
+                }}
+                onClick={() => !isSpeaking && speakField(4)}
+                aria-label={`Example Sentence: ${wordObj.sentence}`}
+              >
+                <FIELD_ICON_MAP.sentence sx={{ color: "#F57C00", fontSize: 28, mb: 1 }} />
+                <Box>
+                  <Typography variant="subtitle1" fontWeight={700} color="text.secondary" gutterBottom>
+                    Example Sentence
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontStyle: "italic", lineHeight: 1.6 }}>
+                    "{wordObj.sentence}"
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
+
+          {/* Additional Word Info */}
+          <Grid container spacing={2} sx={{ mb: 2 }}>
+            {FIELDS_TO_READ.slice(5).map((field, idx) => {
+              const IconComponent = field.icon;
+              return (
+                <Grid item xs={6} sm={4} md={3} key={field.key}>
+                  <Box
+                    tabIndex={0}
+                    sx={getBoxStyle(idx + 5)}
+                    onClick={() => !isSpeaking && speakField(idx + 5)}
+                    aria-label={`${field.label}: ${wordObj[field.key] || "Not available"}`}
+                  >
+                    <IconComponent sx={{ color: field.color, fontSize: 24 }} />
+                    <Box>
+                      <Typography variant="caption" fontWeight={700} display="block" color="text.secondary">
+                        {field.label}
+                      </Typography>
+                      <Typography variant="body2">
+                        {wordObj[field.key] || "—"}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Grid>
+              );
+            })}
+          </Grid>
+
+          {/* Controls */}
+          <Box
+            sx={{
+              p: 2,
+              borderRadius: 3,
+              bgcolor: "action.hover",
+              mt: 2,
+            }}
+          >
+            <Stack direction="row" alignItems="center" spacing={2} justifyContent="center">
+              <Tooltip title="Previous Word">
+                <IconButton
+                  onClick={handlePrev}
+                  disabled={isSpeaking}
+                  size="large"
+                >
+                  <ArrowBack />
+                </IconButton>
+              </Tooltip>
+
+              <VoiceSelector
+                onVoiceChange={handleVoiceChange}
+                selectedVoice={selectedVoice?.voiceURI || ""}
+                voices={voices}
+                disabled={isSpeaking}
+                sx={{ minWidth: 180 }}
+              />
+
+              <Button
+                onClick={speakAllFieldsSequentially}
+                variant="contained"
+                color="primary"
+                startIcon={<VolumeUp />}
+                disabled={isSpeaking}
+                sx={{ fontWeight: 700, px: 3 }}
+              >
+                {isSpeaking ? (
+                  <CircularProgress size={20} color="inherit" />
+                ) : (
+                  "Read All"
+                )}
               </Button>
-            )}
-          </Stack>
+
+              <Tooltip title="Next Word">
+                <IconButton
+                  onClick={handleNext}
+                  disabled={isSpeaking}
+                  size="large"
+                >
+                  <ArrowForward />
+                </IconButton>
+              </Tooltip>
+            </Stack>
+          </Box>
         </CardContent>
       </Card>
 
-
-      {/* Feedback / Review / Rating / Comment */}
-     <ReviewRatingFeedbackSection 
-  onSubmit={(data) => {
-    console.log('User feedback:', data);
-    // Handle submission (API call, state update, etc.)
-  }}
-  isSubmitting={saving}
-  isSpeaking={isSpeaking}
-/>
-
+      {/* Feedback Section */}
+      <ReviewRatingFeedbackSection
+        onSubmit={(data) => {
+          setSaving(true);
+          console.log('User feedback:', data);
+          setTimeout(() => setSaving(false), 1000);
+        }}
+        isSubmitting={saving}
+        isSpeaking={isSpeaking}
+      />
     </Box>
   );
 }

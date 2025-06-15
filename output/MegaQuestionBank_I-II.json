@@ -1,0 +1,3712 @@
+[
+  {
+    "questionId": "I-II_Spelling_Dictation_Rookie_00001",
+    "questionText": "Listen and choose:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "kat",
+      "cat",
+      "cut",
+      "kit"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "cat",
+    "hint": "It's a small pet that says 'meow'.",
+    "explanation": "The correct spelling is 'cat'. It's a furry animal that loves to play.",
+    "mediaType": "text",
+    "mediaUrl": "/audio/cat.mp3",
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.610Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.610Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Racer_00001",
+    "questionText": "Listen and spell:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "ship",
+    "hint": "It's a large boat that travels on water.",
+    "explanation": "The correct spelling is 'ship'. It carries people or things across the sea.",
+    "mediaType": "text",
+    "mediaUrl": "/audio/ship.mp3",
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Master_00001",
+    "questionText": "Listen and choose:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "frog",
+      "fog",
+      "freg",
+      "frogg"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "frog",
+    "hint": "It's a small animal that hops and lives near water.",
+    "explanation": "The correct spelling is 'frog'. It's a green animal that jumps.",
+    "mediaType": "text",
+    "mediaUrl": "/audio/frog.mp3",
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Prodigy_00001",
+    "questionText": "Listen and spell:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "brush",
+    "hint": "You use this to comb your hair or clean your teeth.",
+    "explanation": "The correct spelling is 'brush'. It's a tool with bristles for cleaning or tidying.",
+    "mediaType": "text",
+    "mediaUrl": "/audio/brush.mp3",
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Wizard_00001",
+    "questionText": "Listen and choose:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "thum",
+      "thumb",
+      "thumm",
+      "thumbb"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "thumb",
+    "hint": "It's the short, thick first finger of the human hand.",
+    "explanation": "The correct spelling is 'thumb'. It's one of your fingers.",
+    "mediaType": "text",
+    "mediaUrl": "/audio/thumb.mp3",
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Rookie_00001",
+    "questionText": "Complete: D_G",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "A",
+      "O",
+      "E",
+      "I"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "O",
+    "hint": "This animal barks and is a popular pet.",
+    "explanation": "The correct letter is 'O' to spell 'DOG'. A dog is a friendly pet.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Racer_00001",
+    "questionText": "Fill: RA_N",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "I",
+      "A",
+      "O",
+      "E"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "I",
+    "hint": "Water that falls from the sky.",
+    "explanation": "The correct letter is 'I' to spell 'RAIN'. Rain makes plants grow.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Master_00001",
+    "questionText": "Complete: B__K (object for reading)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "book",
+    "hint": "You open this to read stories or learn new things.",
+    "explanation": "The missing letters spell 'BOOK'. You can find many stories in a book.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Prodigy_00001",
+    "questionText": "Fill: S__OOL",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "A",
+      "C",
+      "H",
+      "K"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "C",
+    "hint": "It's a place where children go to learn and play.",
+    "explanation": "The correct letter is 'C' to spell 'SCHOOL'. You go to school to learn.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Wizard_00001",
+    "questionText": "Complete: A__LE (fruit)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "apple",
+    "hint": "This red or green fruit grows on a tree and is good to eat.",
+    "explanation": "The missing letters spell 'apple'. It's a tasty fruit that can be red or green.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Rookie_00001",
+    "questionText": "Unscramble: T A C",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "cat",
+    "hint": "It's a small animal that says 'meow'.",
+    "explanation": "The unscrambled word is 'cat'. It's a furry pet.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Racer_00001",
+    "questionText": "Unscramble: P N A E L P",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "apple",
+    "hint": "It's a fruit that can be red or green.",
+    "explanation": "The unscrambled word is 'apple'. It's a round and juicy fruit.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Master_00001",
+    "questionText": "Unscramble: O B K O",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "book",
+    "hint": "You read stories from this object.",
+    "explanation": "The unscrambled word is 'book'. It has pages you can turn.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Prodigy_00001",
+    "questionText": "Unscramble: H S I P",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "ship",
+    "hint": "It's a big vehicle that floats on water.",
+    "explanation": "The unscrambled word is 'ship'. It carries things or people across the ocean.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Wizard_00001",
+    "questionText": "Unscramble: R G F O",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "frog",
+    "hint": "This animal can jump and says 'ribbit'.",
+    "explanation": "The unscrambled word is 'frog'. It's a small, green amphibian.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Rookie_00001",
+    "questionText": "Spell what you see:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "sun",
+    "hint": "Look at the picture! It's bright and hot in the sky during the day.",
+    "explanation": "The correct spelling is 'sun'. It gives us light and warmth.",
+    "mediaType": "text",
+    "mediaUrl": "/images/sun.jpg",
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Racer_00001",
+    "questionText": "Identify and spell:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "clock",
+    "hint": "Observe the image! This tells you the time.",
+    "explanation": "The correct spelling is 'clock'. It helps us know when to eat or play.",
+    "mediaType": "text",
+    "mediaUrl": "/images/clock.jpg",
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Master_00001",
+    "questionText": "Spell the object:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "chair",
+    "hint": "Look closely at the image! You sit on this.",
+    "explanation": "The correct spelling is 'chair'. It's a piece of furniture you sit on.",
+    "mediaType": "text",
+    "mediaUrl": "/images/chair.jpg",
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Prodigy_00001",
+    "questionText": "Name the item:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "glasses",
+    "hint": "Check the picture! You wear these to help you see better.",
+    "explanation": "The correct spelling is 'glasses'. People wear them on their face to help their eyes.",
+    "mediaType": "text",
+    "mediaUrl": "/images/glasses.jpg",
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Wizard_00001",
+    "questionText": "Spell what you see:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [],
+    "shuffleOptions": true,
+    "correctAnswer": "elephant",
+    "hint": "Look at the picture! It's a very big grey animal with a long trunk.",
+    "explanation": "The correct spelling is 'elephant'. It's the largest land animal.",
+    "mediaType": "text",
+    "mediaUrl": "/images/elephant.jpg",
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Rookie_00001",
+    "questionText": "Which spelling is right?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "hapy",
+      "happy",
+      "happie",
+      "hapi"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "happy",
+    "hint": "This word means feeling joy or pleasure.",
+    "explanation": "The correct spelling is 'happy'. It means feeling good and joyful.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Racer_00001",
+    "questionText": "Choose the correct spelling:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "butterflie",
+      "butterfly",
+      "butturfly",
+      "butterflei"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "butterfly",
+    "hint": "This insect has colorful wings and flies among flowers.",
+    "explanation": "The correct spelling is 'butterfly'. It's a beautiful flying insect.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Master_00001",
+    "questionText": "Identify the correctly spelled word:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "acomodate",
+      "acommodate",
+      "accommodate",
+      "acommoddate"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "accommodate",
+    "hint": "This word means to provide space or a place to stay for someone.",
+    "explanation": "The correct spelling is 'accommodate'. It means to make room for something or someone.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Prodigy_00001",
+    "questionText": "Which is spelled correctly?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "definately",
+      "definitely",
+      "definitley",
+      "definately"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "definitely",
+    "hint": "This word means without any doubt; certainly.",
+    "explanation": "The correct spelling is 'definitely'. It means it will happen for sure.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Wizard_00001",
+    "questionText": "Select the proper spelling:",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "conscientious",
+      "concientous",
+      "conscentious",
+      "conscienntious"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "conscientious",
+    "hint": "This word means wishing to do one's work or duty well and thoroughly.",
+    "explanation": "The correct spelling is 'conscientious'. It means being careful and doing things well.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "deepseek",
+    "createdAt": "2025-06-14T12:46:34.611Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.611Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Rookie_00002",
+    "questionText": "Choose the correct spelling for: CAT",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Cat",
+      "cat",
+      "tac",
+      "CAT"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "cat",
+    "hint": "It's a small pet that says 'meow'.",
+    "explanation": "The correct spelling of this word is 'cat'. It's a furry animal.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Racer_00002",
+    "questionText": "Choose the correct spelling for: HOUSE",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "HOUSE",
+      "house",
+      "esuoh",
+      "House"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "house",
+    "hint": "It's a building where people live.",
+    "explanation": "The correct spelling of this word is 'house'. It's where you live.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Master_00002",
+    "questionText": "Choose the correct spelling for: PUZZLE",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "puzzle",
+      "PUZZLE",
+      "Puzzle",
+      "elzzup"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "puzzle",
+    "hint": "It's a game where you fit pieces together to make a picture.",
+    "explanation": "The correct spelling of this word is 'puzzle'. It's a fun game for your brain.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Prodigy_00002",
+    "questionText": "Choose the correct spelling for: DIAMOND",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Diamond",
+      "diamond",
+      "dnomaid",
+      "DIAMOND"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "diamond",
+    "hint": "It's a very sparkly and valuable stone.",
+    "explanation": "The correct spelling of this word is 'diamond'. It's a precious gem.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Wizard_00002",
+    "questionText": "Choose the correct spelling for: EXTRAORDINARY",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "yranidroartxe",
+      "extraordinary",
+      "Extraordinary",
+      "EXTRAORDINARY"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "extraordinary",
+    "hint": "It means something very special and unusual.",
+    "explanation": "The correct spelling of this word is 'extraordinary'. It means amazing or remarkable.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Rookie_00001",
+    "questionText": "Choose the correct spelling for: HAT",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Hat",
+      "tah",
+      "HAT",
+      "hat"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "hat",
+    "hint": "You wear this on your head.",
+    "explanation": "The correct spelling of this word is 'hat'. It keeps your head warm or safe from the sun.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Racer_00001",
+    "questionText": "Choose the correct spelling for: GREEN",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Green",
+      "green",
+      "neerg",
+      "GREEN"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "green",
+    "hint": "It's the color of grass.",
+    "explanation": "The correct spelling of this word is 'green'. It's a primary color.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Master_00001",
+    "questionText": "Choose the correct spelling for: DOUBLE",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "double",
+      "Double",
+      "DOUBLE",
+      "elbuod"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "double",
+    "hint": "It means two times something.",
+    "explanation": "The correct spelling of this word is 'double'. It means having two of something.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Prodigy_00001",
+    "questionText": "Choose the correct spelling for: DIAMOND",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Diamond",
+      "DIAMOND",
+      "diamond",
+      "dnomaid"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "diamond",
+    "hint": "It's a very shiny and hard stone.",
+    "explanation": "The correct spelling of this word is 'diamond'. It's a beautiful jewel.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Wizard_00001",
+    "questionText": "Choose the correct spelling for: EXTRAORDINARY",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "yranidroartxe",
+      "EXTRAORDINARY",
+      "Extraordinary",
+      "extraordinary"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "extraordinary",
+    "hint": "This word means very special or unusual.",
+    "explanation": "The correct spelling of this word is 'extraordinary'. It means amazing and remarkable.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Rookie_00002",
+    "questionText": "Choose the correct spelling for: BAT",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "BAT",
+      "Bat",
+      "bat",
+      "tab"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "bat",
+    "hint": "It can be an animal that flies at night, or something you hit a ball with.",
+    "explanation": "The correct spelling of this word is 'bat'. It can be an animal or a sports tool.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Racer_00002",
+    "questionText": "Choose the correct spelling for: HAPPY",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Happy",
+      "yppah",
+      "HAPPY",
+      "happy"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "happy",
+    "hint": "This word describes feeling joyful and pleased.",
+    "explanation": "The correct spelling of this word is 'happy'. It means feeling good.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Master_00002",
+    "questionText": "Choose the correct spelling for: PUZZLE",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Puzzle",
+      "elzzup",
+      "puzzle",
+      "PUZZLE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "puzzle",
+    "hint": "It's a game that makes you think, often with many small pieces.",
+    "explanation": "The correct spelling of this word is 'puzzle'. It's a fun brain game.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Prodigy_00002",
+    "questionText": "Choose the correct spelling for: KANGAROO",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "kangaroo",
+      "KANGAROO",
+      "ooragnak",
+      "Kangaroo"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "kangaroo",
+    "hint": "This animal lives in Australia and carries its baby in a pouch.",
+    "explanation": "The correct spelling of this word is 'kangaroo'. It's an animal that hops.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Wizard_00002",
+    "questionText": "Choose the correct spelling for: UNBELIEVABLE",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "elbaveilebnu",
+      "unbelievable",
+      "Unbelievable",
+      "UNBELIEVABLE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "unbelievable",
+    "hint": "It means something so surprising or unusual that it's hard to believe.",
+    "explanation": "The correct spelling of this word is 'unbelievable'. It means very hard to believe.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Rookie_00001",
+    "questionText": "Choose the correct spelling for: BAT",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "bat",
+      "BAT",
+      "Bat",
+      "tab"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "bat",
+    "hint": "Look at the picture! It can be an animal that flies at night, or a piece of sports equipment.",
+    "explanation": "The correct spelling of this word is 'bat'. It can be an animal or a tool.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Racer_00001",
+    "questionText": "Choose the correct spelling for: HOUSE",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "HOUSE",
+      "House",
+      "esuoh",
+      "house"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "house",
+    "hint": "Look at the picture! It's a building where people live.",
+    "explanation": "The correct spelling of this word is 'house'. It's a place where you call home.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Master_00001",
+    "questionText": "Choose the correct spelling for: DOUBLE",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Double",
+      "double",
+      "elbuod",
+      "DOUBLE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "double",
+    "hint": "Look at the picture! It means two times or twice as much.",
+    "explanation": "The correct spelling of this word is 'double'. It means having two of something.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Prodigy_00001",
+    "questionText": "Choose the correct spelling for: CALENDAR",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "radnelac",
+      "calendar",
+      "Calendar",
+      "CALENDAR"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "calendar",
+    "hint": "Look at the picture! It shows days, weeks, and months.",
+    "explanation": "The correct spelling of this word is 'calendar'. It helps us keep track of dates.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Wizard_00001",
+    "questionText": "Choose the correct spelling for: EXTRAORDINARY",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "EXTRAORDINARY",
+      "extraordinary",
+      "Extraordinary",
+      "yranidroartxe"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "extraordinary",
+    "hint": "Look at the picture! It means very unusual or remarkable.",
+    "explanation": "The correct spelling of this word is 'extraordinary'. It means amazing and beyond the usual.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Rookie_00002",
+    "questionText": "Choose the correct spelling for: HAT",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Hat",
+      "tah",
+      "hat",
+      "HAT"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "hat",
+    "hint": "You put this on your head to stay warm or block the sun.",
+    "explanation": "The correct spelling of this word is 'hat'. It's worn on your head.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Racer_00002",
+    "questionText": "Choose the correct spelling for: HOUSE",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "house",
+      "esuoh",
+      "HOUSE",
+      "House"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "house",
+    "hint": "It's a place where you live with your family.",
+    "explanation": "The correct spelling of this word is 'house'. It's your home.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Master_00002",
+    "questionText": "Choose the correct spelling for: SCHOOL",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "school",
+      "SCHOOL",
+      "School",
+      "loohcs"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "school",
+    "hint": "It's where children go to learn and study.",
+    "explanation": "The correct spelling of this word is 'school'. It's a building for learning.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Prodigy_00002",
+    "questionText": "Choose the correct spelling for: DIAMOND",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "diamond",
+      "Diamond",
+      "dnomaid",
+      "DIAMOND"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "diamond",
+    "hint": "It's a very sparkly and valuable jewel.",
+    "explanation": "The correct spelling of this word is 'diamond'. It's a very hard and shiny stone.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Wizard_00002",
+    "questionText": "Choose the correct spelling for: ENTHUSIASTIC",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "ENTHUSIASTIC",
+      "citsaisuhtne",
+      "Enthusiastic",
+      "enthusiastic"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "enthusiastic",
+    "hint": "This word means feeling or showing great excitement or interest.",
+    "explanation": "The correct spelling of this word is 'enthusiastic'. It means very excited and eager.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "chatgpt",
+    "createdAt": "2025-06-14T12:46:34.623Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.623Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Rookie_00003",
+    "questionText": "Which of these words is the name of a bright object in the sky?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "DOG",
+      "dog",
+      "god",
+      "Dog"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "dog",
+    "hint": "It's a pet that barks and loves to play fetch.",
+    "explanation": "The correct spelling of this word is 'dog'. It's a loyal animal.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.635Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.635Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Racer_00003",
+    "questionText": "Which word is a color often found in leaves?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "House",
+      "house",
+      "esuoh",
+      "HOUSE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "house",
+    "hint": "It's a building where people live, typically a single family.",
+    "explanation": "The correct spelling of this word is 'house'. It's a place where you live.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.635Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.635Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Master_00003",
+    "questionText": "Which word is the name of a planet?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Double",
+      "double",
+      "DOUBLE",
+      "elbuod"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "double",
+    "hint": "It means two times the amount or number.",
+    "explanation": "The correct spelling of this word is 'double'. It means two times something.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Prodigy_00003",
+    "questionText": "Which word is the name of a large animal with a trunk?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "elephant",
+      "tnahpele",
+      "Elephant",
+      "ELEPHANT"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "elephant",
+    "hint": "It's a very large grey animal with big ears.",
+    "explanation": "The correct spelling of this word is 'elephant'. It's a huge animal.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Wizard_00003",
+    "questionText": "Which word means being very excited about something?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "ENTHUSIASTIC",
+      "citsaisuhtne",
+      "enthusiastic",
+      "Enthusiastic"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "enthusiastic",
+    "hint": "It means feeling or showing intense interest or enjoyment.",
+    "explanation": "The correct spelling of this word is 'enthusiastic'. It means showing a lot of excitement.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Rookie_00002",
+    "questionText": "Which of these words is the name of something you drink from?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "tab",
+      "BAT",
+      "Bat",
+      "bat"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "bat",
+    "hint": "It can be a small flying animal or a piece of wood for playing sports.",
+    "explanation": "The correct spelling of this word is 'bat'. It can be an animal or a baseball tool.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Racer_00002",
+    "questionText": "Which word is the name of a body of water?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "APPLE",
+      "elppa",
+      "Apple",
+      "apple"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "apple",
+    "hint": "It's a round fruit that grows on trees, often red or green.",
+    "explanation": "The correct spelling of this word is 'apple'. It's a tasty fruit.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Master_00002",
+    "questionText": "Which word is the name of a planet?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Jungle",
+      "elgnuj",
+      "JUNGLE",
+      "jungle"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "jungle",
+    "hint": "It's a dense forest, usually in a hot country.",
+    "explanation": "The correct spelling of this word is 'jungle'. It's a thick forest with many plants.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Prodigy_00002",
+    "questionText": "Which word is an animal that jumps high and has a pouch?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "ELEPHANT",
+      "Elephant",
+      "tnahpele",
+      "elephant"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "elephant",
+    "hint": "It's a very large grey animal with a long trunk and big ears.",
+    "explanation": "The correct spelling of this word is 'elephant'. It's a huge animal with tusks.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Wizard_00002",
+    "questionText": "Which word means something out of the ordinary?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "accommodate",
+      "etadommocca",
+      "Accommodate",
+      "ACCOMMODATE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "accommodate",
+    "hint": "It means to provide a place to live or sufficient space for.",
+    "explanation": "The correct spelling of this word is 'accommodate'. It means to help someone by giving them space.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Rookie_00003",
+    "questionText": "Which of these words is the name of something you drink from?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Hat",
+      "HAT",
+      "hat",
+      "tah"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "hat",
+    "hint": "You wear this on your head.",
+    "explanation": "The correct spelling of this word is 'hat'. It protects your head.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Racer_00003",
+    "questionText": "Which word is the name of a body of water?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "GREEN",
+      "green",
+      "neerg",
+      "Green"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "green",
+    "hint": "It's a color like grass or leaves.",
+    "explanation": "The correct spelling of this word is 'green'. It's a very common color in nature.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Master_00003",
+    "questionText": "Which word is where you go to learn?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "Double",
+      "elbuod",
+      "double",
+      "DOUBLE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "double",
+    "hint": "It means two times the amount or twice as much of something.",
+    "explanation": "The correct spelling of this word is 'double'. It means to have twice as much.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Prodigy_00003",
+    "questionText": "Which word is an animal that jumps high and has a pouch?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "DIAMOND",
+      "Diamond",
+      "dnomaid",
+      "diamond"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "diamond",
+    "hint": "It's a very hard and shiny jewel.",
+    "explanation": "The correct spelling of this word is 'diamond'. It's a precious and beautiful stone.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Wizard_00003",
+    "questionText": "Which word means hard to believe?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "citsaisuhtne",
+      "enthusiastic",
+      "ENTHUSIASTIC",
+      "Enthusiastic"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "enthusiastic",
+    "hint": "It means feeling or showing intense and eager enjoyment, interest, or approval.",
+    "explanation": "The correct spelling of this word is 'enthusiastic'. It means very excited and eager.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Rookie_00002",
+    "questionText": "Which of these words is the name of a small flying insect?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "tac",
+      "CAT",
+      "Cat",
+      "cat"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "cat",
+    "hint": "Look at the picture! It's a small furry pet that loves to play.",
+    "explanation": "The correct spelling of this word is 'cat'. It's a common house pet.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Racer_00002",
+    "questionText": "Which word is the name of a body of water?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "house",
+      "House",
+      "HOUSE",
+      "esuoh"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "house",
+    "hint": "Look at the picture! It's a building where you live.",
+    "explanation": "The correct spelling of this word is 'house'. It's a place where families live.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Master_00002",
+    "questionText": "Which word is where you go to learn?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "School",
+      "school",
+      "loohcs",
+      "SCHOOL"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "school",
+    "hint": "Look at the picture! It's a place where you learn new things and meet friends.",
+    "explanation": "The correct spelling of this word is 'school'. It's a place for education.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Prodigy_00002",
+    "questionText": "Which word is a shiny precious stone?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "radnelac",
+      "calendar",
+      "Calendar",
+      "CALENDAR"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "calendar",
+    "hint": "Look at the picture! It helps you know the day, week, and month.",
+    "explanation": "The correct spelling of this word is 'calendar'. It shows the dates.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Wizard_00002",
+    "questionText": "Which word means something out of the ordinary?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "citsaisuhtne",
+      "Enthusiastic",
+      "ENTHUSIASTIC",
+      "enthusiastic"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "enthusiastic",
+    "hint": "Look at the picture! It means showing great interest or excitement.",
+    "explanation": "The correct spelling of this word is 'enthusiastic'. It means very keen or excited.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Rookie_00003",
+    "questionText": "Which of these words is the name of an animal that says meow?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "bat",
+      "Bat",
+      "tab",
+      "BAT"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "bat",
+    "hint": "It can be an animal that flies at night, or something you use to play baseball.",
+    "explanation": "The correct spelling of this word is 'bat'. It can be an animal or a sports tool.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Racer_00003",
+    "questionText": "Which word is the place you live in?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "yppah",
+      "happy",
+      "Happy",
+      "HAPPY"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "happy",
+    "hint": "It describes a feeling of joy or contentment.",
+    "explanation": "The correct spelling of this word is 'happy'. It means joyful and pleased.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Master_00003",
+    "questionText": "Which word is the name of a planet?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "double",
+      "Double",
+      "elbuod",
+      "DOUBLE"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "double",
+    "hint": "It means two times the amount.",
+    "explanation": "The correct spelling of this word is 'double'. It means twice as much.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Prodigy_00003",
+    "questionText": "Which word is a shiny precious stone?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "CALENDAR",
+      "Calendar",
+      "radnelac",
+      "calendar"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "calendar",
+    "hint": "It helps you remember the days and months.",
+    "explanation": "The correct spelling of this word is 'calendar'. It shows the date.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Wizard_00003",
+    "questionText": "Which word means to give space for someone or something?",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "UNBELIEVABLE",
+      "unbelievable",
+      "Unbelievable",
+      "elbaveilebnu"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "unbelievable",
+    "hint": "It means something so surprising or unusual that it's hard to believe.",
+    "explanation": "The correct spelling of this word is 'unbelievable'. It means very hard to believe.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "ghcopilot",
+    "createdAt": "2025-06-14T12:46:34.636Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.636Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Rookie_00004",
+    "questionText": "Listen and select the correct spelling: /ˈkæt/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "kat",
+      "cat",
+      "ct",
+      "katt"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "cat",
+    "hint": "It's a small pet that likes to play with string.",
+    "explanation": "The correct spelling is 'cat'. It's a furry animal that meows.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Rookie_00001",
+    "questionText": "Choose the correct spelling of a small insect.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "bgu",
+      "bug",
+      "bg",
+      "buge"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "bug",
+    "hint": "It's a tiny creature that crawls or flies.",
+    "explanation": "The correct spelling is 'bug'. It's a small insect.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Rookie_00003",
+    "questionText": "Select the correct spelling for 's _ n' (Hint: It shines in the sky).",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "sn",
+      "sun",
+      "snu",
+      "usn"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "sun",
+    "hint": "It's a big, bright star that warms the Earth.",
+    "explanation": "The correct spelling is 'sun'. It gives us light and warmth during the day.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Rookie_00004",
+    "questionText": "Unscramble 'epn' to spell a writing tool.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "nep",
+      "pne",
+      "pen",
+      "enp"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "pen",
+    "hint": "You use this to write or draw.",
+    "explanation": "The correct spelling is 'pen'. You write with it.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Rookie_00001",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "bal",
+      "ball",
+      "bl",
+      "bll"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "ball",
+    "hint": "Look at the picture! You can kick, throw, or bounce this round object.",
+    "explanation": "The correct spelling is 'ball'. You play games with a ball.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Racer_00004",
+    "questionText": "Listen and select the correct spelling: /ˈdʌk/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "duk",
+      "duck",
+      "dcuk",
+      "dck"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "duck",
+    "hint": "It's a bird that swims on water and says 'quack'.",
+    "explanation": "The correct spelling is 'duck'. It's a bird that likes water.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Racer_00001",
+    "questionText": "Choose the correct spelling of a place to sleep.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "bde",
+      "bed",
+      "ebd",
+      "db"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "bed",
+    "hint": "It's a piece of furniture you sleep on.",
+    "explanation": "The correct spelling is 'bed'. You sleep in your bed.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Racer_00003",
+    "questionText": "Select the correct spelling for 'b _ k' (Hint: You read it).",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "bok",
+      "book",
+      "bko",
+      "kb"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "book",
+    "hint": "It has pages and you can read stories from it.",
+    "explanation": "The correct spelling is 'book'. You read a book.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Racer_00004",
+    "questionText": "Unscramble 'odf' to spell something you eat.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "ofd",
+      "fod",
+      "food",
+      "dfo"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "food",
+    "hint": "It's what you eat to get energy.",
+    "explanation": "The correct spelling is 'food'. We eat food to grow strong.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Racer_00001",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "forg",
+      "frog",
+      "frg",
+      "rfog"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "frog",
+    "hint": "Look at the picture! It's a small green animal that can jump far.",
+    "explanation": "The correct spelling is 'frog'. It lives near ponds.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Racer",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Master_00004",
+    "questionText": "Listen and select the correct spelling: /ˈtreɪn/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "trian",
+      "train",
+      "trani",
+      "tarn"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "train",
+    "hint": "It's a long vehicle that runs on railway tracks.",
+    "explanation": "The correct spelling is 'train'. It carries many people.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Master_00001",
+    "questionText": "Choose the correct spelling of a place to live.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "huose",
+      "hose",
+      "house",
+      "hosue"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "house",
+    "hint": "It's a building where people reside.",
+    "explanation": "The correct spelling is 'house'. It's where a family lives.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Master_00003",
+    "questionText": "Select the correct spelling for 'st _ r' (Hint: It shines at night).",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "tsar",
+      "star",
+      "satr",
+      "stra"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "star",
+    "hint": "It's a bright point of light you see in the night sky.",
+    "explanation": "The correct spelling is 'star'. Stars twinkle in the night sky.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Master_00004",
+    "questionText": "Unscramble 'ilems' to spell a happy expression.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "slime",
+      "smile",
+      "miles",
+      "islem"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "smile",
+    "hint": "When you are happy, your mouth curves up like this.",
+    "explanation": "The correct spelling is 'smile'. It shows you are happy.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Master_00001",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "brid",
+      "bird",
+      "bidr",
+      "ibdr"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "bird",
+    "hint": "Look at the picture! It's an animal with feathers and wings that can fly.",
+    "explanation": "The correct spelling is 'bird'. Birds sing and fly.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Master",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Prodigy_00004",
+    "questionText": "Listen and select the correct spelling: /ˈflɑʊər/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "flour",
+      "flowr",
+      "flower",
+      "folwer"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "flower",
+    "hint": "It's a colorful and often sweet-smelling part of a plant.",
+    "explanation": "The correct spelling is 'flower'. Flowers are beautiful parts of plants.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Prodigy_00001",
+    "questionText": "Choose the correct spelling of a sweet fruit.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "appel",
+      "aple",
+      "apple",
+      "tree"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "apple",
+    "hint": "It's a round fruit that can be red, green, or yellow.",
+    "explanation": "The correct spelling is 'apple'. It's a very common fruit.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Prodigy_00003",
+    "questionText": "Select the correct spelling for 'tr _ _' (Hint: It grows outside).",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "tre",
+      "tree",
+      "tere",
+      "rtee"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "tree",
+    "hint": "It's a tall plant with a trunk and branches.",
+    "explanation": "The correct spelling is 'tree'. Trees have leaves and bark.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Prodigy_00004",
+    "questionText": "Unscramble 'owdniw' to spell something you look through.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "widnow",
+      "window",
+      "winodw",
+      "owindw"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "window",
+    "hint": "It's an opening in a wall or vehicle to let in light and air.",
+    "explanation": "The correct spelling is 'window'. You can see outside through a window.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Prodigy_00001",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "acr",
+      "car",
+      "cra",
+      "arc"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "car",
+    "hint": "Look at the picture! It's a vehicle with wheels that you drive.",
+    "explanation": "The correct spelling is 'car'. You ride in a car.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Prodigy",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Wizard_00004",
+    "questionText": "Listen and select the correct spelling: /ˈmʌŋki/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "monky",
+      "monkey",
+      "mokney",
+      "mnoeky"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "monkey",
+    "hint": "It's a clever animal that swings in trees and loves bananas.",
+    "explanation": "The correct spelling is 'monkey'. It's a playful animal.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Wizard_00001",
+    "questionText": "Choose the correct spelling of a sweet treat.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "cndy",
+      "candy",
+      "candee",
+      "cadny"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "candy",
+    "hint": "It's a sweet food made of sugar or chocolate.",
+    "explanation": "The correct spelling is 'candy'. It's a sweet treat.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Wizard_00003",
+    "questionText": "Select the correct spelling for 'cl _ ck' (Hint: It tells time).",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "clok",
+      "clock",
+      "clck",
+      "kolc"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "clock",
+    "hint": "It's a device that shows you what time it is.",
+    "explanation": "The correct spelling is 'clock'. It helps us know the time.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Wizard_00004",
+    "questionText": "Unscramble 'kcoos' to spell something you wear.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "kocs",
+      "sock",
+      "coks",
+      "ksoc"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "sock",
+    "hint": "You wear this on your foot inside your shoe.",
+    "explanation": "The correct spelling is 'sock'. You wear socks on your feet.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Wizard_00001",
+    "questionText": "Select the correct spelling for the picture shown.",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "sn",
+      "sun",
+      "usn",
+      "snu"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "sun",
+    "hint": "Look at the picture! It's a big, bright object in the sky that gives light.",
+    "explanation": "The correct spelling is 'sun'. The sun shines brightly.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 10,
+    "difficulty": "Wizard",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "grok3",
+    "createdAt": "2025-06-14T12:46:34.642Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.642Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Dictation_Rookie_00005",
+    "questionText": "Listen and select the correct spelling: /ˈæpəl/ (Dictation)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "appel",
+      "aple",
+      "apple",
+      "applle"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "apple",
+    "hint": "It's a common fruit, often red or green.",
+    "explanation": "The correct spelling is 'apple'. It's a healthy fruit.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 5,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Dictation",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.662Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.662Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheCorrectSpelling_Rookie_00002",
+    "questionText": "Choose the correctly spelled word: (Find the Correct Spelling)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "shoo",
+      "shoe",
+      "sho",
+      "shoue"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "shoe",
+    "hint": "Something you wear on your feet.",
+    "explanation": "The correct spelling is 'shoe'. You wear shoes on your feet.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 5,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheCorrectSpelling",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.662Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.662Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_FindTheMissingLetters_Rookie_00004",
+    "questionText": "Fill in the missing letter: C _ T (Find the Missing Letter)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "COT",
+      "CUT",
+      "CAT",
+      "CET"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "CAT",
+    "hint": "It's a pet that meows.",
+    "explanation": "The correct spelling is 'CAT'. It's a small, furry animal.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 5,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "FindTheMissingLetters",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.662Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.662Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_Unscramble_Rookie_00005",
+    "questionText": "Unscramble the letters: GDO (Unscramble)",
+    "questionType": "text",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "GOD",
+      "DOG",
+      "DGO",
+      "OGD"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "DOG",
+    "hint": "A loyal animal that barks.",
+    "explanation": "The correct spelling is 'DOG'. It's a common pet.",
+    "mediaType": "text",
+    "mediaUrl": null,
+    "points": 5,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "Unscramble",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.662Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.662Z"
+    ]
+  },
+  {
+    "questionId": "I-II_Spelling_SpellThePicture_Rookie_00002",
+    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionType": "image",
+    "questionFormat": "multiple-choice",
+    "answerType": "text",
+    "options": [
+      "STIR",
+      "STAR",
+      "STOR",
+      "STUR"
+    ],
+    "shuffleOptions": true,
+    "correctAnswer": "STAR",
+    "hint": "Look at the picture! It shines in the sky at night.",
+    "explanation": "The correct spelling is 'STAR'. Stars twinkle in the night.",
+    "mediaType": "text",
+    "mediaUrl": "star.jpg",
+    "points": 5,
+    "difficulty": "Rookie",
+    "module": "Spelling",
+    "category": "SpellThePicture",
+    "usage": {
+      "learn": true,
+      "practice": true,
+      "test": true,
+      "battle": true,
+      "challenge": true,
+      "competition": true
+    },
+    "educatorId": "msftcopilot",
+    "createdAt": "2025-06-14T12:46:34.662Z",
+    "lastUpdatedAt": [
+      "2025-06-14T12:46:34.662Z"
+    ]
+  }
+]
