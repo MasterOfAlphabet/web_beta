@@ -1,30 +1,7 @@
-import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Typography,
-  Paper,
-  Stack,
-  Grid,
-  Button,
-  LinearProgress,
-  Avatar,
-  Divider,
-  TextField,
-  RadioGroup,
-  Radio,
-  FormControlLabel,
-  Collapse,
-  IconButton,
-} from "@mui/material";
-import SpellcheckIcon from "@mui/icons-material/Spellcheck";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { purple, orange } from "@mui/material/colors";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Clock, Volume2, CheckCircle, ChevronDown, ChevronUp, ArrowLeft, ArrowRight, Trophy, Star, Sparkles } from 'lucide-react';
 
-// DATA: I-II, plus "Review questions" as last category
+// Mock data - keeping the original structure
 const spellingSkillsAssessmentData_I_II = {
   classGroup: "I-II",
   categories: [
@@ -54,18 +31,6 @@ const spellingSkillsAssessmentData_I_II = {
           options: ["flor", "flower", "floer", "flowr"],
           answer: "flower",
         },
-        {
-          id: 7,
-          question: "Which is the correct spelling?",
-          options: ["elefant", "elephant", "elephent", "elephint"],
-          answer: "elephant",
-        },
-        {
-          id: 8,
-          question: "Which is the correct spelling?",
-          options: ["snak", "snake", "snaek", "snayk"],
-          answer: "snake",
-        },
       ],
     },
     {
@@ -73,498 +38,89 @@ const spellingSkillsAssessmentData_I_II = {
       description: "Fill in the missing letter to complete the word.",
       questions: [
         {
-          id: 9,
+          id: 7,
           word: "c _ t",
           hint: "A pet that says meow.",
           answer: "cat",
         },
         {
-          id: 10,
+          id: 8,
           word: "b _ _ l",
           hint: "You play with this.",
           answer: "ball",
         },
-        {
-          id: 11,
-          word: "s _ _ p",
-          hint: "You use this to wash your hands.",
-          answer: "soap",
-        },
-        {
-          id: 12,
-          word: "h _ _ s e",
-          hint: "You live in this.",
-          answer: "house",
-        },
-      ],
-    },
-    {
-      name: "Unscramble",
-      description: "Rearrange the scrambled letters to form the correct word.",
-      questions: [
-        {
-          id: 13,
-          scrambled: "atc",
-          hint: "A small animal that meows.",
-          answer: "cat",
-        },
-        {
-          id: 14,
-          scrambled: "ogd",
-          hint: "A pet that barks.",
-          answer: "dog",
-        },
-        {
-          id: 15,
-          scrambled: "oclkc",
-          hint: "Tells time on the wall.",
-          answer: "clock",
-        },
-        {
-          id: 16,
-          scrambled: "nus",
-          hint: "It shines in the sky during the day.",
-          answer: "sun",
-        },
       ],
     },
     {
       name: "Spell the Pic",
       description: "Type the word that matches the picture shown.",
       questions: [
-        { id: 17, image: "apple.jpg", answer: "apple" },
-        { id: 18, image: "dog.jpg", answer: "dog" },
-        { id: 19, image: "star.jpg", answer: "star" },
-        { id: 20, image: "fish.jpg", answer: "fish" },
+        { id: 9, image: "apple.jpg", answer: "apple" },
+        { id: 10, image: "dog.jpg", answer: "dog" },
       ],
     },
-    
   ],
 };
-// Unsplash images for "Spell the Pic" and review
+
 const picImages = {
   "apple.jpg": "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=400&q=80",
   "dog.jpg": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80",
-  "star.jpg": "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-  "fish.jpg": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80",
-  "leaf.jpg": "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=400&q=80",
 };
 
-// Dummy data for III-V, VI-X (should be replaced with your actual sets)
-const spellingSkillsAssessmentData_III_V = {
-  classGroup: "III-V",
-  categories: [
-    {
-      name: "Dictation",
-      description: "Listen to the word and type it correctly.",
-      questions: [
-        { id: 1, word: "bicycle", answer: "bicycle" },
-        { id: 2, word: "library", answer: "library" },
-        { id: 3, word: "elephant", answer: "elephant" },
-        { id: 4, word: "beautiful", answer: "beautiful" },
-      ],
-    },
-    {
-      name: "Find the Correct Spelling (MCQ)",
-      description: "Choose the correctly spelled word from four options.",
-      questions: [
-        {
-          id: 5,
-          question: "Which is the correct spelling?",
-          options: ["umbrella", "umberella", "umbrellla", "umbrela"],
-          answer: "umbrella",
-        },
-        {
-          id: 6,
-          question: "Which is the correct spelling?",
-          options: ["mountain", "mountin", "moutain", "mounten"],
-          answer: "mountain",
-        },
-        {
-          id: 7,
-          question: "Which is the correct spelling?",
-          options: ["chocolate", "choclate", "chocolatte", "chocklate"],
-          answer: "chocolate",
-        },
-        {
-          id: 8,
-          question: "Which is the correct spelling?",
-          options: ["vegetable", "vegitable", "vegetabel", "vegeteble"],
-          answer: "vegetable",
-        },
-      ],
-    },
-    {
-      name: "Find the Missing Letter",
-      description: "Fill in the missing letter to complete the word.",
-      questions: [
-        {
-          id: 9,
-          word: "c _ mputer",
-          hint: "A machine used for calculations and the internet.",
-          answer: "computer",
-        },
-        {
-          id: 10,
-          word: "th _ ught",
-          hint: "An idea or opinion.",
-          answer: "thought",
-        },
-        {
-          id: 11,
-          word: "ex _ rcise",
-          hint: "Physical activity for health.",
-          answer: "exercise",
-        },
-        {
-          id: 12,
-          word: "scho _ l",
-          hint: "A place where you learn.",
-          answer: "school",
-        },
-      ],
-    },
-    {
-      name: "Unscramble",
-      description: "Rearrange the scrambled letters to form the correct word.",
-      questions: [
-        {
-          id: 13,
-          scrambled: "environemnt",
-          hint: "The surroundings where we live.",
-          answer: "environment",
-        },
-        {
-          id: 14,
-          scrambled: "yadihol",
-          hint: "No school on this day.",
-          answer: "holiday",
-        },
-        {
-          id: 15,
-          scrambled: "rfiehdnsip",
-          hint: "A bond between friends.",
-          answer: "friendship",
-        },
-        {
-          id: 16,
-          scrambled: "gniar",
-          hint: "Falls from clouds.",
-          answer: "rain",
-        },
-      ],
-    },
-    {
-      name: "Spell the Pic",
-      description: "Type the word that matches the picture shown.",
-      questions: [
-        { id: 17, image: "giraffe.jpg", answer: "giraffe" },
-        { id: 18, image: "pyramid.jpg", answer: "pyramid" },
-        { id: 19, image: "helicopter.jpg", answer: "helicopter" },
-        { id: 20, image: "volcano.jpg", answer: "volcano" },
-      ],
-    },
-  ],
-};
-const spellingSkillsAssessmentData_VI_X = {
-  classGroup: "VI-X",
-  categories: [
-    {
-      name: "Dictation",
-      description: "Listen to the word and type it correctly.",
-      questions: [
-        { id: 1, word: "acquaintance", answer: "acquaintance" },
-        { id: 2, word: "simultaneous", answer: "simultaneous" },
-        { id: 3, word: "phenomenon", answer: "phenomenon" },
-        { id: 4, word: "psychology", answer: "psychology" },
-      ],
-    },
-    {
-      name: "Find the Correct Spelling (MCQ)",
-      description: "Choose the correctly spelled word from four options.",
-      questions: [
-        {
-          id: 5,
-          question: "Which is the correct spelling?",
-          options: ["entrepreneur", "enterpreneur", "entreprenuer", "entrepeneur"],
-          answer: "entrepreneur",
-        },
-        {
-          id: 6,
-          question: "Which is the correct spelling?",
-          options: ["conscientious", "consciencious", "conscientous", "conscienscious"],
-          answer: "conscientious",
-        },
-        {
-          id: 7,
-          question: "Which is the correct spelling?",
-          options: ["bureaucracy", "bureacracy", "bureaucrazy", "bereaucracy"],
-          answer: "bureaucracy",
-        },
-        {
-          id: 8,
-          question: "Which is the correct spelling?",
-          options: ["miscellaneous", "miscellanous", "miscelleneous", "miscellanious"],
-          answer: "miscellaneous",
-        },
-      ],
-    },
-    {
-      name: "Find the Missing Letter",
-      description: "Fill in the missing letter to complete the word.",
-      questions: [
-        {
-          id: 9,
-          word: "eq _ ivalent",
-          hint: "Equal in value or amount.",
-          answer: "equivalent",
-        },
-        {
-          id: 10,
-          word: "nece _ sary",
-          hint: "Required or needed.",
-          answer: "necessary",
-        },
-        {
-          id: 11,
-          word: "occ _ rrence",
-          hint: "An incident or event.",
-          answer: "occurrence",
-        },
-        {
-          id: 12,
-          word: "rh _ thm",
-          hint: "A strong, regular repeated pattern of movement or sound.",
-          answer: "rhythm",
-        },
-      ],
-    },
-    {
-      name: "Unscramble",
-      description: "Rearrange the scrambled letters to form the correct word.",
-      questions: [
-        {
-          id: 13,
-          scrambled: "exaggeration",
-          hint: "Making something seem bigger than it is.",
-          answer: "exaggeration",
-        },
-        {
-          id: 14,
-          scrambled: "subtle",
-          hint: "Not obvious; delicate.",
-          answer: "subtle",
-        },
-        {
-          id: 15,
-          scrambled: "spontaneous",
-          hint: "Happening without planning.",
-          answer: "spontaneous",
-        },
-        {
-          id: 16,
-          scrambled: "accommodate",
-          hint: "To provide room or space for someone.",
-          answer: "accommodate",
-        },
-      ],
-    },
-    {
-      name: "Spell the Pic",
-      description: "Type the word that matches the picture shown.",
-      questions: [
-        { id: 17, image: "microscope.jpg", answer: "microscope" },
-        { id: 18, image: "parliament.jpg", answer: "parliament" },
-        { id: 19, image: "chameleon.jpg", answer: "chameleon" },
-        { id: 20, image: "hieroglyphics.jpg", answer: "hieroglyphics" },
-      ],
-    },
-    {
-      name: "Review Questions",
-      description: "General spelling review for Class VI-X.",
-      questions: [
-        {
-          id: 21,
-          question: "Which is the correct spelling?",
-          options: ["parliament", "parliment", "parlament", "parlimant"],
-          answer: "parliament",
-        },
-        {
-          id: 22,
-          scrambled: "yratnemelp",
-          hint: "The highest legislature.",
-          answer: "parliament",
-        },
-        {
-          id: 23,
-          word: "kn _ wledge",
-          hint: "Information and skills acquired.",
-          answer: "knowledge",
-        },
-        {
-          id: 24,
-          image: "parliament.jpg",
-          answer: "parliament",
-        },
-      ],
-    },
-  ],
-};
-
-// Learning level function
 function getLearningLevel(score) {
-  if (score <= 5) return "Rookie";
-  if (score <= 10) return "Racer";
-  if (score <= 15) return "Master";
-  if (score <= 18) return "Prodigy";
-  return "Wizard";
-}
-
-// Replace your existing speak(text) function with this improved version:
-
-/**
-function getPreferredVoice() {
-  const voices = window.speechSynthesis.getVoices();
-
-  // Try to find Indian English Female
-  let preferredVoice = voices.find(
-    v =>
-      v.lang === "en-IN" &&
-      (v.name.toLowerCase().includes("female") ||
-       v.name.toLowerCase().includes("aditi"))
-  );
-
-  // Fallback: any Indian English voice
-  if (!preferredVoice) {
-    preferredVoice = voices.find(v => v.lang === "en-IN");
-  }
-
-  // Fallback: any English female
-  if (!preferredVoice) {
-    preferredVoice = voices.find(
-      v =>
-        v.lang.startsWith("en") &&
-        v.name.toLowerCase().includes("female")
-    );
-  }
-
-  // Fallback: any English
-  if (!preferredVoice) {
-    preferredVoice = voices.find(v => v.lang.startsWith("en"));
-  }
-
-  return preferredVoice;
-}
-*/
-
-function getPreferredVoice() {
-  const voices = window.speechSynthesis.getVoices();
-
-  // Try to find American English Female
-  let preferredVoice = voices.find(
-    v =>
-      (v.lang === "en-US" || v.lang.startsWith("en-US")) &&
-      v.name.toLowerCase().includes("female")
-  );
-
-  // Fallback: any American English voice
-  if (!preferredVoice) {
-    preferredVoice = voices.find(v => v.lang === "en-US" || v.lang.startsWith("en-US"));
-  }
-
-  // Fallback: any English female
-  if (!preferredVoice) {
-    preferredVoice = voices.find(
-      v =>
-        v.lang.startsWith("en") &&
-        v.name.toLowerCase().includes("female")
-    );
-  }
-
-  // Fallback: any English
-  if (!preferredVoice) {
-    preferredVoice = voices.find(v => v.lang.startsWith("en"));
-  }
-
-  return preferredVoice;
+  if (score <= 2) return { level: "Rookie", color: "text-amber-600", bg: "bg-amber-100", icon: "🌱" };
+  if (score <= 4) return { level: "Racer", color: "text-blue-600", bg: "bg-blue-100", icon: "🏃" };
+  if (score <= 6) return { level: "Master", color: "text-purple-600", bg: "bg-purple-100", icon: "🎯" };
+  if (score <= 8) return { level: "Prodigy", color: "text-green-600", bg: "bg-green-100", icon: "🧠" };
+  return { level: "Wizard", color: "text-pink-600", bg: "bg-pink-100", icon: "🧙‍♂️" };
 }
 
 function speak(text) {
   if ("speechSynthesis" in window) {
     window.speechSynthesis.cancel();
     const utter = new window.SpeechSynthesisUtterance(text);
-
-    // Wait for voices to be loaded (they load async sometimes)
-    const setVoiceAndSpeak = () => {
-      const voice = getPreferredVoice();
-      if (voice) utter.voice = voice;
-      utter.lang = voice ? voice.lang : "en-IN";
-      window.speechSynthesis.speak(utter);
-    };
-
-    if (window.speechSynthesis.getVoices().length === 0) {
-      window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
-    } else {
-      setVoiceAndSpeak();
-    }
+    utter.lang = "en-US";
+    window.speechSynthesis.speak(utter);
   }
 }
 
-export default function TestSpellingSkills() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { student, classGroup } = location.state || {};
-
-  // Select data set by class group
-  let data;
-  if (classGroup === "I-II") data = spellingSkillsAssessmentData_I_II;
-  else if (classGroup === "III-V") data = spellingSkillsAssessmentData_III_V;
-  else if (classGroup === "VI-X") data = spellingSkillsAssessmentData_VI_X;
-  else data = spellingSkillsAssessmentData_I_II;
-
-  // Timer setup (same as before)
-  const classGroupMeta = [
-    { value: "I-II", label: "Class I-II", time: 60 },
-    { value: "III-V", label: "Class III-V", time: 45 },
-    { value: "VI-X", label: "Class VI-X", time: 30 },
-  ];
-  const classMeta =
-    classGroupMeta.find((g) => g.value === classGroup) || classGroupMeta[0];
-
-  // State
-  const [currentQ, setCurrentQ] = useState(0); // for I-II
-  const [currentCat, setCurrentCat] = useState(0); // for III-V
+export default function SpellingAssessment() {
+  // Mock student data
+  const student = {
+    name: "Alex Johnson",
+    classLevel: "Class II",
+    parentMobile: "+1-555-0123",
+    city: "New York",
+    school: "Sunshine Elementary"
+  };
+  const classGroup = "I-II";
+  
+  const data = spellingSkillsAssessmentData_I_II;
+  
+  const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [timer, setTimer] = useState(classMeta.time * 60);
+  const [timer, setTimer] = useState(60 * 60); // 60 minutes
   const [submitted, setSubmitted] = useState(false);
-  // Collapse state for per-category review
   const [catOpen, setCatOpen] = useState({});
 
   // Timer effect
   useEffect(() => {
     if (submitted) return;
     if (timer <= 0) {
-      handleSubmit();
+      setSubmitted(true);
       return;
     }
     const t = setInterval(() => setTimer((s) => s - 1), 1000);
     return () => clearInterval(t);
-    // eslint-disable-next-line
   }, [timer, submitted]);
 
-  // Flatten for scoring
   const allQuestions = data.categories.flatMap((cat) =>
     cat.questions.map((q) => ({
       ...q,
       category: cat.name,
-      type: cat.question ? "mcq"
-        : q.word ? "missing"
-        : q.scrambled ? "unscramble"
-        : q.image ? "pic"
-        : q.word ? "dictation"
-        : "other",
     }))
   );
+
   const score = allQuestions.reduce(
     (acc, q) =>
       (answers[q.id]?.trim().toLowerCase() === q.answer.toLowerCase()
@@ -572,9 +128,9 @@ export default function TestSpellingSkills() {
         : acc),
     0
   );
-  const learningLevel = getLearningLevel(score);
 
-  // Score per category
+  const learningLevelData = getLearningLevel(score);
+  
   const categoryScores = data.categories.map(cat => ({
     name: cat.name,
     score: cat.questions.reduce((acc, q) =>
@@ -583,634 +139,353 @@ export default function TestSpellingSkills() {
     total: cat.questions.length,
   }));
 
-  // Handlers
   const handleAnswer = (qid, val) => setAnswers((prev) => ({ ...prev, [qid]: val }));
-  const handleOption = (qid, opt) => setAnswers((a) => ({ ...a, [qid]: opt }));
-  const handleNext = () => setCurrentQ((q) => q + 1);
-  const handlePrev = () => setCurrentQ((q) => q - 1);
-  const handleNextCat = () => setCurrentCat((i) => i + 1);
-  const handlePrevCat = () => setCurrentCat((i) => i - 1);
+  const handleNext = () => setCurrentQ((q) => Math.min(q + 1, allQuestions.length - 1));
+  const handlePrev = () => setCurrentQ((q) => Math.max(q - 1, 0));
   const handleSubmit = () => setSubmitted(true);
-  const handleToggleCat = (catName) => setCatOpen(open => ({ ...open, [catName]: !open[catName] }));
 
   const formatTime = (secs) => {
-    const m = Math.floor(secs / 60)
-      .toString()
-      .padStart(2, "0");
+    const m = Math.floor(secs / 60).toString().padStart(2, "0");
     const s = (secs % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
 
-  // Early return for missing data
-  if (!student || !classGroup) {
-    return (
-      <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
-        <Paper sx={{ p: 4, textAlign: "center" }}>
-          <Typography variant="h6" color="error" mb={2}>
-            Missing student or class group data.<br />
-            Please start the assessment again.
-          </Typography>
-          <Button variant="contained" color="primary" onClick={() => navigate("/")}>
-            Go to Home
-          </Button>
-        </Paper>
-      </Box>
-    );
-  }
+  const currentQuestion = allQuestions[currentQ];
+  const currentCategory = data.categories.find(cat => 
+    cat.questions.some(q => q.id === currentQuestion?.id)
+  );
 
   // Question renderers
-  function renderDictation(q) {
-    return (
-      <Stack direction="row" alignItems="center" spacing={2} mb={2} key={q.id}>
-        <Button variant="outlined" onClick={() => speak(q.word)}>
-          Dictate
-        </Button>
-        <TextField
-          label="Your Answer"
-          value={answers[q.id] || ""}
-          onChange={e => handleAnswer(q.id, e.target.value)}
-          disabled={submitted}
-        />
-      </Stack>
-    );
-  }
-  function renderMCQ(q) {
-    return (
-      <Box key={q.id} mb={2}>
-        <Typography mb={1} fontWeight={600}>{q.question}</Typography>
-        <RadioGroup
-          value={answers[q.id] || ""}
-          onChange={e => handleOption(q.id, e.target.value)}
-        >
-          {q.options.map((op, idx) => (
-            <FormControlLabel
-              key={idx}
-              value={op}
-              control={<Radio disabled={submitted} />}
-              label={op}
+  const renderQuestion = (q, cat) => {
+    if (cat.name === "Dictation") {
+      return (
+        <div className="space-y-6">
+          <div className="flex items-center justify-center">
+            <button
+              onClick={() => speak(q.word)}
+              className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+            >
+              <Volume2 className="w-6 h-6 group-hover:animate-pulse" />
+              <span>Listen & Type</span>
+              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 rounded-2xl transition-opacity duration-300"></div>
+            </button>
+          </div>
+          <div className="flex justify-center">
+            <input
+              type="text"
+              value={answers[q.id] || ""}
+              onChange={(e) => handleAnswer(q.id, e.target.value)}
+              disabled={submitted}
+              className="w-full max-w-md px-6 py-4 text-lg font-medium text-center border-2 border-gray-200 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 bg-white shadow-sm"
+              placeholder="Type what you hear..."
             />
-          ))}
-        </RadioGroup>
-      </Box>
-    );
-  }
-  function renderMissing(q) {
-    return (
-      <Box key={q.id} mb={2}>
-        <Typography fontWeight={600}>
-          {q.word}
-          <span style={{ color: "#888", fontWeight: 400, marginLeft: 8 }}>
-            ({q.hint})
-          </span>
-        </Typography>
-        <TextField
-          label="Your Answer"
-          value={answers[q.id] || ""}
-          onChange={e => handleAnswer(q.id, e.target.value)}
-          disabled={submitted}
-          sx={{ mt: 1 }}
-        />
-      </Box>
-    );
-  }
-  function renderUnscramble(q) {
-    return (
-      <Box key={q.id} mb={2}>
-        <Typography fontWeight={600}>
-          {q.scrambled}
-          <span style={{ color: "#888", fontWeight: 400, marginLeft: 8 }}>
-            ({q.hint})
-          </span>
-        </Typography>
-        <TextField
-          label="Your Answer"
-          value={answers[q.id] || ""}
-          onChange={e => handleAnswer(q.id, e.target.value)}
-          disabled={submitted}
-          sx={{ mt: 1 }}
-        />
-      </Box>
-    );
-  }
-  function renderPic(q) {
-    return (
-      <Box key={q.id} mb={2}>
-        <img
-          src={picImages[q.image]}
-          alt={q.answer}
-          style={{
-            width: 120,
-            height: 120,
-            objectFit: "cover",
-            borderRadius: 12,
-            border: "2px solid #e3e6ed",
-            marginBottom: 8,
-          }}
-        />
-        <TextField
-          label="What is this?"
-          value={answers[q.id] || ""}
-          onChange={e => handleAnswer(q.id, e.target.value)}
-          disabled={submitted}
-          sx={{ mt: 1 }}
-        />
-      </Box>
-    );
-  }
+          </div>
+        </div>
+      );
+    }
 
-  // Results view
+    if (cat.name === "Find the Correct Spelling (MCQ)") {
+      return (
+        <div className="space-y-6">
+          <h3 className="text-xl font-bold text-gray-800 text-center">{q.question}</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {q.options.map((option, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleAnswer(q.id, option)}
+                disabled={submitted}
+                className={`p-4 rounded-2xl border-2 font-semibold text-lg transition-all duration-300 transform hover:scale-105 ${
+                  answers[q.id] === option
+                    ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white border-green-500 shadow-lg'
+                    : 'bg-white border-gray-200 hover:border-blue-400 hover:shadow-md text-gray-700'
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    if (cat.name === "Find the Missing Letter") {
+      return (
+        <div className="space-y-6">
+          <div className="text-center">
+            <div className="text-4xl font-bold text-gray-800 mb-2 font-mono tracking-wider">
+              {q.word}
+            </div>
+            <p className="text-gray-600 italic">Hint: {q.hint}</p>
+          </div>
+          <div className="flex justify-center">
+            <input
+              type="text"
+              value={answers[q.id] || ""}
+              onChange={(e) => handleAnswer(q.id, e.target.value)}
+              disabled={submitted}
+              className="w-full max-w-md px-6 py-4 text-lg font-medium text-center border-2 border-gray-200 rounded-2xl focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 bg-white shadow-sm"
+              placeholder="Complete the word..."
+            />
+          </div>
+        </div>
+      );
+    }
+
+    if (cat.name === "Spell the Pic") {
+      return (
+        <div className="space-y-6">
+          <div className="flex justify-center">
+            <div className="relative group">
+              <img
+                src={picImages[q.image]}
+                alt="Spell this"
+                className="w-48 h-48 object-cover rounded-3xl shadow-lg group-hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <input
+              type="text"
+              value={answers[q.id] || ""}
+              onChange={(e) => handleAnswer(q.id, e.target.value)}
+              disabled={submitted}
+              className="w-full max-w-md px-6 py-4 text-lg font-medium text-center border-2 border-gray-200 rounded-2xl focus:border-pink-500 focus:ring-4 focus:ring-pink-100 transition-all duration-300 bg-white shadow-sm"
+              placeholder="What do you see?"
+            />
+          </div>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   if (submitted) {
     return (
-      <Box
-        sx={{
-          minHeight: "100vh",
-          bgcolor: "#f6f8fc",
-          pb: 6,
-          pt: { xs: 2, sm: 5 },
-        }}
-      >
-        <Box sx={{ maxWidth: 680, mx: "auto", px: { xs: 1, sm: 2 } }}>
-          <Paper
-            elevation={5}
-            sx={{
-              borderRadius: 5,
-              p: { xs: 2, sm: 4 },
-              mb: 4,
-              bgcolor: "#fff",
-              boxShadow: "0 10px 36px 0 rgba(80,130,250,.13)",
-              textAlign: "center",
-            }}
-          >
-            <CheckCircleIcon sx={{ fontSize: 48, color: "success.main", mb: 2 }} />
-            <Typography variant="h4" fontWeight={800} color="primary" mb={1}>
-              Your Learning Level: {learningLevel}
-            </Typography>
-            <Typography fontSize={20} color="success.main" mb={2}>
-              Score: {score} / {allQuestions.length}
-            </Typography>
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="h6" fontWeight={700} color="primary" mb={1}>
-              Section-wise Results
-            </Typography>
-            <Grid container spacing={2} mb={2} justifyContent="center">
-              {categoryScores.map(cat => (
-                <Grid item xs={12} sm={6} md={4} key={cat.name}>
-                  <Paper
-                    elevation={0}
-                    sx={{
-                      p: 2,
-                      borderRadius: 3,
-                      bgcolor: "#f7fafd",
-                      textAlign: "center",
-                    }}
-                  >
-                    <Typography fontWeight={700} color="primary">
-                      {cat.name}
-                    </Typography>
-                    <Typography fontSize={17}>
-                      {cat.score} / {cat.total}
-                    </Typography>
-                  </Paper>
-                </Grid>
-              ))}
-            </Grid>
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="h6" fontWeight={700} color="primary" mb={1}>
-              Your Registration Info
-            </Typography>
-            <Paper
-              variant="outlined"
-              sx={{
-                p: 3,
-                borderRadius: 3,
-                bgcolor: "#f7fafd",
-                maxWidth: 380,
-                mx: "auto",
-                mb: 2,
-              }}
-            >
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <b>Name:</b> {student.name}
-                </Grid>
-                <Grid item xs={12}>
-                  <b>Class:</b> {student.classLevel}
-                </Grid>
-                <Grid item xs={12}>
-                  <b>Parent's Mobile #:</b> {student.parentMobile}
-                </Grid>
-                <Grid item xs={12}>
-                  <b>City:</b> {student.city}
-                </Grid>
-                <Grid item xs={12}>
-                  <b>School:</b> {student.school}
-                </Grid>
-              </Grid>
-            </Paper>
-            <Divider sx={{ my: 3 }} />
+      <div className="min-h-screen bg-gradient-to-br from-purple-100 via-blue-50 to-indigo-100 py-8">
+        <div className="max-w-4xl mx-auto px-4">
+          {/* Results Header */}
+          <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8 text-center relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-500 via-blue-500 to-green-500"></div>
+            <div className="absolute top-4 right-4">
+              <Sparkles className="w-8 h-8 text-yellow-400 animate-pulse" />
+            </div>
+            
+            <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-4 animate-bounce" />
+            
+            <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-2xl mb-4 ${learningLevelData.bg}`}>
+              <span className="text-2xl">{learningLevelData.icon}</span>
+              <h1 className={`text-3xl font-bold ${learningLevelData.color}`}>
+                {learningLevelData.level}
+              </h1>
+            </div>
+            
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <Trophy className="w-8 h-8 text-yellow-500" />
+              <span className="text-2xl font-bold text-gray-800">
+                Score: {score} / {allQuestions.length}
+              </span>
+            </div>
 
-            <Typography variant="h6" fontWeight={700} color="primary" mb={1}>
-              Review Answers by Category
-            </Typography>
-            {data.categories.map((cat, idx) => (
-              <Box key={cat.name} mb={2}>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  onClick={() => handleToggleCat(cat.name)}
-                  sx={{
-                    bgcolor: "#f5f5f5",
-                    px: 2,
-                    py: 1,
-                    borderRadius: 2,
-                    cursor: "pointer",
-                    mb: 1,
-                  }}
+            {/* Category Scores */}
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Section Results</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              {categoryScores.map((cat, idx) => (
+                <div key={cat.name} className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-4">
+                  <h3 className="font-semibold text-gray-800 mb-1">{cat.name}</h3>
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="text-2xl font-bold text-blue-600">
+                      {cat.score}
+                    </div>
+                    <div className="text-gray-500">/</div>
+                    <div className="text-lg text-gray-600">
+                      {cat.total}
+                    </div>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                    <div 
+                      className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-1000"
+                      style={{ width: `${(cat.score / cat.total) * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Student Info */}
+            <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-6 mb-6">
+              <h2 className="text-xl font-bold text-gray-800 mb-4">Student Information</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                <div><span className="font-semibold">Name:</span> {student.name}</div>
+                <div><span className="font-semibold">Class:</span> {student.classLevel}</div>
+                <div><span className="font-semibold">Parent's Mobile:</span> {student.parentMobile}</div>
+                <div><span className="font-semibold">City:</span> {student.city}</div>
+                <div className="md:col-span-2"><span className="font-semibold">School:</span> {student.school}</div>
+              </div>
+            </div>
+
+            {/* Detailed Review */}
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Answer Review</h2>
+            {data.categories.map((cat) => (
+              <div key={cat.name} className="mb-4">
+                <button
+                  onClick={() => setCatOpen(prev => ({ ...prev, [cat.name]: !prev[cat.name] }))}
+                  className="w-full flex items-center justify-between p-4 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-colors duration-200"
                 >
-                  <Typography fontWeight={700} color="primary">
-                    {idx + 1}. {cat.name}
-                  </Typography>
-                  <IconButton size="small">
-                    {catOpen[cat.name] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                  </IconButton>
-                </Stack>
-                <Collapse in={!!catOpen[cat.name]} timeout="auto" unmountOnExit>
-                  <Box sx={{ pl: 2 }}>
-                    {cat.questions.map((q, qidx) => {
-                      // Type logic for review
-                      let qTitle = "";
-                      if (q.question) qTitle = q.question;
-                      else if (q.word && !q.hint) qTitle = q.word;
-                      else if (q.word && q.hint) qTitle = `${q.word} (${q.hint})`;
-                      else if (q.scrambled) qTitle = `${q.scrambled} (${q.hint})`;
-                      else if (q.image) qTitle = "Picture";
-                      else qTitle = "";
+                  <span className="font-semibold text-gray-800">{cat.name}</span>
+                  {catOpen[cat.name] ? <ChevronUp /> : <ChevronDown />}
+                </button>
+                
+                {catOpen[cat.name] && (
+                  <div className="mt-2 space-y-3">
+                    {cat.questions.map((q, idx) => {
                       const userAnswer = answers[q.id] || "";
                       const isCorrect = userAnswer.trim().toLowerCase() === q.answer.toLowerCase();
                       return (
-                        <Paper
+                        <div
                           key={q.id}
-                          sx={{
-                            p: 2,
-                            mb: 1.5,
-                            bgcolor: isCorrect ? "#e8f5e9" : "#fff3e0",
-                            borderLeft: `5px solid ${isCorrect ? "#388e3c" : "#f57c00"}`,
-                            boxShadow: 0,
-                          }}
+                          className={`p-4 rounded-xl border-l-4 ${
+                            isCorrect 
+                              ? 'bg-green-50 border-green-500' 
+                              : 'bg-red-50 border-red-500'
+                          }`}
                         >
-                          <Typography fontWeight={600}>
-                            Q{qidx + 1}: {qTitle}
-                          </Typography>
+                          <div className="font-semibold mb-2">Q{idx + 1}</div>
                           {q.image && (
                             <img
                               src={picImages[q.image]}
-                              alt={q.answer}
-                              style={{
-                                width: 80,
-                                height: 80,
-                                objectFit: "cover",
-                                borderRadius: 8,
-                                margin: "8px 0",
-                              }}
+                              alt="question"
+                              className="w-16 h-16 object-cover rounded-lg mb-2"
                             />
                           )}
-                          <Typography fontSize={15}>
-                            <span style={{ color: "#333" }}>
-                              Your Answer:{" "}
-                              <b>{userAnswer ? userAnswer : <i>No answer</i>}</b>
-                            </span>
-                            <br />
-                            <span style={{ color: "#666" }}>
-                              Correct Answer: <b>{q.answer}</b>
-                            </span>
-                            {isCorrect ? (
-                              <span style={{ color: "#43a047", fontWeight: 700, marginLeft: 8 }}>
-                                ✓
-                              </span>
-                            ) : (
-                              <span style={{ color: "#f57c00", fontWeight: 700, marginLeft: 8 }}>
-                                ✗
-                              </span>
-                            )}
-                          </Typography>
-                        </Paper>
+                          <div className="text-sm space-y-1">
+                            <div>Your Answer: <span className="font-semibold">{userAnswer || "No answer"}</span></div>
+                            <div>Correct Answer: <span className="font-semibold text-green-600">{q.answer}</span></div>
+                          </div>
+                        </div>
                       );
                     })}
-                  </Box>
-                </Collapse>
-              </Box>
+                  </div>
+                )}
+              </div>
             ))}
-
-            <Button
-              variant="outlined"
-              color="primary"
-              sx={{ borderRadius: 2, mt: 2 }}
-              onClick={() => navigate("/")}
-            >
-              Back to Home
-            </Button>
-          </Paper>
-        </Box>
-      </Box>
+          </div>
+        </div>
+      </div>
     );
   }
 
-  // Progressive display logic
-  let displayContent, progressValue, progressText;
-  if (classGroup === "I-II") {
-    // One question at a time
-    const allQs = data.categories.flatMap(cat =>
-      cat.questions.map(q => ({ ...q, cat }))
-    );
-    const q = allQs[currentQ];
-    progressValue = ((currentQ + 1) / allQs.length) * 100;
-    progressText = `${currentQ + 1} / ${allQs.length}`;
-    let qContent;
-    switch (q.cat.name) {
-      case "Dictation":
-        qContent = renderDictation(q);
-        break;
-      case "Find the Correct Spelling (MCQ)":
-        qContent = renderMCQ(q);
-        break;
-      case "Find the Missing Letter":
-        qContent = renderMissing(q);
-        break;
-      case "Unscramble":
-        qContent = renderUnscramble(q);
-        break;
-      case "Spell the Pic":
-        qContent = renderPic(q);
-        break;
-      case "Review Questions":
-        qContent = q.question
-          ? renderMCQ(q)
-          : q.word
-          ? renderMissing(q)
-          : q.scrambled
-          ? renderUnscramble(q)
-          : q.image
-          ? renderPic(q)
-          : null;
-        break;
-      default:
-        qContent = null;
-    }
-    displayContent = (
-      <>
-        <Typography fontWeight={700} fontSize={18} color="primary.main" mb={2}>
-          {q.cat.name}
-        </Typography>
-        <Typography color="text.secondary" mb={2}>
-          {q.cat.description}
-        </Typography>
-        {qContent}
-        <Stack direction="row" justifyContent="space-between" mt={3}>
-          <Button
-            variant="outlined"
-            color="primary"
-            disabled={currentQ === 0}
-            onClick={handlePrev}
-            sx={{ borderRadius: 2, px: 4, fontWeight: 700 }}
-          >
-            Previous
-          </Button>
-          {currentQ < allQs.length - 1 ? (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleNext}
-              sx={{ borderRadius: 2, px: 4, fontWeight: 700 }}
-            >
-              Next
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              color="success"
-              onClick={handleSubmit}
-              sx={{ borderRadius: 2, px: 4, fontWeight: 700 }}
-            >
-              Submit
-            </Button>
-          )}
-        </Stack>
-      </>
-    );
-  } else if (classGroup === "III-V") {
-    // One category at a time
-    const cat = data.categories[currentCat];
-    progressValue = ((currentCat + 1) / data.categories.length) * 100;
-    progressText = `${currentCat + 1} / ${data.categories.length}`;
-    let catContent;
-    switch (cat.name) {
-      case "Dictation":
-        catContent = cat.questions.map(renderDictation);
-        break;
-      case "Find the Correct Spelling (MCQ)":
-        catContent = cat.questions.map(renderMCQ);
-        break;
-      case "Find the Missing Letter":
-        catContent = cat.questions.map(renderMissing);
-        break;
-      case "Unscramble":
-        catContent = cat.questions.map(renderUnscramble);
-        break;
-      case "Spell the Pic":
-        catContent = cat.questions.map(renderPic);
-        break;
-      case "Review Questions":
-        catContent = cat.questions.map(q =>
-          q.question
-            ? renderMCQ(q)
-            : q.word
-            ? renderMissing(q)
-            : q.scrambled
-            ? renderUnscramble(q)
-            : q.image
-            ? renderPic(q)
-            : null
-        );
-        break;
-      default:
-        catContent = null;
-    }
-    displayContent = (
-      <>
-        <Typography fontWeight={700} fontSize={18} color="primary.main" mb={2}>
-          {cat.name}
-        </Typography>
-        <Typography color="text.secondary" mb={2}>
-          {cat.description}
-        </Typography>
-        {catContent}
-        <Stack direction="row" justifyContent="space-between" mt={3}>
-          <Button
-            variant="outlined"
-            color="primary"
-            disabled={currentCat === 0}
-            onClick={handlePrevCat}
-            sx={{ borderRadius: 2, px: 4, fontWeight: 700 }}
-          >
-            Previous
-          </Button>
-          {currentCat < data.categories.length - 1 ? (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleNextCat}
-              sx={{ borderRadius: 2, px: 4, fontWeight: 700 }}
-            >
-              Next
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              color="success"
-              onClick={handleSubmit}
-              sx={{ borderRadius: 2, px: 4, fontWeight: 700 }}
-            >
-              Submit
-            </Button>
-          )}
-        </Stack>
-      </>
-    );
-  } else {
-    // VI-X: All questions at once
-    progressValue = 100;
-    progressText = "All";
-    displayContent = (
-      <>
-        {data.categories.map((cat, idx) => (
-          <Box key={cat.name} mb={4}>
-            <Typography fontWeight={700} fontSize={18} color="primary.main" mb={2}>
-              {cat.name}
-            </Typography>
-            <Typography color="text.secondary" mb={2}>
-              {cat.description}
-            </Typography>
-            {cat.name === "Dictation" && cat.questions.map(renderDictation)}
-            {cat.name === "Find the Correct Spelling (MCQ)" && cat.questions.map(renderMCQ)}
-            {cat.name === "Find the Missing Letter" && cat.questions.map(renderMissing)}
-            {cat.name === "Unscramble" && cat.questions.map(renderUnscramble)}
-            {cat.name === "Spell the Pic" && cat.questions.map(renderPic)}
-            {cat.name === "Review Questions" && cat.questions.map(q =>
-              q.question
-                ? renderMCQ(q)
-                : q.word
-                ? renderMissing(q)
-                : q.scrambled
-                ? renderUnscramble(q)
-                : q.image
-                ? renderPic(q)
-                : null
-            )}
-          </Box>
-        ))}
-        <Button
-          variant="contained"
-          color="success"
-          onClick={handleSubmit}
-          sx={{ borderRadius: 2, px: 4, fontWeight: 700, mt: 2 }}
-        >
-          Submit
-        </Button>
-      </>
-    );
-  }
+  const progress = ((currentQ + 1) / allQuestions.length) * 100;
 
-  // Main assessment view
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        bgcolor: "#f6f8fc",
-        pb: 6,
-        pt: { xs: 2, sm: 5 },
-      }}
-    >
-      <Box sx={{ maxWidth: 720, mx: "auto", px: { xs: 1, sm: 2 } }}>
-        <Paper
-          elevation={5}
-          sx={{
-            borderRadius: 5,
-            p: { xs: 2, sm: 5 },
-            mb: 4,
-            bgcolor: "#fff",
-            boxShadow: "0 10px 36px 0 rgba(80,130,250,.13)",
-          }}
-        >
-          {/* Title */}
-          <Typography variant="h4" fontWeight={900} textAlign="center" color="primary" mb={3}>
-            English Language Skills Test
-          </Typography>
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100">
+      {/* Floating particles background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-purple-300 rounded-full animate-ping opacity-70"></div>
+        <div className="absolute top-3/4 right-1/4 w-3 h-3 bg-blue-300 rounded-full animate-pulse opacity-50"></div>
+        <div className="absolute top-1/2 left-3/4 w-2 h-2 bg-pink-300 rounded-full animate-bounce opacity-60"></div>
+      </div>
 
-          {/* Module & Class Group */}
-          <Grid container spacing={2} mb={3}>
-            <Grid item xs={12} sm={6}>
-              <Paper
-                elevation={0}
-                sx={{
-                  bgcolor: purple[100],
-                  borderRadius: 3,
-                  p: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <SpellcheckIcon sx={{ color: purple[400] }} />
-                  <Typography fontWeight={700}>Spelling</Typography>
-                </Stack>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Paper
-                elevation={0}
-                sx={{
-                  bgcolor: orange[100],
-                  borderRadius: 3,
-                  p: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 1,
-                }}
-              >
-                <Avatar sx={{ bgcolor: orange[400], width: 30, height: 30, fontSize: 18 }}>
-                  {classMeta.label.charAt(6)}
-                </Avatar>
-                <Typography fontWeight={700}>{classMeta.label}</Typography>
-              </Paper>
-            </Grid>
-          </Grid>
+      <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent mb-2">
+            ✨ Spelling Adventure ✨
+          </h1>
+          <p className="text-gray-600 text-lg">Master the magic of words!</p>
+        </div>
 
-          {/* Progress Bar, Question Number, Timer */}
-          <Stack direction="row" alignItems="center" spacing={2} mb={3}>
-            <Box sx={{ flex: 1 }}>
-              <LinearProgress
-                variant="determinate"
-                value={progressValue}
-                sx={{
-                  height: 10,
-                  borderRadius: 5,
-                }}
-              />
-            </Box>
-            <Typography fontWeight={700} minWidth={60} textAlign="right">
-              {progressText}
-            </Typography>
-            <Stack direction="row" alignItems="center" spacing={1} minWidth={80}>
-              <AccessTimeIcon sx={{ color: orange[700] }} />
-              <Typography fontWeight={700}>{formatTime(timer)}</Typography>
-            </Stack>
-          </Stack>
-          {displayContent}
-        </Paper>
-      </Box>
-    </Box>
+        {/* Main Assessment Card */}
+        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/50">
+          {/* Progress Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-2xl font-bold">
+                {currentCategory?.name}
+              </div>
+              <div className="text-sm text-gray-600">
+                Question {currentQ + 1} of {allQuestions.length}
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2 bg-orange-100 px-4 py-2 rounded-2xl">
+              <Clock className="w-5 h-5 text-orange-600" />
+              <span className="font-bold text-orange-800">{formatTime(timer)}</span>
+            </div>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="mb-8">
+            <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-purple-500 via-blue-500 to-green-500 rounded-full transition-all duration-1000 ease-out"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+            <div className="flex justify-between mt-2 text-sm text-gray-600">
+              <span>Start</span>
+              <span>{Math.round(progress)}% Complete</span>
+              <span>Finish</span>
+            </div>
+          </div>
+
+          {/* Category Description */}
+          <div className="text-center mb-8">
+            <p className="text-gray-600 text-lg bg-gray-50 rounded-2xl px-6 py-3 inline-block">
+              {currentCategory?.description}
+            </p>
+          </div>
+
+          {/* Question Content */}
+          <div className="mb-12">
+            {renderQuestion(currentQuestion, currentCategory)}
+          </div>
+
+          {/* Navigation */}
+          <div className="flex justify-between items-center">
+            <button
+              onClick={handlePrev}
+              disabled={currentQ === 0}
+              className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold transition-all duration-300 ${
+                currentQ === 0
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-gray-600 to-gray-700 text-white hover:shadow-lg transform hover:scale-105'
+              }`}
+            >
+              <ArrowLeft className="w-5 h-5" />
+              Previous
+            </button>
+
+            {currentQ < allQuestions.length - 1 ? (
+              <button
+                onClick={handleNext}
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-2xl hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+              >
+                Next
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            ) : (
+              <button
+                onClick={handleSubmit}
+                className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-2xl hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+              >
+                <Star className="w-5 h-5" />
+                Submit Test
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Fun Encouragement */}
+        <div className="text-center mt-8">
+          <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-sm px-6 py-3 rounded-2xl">
+            <span className="text-2xl animate-bounce">🌟</span>
+            <span className="text-gray-700 font-medium">You're doing great! Keep going!</span>
+            <span className="text-2xl animate-bounce" style={{animationDelay: '0.5s'}}>🎯</span>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -42,8 +42,7 @@ import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 import LoyaltyIcon from "@mui/icons-material/Loyalty";
 import PaidIcon from "@mui/icons-material/Paid";
 import { useNavigate } from "react-router-dom";
-import Footer from "./Footer";
-import SubscriptionBanner from "../components/SubscriptionBanner";
+
 
 const offerImage =
   "https://img.freepik.com/free-vector/special-offer-discount-sale-banner-design_1017-31299.jpg?w=826&t=st=1718150000~exp=1718150600~hmac=8f6c8c1a2e9b6f6c6c1c0e6fbf2f1d379c8a1b1e1e8b6c8e3a3e9b8c2a5a4c7e";
@@ -247,8 +246,6 @@ export default function HomePage() {
     <Box
       
     >
-      <SubscriptionBanner />
-
       <HeroSection />
 
  
@@ -750,7 +747,6 @@ export default function HomePage() {
     </Paper>
   </Grid>
 </Grid>
- <Footer />
       </Box>
   );
 }

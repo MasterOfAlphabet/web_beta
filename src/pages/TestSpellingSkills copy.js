@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -23,13 +23,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { purple, orange } from "@mui/material/colors";
 import { useLocation, useNavigate } from "react-router-dom";
-import { toPng } from "html-to-image";
-import { ResultShareCard } from "../components/ResultShareCard";
-import { ResultShareCardDetailed } from "../components/ResultShareCardDetailed";
 
-// ------------------------
-// DATA & HELPERS (Unchanged)
-// ------------------------
+// DATA: I-II, plus "Review questions" as last category
 const spellingSkillsAssessmentData_I_II = {
   classGroup: "I-II",
   categories: [
@@ -143,37 +138,10 @@ const spellingSkillsAssessmentData_I_II = {
         { id: 20, image: "fish.jpg", answer: "fish" },
       ],
     },
-    {
-      name: "Review Questions",
-      description: "General spelling review for Class I-II.",
-      questions: [
-        {
-          id: 21,
-          question: "Which is the correct spelling?",
-          options: ["grape", "graep", "grap", "graip"],
-          answer: "grape",
-        },
-        {
-          id: 22,
-          scrambled: "raeb",
-          hint: "A big animal that likes honey.",
-          answer: "bear",
-        },
-        {
-          id: 23,
-          word: "r _ i n",
-          hint: "Drops from the sky.",
-          answer: "rain",
-        },
-        {
-          id: 24,
-          image: "leaf.jpg",
-          answer: "leaf",
-        },
-      ],
-    },
+    
   ],
 };
+// Unsplash images for "Spell the Pic" and review
 const picImages = {
   "apple.jpg": "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=400&q=80",
   "dog.jpg": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80",
@@ -442,6 +410,8 @@ const spellingSkillsAssessmentData_VI_X = {
     },
   ],
 };
+
+// Learning level function
 function getLearningLevel(score) {
   if (score <= 5) return "Rookie";
   if (score <= 10) return "Racer";
@@ -452,6 +422,7 @@ function getLearningLevel(score) {
 
 // Replace your existing speak(text) function with this improved version:
 
+/**
 function getPreferredVoice() {
   const voices = window.speechSynthesis.getVoices();
 
@@ -466,6 +437,39 @@ function getPreferredVoice() {
   // Fallback: any Indian English voice
   if (!preferredVoice) {
     preferredVoice = voices.find(v => v.lang === "en-IN");
+  }
+
+  // Fallback: any English female
+  if (!preferredVoice) {
+    preferredVoice = voices.find(
+      v =>
+        v.lang.startsWith("en") &&
+        v.name.toLowerCase().includes("female")
+    );
+  }
+
+  // Fallback: any English
+  if (!preferredVoice) {
+    preferredVoice = voices.find(v => v.lang.startsWith("en"));
+  }
+
+  return preferredVoice;
+}
+*/
+
+function getPreferredVoice() {
+  const voices = window.speechSynthesis.getVoices();
+
+  // Try to find American English Female
+  let preferredVoice = voices.find(
+    v =>
+      (v.lang === "en-US" || v.lang.startsWith("en-US")) &&
+      v.name.toLowerCase().includes("female")
+  );
+
+  // Fallback: any American English voice
+  if (!preferredVoice) {
+    preferredVoice = voices.find(v => v.lang === "en-US" || v.lang.startsWith("en-US"));
   }
 
   // Fallback: any English female
@@ -506,18 +510,10 @@ function speak(text) {
   }
 }
 
-export default function SkillsAssessmentSpelling() {
+export default function TestSpellingSkills() {
   const location = useLocation();
   const navigate = useNavigate();
- 
-const student = {
-    name: "Alex Johnson",
-    classLevel: "Class II",
-    parentMobile: "+1-555-0123",
-    city: "New York",
-    school: "Sunshine Elementary"
-  };
-  const classGroup = "I-II";
+  const { student, classGroup } = location.state || {};
 
   // Select data set by class group
   let data;
@@ -526,7 +522,7 @@ const student = {
   else if (classGroup === "VI-X") data = spellingSkillsAssessmentData_VI_X;
   else data = spellingSkillsAssessmentData_I_II;
 
-  // Timer setup
+  // Timer setup (same as before)
   const classGroupMeta = [
     { value: "I-II", label: "Class I-II", time: 60 },
     { value: "III-V", label: "Class III-V", time: 45 },
@@ -541,11 +537,8 @@ const student = {
   const [answers, setAnswers] = useState({});
   const [timer, setTimer] = useState(classMeta.time * 60);
   const [submitted, setSubmitted] = useState(false);
+  // Collapse state for per-category review
   const [catOpen, setCatOpen] = useState({});
-  // Share card refs
-  const shareCardRef = useRef(null);
-  const shareCardDetailedRef = useRef(null);
-  const [downloading, setDownloading] = useState(false);
 
   // Timer effect
   useEffect(() => {
@@ -564,16 +557,11 @@ const student = {
     cat.questions.map((q) => ({
       ...q,
       category: cat.name,
-      type: q.question
-        ? "mcq"
-        : q.word
-        ? "missing"
-        : q.scrambled
-        ? "unscramble"
-        : q.image
-        ? "pic"
-        : q.word
-        ? "dictation"
+      type: cat.question ? "mcq"
+        : q.word ? "missing"
+        : q.scrambled ? "unscramble"
+        : q.image ? "pic"
+        : q.word ? "dictation"
         : "other",
     }))
   );
@@ -611,36 +599,6 @@ const student = {
       .padStart(2, "0");
     const s = (secs % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
-  };
-
-  // Download/share image
-  const handleDownloadImage = async () => {
-    setDownloading(true);
-    try {
-      if (!shareCardRef.current) return;
-      const dataUrl = await toPng(shareCardRef.current, { cacheBust: true });
-      const link = document.createElement("a");
-      link.download = `MoA-Result-${student.name}.png`;
-      link.href = dataUrl;
-      link.click();
-    } catch (err) {
-      alert("Could not create image. Please try again.");
-    }
-    setDownloading(false);
-  };
-  const handleDownloadDetailedImage = async () => {
-    setDownloading(true);
-    try {
-      if (!shareCardDetailedRef.current) return;
-      const dataUrl = await toPng(shareCardDetailedRef.current, { cacheBust: true });
-      const link = document.createElement("a");
-      link.download = `MoA-Result-Detailed-${student.name}.png`;
-      link.href = dataUrl;
-      link.click();
-    } catch (err) {
-      alert("Could not create image. Please try again.");
-    }
-    setDownloading(false);
   };
 
   // Early return for missing data
@@ -760,7 +718,6 @@ const student = {
     );
   }
 
-  // -------- INTEGRATED RESULT/SHARE CARD ---------
   // Results view
   if (submitted) {
     return (
@@ -791,70 +748,7 @@ const student = {
             <Typography fontSize={20} color="success.main" mb={2}>
               Score: {score} / {allQuestions.length}
             </Typography>
-
             <Divider sx={{ my: 2 }} />
-            <Typography fontWeight={700} color="primary" mb={1}>
-              🎉 Download and Share Your Achievement!
-            </Typography>
-            <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-              <div style={{ position: "relative" }}>
-                <ResultShareCard
-                  ref={shareCardRef}
-                  name={student.name}
-                  score={score}
-                  total={allQuestions.length}
-                  module="Spelling"
-                  badge={learningLevel + " Spelling Star"}
-                  level={learningLevel}
-                  classLevel={student.classLevel}
-                  city={student.city}
-                  school={student.school}
-                />
-              </div>
-            </Box>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleDownloadImage}
-              sx={{ fontWeight: 800, mt: 1, mb: 1, px: 3, borderRadius: 2 }}
-            >
-              Download Image (Simple)
-            </Button>
-            {/* --- Detailed Card (offscreen, invisible but rendered) --- */}
-            <Box
-              sx={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                opacity: 0,
-                pointerEvents: "none",
-                zIndex: -1,
-              }}
-            >
-              <ResultShareCardDetailed
-                ref={shareCardDetailedRef}
-                name={student.name}
-                score={score}
-                total={allQuestions.length}
-                module="Spelling"
-                badge={learningLevel + " Spelling Star"}
-                level={learningLevel}
-                classLevel={student.classLevel}
-                city={student.city}
-                school={student.school}
-                categoryScores={categoryScores}
-              />
-            </Box>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleDownloadDetailedImage}
-              sx={{ fontWeight: 800, mt: 0, mb: 2, px: 3, borderRadius: 2 }}
-            >
-              Download Detailed Image
-            </Button>
-            <Divider sx={{ my: 2 }} />
-
             <Typography variant="h6" fontWeight={700} color="primary" mb={1}>
               Section-wise Results
             </Typography>
@@ -1025,6 +919,7 @@ const student = {
   // Progressive display logic
   let displayContent, progressValue, progressText;
   if (classGroup === "I-II") {
+    // One question at a time
     const allQs = data.categories.flatMap(cat =>
       cat.questions.map(q => ({ ...q, cat }))
     );
@@ -1104,6 +999,7 @@ const student = {
       </>
     );
   } else if (classGroup === "III-V") {
+    // One category at a time
     const cat = data.categories[currentCat];
     progressValue = ((currentCat + 1) / data.categories.length) * 100;
     progressText = `${currentCat + 1} / ${data.categories.length}`;
@@ -1182,6 +1078,7 @@ const student = {
       </>
     );
   } else {
+    // VI-X: All questions at once
     progressValue = 100;
     progressText = "All";
     displayContent = (
@@ -1224,6 +1121,7 @@ const student = {
     );
   }
 
+  // Main assessment view
   return (
     <Box
       sx={{
@@ -1244,9 +1142,12 @@ const student = {
             boxShadow: "0 10px 36px 0 rgba(80,130,250,.13)",
           }}
         >
+          {/* Title */}
           <Typography variant="h4" fontWeight={900} textAlign="center" color="primary" mb={3}>
-            English Language Skills Assessment
+            English Language Skills Test
           </Typography>
+
+          {/* Module & Class Group */}
           <Grid container spacing={2} mb={3}>
             <Grid item xs={12} sm={6}>
               <Paper
@@ -1286,6 +1187,8 @@ const student = {
               </Paper>
             </Grid>
           </Grid>
+
+          {/* Progress Bar, Question Number, Timer */}
           <Stack direction="row" alignItems="center" spacing={2} mb={3}>
             <Box sx={{ flex: 1 }}>
               <LinearProgress

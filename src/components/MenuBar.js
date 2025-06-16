@@ -17,7 +17,7 @@ const user = { name: "Aanya", avatar: "" }; // Optionally: avatar URL
 
 const navItems = [
   { label: "Home", path: "/" },
-  { label: "Hub", path: "/hub" },
+  { label: "Skills Hub", path: "/skills-hub" },
   { label: "Challenges", path: "/challenges" },
   { label: "Winners", path: "/winners" },
   { label: "Leaderboards", path: "/leaderboards" },

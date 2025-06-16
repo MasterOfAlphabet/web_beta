@@ -1,72 +1,25 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  IconButton,
-  Button,
-  Box,
-  Tooltip,
-  Stack,
-  Skeleton
+  CircularProgress
 } from "@mui/material";
-import {
-  ArrowBack,
-  ArrowForward,
-  VolumeUp,
-  FavoriteBorder,
-  Favorite,
-  Share,
-  BookmarkBorder,
-  Bookmark
-} from "@mui/icons-material";
-import SchoolIcon from "@mui/icons-material/School";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import LightbulbIcon from "@mui/icons-material/Lightbulb";
-import PsychologyIcon from "@mui/icons-material/Psychology";
-import StarIcon from "@mui/icons-material/Star";
-import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
-import TodayIcon from "@mui/icons-material/Today";
-import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
-import CircularProgress from '@mui/material/CircularProgress';
 import VoiceSelector from "../components/VoiceSelector";
 import wordData from "./WordOfTheDayData";
 import ReviewRatingFeedbackSection from "../components/ReviewRatingFeedbackSection";
 
-// Updated to use component references instead of JSX elements
-const FIELD_ICON_MAP = {
-  word: AutoAwesomeIcon,
-  partOfSpeech: PsychologyIcon,
-  pronunciation: VolumeUp,
-  meaning: LightbulbIcon,
-  sentence: FormatQuoteIcon,
-  synonyms: StarIcon,
-  homonyms: RecordVoiceOverIcon,
-  antonyms: PsychologyIcon,
-  rhyming: VolumeUp,
-  plural: SchoolIcon,
-};
+// Lucide icons for visual style
+import { Heart, Bookmark as LucideBookmark, Share2, Volume2, Star, Book, Lightbulb, Brain, Quote, Mic, ChevronLeft, ChevronRight, Sparkles, Calendar, GraduationCap } from 'lucide-react';
 
-const CARD_BG_COLORS = [
-  "#e3f2fd",
-  "#f1f8e9",
-  "#fff8e1",
-  "#fce4ec",
-  "#ede7f6",
-];
-
-const FIELDS_TO_READ = [
-  { label: "Word", key: "word", icon: FIELD_ICON_MAP.word, color: "#FFD700" },
-  { label: "Part of Speech", key: "partOfSpeech", icon: FIELD_ICON_MAP.partOfSpeech, color: "#7B1FA2" },
-  { label: "Pronunciation", key: "pronunciation", icon: FIELD_ICON_MAP.pronunciation, color: "#1E88E5" },
-  { label: "Meaning", key: "meaning", icon: FIELD_ICON_MAP.meaning, color: "#388E3C" },
-  { label: "Example Sentence", key: "sentence", icon: FIELD_ICON_MAP.sentence, color: "#F57C00" },
-  { label: "Synonyms", key: "synonyms", icon: FIELD_ICON_MAP.synonyms, color: "#0288D1" },
-  { label: "Homonyms", key: "homonyms", icon: FIELD_ICON_MAP.homonyms, color: "#D32F2F" },
-  { label: "Antonyms", key: "antonyms", icon: FIELD_ICON_MAP.antonyms, color: "#F44336" },
-  { label: "Rhyming Words", key: "rhyming", icon: FIELD_ICON_MAP.rhyming, color: "#00897B" },
-  { label: "Plural Form", key: "plural", icon: FIELD_ICON_MAP.plural, color: "#FFB300" },
+const LUCIDE_FIELDS = [
+  { key: 'word', label: 'Word', icon: Sparkles, bgColor: 'bg-gradient-to-br from-yellow-400 to-orange-500', textColor: 'text-white' },
+  { key: 'partOfSpeech', label: 'Part of Speech', icon: Brain, bgColor: 'bg-gradient-to-br from-purple-500 to-pink-600', textColor: 'text-white' },
+  { key: 'pronunciation', label: 'Pronunciation', icon: Volume2, bgColor: 'bg-gradient-to-br from-blue-500 to-cyan-500', textColor: 'text-white' },
+  { key: 'meaning', label: 'Meaning', icon: Lightbulb, bgColor: 'bg-gradient-to-br from-green-500 to-emerald-600', textColor: 'text-white' },
+  { key: 'sentence', label: 'Example Sentence', icon: Quote, bgColor: 'bg-gradient-to-br from-orange-500 to-red-500', textColor: 'text-white' },
+  { key: 'synonyms', label: 'Synonyms', icon: Star, bgColor: 'bg-gradient-to-br from-cyan-500 to-blue-600', textColor: 'text-white' },
+  { key: 'homonyms', label: 'Homonyms', icon: Mic, bgColor: 'bg-gradient-to-br from-red-500 to-pink-600', textColor: 'text-white' },
+  { key: 'antonyms', label: 'Antonyms', icon: Brain, bgColor: 'bg-gradient-to-br from-pink-500 to-rose-600', textColor: 'text-white' },
+  { key: 'rhyming', label: 'Rhyming Words', icon: Volume2, bgColor: 'bg-gradient-to-br from-teal-500 to-green-600', textColor: 'text-white' },
+  { key: 'plural', label: 'Plural Form', icon: Book, bgColor: 'bg-gradient-to-br from-amber-500 to-yellow-600', textColor: 'text-white' }
 ];
 
 const DEFAULT_PAUSE_MS = 1000;
@@ -90,10 +43,15 @@ export default function WordOfTheDayCard() {
   const [currentFieldIndex, setCurrentFieldIndex] = useState(null);
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
+
+  // UI state
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  // --- STOP SPEAKING REFS ---
+  const isCancelledRef = useRef(false);
   const speechRef = useRef({ cancel: () => {} });
 
   const wordObj = useMemo(() => wordData[index], [index]);
@@ -114,6 +72,7 @@ export default function WordOfTheDayCard() {
   });
 
   const cancelSpeech = () => {
+    isCancelledRef.current = true;
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
     setCurrentFieldIndex(null);
@@ -121,12 +80,12 @@ export default function WordOfTheDayCard() {
 
   const speakField = async (fieldIdx, cb) => {
     if (isSpeaking) return;
-    
-    cancelSpeech();
+
+    isCancelledRef.current = false;
     setCurrentFieldIndex(fieldIdx);
     setIsSpeaking(true);
 
-    const field = FIELDS_TO_READ[fieldIdx];
+    const field = LUCIDE_FIELDS[fieldIdx];
     const text = wordObj[field.key] ? `${field.label}: ${wordObj[field.key]}` : "";
     if (!text) {
       setIsSpeaking(false);
@@ -139,6 +98,11 @@ export default function WordOfTheDayCard() {
     if (selectedVoice) utterance.voice = selectedVoice;
 
     utterance.onend = () => {
+      if (isCancelledRef.current) {
+        setCurrentFieldIndex(null);
+        setIsSpeaking(false);
+        return;
+      }
       setTimeout(() => {
         setCurrentFieldIndex(null);
         setIsSpeaking(false);
@@ -158,20 +122,22 @@ export default function WordOfTheDayCard() {
 
   const speakAllFieldsSequentially = async () => {
     if (isSpeaking) return;
-    
-    cancelSpeech();
+
+    isCancelledRef.current = false;
     setIsSpeaking(true);
-    
+
     let idx = 0;
     const speakNext = () => {
-      if (idx >= FIELDS_TO_READ.length) {
+      if (isCancelledRef.current || idx >= LUCIDE_FIELDS.length) {
         setIsSpeaking(false);
         setCurrentFieldIndex(null);
         return;
       }
       speakField(idx, () => {
-        idx += 1;
-        speakNext();
+        if (!isCancelledRef.current) {
+          idx += 1;
+          speakNext();
+        }
       });
     };
     speakNext();
@@ -203,340 +169,247 @@ export default function WordOfTheDayCard() {
   const handleLike = () => setLiked((prev) => !prev);
   const handleSaveWord = () => setSaved((prev) => !prev);
 
-  const getBoxStyle = (fieldIdx) => ({
-    bgcolor: currentFieldIndex === fieldIdx ? "#b3e5fc" : "background.paper",
-    border: currentFieldIndex === fieldIdx ? "2px solid #1976d2" : "1px solid #e0e0e0",
-    boxShadow: currentFieldIndex === fieldIdx ? "0 0 10px rgba(25, 118, 210, 0.3)" : "none",
-    cursor: isSpeaking ? "not-allowed" : "pointer",
-    transition: "all 0.2s ease",
-    minHeight: 56,
-    p: 2,
-    borderRadius: 2,
-    mb: { xs: 1, sm: 0 },
-    "&:hover": !isSpeaking && {
-      transform: "translateY(-2px)",
-      boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
-    },
-    display: "flex",
-    alignItems: "center",
-    gap: 2,
-  });
-
-  const cardBg = CARD_BG_COLORS[index % CARD_BG_COLORS.length];
-
   return (
-    <Box sx={{ maxWidth: 850, mx: "auto", mt: 3, px: { xs: 1, md: 0 } }}>
-      {/* Header Section */}
-      <Box
-        sx={{
-          bgcolor: "primary.main",
-          color: "white",
-          borderRadius: 4,
-          py: 4,
-          px: { xs: 2, md: 6 },
-          mb: 3,
-          textAlign: "center",
-          boxShadow: 3,
-        }}
-      >
-        <Typography variant="h3" fontWeight={900} letterSpacing={2} gutterBottom>
-          Word Of The Day Series!
-        </Typography>
-        <Typography variant="h6" sx={{ opacity: 0.93 }}>
-          Unleash your vocabulary, one day at a time. Practice, listen, and master new words!
-        </Typography>
-      </Box>
+    <div className="max-w-5xl mx-auto p-4 space-y-6 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white rounded-3xl p-6 md:p-8 text-center shadow-2xl relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="relative z-10">
+          <h1 className="text-3xl md:text-5xl font-black tracking-wider mb-3 drop-shadow-lg">
+            Word Of The Day Series!
+          </h1>
+          <p className="text-base md:text-lg opacity-95 font-medium">
+            Unleash your vocabulary, one day at a time. Practice, listen, and master new words!
+          </p>
+        </div>
+      </div>
 
-      {/* Info Row */}
-      <Box
-        sx={{
-          bgcolor: "background.paper",
-          borderRadius: 3,
-          py: 2,
-          px: { xs: 2, md: 4 },
-          mb: 3,
-          boxShadow: 2,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: 2,
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <AutoAwesomeIcon color="primary" />
-          <Typography variant="body1" fontWeight={700}>
-            Series: {seriesNumber}
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <SchoolIcon color="secondary" />
-          <Typography variant="body1" fontWeight={700}>
-            {classGroup}
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <TodayIcon color="error" />
-          <Typography variant="body1" fontWeight={700}>
-            {dateStr}
-          </Typography>
-        </Box>
-      </Box>
+      {/* Info Bar */}
+      <div className="bg-white rounded-2xl p-4 shadow-xl border border-gray-100 flex flex-wrap justify-between items-center gap-4">
+        <div className="flex items-center gap-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 py-2 rounded-full">
+          <Sparkles size={20} />
+          <span className="font-bold">Series: {seriesNumber}</span>
+        </div>
+        <div className="flex items-center gap-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full">
+          <GraduationCap size={20} />
+          <span className="font-bold">{classGroup}</span>
+        </div>
+        <div className="flex items-center gap-3 bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 py-2 rounded-full">
+          <Calendar size={20} />
+          <span className="font-bold">{dateStr}</span>
+        </div>
+      </div>
 
       {/* Instruction Cards */}
-<Grid container spacing={3} sx={{ mb: 3, display: 'flex', flexWrap: 'nowrap' }}>
-  {/* Box 1 */}
-  <Grid item xs={6} sx={{ minWidth: 0 }}>  
-    <Box sx={{ height: '100%',
-              bgcolor: "info.light",
-              borderRadius: 3,
-              p: 3,
-              height: "100%",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            <Typography variant="h6" fontWeight={700} gutterBottom>
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-20 h-20 bg-white/20 rounded-full -translate-y-10 translate-x-10"></div>
+          <div className="relative z-10">
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Lightbulb size={24} />
               💡 Listening Tip
-            </Typography>
-            <Typography variant="body1">
-              Click on any box below to listen to that specific part. Use the "Read All" button for 
-              complete pronunciation practice with your chosen voice.
-            </Typography>
-          </Box>
-        </Grid>
-    <Grid item xs={6} sx={{ minWidth: 0 }}>
-    <Box sx={{ height: '100%',
-              bgcolor: "secondary.light",
-              borderRadius: 3,
-              p: 3,
-              height: "100%",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            <Typography variant="h6" fontWeight={700} gutterBottom>
+            </h3>
+            <p className="opacity-95 leading-relaxed">
+              Click on any colorful box below to listen to that specific part. Use the "Read All" button for complete pronunciation practice with your chosen voice.
+            </p>
+          </div>
+        </div>
+        <div className="bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-20 h-20 bg-white/20 rounded-full -translate-y-10 translate-x-10"></div>
+          <div className="relative z-10">
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <Star size={24} />
               🌟 Don't Forget
-            </Typography>
-            <Typography variant="body1">
-              Your feedback helps us improve! Please rate the word difficulty and leave comments 
-              at the bottom of the card.
-            </Typography>
-          </Box>
-        </Grid>
-      </Grid>
+            </h3>
+            <p className="opacity-95 leading-relaxed">
+              Your feedback helps us improve! Please rate the word difficulty and leave comments at the bottom of the card.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      {/* Main Card */}
-      <Card
-        sx={{
-          bgcolor: cardBg,
-          p: { xs: 1, sm: 2 },
-          borderRadius: 4,
-          boxShadow: 4,
-          mb: 3,
-          position: "relative",
-        }}
-      >
-        <CardContent>
-          {/* Word Image */}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              mb: 3,
-              position: "relative",
-              height: 180,
-              borderRadius: 3,
-              overflow: "hidden",
-              boxShadow: 3,
+      {/* Main Word Card */}
+      <div className="bg-white rounded-3xl p-6 shadow-2xl border border-gray-100">
+        {/* Image Placeholder */}
+        <div className="relative h-56 rounded-2xl overflow-hidden mb-6 shadow-lg bg-gradient-to-br from-gray-200 to-gray-300">
+          {!imageLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center mb-4 mx-auto">
+                  <Book className="text-white" size={32} />
+                </div>
+                <p className="text-gray-600 font-semibold text-lg">Visual representation</p>
+                <p className="text-gray-500">of "{wordObj.word}"</p>
+              </div>
+            </div>
+          )}
+          <img
+            src={`https://source.unsplash.com/random/800x400/?${wordObj.word}`}
+            alt={`Visual representation of ${wordObj.word}`}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: imageLoaded ? "block" : "none",
             }}
+            onLoad={() => setImageLoaded(true)}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+          <div className="absolute bottom-6 left-6 text-white">
+            <h2 className="text-4xl font-black drop-shadow-lg">{wordObj.word}</h2>
+            <p className="text-lg opacity-90 font-medium">Master your vocabulary</p>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex justify-center gap-4 mb-8">
+          <button 
+            onClick={handleLike}
+            className={`p-4 rounded-2xl transition-all duration-300 shadow-lg ${
+              liked 
+                ? 'bg-gradient-to-br from-red-500 to-pink-600 text-white scale-110' 
+                : 'bg-gradient-to-br from-gray-100 to-gray-200 hover:from-red-100 hover:to-pink-100 hover:scale-105'
+            }`}
+            type="button"
           >
-            {!imageLoaded && (
-              <Skeleton variant="rectangular" width="100%" height="100%" />
-            )}
-            <img
-              src={`https://source.unsplash.com/random/800x400/?${wordObj.word}`}
-              alt={`Visual representation of ${wordObj.word}`}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: imageLoaded ? "block" : "none",
-              }}
-              onLoad={() => setImageLoaded(true)}
-            />
-            <Box
-              sx={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                p: 2,
-                background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)",
-                color: "white",
-                textAlign: "center",
-              }}
+            <Heart size={24} fill={liked ? 'white' : 'none'} />
+          </button>
+          <button 
+            onClick={handleSaveWord}
+            className={`p-4 rounded-2xl transition-all duration-300 shadow-lg ${
+              saved 
+                ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white scale-110' 
+                : 'bg-gradient-to-br from-gray-100 to-gray-200 hover:from-blue-100 hover:to-indigo-100 hover:scale-105'
+            }`}
+            type="button"
+          >
+            <LucideBookmark size={24} fill={saved ? 'white' : 'none'} />
+          </button>
+          <button className="p-4 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 text-white hover:scale-105 transition-all duration-300 shadow-lg" type="button">
+            <Share2 size={24} />
+          </button>
+          <button className="p-4 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 text-white hover:scale-105 transition-all duration-300 shadow-lg" onClick={() => speakField(0)} type="button">
+            <Mic size={24} />
+          </button>
+        </div>
+
+        {/* Word Details - Top Row */}
+        <div className="grid md:grid-cols-3 gap-4 mb-6">
+          {LUCIDE_FIELDS.slice(0, 3).map((field, index) => {
+            const Icon = field.icon;
+            const isActive = currentFieldIndex === index;
+            return (
+              <div
+                key={field.key}
+                onClick={() => !isSpeaking && speakField(index)}
+                tabIndex={0}
+                className={`${field.bgColor} ${field.textColor} p-6 rounded-2xl cursor-pointer transition-all duration-300 shadow-lg ${
+                  isActive 
+                    ? 'scale-105 shadow-2xl ring-4 ring-white ring-opacity-50' 
+                    : 'hover:scale-102 hover:shadow-xl'
+                }`}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="bg-white/20 p-3 rounded-xl">
+                    <Icon size={28} className={isActive ? 'animate-pulse' : ''} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold opacity-90 mb-1">{field.label}</p>
+                    <p className={`text-xl ${index === 0 ? 'font-black' : 'font-bold'}`}>
+                      {index === 2 ? `/${wordObj[field.key]}/` : wordObj[field.key]}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Meaning and Sentence Row */}
+        <div className="grid md:grid-cols-5 gap-4 mb-6">
+          <div
+            onClick={() => !isSpeaking && speakField(3)}
+            tabIndex={0}
+            className={`md:col-span-3 ${LUCIDE_FIELDS[3].bgColor} ${LUCIDE_FIELDS[3].textColor} p-6 rounded-2xl cursor-pointer transition-all duration-300 shadow-lg ${
+              currentFieldIndex === 3
+                ? 'scale-105 shadow-2xl ring-4 ring-white ring-opacity-50'
+                : 'hover:scale-102 hover:shadow-xl'
+            }`}
+          >
+            <div className="flex items-start gap-4">
+              <div className="bg-white/20 p-3 rounded-xl">
+                <Lightbulb size={28} className={currentFieldIndex === 3 ? 'animate-pulse' : ''} />
+              </div>
+              <div>
+                <p className="text-sm font-bold opacity-90 mb-2">Detailed Meaning</p>
+                <p className="leading-relaxed font-medium">{wordObj.meaning}</p>
+              </div>
+            </div>
+          </div>
+          <div
+            onClick={() => !isSpeaking && speakField(4)}
+            tabIndex={0}
+            className={`md:col-span-2 ${LUCIDE_FIELDS[4].bgColor} ${LUCIDE_FIELDS[4].textColor} p-6 rounded-2xl cursor-pointer transition-all duration-300 shadow-lg ${
+              currentFieldIndex === 4
+                ? 'scale-105 shadow-2xl ring-4 ring-white ring-opacity-50'
+                : 'hover:scale-102 hover:shadow-xl'
+            }`}
+          >
+            <div className="flex items-start gap-4">
+              <div className="bg-white/20 p-3 rounded-xl">
+                <Quote size={28} className={currentFieldIndex === 4 ? 'animate-pulse' : ''} />
+              </div>
+              <div>
+                <p className="text-sm font-bold opacity-90 mb-2">Example Sentence</p>
+                <p className="italic leading-relaxed font-medium">"{wordObj.sentence}"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Additional Word Info */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+          {LUCIDE_FIELDS.slice(5).map((field, idx) => {
+            const Icon = field.icon;
+            const actualIndex = idx + 5;
+            const isActive = currentFieldIndex === actualIndex;
+            return (
+              <div
+                key={field.key}
+                onClick={() => !isSpeaking && speakField(actualIndex)}
+                tabIndex={0}
+                className={`${field.bgColor} ${field.textColor} p-4 rounded-2xl cursor-pointer transition-all duration-300 shadow-lg ${
+                  isActive
+                    ? 'scale-105 shadow-2xl ring-4 ring-white ring-opacity-50'
+                    : 'hover:scale-102 hover:shadow-xl'
+                }`}
+              >
+                <div className="text-center">
+                  <div className="bg-white/20 p-2 rounded-lg inline-flex mb-3">
+                    <Icon size={20} className={isActive ? 'animate-pulse' : ''} />
+                  </div>
+                  <p className="text-xs font-bold opacity-90 mb-1">{field.label}</p>
+                  <p className="text-sm font-semibold">{wordObj[field.key] || '—'}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Controls */}
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl shadow-inner">
+          <div className="flex items-center justify-center gap-6 flex-wrap">
+            <button
+              className="p-4 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white hover:scale-105 transition-all duration-300 shadow-lg"
+              onClick={handlePrev}
+              disabled={isSpeaking}
+              type="button"
+              aria-label="Previous Word"
             >
-              <Typography variant="h5" fontWeight={700}>
-                {wordObj.word}
-              </Typography>
-              <Typography variant="body2">Master your vocabulary</Typography>
-            </Box>
-          </Box>
+              <ChevronLeft size={24} />
+            </button>
 
-          {/* Action Buttons */}
-          <Stack direction="row" spacing={1} justifyContent="center" mb={3}>
-            <Tooltip title={liked ? "Unlike" : "Like"}>
-              <IconButton
-                onClick={handleLike}
-                color={liked ? "error" : "default"}
-              >
-                {liked ? <Favorite /> : <FavoriteBorder />}
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={saved ? "Unsave" : "Save"}>
-              <IconButton
-                onClick={handleSaveWord}
-                color={saved ? "primary" : "default"}
-              >
-                {saved ? <Bookmark /> : <BookmarkBorder />}
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Share">
-              <IconButton>
-                <Share />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Practice Pronunciation">
-              <IconButton onClick={() => speakField(0)}>
-                <RecordVoiceOverIcon />
-              </IconButton>
-            </Tooltip>
-          </Stack>
-
-          {/* Word Details */}
-          <Grid container spacing={2} sx={{ mb: 2 }}>
-            {/* Word, POS, Pronunciation */}
-            {FIELDS_TO_READ.slice(0, 3).map((field, idx) => {
-              const IconComponent = field.icon;
-              return (
-                <Grid item xs={12} sm={4} key={field.key}>
-                  <Box
-                    tabIndex={0}
-                    sx={getBoxStyle(idx)}
-                    onClick={() => !isSpeaking && speakField(idx)}
-                    aria-label={`${field.label}: ${wordObj[field.key] || "Not available"}`}
-                  >
-                    <IconComponent sx={{ color: field.color, fontSize: 28 }} />
-                    <Box>
-                      <Typography variant="subtitle2" fontWeight={700} color="text.secondary">
-                        {field.label}
-                      </Typography>
-                      <Typography variant="h6" sx={{ fontWeight: idx === 0 ? 800 : 600 }}>
-                        {idx === 2 ? `/${wordObj[field.key] || 'none'}/` : wordObj[field.key]}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Grid>
-              );
-            })}
-          </Grid>
-
-          {/* Meaning and Sentence */}
-          <Grid container spacing={2} sx={{ mb: 2 }}>
-            <Grid item xs={12} md={7}>
-              <Box
-                tabIndex={0}
-                sx={{
-                  ...getBoxStyle(3),
-                  minHeight: 120,
-                  p: 2.5,
-                }}
-                onClick={() => !isSpeaking && speakField(3)}
-                aria-label={`Meaning: ${wordObj.meaning}`}
-              >
-                <FIELD_ICON_MAP.meaning sx={{ color: "#388E3C", fontSize: 28, mb: 1 }} />
-                <Box>
-                  <Typography variant="subtitle1" fontWeight={700} color="text.secondary" gutterBottom>
-                    Detailed Meaning
-                  </Typography>
-                  <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
-                    {wordObj.meaning}
-                  </Typography>
-                </Box>
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={5}>
-              <Box
-                tabIndex={0}
-                sx={{
-                  ...getBoxStyle(4),
-                  minHeight: 120,
-                  p: 2.5,
-                }}
-                onClick={() => !isSpeaking && speakField(4)}
-                aria-label={`Example Sentence: ${wordObj.sentence}`}
-              >
-                <FIELD_ICON_MAP.sentence sx={{ color: "#F57C00", fontSize: 28, mb: 1 }} />
-                <Box>
-                  <Typography variant="subtitle1" fontWeight={700} color="text.secondary" gutterBottom>
-                    Example Sentence
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontStyle: "italic", lineHeight: 1.6 }}>
-                    "{wordObj.sentence}"
-                  </Typography>
-                </Box>
-              </Box>
-            </Grid>
-          </Grid>
-
-          {/* Additional Word Info */}
-          <Grid container spacing={2} sx={{ mb: 2 }}>
-            {FIELDS_TO_READ.slice(5).map((field, idx) => {
-              const IconComponent = field.icon;
-              return (
-                <Grid item xs={6} sm={4} md={3} key={field.key}>
-                  <Box
-                    tabIndex={0}
-                    sx={getBoxStyle(idx + 5)}
-                    onClick={() => !isSpeaking && speakField(idx + 5)}
-                    aria-label={`${field.label}: ${wordObj[field.key] || "Not available"}`}
-                  >
-                    <IconComponent sx={{ color: field.color, fontSize: 24 }} />
-                    <Box>
-                      <Typography variant="caption" fontWeight={700} display="block" color="text.secondary">
-                        {field.label}
-                      </Typography>
-                      <Typography variant="body2">
-                        {wordObj[field.key] || "—"}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Grid>
-              );
-            })}
-          </Grid>
-
-          {/* Controls */}
-          <Box
-            sx={{
-              p: 2,
-              borderRadius: 3,
-              bgcolor: "action.hover",
-              mt: 2,
-            }}
-          >
-            <Stack direction="row" alignItems="center" spacing={2} justifyContent="center">
-              <Tooltip title="Previous Word">
-                <IconButton
-                  onClick={handlePrev}
-                  disabled={isSpeaking}
-                  size="large"
-                >
-                  <ArrowBack />
-                </IconButton>
-              </Tooltip>
-
+            <div className="min-w-48">
               <VoiceSelector
                 onVoiceChange={handleVoiceChange}
                 selectedVoice={selectedVoice?.voiceURI || ""}
@@ -544,35 +417,42 @@ export default function WordOfTheDayCard() {
                 disabled={isSpeaking}
                 sx={{ minWidth: 180 }}
               />
+            </div>
 
-              <Button
-                onClick={speakAllFieldsSequentially}
-                variant="contained"
-                color="primary"
-                startIcon={<VolumeUp />}
-                disabled={isSpeaking}
-                sx={{ fontWeight: 700, px: 3 }}
+            <button
+              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-bold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:scale-105 flex items-center gap-3"
+              onClick={speakAllFieldsSequentially}
+              disabled={isSpeaking}
+              type="button"
+              aria-label="Read All"
+            >
+              <Volume2 size={24} />
+              {isSpeaking ? <CircularProgress size={20} color="inherit" /> : "READ ALL"}
+            </button>
+
+            {isSpeaking && (
+              <button
+                className="px-6 py-2 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-xl font-bold transition-all duration-200 shadow-lg hover:from-red-600 hover:to-pink-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-300"
+                onClick={cancelSpeech}
+                aria-label="Stop Reading"
+                type="button"
               >
-                {isSpeaking ? (
-                  <CircularProgress size={20} color="inherit" />
-                ) : (
-                  "Read All"
-                )}
-              </Button>
+                🛑 Stop Reading
+              </button>
+            )}
 
-              <Tooltip title="Next Word">
-                <IconButton
-                  onClick={handleNext}
-                  disabled={isSpeaking}
-                  size="large"
-                >
-                  <ArrowForward />
-                </IconButton>
-              </Tooltip>
-            </Stack>
-          </Box>
-        </CardContent>
-      </Card>
+            <button
+              className="p-4 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white hover:scale-105 transition-all duration-300 shadow-lg"
+              onClick={handleNext}
+              disabled={isSpeaking}
+              type="button"
+              aria-label="Next Word"
+            >
+              <ChevronRight size={24} />
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* Feedback Section */}
       <ReviewRatingFeedbackSection
@@ -584,6 +464,6 @@ export default function WordOfTheDayCard() {
         isSubmitting={saving}
         isSpeaking={isSpeaking}
       />
-    </Box>
+    </div>
   );
 }

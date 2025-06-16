@@ -18,7 +18,8 @@ import { Visibility, VisibilityOff, PhoneAndroid, Lock, AccountCircle } from "@m
 import { AuthContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../services/firebase";
+import { auth, firestore } from "../services/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const LANGUAGES = [
   { label: "English", value: "en" },
@@ -39,7 +40,6 @@ export default function LoginPage() {
   const { setLoggedInUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setMobileError("");
@@ -59,8 +59,43 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const syntheticEmail = `${parentMobile.trim()}@rankgenie.in`;
+      // Auth logic
       const userCredential = await signInWithEmailAndPassword(auth, syntheticEmail, password);
-      setLoggedInUser({ email: syntheticEmail, role: "student", uid: userCredential.user.uid });
+      const { uid } = userCredential.user;
+
+      // Fetch student info from Firestore
+      const studentRef = doc(firestore, "students", uid);
+      const studentSnap = await getDoc(studentRef);
+
+      if (!studentSnap.exists()) {
+        setSnackbar({
+          open: true,
+          message: "Student record not found. Please contact support.",
+          severity: "error",
+        });
+        setLoading(false);
+        return;
+      }
+
+      const studentData = studentSnap.data();
+      // subscriptionStatus for content gating
+      const { name, class: classLevel, gender, email, city, district, state, school, subscriptionStatus, ...rest } = studentData;
+
+      setLoggedInUser({
+        uid,
+        email: syntheticEmail,
+        role: "student",
+        name,
+        class: classLevel,
+        gender,
+        city,
+        district,
+        state,
+        school,
+        subscriptionStatus,
+        ...rest,
+      });
+
       setSnackbar({ open: true, message: "Login successful!", severity: "success" });
       navigate("/");
     } catch (error) {
