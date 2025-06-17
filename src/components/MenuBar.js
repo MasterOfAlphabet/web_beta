@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Menu as MenuIcon,
@@ -10,10 +10,7 @@ import {
 
 import { signOut } from "firebase/auth";
 import { auth } from "../services/firebase";
-
-// Replace with your actual authentication logic
-const isSignedIn = false; // <-- Set to true to see profile dropdown
-const user = { name: "Aanya", avatar: "" }; // Optionally: avatar URL
+import { AuthContext } from "../App";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -29,6 +26,11 @@ export default function MenuBar() {
   const dropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+
+  // --- AuthContext integration ---
+  const { loggedInUser, setLoggedInUser } = useContext(AuthContext) || {};
+  const isSignedIn = Boolean(loggedInUser);
+  const user = loggedInUser || {};
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -48,6 +50,9 @@ export default function MenuBar() {
     try {
       await signOut(auth);
       setDropdownOpen(false);
+      if (typeof setLoggedInUser === "function") {
+        setLoggedInUser(null);
+      }
       navigate("/");
     } catch (error) {
       console.error("Sign out error:", error);
@@ -114,7 +119,13 @@ export default function MenuBar() {
                 ) : (
                   <UserCircle className="w-8 h-8 text-pink-400" />
                 )}
-                <span className="font-bold text-gray-700">{user.name}</span>
+                <span className="font-bold text-gray-700">{user.name || user.displayName || "Profile"}</span>
+                {/* Show subscription badge if present */}
+                {user.subscriptionStatus === "active" && (
+                  <span className="ml-2 px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-400">
+                    Premium
+                  </span>
+                )}
               </button>
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 bg-white border rounded-xl shadow-lg min-w-[180px] z-50 animate-fade-in">

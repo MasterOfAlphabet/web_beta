@@ -37,9 +37,12 @@ export default function LoginPage() {
   const [language, setLanguage] = useState("en");
   const [mobileError, setMobileError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const { setLoggedInUser } = useContext(AuthContext);
+
+  // Use AuthContext to manage global user state
+  const { setLoggedInUser } = useContext(AuthContext) || {};
   const navigate = useNavigate();
 
+  // --- Handle Login ---
   const handleLogin = async (e) => {
     e.preventDefault();
     setMobileError("");
@@ -59,7 +62,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const syntheticEmail = `${parentMobile.trim()}@rankgenie.in`;
-      // Auth logic
+      // Firebase Auth
       const userCredential = await signInWithEmailAndPassword(auth, syntheticEmail, password);
       const { uid } = userCredential.user;
 
@@ -78,25 +81,40 @@ export default function LoginPage() {
       }
 
       const studentData = studentSnap.data();
-      // subscriptionStatus for content gating
-      const { name, class: classLevel, gender, email, city, district, state, school, subscriptionStatus, ...rest } = studentData;
-
-      setLoggedInUser({
-        uid,
-        email: syntheticEmail,
-        role: "student",
+      // Ensure subscriptionStatus is present, fallback to "inactive"
+      const {
         name,
         class: classLevel,
         gender,
+        email,
         city,
         district,
         state,
         school,
-        subscriptionStatus,
-        ...rest,
-      });
+        subscriptionStatus = "inactive",
+        ...rest
+      } = studentData;
+
+      // Set globally in AuthContext for all pages
+      if (typeof setLoggedInUser === "function") {
+        setLoggedInUser({
+          uid,
+          email: syntheticEmail,
+          role: "student",
+          name,
+          class: classLevel,
+          gender,
+          city,
+          district,
+          state,
+          school,
+          subscriptionStatus,
+          ...rest,
+        });
+      }
 
       setSnackbar({ open: true, message: "Login successful!", severity: "success" });
+      // Redirect to home, Nav/Menubar will update based on AuthContext
       navigate("/");
     } catch (error) {
       let message = "Login failed. Please try again.";
@@ -108,6 +126,7 @@ export default function LoginPage() {
     }
   };
 
+  // --- UI Render ---
   return (
     <Box
       sx={{
@@ -193,7 +212,7 @@ export default function LoginPage() {
             }}
             size="medium"
           />
-         
+
           <Stack direction="row" justifyContent="space-between" alignItems="center" mt={1} mb={1.5}>
             <FormControlLabel
               control={
@@ -216,28 +235,27 @@ export default function LoginPage() {
               Forgot password?
             </Button>
           </Stack>
-           <Stack direction="row" justifyContent="center" alignItems="center" mt={1}>
-                      <Button
-            type="button"
-            variant="outlined"
-            fullWidth
-            sx={{ fontWeight: "bold", fontSize: 16, py: 1, borderRadius: 2, mb: 1 }}
-            onClick={() => navigate(-1)}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ fontWeight: "bold", fontSize: 17, py: 1.2, borderRadius: 2, mt: 1, mb: 1 }}
-            disabled={loading}
-            startIcon={loading && <CircularProgress size={18} color="inherit" />}
-          >
-            {loading ? "Signing In..." : "Sign In"}
-          </Button>
-
+          <Stack direction="row" justifyContent="center" alignItems="center" mt={1}>
+            <Button
+              type="button"
+              variant="outlined"
+              fullWidth
+              sx={{ fontWeight: "bold", fontSize: 16, py: 1, borderRadius: 2, mb: 1 }}
+              onClick={() => navigate(-1)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ fontWeight: "bold", fontSize: 17, py: 1.2, borderRadius: 2, mt: 1, mb: 1 }}
+              disabled={loading}
+              startIcon={loading && <CircularProgress size={18} color="inherit" />}
+            >
+              {loading ? "Signing In..." : "Sign In"}
+            </Button>
           </Stack>
         </form>
         <Stack direction="row" justifyContent="center" alignItems="center" mt={1}>
@@ -251,7 +269,7 @@ export default function LoginPage() {
             Register
           </Button>
         </Stack>
-        
+
         <Snackbar
           open={snackbar.open}
           autoHideDuration={2500}

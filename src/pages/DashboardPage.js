@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, } from "react";
+import { AuthContext } from "../App";
 
 // --- MOCK DATA ---
+
 const user = {
   name: "Aanya Sharma",
   avatar: "",
@@ -320,6 +322,9 @@ function Suggestions({ suggestions }) {
 
 // --- ENHANCED MAIN DASHBOARD ---
 export default function DashboardPage() {
+
+  const { loggedInUser } = useContext(AuthContext) || {};
+
   const [mounted, setMounted] = useState(false);
   
   useEffect(() => {
@@ -339,45 +344,46 @@ export default function DashboardPage() {
         {/* Enhanced Profile Section */}
         <div className="flex flex-col lg:flex-row gap-6 mb-8">
           {/* Student Info Box */}
-          <FloatingCard className="flex-1 p-6 bg-gradient-to-r from-white/95 to-blue-50/95">
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="relative">
-                <div className="w-24 h-24 rounded-full border-4 border-white shadow-xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
-                  {user.avatar ? 
-                    <img src={user.avatar} alt="Avatar" className="w-full h-full object-cover" /> :
-                    user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
-                  }
-                </div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-400 rounded-full border-2 border-white shadow-md"></div>
-              </div>
-              
-              <div className="flex flex-col gap-3 text-center md:text-left">
-                <div className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-indigo-800 bg-clip-text text-transparent">
-                  {user.name}
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-                  <div className="flex items-center gap-2 justify-center md:justify-start">
-                    <span className="font-semibold text-gray-600">Class:</span>
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full font-bold">
-                      {user.class}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 justify-center md:justify-start">
-                    <span className="font-semibold text-gray-600">City:</span>
-                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full font-bold">
-                      {user.city}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 justify-center md:justify-start">
-                    <span className="font-semibold text-gray-600">State:</span>
-                    <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full font-bold">
-                      {user.state}
-                    </span>
-                  </div>
-                </div>
-              </div>
+    <FloatingCard className="flex-1 p-6 ...">
+      <div className="flex flex-col md:flex-row items-center gap-6">
+        <div className="relative">
+          <div className="w-24 h-24 rounded-full ...">
+{loggedInUser?.avatar ? (
+  <img src={loggedInUser.avatar} alt="Avatar" className="w-full h-full object-cover rounded-full" />
+) : (
+  // fallback, e.g. initials
+  (loggedInUser?.name || "?").split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
+)}
+          </div>
+          <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-400 rounded-full border-2 border-white shadow-md"></div>
+        </div>
+        <div className="flex flex-col gap-2 text-center md:text-left">
+          <div className="text-3xl font-extrabold text-gray-900">
+            {loggedInUser?.name || "Student"}
+          </div>
+          <div className="flex flex-wrap gap-4 text-lg mt-2">
+            <div className="flex items-center gap-1">
+              <span className="font-semibold text-gray-600">Class:</span>
+              <span className="px-3 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold text-base">
+                {loggedInUser?.class || "-"}
+              </span>
             </div>
-          </FloatingCard>
+            <div className="flex items-center gap-1">
+              <span className="font-semibold text-gray-600">City:</span>
+              <span className="px-3 py-0.5 rounded-full bg-green-100 text-green-700 font-extrabold text-base">
+                {loggedInUser?.city || "-"}
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="font-semibold text-gray-600">State:</span>
+              <span className="px-3 py-0.5 rounded-full bg-purple-100 text-purple-700 font-extrabold text-base">
+                {loggedInUser?.state || "-"}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </FloatingCard>
           
           {/* Achievements */}
           <div className="flex-1 min-w-[320px]">

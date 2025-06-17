@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,9 +6,10 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import { Button, Box } from "@mui/material";
+import { auth, firestore } from "./services/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 
-// import Navbar from "./components/Navbar";
 import MenuBar from "./components/MenuBar";
 import SubscriptionBanner from "./components/SubscriptionBanner";
 import Footer from "./components/Footer/Footer.js"; // Import the Footer component
@@ -28,7 +29,6 @@ import TestSpellingSkills from "./pages/TestSpellingSkills";
 import ChallengeSubmissionPage from "./pages/ChallengeSubmissionPage";
 import ChallengeThankYouPage from "./pages/ChallengeThankYouPage";
 import WordOfTheDayCard from "./pages/WordOfTheDayCard";
-
 import SpellingPage from "./pages/SpellingPage";
 import ReadingPage from "./pages/ReadingPage";
 import PronunciationPage from "./pages/PronunciationPage";
@@ -42,29 +42,85 @@ import SkillSpotlightPage from "./pages/SkillSpotlightPage.tsx";
 import PronunciationTool from "./components/PronunciationTool";
 import StoryScrambleGame from "./games/StoryScrambleGame";
 import SHARPWordHunt from "./games/SHARPWordHunt";
-
 import HelpFAQ from "./pages/HelpFAQ";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-
 import PageNotFound from "./pages/PageNotFound";
-
 import PremiumSubscriptionPromo from "./components/PremiumSubscriptionPromo";
-
 import SignInRequiredHero from "./components/SignInRequiredHero";
-
 import ResultShareDemo from "./pages/ResultShareDemo";
 import ResultShareCardWithControls from "./components/ResultShareCardWithControls";
-
 import OffersAndPromotions from "./pages/OffersAndPromotions";
 
-// Import other page components as you create them
+import ProfilePage from "./pages/ProfilePage";
+
+import CARESTestSpellingSkills from './components/CARES/pages/TestAssessment.js';
 
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  // Listen for Firebase Auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // Try to fetch student data from Firestore
+        try {
+          const studentRef = doc(firestore, "students", user.uid);
+          const studentSnap = await getDoc(studentRef);
+          if (studentSnap.exists()) {
+            const studentData = studentSnap.data();
+            const {
+              name,
+              class: classLevel,
+              gender,
+              email,
+              city,
+              district,
+              state,
+              school,
+              subscriptionStatus = "trial",
+              ...rest
+            } = studentData;
+            setLoggedInUser({
+              uid: user.uid,
+              email: user.email,
+              role: "student",
+              name,
+              class: classLevel,
+              gender,
+              city,
+              district,
+              state,
+              school,
+              subscriptionStatus,
+              ...rest,
+            });
+          } else {
+            setLoggedInUser(null);
+          }
+        } catch (e) {
+          setLoggedInUser(null);
+        }
+      } else {
+        setLoggedInUser(null);
+      }
+      setAuthLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  if (authLoading) {
+    // Optionally: show splash or loader
+    return (
+      <div className="w-screen h-screen flex items-center justify-center bg-white">
+        <div className="text-xl font-semibold text-blue-600">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <AuthContext.Provider value={{ loggedInUser, setLoggedInUser }}>
@@ -89,7 +145,6 @@ function App() {
             path="/test-spelling-skills"
             element={<TestSpellingSkills />}
           />
-
           <Route path="/challenges" element={<ChallengesPage />} />
           <Route
             path="/challenge/:type"
@@ -99,9 +154,7 @@ function App() {
             path="/challenge/thank-you"
             element={<ChallengeThankYouPage />}
           />
-
           <Route path="/word-of-the-day" element={<WordOfTheDayCard />} />
-
           <Route path="/spelling" element={<SpellingPage />} />
           <Route path="/Reading" element={<ReadingPage />} />
           <Route path="/pronunciation" element={<PronunciationPage />} />
@@ -111,37 +164,29 @@ function App() {
           <Route path="/vocabulary" element={<VocabularyPage />} />
           <Route path="/sharp" element={<SharpPage />} />
           <Route path="/all-modules" element={<EightInOnePage />} />
-
           <Route path="/skill-spotlight" element={<SkillSpotlightPage />} />
-
           <Route
             path="/pronunciation-practice"
             element={<PronunciationTool />}
           />
-
           <Route path="/games/storyscramble" element={<StoryScrambleGame />} />
-
           <Route path="/games/sharpwordhunt" element={<SHARPWordHunt />} />
-
           <Route path="/help-faq" element={<HelpFAQ />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-
           <Route path="*" element={<PageNotFound />} />
-
           <Route
             path="/premium-subscription-promo"
             element={<PremiumSubscriptionPromo />}
           />
-
           <Route path="/signinrequiredhero" element={<SignInRequiredHero />} />
+          <Route path="/offers-promotions" element={<OffersAndPromotions />} />
 
-          <Route
-            path="/offers-promotions"
-            element={<OffersAndPromotions />}
-          />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/CARES/TestSpellingSkills" element={<CARESTestSpellingSkills />} />
+
         </Routes>
-        <Footer /> {/* Add Footer here */}
+        <Footer />
         <ResultShareCardWithControls
           name="Aanya Sharma"
           classLevel="IV"
@@ -171,7 +216,7 @@ function App() {
 // Separate component for the banner logic
 function ConditionalBanner() {
   const location = useLocation();
-            const excludedPaths = ["/signin", "/contact", "/signup", "/offers-promotions"];
+  const excludedPaths = ["/signin", "/contact", "/signup", "/offers-promotions"];
 
   const showBanner = !excludedPaths.some((path) =>
     location.pathname.startsWith(path)
