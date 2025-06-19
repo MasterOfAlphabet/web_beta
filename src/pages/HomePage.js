@@ -42,6 +42,8 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
+import trophyImage from '../assets/StudentHoldingTrophy.png';
+
 // If you have an AuthContext, use it for personalization
 // import { AuthContext } from "../App";
 
@@ -327,176 +329,123 @@ function SkillTipCard({ tip }) {
 }
 
 // --- Hero Section ---
+
 function HeroSection({ user }) {
+  const skills = [
+    { icon: <PenTool size={16} className="text-purple-600" />, label: "Spelling" },
+    { icon: <Eye size={16} className="text-orange-600" />, label: "Reading" },
+    { icon: <Mic size={16} className="text-pink-600" />, label: "Pronunciation" },
+    { icon: <BookOpen size={16} className="text-green-600" />, label: "Grammar" },
+    { icon: <FileText size={16} className="text-red-600" />, label: "Writing" },
+    { icon: <Volume2 size={16} className="text-blue-600" />, label: "Listening" },
+    { icon: <Lightbulb size={16} className="text-yellow-600" />, label: "Vocabulary" },
+    { icon: <MessageCircle size={16} className="text-pink-700" />, label: "S.H.A.R.P" },
+  ];
+
   return (
-    <Box
-      component="section"
-      sx={{
-        background: "linear-gradient(120deg, #e3f0ff 0%, #fbe8ef 100%)",
-        py: { xs: 7, md: 10 },
-        px: { xs: 2, md: 0 },
-        mb: 3,
-        borderRadius: { xs: 0, md: 4 },
-        boxShadow: { xs: 0, md: 2 },
-      }}
-    >
-      <Grid container spacing={3} alignItems="center">
-        <Grid item xs={12} md={7}>
-          <Typography
-            variant="h3"
-            fontWeight={900}
-            sx={{
-              mb: 1,
-              color: "#333",
-              lineHeight: 1.1,
-              fontSize: { xs: 30, md: 40, lg: 50 },
-            }}
-          >
-            {user?.name ? `Welcome, ${user.name}!` : "Welcome to"}{" "}
-            <span style={{
-              background: "linear-gradient(90deg, #7c3aed 0%, #2563eb 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text"
-            }}>Master Of Alphabet</span>
-          </Typography>
-          <Typography
-            variant="h5"
-            fontWeight={700}
-            sx={{
-              color: "#f59e42",
-              mb: 2,
-            }}
-          >
-            National English Language Skills 8-in-1 Mega Competition
-          </Typography>
-          <Typography sx={{ mb: 2, color: "#444" }}>
-            Master all 8 English language skills, compete, and win rewards! Start your journey now.
-          </Typography>
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ mb: 2 }}>
-            <Button
-              variant="contained"
-              color="secondary"
-              size="large"
-              sx={{
-                px: 4,
-                py: 2,
-                borderRadius: 2,
-                fontWeight: "bold",
-                boxShadow: 4,
-                textTransform: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-              startIcon={<Award />}
-              onClick={() => window.open("https://masterofalphabet.com/competition/register", "_blank")}
-            >
-              Register for Competition
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              sx={{
-                px: 4,
-                py: 2,
-                borderRadius: 2,
-                fontWeight: "bold",
-                boxShadow: 4,
-                textTransform: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-              startIcon={<Users />}
-              onClick={() => window.open("https://masterofalphabet.com/subscription", "_blank")}
-            >
-              Start Learning with Subscription
-            </Button>
-          </Stack>
-          {/* Skill summary badges */}
-          <Grid container spacing={1} sx={{ mt: 2 }}>
-            {[
-              { icon: <PenTool size={16} color="#7c3aed" />, label: "Spelling" },
-              { icon: <Eye size={16} color="#ea580c" />, label: "Reading" },
-              { icon: <Mic size={16} color="#a21caf" />, label: "Pronunciation" },
-              { icon: <BookOpen size={16} color="#059669" />, label: "Grammar" },
-              { icon: <FileText size={16} color="#dc2626" />, label: "Writing" },
-              { icon: <Volume2 size={16} color="#2563eb" />, label: "Listening" },
-              { icon: <Lightbulb size={16} color="#eab308" />, label: "Vocabulary" },
-              { icon: <MessageCircle size={16} color="#db2777" />, label: "S.H.A.R.P" },
-            ].map(skill => (
-              <Grid item key={skill.label}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    bgcolor: "#fff",
-                    px: 2,
-                    py: 1,
-                    borderRadius: 2,
-                    boxShadow: 1,
-                    gap: 1,
-                    fontWeight: 500,
-                  }}
-                >
-                  {skill.icon}
-                  <span>{skill.label}</span>
-                </Box>
-              </Grid>
-            ))}
-          </Grid>
-        </Grid>
-        <Grid item xs={12} md={5}>
-          <Box sx={{ position: "relative", display: "flex", justifyContent: "center" }}>
-            <img
-              src="https://cdn.pixabay.com/photo/2017/01/31/19/17/avatar-2026510_1280.png"
-              alt="Student Celebrating with Trophy"
-              style={{
-                width: "80%",
-                maxWidth: 320,
-                borderRadius: 24,
-                border: "4px solid #fff",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
-              }}
-            />
-            <Box
-              sx={{
-                position: "absolute",
-                top: 0,
-                right: 10,
-                bgcolor: "#fde047",
-                p: 1.5,
-                borderRadius: "50%",
-                boxShadow: 3,
-                animation: "bounce 1.2s infinite alternate",
-              }}
-              aria-label="Trophy"
-            >
-              <Trophy size={34} color="#a16207" />
-            </Box>
-            <Box
-              sx={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                bgcolor: "#9333ea",
-                color: "#fff",
-                px: 2,
-                py: 0.5,
-                borderRadius: 4,
-                fontWeight: 700,
-                fontSize: 16,
-                boxShadow: 2,
-              }}
-            >
-              #1 Champion
-            </Box>
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
+    <section className="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-12 lg:py-16 px-4 sm:px-6 lg:px-8 mb-6 rounded-none md:rounded-2xl shadow-none md:shadow-lg">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Left Content */}
+          <div className="order-2 lg:order-1">
+<div className="text-center">
+  {/* Line 1 - Welcome title (one line) */}
+  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-800 whitespace-nowrap">
+    {user?.name ? `Welcome, ${user.name}!` : "Welcome to"}{" "}
+    <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+      Master Of Alphabet
+    </span>
+  </h1>
+
+  {/* Line 2 - Competition title (one line) - REDUCED SIZE */}
+  <h2 className="mt-2 text-lg sm:text-xl lg:text-2xl font-bold text-orange-500 whitespace-nowrap">
+    National English Language Skills 8-in-1 Mega Competition
+  </h2>
+
+  {/* Line break */}
+  <div className="my-4"></div>
+
+  {/* Line 3 - Description (one line) */}
+  <p className="text-base sm:text-lg text-gray-600 whitespace-nowrap">
+    Master all 8 English language skills, compete, and win! Start your journey
+  </p>
+</div>
+            {/* Skills Grid - 2 rows of 4 each */}
+            <div className="mb-8">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
+                {skills.slice(0, 4).map((skill, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center bg-white px-3 py-2 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200"
+                  >
+                    {skill.icon}
+                    <span className="ml-2 text-sm font-medium text-gray-700">{skill.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {skills.slice(4).map((skill, index) => (
+                  <div
+                    key={index + 4}
+                    className="flex items-center bg-white px-3 py-2 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200"
+                  >
+                    {skill.icon}
+                    <span className="ml-2 text-sm font-medium text-gray-700">{skill.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                onClick={() => window.open("https://masterofalphabet.com/competition/register", "_blank")}
+              >
+                <Award size={20} />
+                Register for Competition
+              </button>
+              <button
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                onClick={() => window.open("https://masterofalphabet.com/subscription", "_blank")}
+              >
+                <Users size={20} />
+                Start Learning with Subscription
+              </button>
+            </div>
+          </div>
+
+          {/* Right Image */}
+          <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
+            <div className="relative">
+              {/* Main Image */}
+              <div className="relative">
+                <img
+                  src={trophyImage}
+                  alt="Student celebrating academic success"
+                  className="w-80 h-80 sm:w-96 sm:h-96 lg:w-[400px] lg:h-[400px] object-cover rounded-3xl border-4 border-white shadow-2xl"
+                />
+                
+                {/* Floating Trophy */}
+                <div className="absolute -top-4 -right-4 bg-gradient-to-br from-yellow-300 to-yellow-500 p-4 rounded-full shadow-lg animate-bounce">
+                  <Trophy size={32} className="text-yellow-800" />
+                </div>
+                
+                {/* Champion Badge */}
+                <div className="absolute -bottom-4 -left-4 bg-gradient-to-r from-purple-600 to-purple-800 text-white px-4 py-2 rounded-full shadow-lg">
+                  <span className="font-bold text-lg">#1 Champion</span>
+                </div>
+                
+                {/* Decorative Elements */}
+                <div className="absolute top-1/4 -left-6 w-4 h-4 bg-pink-400 rounded-full animate-pulse"></div>
+                <div className="absolute top-1/2 -right-6 w-6 h-6 bg-blue-400 rounded-full animate-pulse delay-300"></div>
+                <div className="absolute bottom-1/4 -left-4 w-3 h-3 bg-green-400 rounded-full animate-pulse delay-700"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 

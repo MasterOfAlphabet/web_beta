@@ -56,6 +56,12 @@ import ProfilePage from "./pages/ProfilePage";
 
 import CARESTestSpellingSkills from './components/CARES/pages/TestAssessment.js';
 
+import MagicSpellingCauldron from './games/MagicSpellingCauldron';
+
+import BalloonPopGame from './games/BalloonPopGame';
+
+             import ListenAndMatchGame from './games/ListenAndMatchGame';
+
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
 
@@ -63,58 +69,85 @@ function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
-  // Listen for Firebase Auth state
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        // Try to fetch student data from Firestore
-        try {
-          const studentRef = doc(firestore, "students", user.uid);
-          const studentSnap = await getDoc(studentRef);
-          if (studentSnap.exists()) {
-            const studentData = studentSnap.data();
-            const {
-              name,
-              class: classLevel,
-              gender,
-              email,
-              city,
-              district,
-              state,
-              school,
-              subscriptionStatus = "trial",
-              ...rest
-            } = studentData;
-            setLoggedInUser({
-              uid: user.uid,
-              email: user.email,
-              role: "student",
-              name,
-              class: classLevel,
-              gender,
-              city,
-              district,
-              state,
-              school,
-              subscriptionStatus,
-              ...rest,
-            });
-          } else {
-            setLoggedInUser(null);
-          }
-        } catch (e) {
-          setLoggedInUser(null);
-        }
-      } else {
-        setLoggedInUser(null);
+    // Step 1: Check localStorage
+    const storedUser = localStorage.getItem("studentUser");
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser);
+        setLoggedInUser(parsed);
+        setAuthLoading(false);
+      } catch (e) {
+        localStorage.removeItem("studentUser");
       }
-      setAuthLoading(false);
+    }
+
+    // Step 2: Firebase session check (login/logout)
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        localStorage.removeItem("studentUser");
+        setLoggedInUser(null);
+        setAuthLoading(false);
+        return;
+      }
+
+      try {
+        const studentRef = doc(firestore, "students", user.uid);
+        const studentSnap = await getDoc(studentRef);
+
+        if (!studentSnap.exists()) {
+          setLoggedInUser(null);
+          setAuthLoading(false);
+          return;
+        }
+
+        const studentData = studentSnap.data();
+        const {
+          name,
+          class: classLevel,
+          gender,
+          email,
+          city,
+          district,
+          state,
+          school,
+          subscriptionStatus = "inactive",
+          subscriptionType = "trial",
+          daysRemaining = null,
+          ...rest
+        } = studentData;
+
+        const userInfo = {
+          uid: user.uid,
+          email: user.email,
+          role: "student",
+          name,
+          class: classLevel,
+          gender,
+          city,
+          district,
+          state,
+          school,
+          subscriptionStatus,
+          subscriptionType,
+          daysRemaining,
+          ...rest,
+        };
+
+        setLoggedInUser(userInfo);
+        localStorage.setItem("studentUser", JSON.stringify(userInfo));
+      } catch (err) {
+        console.error("Failed to fetch student profile", err);
+        setLoggedInUser(null);
+      } finally {
+        setAuthLoading(false);
+      }
     });
+
     return () => unsubscribe();
   }, []);
 
   if (authLoading) {
-    // Optionally: show splash or loader
     return (
       <div className="w-screen h-screen flex items-center justify-center bg-white">
         <div className="text-xl font-semibold text-blue-600">Loading...</div>
@@ -137,23 +170,11 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/leaderboards" element={<LeaderboardsPage />} />
           <Route path="/skill-assessment" element={<SkillAssessmentPage />} />
-          <Route
-            path="/skill-assessment/spelling"
-            element={<SkillAssessmentSpelling />}
-          />
-          <Route
-            path="/test-spelling-skills"
-            element={<TestSpellingSkills />}
-          />
+          <Route path="/skill-assessment/spelling" element={<SkillAssessmentSpelling />} />
+          <Route path="/test-spelling-skills" element={<TestSpellingSkills />} />
           <Route path="/challenges" element={<ChallengesPage />} />
-          <Route
-            path="/challenge/:type"
-            element={<ChallengeSubmissionPage />}
-          />
-          <Route
-            path="/challenge/thank-you"
-            element={<ChallengeThankYouPage />}
-          />
+          <Route path="/challenge/:type" element={<ChallengeSubmissionPage />} />
+          <Route path="/challenge/thank-you" element={<ChallengeThankYouPage />} />
           <Route path="/word-of-the-day" element={<WordOfTheDayCard />} />
           <Route path="/spelling" element={<SpellingPage />} />
           <Route path="/Reading" element={<ReadingPage />} />
@@ -165,49 +186,29 @@ function App() {
           <Route path="/sharp" element={<SharpPage />} />
           <Route path="/all-modules" element={<EightInOnePage />} />
           <Route path="/skill-spotlight" element={<SkillSpotlightPage />} />
-          <Route
-            path="/pronunciation-practice"
-            element={<PronunciationTool />}
-          />
+          <Route path="/pronunciation-practice" element={<PronunciationTool />} />
           <Route path="/games/storyscramble" element={<StoryScrambleGame />} />
           <Route path="/games/sharpwordhunt" element={<SHARPWordHunt />} />
           <Route path="/help-faq" element={<HelpFAQ />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="*" element={<PageNotFound />} />
-          <Route
-            path="/premium-subscription-promo"
-            element={<PremiumSubscriptionPromo />}
-          />
+          <Route path="/premium-subscription-promo" element={<PremiumSubscriptionPromo />} />
           <Route path="/signinrequiredhero" element={<SignInRequiredHero />} />
           <Route path="/offers-promotions" element={<OffersAndPromotions />} />
-
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/CARES/TestSpellingSkills" element={<CARESTestSpellingSkills />} />
+          <Route path="*" element={<PageNotFound />} />
+             <Route path="/games/magic-spelling" element={<MagicSpellingCauldron />} />
+             <Route path="/games/ballon-pop-spelling" element={<BalloonPopGame />} />
 
+<Route path="/games/listen-and-match" element={<ListenAndMatchGame />} />
+
+
+
+
+                   
         </Routes>
         <Footer />
-        <ResultShareCardWithControls
-          name="Aanya Sharma"
-          classLevel="IV"
-          school="MPS"
-          city="Bangalore"
-          score={22}
-          total={24}
-          avatar="🧑‍🎓"
-          badge="Spelling Star 🏆"
-          level="Master"
-          module="Spelling Assessment"
-          resultText="Outstanding!"
-          summary={[
-            { label: "Dictation", value: "4/4" },
-            { label: "MCQ", value: "4/4" },
-            { label: "Missing Letter", value: "4/4" },
-            { label: "Unscramble", value: "4/4" },
-            { label: "Pic", value: "3/4" },
-          ]}
-          showControls={true}
-        />
       </Router>
     </AuthContext.Provider>
   );

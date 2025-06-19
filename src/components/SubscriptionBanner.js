@@ -31,7 +31,7 @@ const SubscriptionBanner = () => {
 
   const handleSubscribeClick = (e) => {
     e.stopPropagation(); // Prevent banner click when clicking subscribe button
-    window.location.href = '/offers-promotions/subscription-plans';
+    window.location.href = '/offers-promotions#subscription-plans';
   };
 
   const handleBoxClick = (e, sectionId) => {

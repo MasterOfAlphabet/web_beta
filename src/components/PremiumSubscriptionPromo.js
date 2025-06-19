@@ -32,6 +32,18 @@ export default function PremiumSubscriptionPromo() {
   // Click handlers from SubscriptionBanner
   const handleSubscribeClick = () => {
     window.location.href = '/offers-promotions/subscription-plans';
+
+    // Then add a small delay and scroll to the section
+  setTimeout(() => {
+  const element = document.getElementById("subscription-plans");
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  }, 300); // 300ms delay to allow page load
+
   };
 
   const handlePromotionClick = (sectionId) => {

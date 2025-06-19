@@ -28,10 +28,13 @@ import {
   CheckCircle as CheckCircleIcon,
   Cancel as CancelIcon,
 } from "@mui/icons-material";
-import { firestore, auth } from "../services/firebase";
+
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { statesAndDistricts } from "../utils/stateDistrictData";
+import { runTransaction} from "firebase/firestore";
+import { firestore, auth } from "../services/firebase";
+
 
 function passwordStrength(pwd) {
   let score = 0;
@@ -150,66 +153,80 @@ export default function SignupPage() {
     validate();
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-    setSubmitting(true);
-    setError({});
-    try {
-      const signupEmail =
-        form.email?.trim() || `${form.parentMobile}@rankgenie.in`;
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        signupEmail,
-        form.password
-      );
-      const user = userCredential.user;
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!validate()) return;
+  setSubmitting(true);
+  setError({});
 
-      // Class number/group
-      /**
-      const classNumber =
-        parseInt(form.classLevel.replace(/[^0-9]/g, "")) || null;
+  try {
+    const signupEmail =
+      form.email?.trim() || `${form.parentMobile}@rankgenie.in`;
 
-      const getClassGroup = (num) => {
-        if (!num) return "";
-        if (num <= 2) return "I-II";
-        if (num <= 5) return "III-V";
-        return "VI-X";
-      };
-    */
-      const selectedOption = classOptions.find(
-        (opt) => opt.value === form.classLevel
-      );
-      const classNumber = selectedOption?.classNumber;
-      const classGroup = selectedOption?.classGroup;
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      signupEmail,
+      form.password
+    );
+    const user = userCredential.user;
 
-      // Student Firestore object
+    const selectedOption = classOptions.find(
+      (opt) => opt.value === form.classLevel
+    );
+    const classNumber = selectedOption?.classNumber;
+    const classGroup = selectedOption?.classGroup;
+
+    await runTransaction(firestore, async (transaction) => {
+      const studentRef = doc(firestore, "students", user.uid);
+      const subscriptionRef = doc(firestore, "students", user.uid, "subscription", "current");
+
+      // Student data
       const studentDoc = {
         id: user.uid,
         name: form.name,
         parentMobile: "+91" + form.parentMobile,
         email: form.email?.trim() || null,
         class: form.classLevel,
-        classNumber: classNumber,
-        classGroup: classGroup,
-        gender: form.gender, // Will be "Male" or "Female"
+        classNumber,
+        classGroup,
+        gender: form.gender,
         city: form.city,
         district: form.district,
         state: form.state,
         school: form.school,
-        subscriptionStatus: "trial",
+        subscriptionStatus: "trial", // for quick access on read
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       };
 
-      await setDoc(doc(firestore, "students", user.uid), studentDoc);
-      setSubmitting(false);
-      setSubmitted(true);
-    } catch (err) {
-      setSubmitting(false);
-      setError({ submit: err.message });
-    }
-  };
+      // Subscription data
+      const subscriptionDoc = {
+        subscriptionType: "trial",
+        subscriptionStatus: "active",
+        startDate: serverTimestamp(),
+        endDate: null,
+        promotionalOfferUsed: false,
+        promoCodeUsed: null,
+        signupSource: "direct",
+        paymentVerified: false,
+        transactionId: null,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      };
+
+      transaction.set(studentRef, studentDoc);
+      transaction.set(subscriptionRef, subscriptionDoc);
+    });
+
+    setSubmitting(false);
+    setSubmitted(true);
+  } catch (err) {
+    setSubmitting(false);
+    setError({ submit: err.message });
+    console.error("Signup transaction failed:", err);
+  }
+};
+
 
   const handleCancel = () => {
     window.location.href = "/";

@@ -1,4 +1,7 @@
 import React, { useState, useContext } from "react";
+
+import { useLocation, useNavigate } from "react-router-dom";
+
 import {
   Box,
   Paper,
@@ -14,9 +17,14 @@ import {
   Stack,
   CircularProgress,
 } from "@mui/material";
-import { Visibility, VisibilityOff, PhoneAndroid, Lock, AccountCircle } from "@mui/icons-material";
+import {
+  Visibility,
+  VisibilityOff,
+  PhoneAndroid,
+  Lock,
+  AccountCircle,
+} from "@mui/icons-material";
 import { AuthContext } from "../App";
-import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore } from "../services/firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -33,16 +41,23 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
   const [language, setLanguage] = useState("en");
   const [mobileError, setMobileError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
   // Use AuthContext to manage global user state
   const { setLoggedInUser } = useContext(AuthContext) || {};
-  const navigate = useNavigate();
+ // Inside the component
+const location = useLocation();
+const navigate = useNavigate();
+const queryParams = new URLSearchParams(location.search);
+const redirectTo = queryParams.get("redirect") || "/dashboard"; // ✅ fallback path
 
-  // --- Handle Login ---
   const handleLogin = async (e) => {
     e.preventDefault();
     setMobileError("");
@@ -62,11 +77,14 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const syntheticEmail = `${parentMobile.trim()}@rankgenie.in`;
-      // Firebase Auth
-      const userCredential = await signInWithEmailAndPassword(auth, syntheticEmail, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        syntheticEmail,
+        password
+      );
       const { uid } = userCredential.user;
 
-      // Fetch student info from Firestore
+      // --- Fetch student profile ---
       const studentRef = doc(firestore, "students", uid);
       const studentSnap = await getDoc(studentRef);
 
@@ -81,44 +99,72 @@ export default function LoginPage() {
       }
 
       const studentData = studentSnap.data();
-      // Ensure subscriptionStatus is present, fallback to "inactive"
-      const {
-        name,
-        class: classLevel,
-        gender,
-        email,
-        city,
-        district,
-        state,
-        school,
-        subscriptionStatus = "inactive",
-        ...rest
-      } = studentData;
 
-      // Set globally in AuthContext for all pages
-      if (typeof setLoggedInUser === "function") {
-        setLoggedInUser({
-          uid,
-          email: syntheticEmail,
-          role: "student",
-          name,
-          class: classLevel,
-          gender,
-          city,
-          district,
-          state,
-          school,
-          subscriptionStatus,
-          ...rest,
-        });
+      // --- Fetch subscription ---
+      const subRef = doc(firestore, "students", uid, "subscription", "current");
+      const subSnap = await getDoc(subRef);
+
+      let subscriptionType = "trial";
+      let subscriptionStatus = "active";
+      let subscriptionStartDate = null;
+      let subscriptionEndDate = null;
+      let daysRemaining = null;
+
+      if (subSnap.exists()) {
+        const sub = subSnap.data();
+        subscriptionType = sub.subscriptionType || "trial";
+        subscriptionStatus = sub.subscriptionStatus || "active";
+        subscriptionStartDate = sub.subscriptionStartDate?.toDate?.() || null;
+        subscriptionEndDate = sub.subscriptionEndDate?.toDate?.() || null;
+
+        if (subscriptionEndDate) {
+          const now = new Date();
+          const timeDiff = subscriptionEndDate.getTime() - now.getTime();
+          daysRemaining = Math.max(
+            0,
+            Math.ceil(timeDiff / (1000 * 60 * 60 * 24))
+          );
+
+          if (daysRemaining <= 0) {
+            subscriptionStatus = "expired";
+          }
+        }
       }
 
-      setSnackbar({ open: true, message: "Login successful!", severity: "success" });
-      // Redirect to home, Nav/Menubar will update based on AuthContext
-      navigate("/");
+      // --- Construct final user session object ---
+      const userInfo = {
+        uid,
+        role: "student",
+        email: syntheticEmail,
+        name: studentData.name,
+        class: studentData.class,
+        gender: studentData.gender,
+        city: studentData.city,
+        district: studentData.district,
+        state: studentData.state,
+        school: studentData.school,
+        subscriptionType,
+        subscriptionStatus,
+        subscriptionStartDate,
+        subscriptionEndDate,
+        daysRemaining,
+      };
+
+      // Save to context and localStorage for persistence
+      setLoggedInUser?.(userInfo);
+      localStorage.setItem("studentUser", JSON.stringify(userInfo));
+
+      setSnackbar({
+        open: true,
+        message: "Login successful!",
+        severity: "success",
+      });
+     navigate(redirectTo);
+
     } catch (error) {
       let message = "Login failed. Please try again.";
-      if (error.code === "auth/user-not-found") message = "No account found with this mobile #";
+      if (error.code === "auth/user-not-found")
+        message = "No account found with this mobile #";
       if (error.code === "auth/wrong-password") message = "Incorrect password";
       setSnackbar({ open: true, message, severity: "error" });
     } finally {
@@ -138,7 +184,15 @@ export default function LoginPage() {
         py: 4,
       }}
     >
-      <Paper elevation={4} sx={{ p: { xs: 2, sm: 4 }, borderRadius: 4, minWidth: 330, maxWidth: 370 }}>
+      <Paper
+        elevation={4}
+        sx={{
+          p: { xs: 2, sm: 4 },
+          borderRadius: 4,
+          minWidth: 330,
+          maxWidth: 370,
+        }}
+      >
         <Box textAlign="center" mb={2}>
           <AccountCircle color="primary" sx={{ fontSize: 64 }} />
           <Typography variant="h5" fontWeight={700} mt={1}>
@@ -151,7 +205,12 @@ export default function LoginPage() {
         <Typography variant="h6" align="center" mb={1} fontWeight={600}>
           Welcome Back!
         </Typography>
-        <Typography variant="body2" align="center" mb={2} color="text.secondary">
+        <Typography
+          variant="body2"
+          align="center"
+          mb={2}
+          color="text.secondary"
+        >
           Sign in to continue to your challenges
         </Typography>
         <form onSubmit={handleLogin} autoComplete="on">
@@ -200,7 +259,9 @@ export default function LoginPage() {
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                     onClick={() => setShowPassword((show) => !show)}
                     edge="end"
                     tabIndex={-1}
@@ -213,7 +274,13 @@ export default function LoginPage() {
             size="medium"
           />
 
-          <Stack direction="row" justifyContent="space-between" alignItems="center" mt={1} mb={1.5}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            mt={1}
+            mb={1.5}
+          >
             <FormControlLabel
               control={
                 <Checkbox
@@ -235,12 +302,23 @@ export default function LoginPage() {
               Forgot password?
             </Button>
           </Stack>
-          <Stack direction="row" justifyContent="center" alignItems="center" mt={1}>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            mt={1}
+          >
             <Button
               type="button"
               variant="outlined"
               fullWidth
-              sx={{ fontWeight: "bold", fontSize: 16, py: 1, borderRadius: 2, mb: 1 }}
+              sx={{
+                fontWeight: "bold",
+                fontSize: 16,
+                py: 1,
+                borderRadius: 2,
+                mb: 1,
+              }}
               onClick={() => navigate(-1)}
             >
               Cancel
@@ -250,15 +328,29 @@ export default function LoginPage() {
               variant="contained"
               color="primary"
               fullWidth
-              sx={{ fontWeight: "bold", fontSize: 17, py: 1.2, borderRadius: 2, mt: 1, mb: 1 }}
+              sx={{
+                fontWeight: "bold",
+                fontSize: 17,
+                py: 1.2,
+                borderRadius: 2,
+                mt: 1,
+                mb: 1,
+              }}
               disabled={loading}
-              startIcon={loading && <CircularProgress size={18} color="inherit" />}
+              startIcon={
+                loading && <CircularProgress size={18} color="inherit" />
+              }
             >
               {loading ? "Signing In..." : "Sign In"}
             </Button>
           </Stack>
         </form>
-        <Stack direction="row" justifyContent="center" alignItems="center" mt={1}>
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          mt={1}
+        >
           <Typography fontSize={15}>Don't have an account?</Typography>
           <Button
             variant="text"

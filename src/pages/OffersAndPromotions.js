@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { useLocation } from 'react-router-dom';
+
 // Import the 7 promotion components
 import Premium5in1MainBanner from "../components/Promotions/Premium5in1MainBanner";
 import PreLaunchPromotionCard from "../components/Promotions/PreLaunchPromotionCard";
@@ -10,32 +12,62 @@ import CollabChallengesCard from "../components/Promotions/CollabChallengesCard"
 import SubscriptionPlansCard from "../components/Promotions/SubscriptionPlansCard";
 
 export default function OffersAndPromotions() {
+
+  const location = useLocation();
+
   // Timer logic for the main banner (24 hour countdown)
-  const [timer, setTimer] = useState({ hours: 23, minutes: 59, seconds: 59 });
+  const [timer, setTimer] = useState({ days: 100, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimer((prev) => {
-        let { hours, minutes, seconds } = prev;
-        if (seconds > 0) seconds--;
-        else if (minutes > 0) {
-          minutes--;
-          seconds = 59;
-        } else if (hours > 0) {
-          hours--;
-          minutes = 59;
-          seconds = 59;
-        } else {
-          // Reset timer if needed or stop countdown
-          hours = 23;
-          minutes = 59;
-          seconds = 59;
-        }
-        return { hours, minutes, seconds };
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  // Hash scrolling functionality
+  const handleHashScroll = () => {
+    const hash = window.location.hash;
+    if (hash) {
+      const element = document.getElementById(hash.substring(1));
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }, 300);
+      }
+    }
+  };
+
+  handleHashScroll(); // Run on initial load
+  
+  // Listen for hash changes
+  window.addEventListener('hashchange', handleHashScroll);
+  return () => window.removeEventListener('hashchange', handleHashScroll);
+}, [location]); // Only runs when location changes
+
+
+
+useEffect(() => {
+  const targetDate = new Date("2025-10-01T00:00:00"); // example: 100 days from now or fixed
+
+  const interval = setInterval(() => {
+    const now = new Date();
+    const difference = targetDate - now;
+
+    if (difference <= 0) {
+      clearInterval(interval);
+      setTimer({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      return;
+    }
+
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((difference / (1000 * 60)) % 60);
+    const seconds = Math.floor((difference / 1000) % 60);
+
+    setTimer({ days, hours, minutes, seconds });
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, []);
+
 
   // Handlers for CTAs (these could use routers or modals in a real app)
   const handleMainCTAClick = () => {
