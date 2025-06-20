@@ -29,6 +29,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
     "tailwindcss": "^3.4.3",
+    "use-sound": "^5.0.0",
     "uuid": "^9.0.1",
     "web-vitals": "^3.3.1"
   },

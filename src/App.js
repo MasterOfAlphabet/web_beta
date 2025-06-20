@@ -41,7 +41,7 @@ import EightInOnePage from "./pages/EightInOnePage";
 import SkillSpotlightPage from "./pages/SkillSpotlightPage.tsx";
 import PronunciationTool from "./components/PronunciationTool";
 import StoryScrambleGame from "./games/StoryScrambleGame";
-import SHARPWordHunt from "./games/SHARPWordHunt";
+
 import HelpFAQ from "./pages/HelpFAQ";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -51,16 +51,20 @@ import SignInRequiredHero from "./components/SignInRequiredHero";
 import ResultShareDemo from "./pages/ResultShareDemo";
 import ResultShareCardWithControls from "./components/ResultShareCardWithControls";
 import OffersAndPromotions from "./pages/OffersAndPromotions";
-
 import ProfilePage from "./pages/ProfilePage";
+import CARESTestSpellingSkills from "./components/CARES/pages/TestAssessment.js";
 
-import CARESTestSpellingSkills from './components/CARES/pages/TestAssessment.js';
+// Games
+import EnglishSkillsBuildingGames from './pages/EnglishSkillsBuildingGames';
 
-import MagicSpellingCauldron from './games/MagicSpellingCauldron';
+import MagicSpellingCauldron from "./games/MagicSpellingCauldron";
+import BalloonPopGame from "./games/BalloonPopGame";
+import ListenAndMatchGame from "./games/ListenAndMatchGame";
+import PunctuationAdventure from "./games/PunctuationAdventure.js";
+import SHARPWordHunt from "./games/SHARPWordHunt";
+import SpellingDuel from "./games/SpellingDuel";
 
-import BalloonPopGame from './games/BalloonPopGame';
-
-             import ListenAndMatchGame from './games/ListenAndMatchGame';
+import SuperHeroReadingAcademy from "./games/SuperHeroReadingAcademy";
 
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
@@ -170,11 +174,23 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/leaderboards" element={<LeaderboardsPage />} />
           <Route path="/skill-assessment" element={<SkillAssessmentPage />} />
-          <Route path="/skill-assessment/spelling" element={<SkillAssessmentSpelling />} />
-          <Route path="/test-spelling-skills" element={<TestSpellingSkills />} />
+          <Route
+            path="/skill-assessment/spelling"
+            element={<SkillAssessmentSpelling />}
+          />
+          <Route
+            path="/test-spelling-skills"
+            element={<TestSpellingSkills />}
+          />
           <Route path="/challenges" element={<ChallengesPage />} />
-          <Route path="/challenge/:type" element={<ChallengeSubmissionPage />} />
-          <Route path="/challenge/thank-you" element={<ChallengeThankYouPage />} />
+          <Route
+            path="/challenge/:type"
+            element={<ChallengeSubmissionPage />}
+          />
+          <Route
+            path="/challenge/thank-you"
+            element={<ChallengeThankYouPage />}
+          />
           <Route path="/word-of-the-day" element={<WordOfTheDayCard />} />
           <Route path="/spelling" element={<SpellingPage />} />
           <Route path="/Reading" element={<ReadingPage />} />
@@ -186,27 +202,51 @@ function App() {
           <Route path="/sharp" element={<SharpPage />} />
           <Route path="/all-modules" element={<EightInOnePage />} />
           <Route path="/skill-spotlight" element={<SkillSpotlightPage />} />
-          <Route path="/pronunciation-practice" element={<PronunciationTool />} />
-          <Route path="/games/storyscramble" element={<StoryScrambleGame />} />
-          <Route path="/games/sharpwordhunt" element={<SHARPWordHunt />} />
+          <Route
+            path="/pronunciation-practice"
+            element={<PronunciationTool />}
+          />
+
           <Route path="/help-faq" element={<HelpFAQ />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/premium-subscription-promo" element={<PremiumSubscriptionPromo />} />
+          <Route
+            path="/premium-subscription-promo"
+            element={<PremiumSubscriptionPromo />}
+          />
           <Route path="/signinrequiredhero" element={<SignInRequiredHero />} />
           <Route path="/offers-promotions" element={<OffersAndPromotions />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/CARES/TestSpellingSkills" element={<CARESTestSpellingSkills />} />
+          <Route
+            path="/CARES/TestSpellingSkills"
+            element={<CARESTestSpellingSkills />}
+          />
           <Route path="*" element={<PageNotFound />} />
-             <Route path="/games/magic-spelling" element={<MagicSpellingCauldron />} />
-             <Route path="/games/ballon-pop-spelling" element={<BalloonPopGame />} />
 
-<Route path="/games/listen-and-match" element={<ListenAndMatchGame />} />
+          <Route
+            path="/english-skills-building-games/magic-spelling"
+            element={<MagicSpellingCauldron />}
+          />
+          <Route
+            path="/english-skills-building-games/ballon-pop-spelling"
+            element={<BalloonPopGame />}
+          />
+          <Route
+            path="/english-skills-building-games/punctuation-adventure"
+            element={<PunctuationAdventure />}
+          />
+          <Route
+            path="/english-skills-building-games/listen-and-match"
+            element={<ListenAndMatchGame />}
+          />
+          <Route path="/english-skills-building-games/sharpwordhunt" element={<SHARPWordHunt />} />
+          <Route path="/english-skills-building-games/storyscramble" element={<StoryScrambleGame />} />
+          <Route path="/english-skills-building-games/spelling-duel" element={<SpellingDuel />} />
 
+          <Route path="/english-skills-building-games/super-hero-reading-academy" element={<SuperHeroReadingAcademy />} />
 
+ <Route path="/english-skills-building-games" element={<EnglishSkillsBuildingGames />} />
 
-
-                   
         </Routes>
         <Footer />
       </Router>
@@ -217,7 +257,12 @@ function App() {
 // Separate component for the banner logic
 function ConditionalBanner() {
   const location = useLocation();
-  const excludedPaths = ["/signin", "/contact", "/signup", "/offers-promotions"];
+  const excludedPaths = [
+    "/signin",
+    "/contact",
+    "/signup",
+    "/offers-promotions",
+  ];
 
   const showBanner = !excludedPaths.some((path) =>
     location.pathname.startsWith(path)
