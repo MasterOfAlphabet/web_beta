@@ -15,9 +15,10 @@ import { AuthContext } from "../App";
 const navItems = [
   { label: "Home", path: "/" },
   { label: "Skills Hub", path: "/skills-hub" },
-  { label: "Challenges", path: "/challenges" },
-  { label: "Games", path: "/english-skills-building-games" },
-  { label: "Winners", path: "/winners" },
+  { label: "Daily Series", path: "/daily-series" },
+  //{ label: "Challenges", path: "/challenges" },
+  { label: "Play & Learn", path: "/english-skills-building-games" },
+  //{ label: "Winners", path: "/winners" },
   { label: "Leaderboards", path: "/leaderboards" },
 ];
 

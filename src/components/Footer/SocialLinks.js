@@ -3,12 +3,12 @@ import { Twitter, Facebook, Instagram, Linkedin, Youtube, Github } from "lucide-
 
 export default function SocialLinks() {
   const socialLinks = [
-    { icon: Twitter, href: "https://twitter.com/masterofalphabet", label: "Twitter", handle: "@masterofalphabet" },
-    { icon: Facebook, href: "https://facebook.com/masterofalphabet", label: "Facebook", handle: "Master Of Alphabet" },
+    //{ icon: Twitter, href: "https://twitter.com/masterofalphabet", label: "Twitter", handle: "@masterofalphabet" },
+    //{ icon: Facebook, href: "https://facebook.com/masterofalphabet", label: "Facebook", handle: "Master Of Alphabet" },
     { icon: Instagram, href: "https://instagram.com/masterofalphabet", label: "Instagram", handle: "@masterofalphabet" },
     { icon: Linkedin, href: "https://linkedin.com/company/masterofalphabet", label: "LinkedIn", handle: "Master Of Alphabet" },
     { icon: Youtube, href: "https://youtube.com/@masterofalphabet", label: "YouTube", handle: "@masterofalphabet" },
-    { icon: Github, href: "https://github.com/MasterOfAlphabet", label: "GitHub", handle: "MasterOfAlphabet" }
+    //{ icon: Github, href: "https://github.com/MasterOfAlphabet", label: "GitHub", handle: "MasterOfAlphabet" }
   ];
 
   return (

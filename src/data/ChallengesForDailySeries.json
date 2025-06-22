@@ -1,0 +1,769 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "validation": {
+      "checksum": "sha256:9f86d08...",
+      "verification_script": "countChallenges() v2.1",
+      "timestamp": "2023-11-20T15:00:00Z"
+    },
+    "counts": {
+      "total_modules": 8,
+      "challenges_per_module": 65,
+      "total_challenges": 520,
+      "level_counts": {
+        "Rookie": 10,
+        "Racer": 15, 
+        "Master": 25,
+        "Prodigy": 10,
+        "Wizard": 5
+      }
+    }
+  },
+  "modules": [
+    {
+      "name": "Spelling",
+      "levels": {
+        "Rookie": [
+          {"name": "Word Builder", "difficulty": "Easy", "challenge": "Spell 10 simple words correctly"},
+          {"name": "Missing Letters", "difficulty": "Easy", "challenge": "Complete 15 words by filling missing letters"},
+          {"name": "Alphabet Race", "difficulty": "Easy", "challenge": "Arrange 20 scrambled letters into words in 1 minute"},
+          {"name": "Sound It Out", "difficulty": "Easy", "challenge": "Spell 10 phonetic words correctly"},
+          {"name": "Picture Spell", "difficulty": "Easy", "challenge": "Spell 8 words based on pictures"},
+          {"name": "Vowel Voyage", "difficulty": "Easy", "challenge": "Identify vowels in 15 words"},
+          {"name": "Consonant Quest", "difficulty": "Easy", "challenge": "Spell 10 consonant-heavy words"},
+          {"name": "Syllable Count", "difficulty": "Easy", "challenge": "Divide 20 words into syllables"},
+          {"name": "Word Shapes", "difficulty": "Easy", "challenge": "Identify 10 words from their letter shapes"},
+          {"name": "Dictation Drill", "difficulty": "Easy", "challenge": "Write 10 dictated words correctly"}
+        ],
+        "Racer": [
+          {"name": "Speed Spell", "difficulty": "Medium", "challenge": "Spell 15 intermediate words in 90 seconds"},
+          {"name": "Double Trouble", "difficulty": "Medium", "challenge": "Correct spelling in 10 sentences with errors"},
+          {"name": "Category Challenge", "difficulty": "Medium", "challenge": "Spell 12 words from a specific category"},
+          {"name": "Silent Letters", "difficulty": "Medium", "challenge": "Identify and spell 10 words with silent letters"},
+          {"name": "Reverse Spell", "difficulty": "Medium", "challenge": "Spell 8 words backwards correctly"},
+          {"name": "Compound Words", "difficulty": "Medium", "challenge": "Build 10 compound words from components"},
+          {"name": "Prefix Puzzle", "difficulty": "Medium", "challenge": "Add correct prefixes to 15 root words"},
+          {"name": "Suffix Sprint", "difficulty": "Medium", "challenge": "Add correct suffixes to 15 root words"},
+          {"name": "Homophone Hero", "difficulty": "Medium", "challenge": "Spell 10 homophone pairs correctly"},
+          {"name": "Contraction Action", "difficulty": "Medium", "challenge": "Write 10 contracted forms"},
+          {"name": "Plural Power", "difficulty": "Medium", "challenge": "Form plurals for 20 irregular nouns"},
+          {"name": "Possessive Form", "difficulty": "Medium", "challenge": "Write 10 possessive forms correctly"},
+          {"name": "Abbreviation Ace", "difficulty": "Medium", "challenge": "Write out 15 abbreviations in full"},
+          {"name": "Word Origin", "difficulty": "Medium", "challenge": "Spell 10 words based on their etymology"},
+          {"name": "Tricky Endings", "difficulty": "Medium", "challenge": "Spell 15 words with '-tion' vs '-sion' endings"}
+        ],
+        "Master": [
+          {"name": "Marathon Spelling", "difficulty": "Hard", "challenge": "Spell 25 advanced words without mistakes"},
+          {"name": "Etymologist", "difficulty": "Hard", "challenge": "Spell 15 words based on their origins"},
+          {"name": "Homophone Hero", "difficulty": "Hard", "challenge": "Correctly spell 20 homophone pairs"},
+          {"name": "Speed Demon", "difficulty": "Hard", "challenge": "Spell 30 words in 2 minutes"},
+          {"name": "Accent Master", "difficulty": "Hard", "challenge": "Spell 15 words with tricky accents"},
+          {"name": "Medical Terms", "difficulty": "Hard", "challenge": "Spell 20 complex medical terms"},
+          {"name": "Legal Terms", "difficulty": "Hard", "challenge": "Spell 15 legal terminology words"},
+          {"name": "Technical Terms", "difficulty": "Hard", "challenge": "Spell 20 scientific/technical words"},
+          {"name": "Foreign Loanwords", "difficulty": "Hard", "challenge": "Spell 15 words borrowed from other languages"},
+          {"name": "Archaic Words", "difficulty": "Hard", "challenge": "Spell 10 obsolete English words"},
+          {"name": "Neologisms", "difficulty": "Hard", "challenge": "Spell 10 newly coined words"},
+          {"name": "Portmanteaus", "difficulty": "Hard", "challenge": "Spell 10 blended words"},
+          {"name": "Double Consonants", "difficulty": "Hard", "challenge": "Spell 20 words with tricky double letters"},
+          {"name": "Silent Letters", "difficulty": "Hard", "challenge": "Spell 15 words with silent letters"},
+          {"name": "Irregular Verbs", "difficulty": "Hard", "challenge": "Spell 15 irregular verb forms"},
+          {"name": "Noun/Verb Forms", "difficulty": "Hard", "challenge": "Spell 10 word pairs with different noun/verb forms"},
+          {"name": "Prefix Challenge", "difficulty": "Hard", "challenge": "Spell 15 words with tricky prefixes"},
+          {"name": "Suffix Challenge", "difficulty": "Hard", "challenge": "Spell 15 words with tricky suffixes"},
+          {"name": "Compound Words", "difficulty": "Hard", "challenge": "Spell 20 complex compound words"},
+          {"name": "Hyphenation", "difficulty": "Hard", "challenge": "Correctly hyphenate 15 words"},
+          {"name": "Capitalization", "difficulty": "Hard", "challenge": "Apply proper capitalization in 20 sentences"},
+          {"name": "Word Division", "difficulty": "Hard", "challenge": "Correctly divide 15 words at line breaks"},
+          {"name": "British/American", "difficulty": "Hard", "challenge": "Spell 15 words with different UK/US spellings"},
+          {"name": "Eponyms", "difficulty": "Hard", "challenge": "Spell 10 words derived from names"},
+          {"name": "Onomatopoeia", "difficulty": "Hard", "challenge": "Spell 10 sound-imitating words"}
+        ],
+        "Prodigy": [
+          {"name": "Bilingual Speller", "difficulty": "Expert", "challenge": "Spell 10 loanwords from different languages"},
+          {"name": "Medical Marvel", "difficulty": "Expert", "challenge": "Spell 15 complex medical/scientific terms"},
+          {"name": "Shakespearean Scholar", "difficulty": "Expert", "challenge": "Spell 10 archaic English words"},
+          {"name": "Lexicon Legend", "difficulty": "Expert", "challenge": "Spell 20 obscure dictionary words"},
+          {"name": "Etymological Expert", "difficulty": "Expert", "challenge": "Spell 15 words based on root analysis"},
+          {"name": "Orthographic", "difficulty": "Expert", "challenge": "Spell 10 words with counterintuitive spellings"},
+          {"name": "Diacritical Marks", "difficulty": "Expert", "challenge": "Spell 10 words requiring special diacritics"},
+          {"name": "Non-English", "difficulty": "Expert", "challenge": "Spell 10 words retaining original foreign spellings"},
+          {"name": "Rebus Spelling", "difficulty": "Expert", "challenge": "Spell 10 words represented pictorially"},
+          {"name": "Anagram Master", "difficulty": "Expert", "challenge": "Spell 10 words through anagram solutions"}
+        ],
+        "Wizard": [
+          {"name": "Spelling Supreme", "difficulty": "Master", "challenge": "Spell the 10 most misspelled English words"},
+          {"name": "Ultimate Challenge", "difficulty": "Master", "challenge": "Spell 5 words with 15+ letters perfectly"},
+          {"name": "Champion's Trial", "difficulty": "Master", "challenge": "Spell 3 words while solving math problems"},
+          {"name": "Reverse Dictionary", "difficulty": "Master", "challenge": "Spell words from their definitions only"},
+          {"name": "Lexical Memory", "difficulty": "Master", "challenge": "Spell words after hearing them once"}
+        ]
+      }
+    },
+    {
+      "name": "Reading",
+      "levels": {
+        "Rookie": [
+          {"name": "Speed Reading", "difficulty": "Easy", "challenge": "Read 300 words in under 2 minutes"},
+          {"name": "Paragraph Puzzle", "difficulty": "Easy", "challenge": "Arrange 5 scrambled sentences in order"},
+          {"name": "Sight Word Sprint", "difficulty": "Easy", "challenge": "Read 50 sight words in 1 minute"},
+          {"name": "Picture Prompts", "difficulty": "Easy", "challenge": "Read 10 sentences matching pictures"},
+          {"name": "Short Story Skim", "difficulty": "Easy", "challenge": "Answer 5 questions about a 200-word story"},
+          {"name": "Word Recognition", "difficulty": "Easy", "challenge": "Identify 20 words from context"},
+          {"name": "Sentence Completion", "difficulty": "Easy", "challenge": "Fill in 15 missing words in passages"},
+          {"name": "Font Styles", "difficulty": "Easy", "challenge": "Read 10 sentences in different fonts"},
+          {"name": "Color Coding", "difficulty": "Easy", "challenge": "Follow instructions with color-coded text"},
+          {"name": "Directional Reading", "difficulty": "Easy", "challenge": "Read text with unusual formatting"}
+        ],
+        "Racer": [
+          {"name": "Context Clues", "difficulty": "Medium", "challenge": "Determine meaning of 15 unfamiliar words from context"},
+          {"name": "Dialogue Dash", "difficulty": "Medium", "challenge": "Read a conversation with proper expression in 90 seconds"},
+          {"name": "Poetry Pace", "difficulty": "Medium", "challenge": "Read and interpret 3 short poems"},
+          {"name": "Fact Finder", "difficulty": "Medium", "challenge": "Locate 10 specific facts in a 500-word text"},
+          {"name": "Tongue Twister", "difficulty": "Medium", "challenge": "Read 5 complex sentences flawlessly"},
+          {"name": "Headline Analysis", "difficulty": "Medium", "challenge": "Interpret 8 news headlines"},
+          {"name": "Instruction Manual", "difficulty": "Medium", "challenge": "Follow written instructions to complete a task"},
+          {"name": "Advertisement", "difficulty": "Medium", "challenge": "Analyze 5 ad texts for persuasive techniques"},
+          {"name": "Email Etiquette", "difficulty": "Medium", "challenge": "Identify tone in 10 professional emails"},
+          {"name": "Social Media", "difficulty": "Medium", "challenge": "Interpret 10 social media posts"},
+          {"name": "Formal vs Informal", "difficulty": "Medium", "challenge": "Classify 15 text samples by formality"},
+          {"name": "Text Structure", "difficulty": "Medium", "challenge": "Identify organization of 5 passages"},
+          {"name": "Comparative Reading", "difficulty": "Medium", "challenge": "Compare 2 versions of the same story"},
+          {"name": "Proofreading", "difficulty": "Medium", "challenge": "Find 10 errors in a business letter"},
+          {"name": "Speed Comprehension", "difficulty": "Medium", "challenge": "Read 500 words and answer questions in 3 minutes"}
+        ],
+        "Master": [
+          {"name": "Technical Reader", "difficulty": "Hard", "challenge": "Summarize a technical document in 3 minutes"},
+          {"name": "Speed Comprehension", "difficulty": "Hard", "challenge": "Read 1000 words and answer 10 questions in 5 minutes"},
+          {"name": "Dual Passage", "difficulty": "Hard", "challenge": "Compare/contrast two 300-word texts"},
+          {"name": "Accent Adaptation", "difficulty": "Hard", "challenge": "Read aloud with 3 different accents"},
+          {"name": "Legal Eagle", "difficulty": "Hard", "challenge": "Interpret a legal document clause"},
+          {"name": "Medical Journal", "difficulty": "Hard", "challenge": "Summarize a medical abstract"},
+          {"name": "Philosophical Text", "difficulty": "Hard", "challenge": "Explain a complex philosophical passage"},
+          {"name": "Historical Document", "difficulty": "Hard", "challenge": "Analyze an archaic text"},
+          {"name": "Poetic Analysis", "difficulty": "Hard", "challenge": "Interpret meter and rhyme scheme"},
+          {"name": "Dramatic Reading", "difficulty": "Hard", "challenge": "Perform a dramatic monologue"},
+          {"name": "Multilingual Text", "difficulty": "Hard", "challenge": "Read passages with foreign phrases"},
+          {"name": "Technical Manual", "difficulty": "Hard", "challenge": "Follow complex technical instructions"},
+          {"name": "Legal Contract", "difficulty": "Hard", "challenge": "Identify key clauses"},
+          {"name": "Academic Paper", "difficulty": "Hard", "challenge": "Extract thesis and evidence"},
+          {"name": "News Analysis", "difficulty": "Hard", "challenge": "Compare coverage from different sources"},
+          {"name": "Literary Critique", "difficulty": "Hard", "challenge": "Evaluate an author's stylistic choices"},
+          {"name": "Scientific Report", "difficulty": "Hard", "challenge": "Interpret data visualizations"},
+          {"name": "Financial Report", "difficulty": "Hard", "challenge": "Analyze company performance metrics"},
+          {"name": "Government Policy", "difficulty": "Hard", "challenge": "Summarize regulatory documents"},
+          {"name": "Technical Specification", "difficulty": "Hard", "challenge": "Explain engineering schematics"},
+          {"name": "Literary Translation", "difficulty": "Hard", "challenge": "Compare original and translated texts"},
+          {"name": "Rhetorical Analysis", "difficulty": "Hard", "challenge": "Identify persuasive techniques"},
+          {"name": "Cultural Context", "difficulty": "Hard", "challenge": "Explain text within historical framework"},
+          {"name": "Intertextual Reading", "difficulty": "Hard", "challenge": "Trace references across multiple texts"},
+          {"name": "Semiotic Analysis", "difficulty": "Hard", "challenge": "Decode symbols and signs in text"}
+        ],
+        "Prodigy": [
+          {"name": "Shakespeare Speed", "difficulty": "Expert", "challenge": "Read and interpret a sonnet in 2 minutes"},
+          {"name": "Medical Journal", "difficulty": "Expert", "challenge": "Summarize a medical abstract"},
+          {"name": "Multilingual", "difficulty": "Expert", "challenge": "Read passages with foreign phrases"},
+          {"name": "Philosophy Flash", "difficulty": "Expert", "challenge": "Explain a philosophical concept from text"},
+          {"name": "Ancient Texts", "difficulty": "Expert", "challenge": "Decipher Middle English passages"},
+          {"name": "Poetic Forms", "difficulty": "Expert", "challenge": "Identify and analyze complex poetic structures"},
+          {"name": "Legal Drafting", "difficulty": "Expert", "challenge": "Critique legal document wording"},
+          {"name": "Technical Writing", "difficulty": "Expert", "challenge": "Rewrite complex instructions clearly"},
+          {"name": "Literary Theory", "difficulty": "Expert", "challenge": "Apply critical lenses to texts"},
+          {"name": "Manuscript Analysis", "difficulty": "Expert", "challenge": "Decipher handwritten historical documents"}
+        ],
+        "Wizard": [
+          {"name": "Ultimate Speed Read", "difficulty": "Master", "challenge": "Read 2000 words with 90% comprehension in 6 minutes"},
+          {"name": "Ancient Texts", "difficulty": "Master", "challenge": "Decipher and read Middle English"},
+          {"name": "Simultaneous Read", "difficulty": "Master", "challenge": "Read two columns simultaneously"},
+          {"name": "Textual Reconstruction", "difficulty": "Master", "challenge": "Restore meaning to corrupted texts"},
+          {"name": "Linguistic Archeology", "difficulty": "Master", "challenge": "Trace word evolution through historical texts"}
+        ]
+      }
+    },
+    {
+      "name": "Pronunciation",
+      "levels": {
+        "Rookie": [
+          {"name": "Basic Sounds", "difficulty": "Easy", "challenge": "Correctly pronounce 20 basic phonemes"},
+          {"name": "Minimal Pairs", "difficulty": "Easy", "challenge": "Distinguish 15 similar sounding word pairs"},
+          {"name": "Word Stress", "difficulty": "Easy", "challenge": "Correctly stress 10 two-syllable words"},
+          {"name": "Slow Motion", "difficulty": "Easy", "challenge": "Clearly pronounce 15 words at half speed"},
+          {"name": "Tongue Position", "difficulty": "Easy", "challenge": "Demonstrate proper mouth formation for 10 sounds"},
+          {"name": "Vowel Sounds", "difficulty": "Easy", "challenge": "Pronounce 10 English vowel sounds distinctly"},
+          {"name": "Consonant Clusters", "difficulty": "Easy", "challenge": "Articulate 10 difficult consonant combinations"},
+          {"name": "Common Phrases", "difficulty": "Easy", "challenge": "Pronounce 10 everyday expressions naturally"},
+          {"name": "Number Pronunciation", "difficulty": "Easy", "challenge": "Say numbers 1-20 clearly"},
+          {"name": "Alphabet Clarity", "difficulty": "Easy", "challenge": "Pronounce each letter of the alphabet distinctly"}
+        ],
+        "Racer": [
+          {"name": "Linking Sounds", "difficulty": "Medium", "challenge": "Fluently connect 10 word phrases"},
+          {"name": "Intonation", "difficulty": "Medium", "challenge": "Apply proper rising/falling tones in 8 questions"},
+          {"name": "Homophone Hunt", "difficulty": "Medium", "challenge": "Pronounce 15 homophone pairs distinctly"},
+          {"name": "Rhythm Master", "difficulty": "Medium", "challenge": "Maintain sentence rhythm for 10 complex sentences"},
+          {"name": "Reduction Rules", "difficulty": "Medium", "challenge": "Correctly reduce 10 common contractions"},
+          {"name": "Common Mispronunciations", "difficulty": "Medium", "challenge": "Correct 15 frequently mispronounced words"},
+          {"name": "Tongue Twisters", "difficulty": "Medium", "challenge": "Articulate 5 beginner tongue twisters clearly"},
+          {"name": "Place Names", "difficulty": "Medium", "challenge": "Pronounce 10 difficult geographical names"},
+          {"name": "Brand Names", "difficulty": "Medium", "challenge": "Say 15 international brand names correctly"},
+          {"name": "Foreign Loanwords", "difficulty": "Medium", "challenge": "Pronounce 10 words borrowed from other languages"},
+          {"name": "Poetic Meter", "difficulty": "Medium", "challenge": "Read 5 lines with perfect iambic pentameter"},
+          {"name": "Question Intonation", "difficulty": "Medium", "challenge": "Form 10 different question types with proper tone"},
+          {"name": "Emotional Tone", "difficulty": "Medium", "challenge": "Convey 5 different emotions through pronunciation"},
+          {"name": "Speed Variation", "difficulty": "Medium", "challenge": "Read the same passage at 3 different speeds"},
+          {"name": "Dialect Awareness", "difficulty": "Medium", "challenge": "Identify 5 regional pronunciation differences"}
+        ],
+        "Master": [
+          {"name": "Twister Trial", "difficulty": "Hard", "challenge": "Recite 5 complex tongue twisters flawlessly"},
+          {"name": "Accent Switch", "difficulty": "Hard", "challenge": "Read a paragraph in 3 different accents"},
+          {"name": "Poetry Performance", "difficulty": "Hard", "challenge": "Perform a poem with perfect meter and pronunciation"},
+          {"name": "News Anchor", "difficulty": "Hard", "challenge": "Read a news report with broadcast-standard pronunciation"},
+          {"name": "Dialect Challenge", "difficulty": "Hard", "challenge": "Pronounce 10 words in British and American English"},
+          {"name": "Shakespearean Pronunciation", "difficulty": "Hard", "challenge": "Recite lines using Original Pronunciation"},
+          {"name": "Singing Pronunciation", "difficulty": "Hard", "challenge": "Sing a song with perfect diction"},
+          {"name": "Technical Terms", "difficulty": "Hard", "challenge": "Pronounce 15 complex scientific terms"},
+          {"name": "Medical Terminology", "difficulty": "Hard", "challenge": "Articulate 15 medical terms correctly"},
+          {"name": "Legal Terminology", "difficulty": "Hard", "challenge": "Pronounce 15 legal terms properly"},
+          {"name": "Historical Terms", "difficulty": "Hard", "challenge": "Say 10 archaic words correctly"},
+          {"name": "Literary Characters", "difficulty": "Hard", "challenge": "Pronounce 15 names from world literature"},
+          {"name": "Mythological Names", "difficulty": "Hard", "challenge": "Articulate 10 names from Greek/Roman mythology"},
+          {"name": "Philosophical Terms", "difficulty": "Hard", "challenge": "Pronounce 10 complex philosophical concepts"},
+          {"name": "Linguistic Terms", "difficulty": "Hard", "challenge": "Say 15 technical linguistics terms"},
+          {"name": "Musical Terms", "difficulty": "Hard", "challenge": "Pronounce 15 Italian musical terms"},
+          {"name": "Culinary Terms", "difficulty": "Hard", "challenge": "Articulate 10 French cooking terms"},
+          {"name": "Artistic Movements", "difficulty": "Hard", "challenge": "Pronounce 10 art history period names"},
+          {"name": "Political Terms", "difficulty": "Hard", "challenge": "Say 10 international political terms"},
+          {"name": "Religious Terms", "difficulty": "Hard", "challenge": "Pronounce 10 terms from world religions"},
+          {"name": "Scientific Units", "difficulty": "Hard", "challenge": "Articulate 10 measurement unit names"},
+          {"name": "Chemical Names", "difficulty": "Hard", "challenge": "Pronounce 10 complex chemical compound names"},
+          {"name": "Mathematical Terms", "difficulty": "Hard", "challenge": "Say 10 advanced mathematics terms"},
+          {"name": "Astronomical Names", "difficulty": "Hard", "challenge": "Pronounce 10 celestial bodies correctly"},
+          {"name": "Biological Terms", "difficulty": "Hard", "challenge": "Articulate 10 Latin biological names"}
+        ],
+        "Prodigy": [
+          {"name": "Polyglot", "difficulty": "Expert", "challenge": "Pronounce 10 loanwords from 5 different languages"},
+          {"name": "Shakespearean", "difficulty": "Expert", "challenge": "Perform a soliloquy with original pronunciation"},
+          {"name": "Medical Terms", "difficulty": "Expert", "challenge": "Correctly pronounce 15 complex medical terms"},
+          {"name": "Linguistic Gymnastics", "difficulty": "Expert", "challenge": "Pronounce 10 words with silent letters and irregularities"},
+          {"name": "Ancient Languages", "difficulty": "Expert", "challenge": "Pronounce 10 words from Old/Middle English"},
+          {"name": "Poetic Forms", "difficulty": "Expert", "challenge": "Recite complex poetic forms with proper pronunciation"},
+          {"name": "Diacritical Mastery", "difficulty": "Expert", "challenge": "Pronounce words with rare diacritical marks"},
+          {"name": "Homographic Homophones", "difficulty": "Expert", "challenge": "Pronounce words spelled alike but sounding different"},
+          {"name": "International Names", "difficulty": "Expert", "challenge": "Pronounce names from 10 different languages"},
+          {"name": "Ultimate Tongue Twisters", "difficulty": "Expert", "challenge": "Master 5 of the most difficult tongue twisters"}
+        ],
+        "Wizard": [
+          {"name": "Ultimate Articulation", "difficulty": "Master", "challenge": "Pronounce the 10 hardest English words perfectly"},
+          {"name": "Simultaneous Interpretation", "difficulty": "Master", "challenge": "Read aloud while maintaining perfect pronunciation"},
+          {"name": "Ancient Pronunciation", "difficulty": "Master", "challenge": "Recite text in reconstructed Old English pronunciation"},
+          {"name": "Voice Acting", "difficulty": "Master", "challenge": "Perform a dramatic reading with varied character voices"},
+          {"name": "Phonetic Precision", "difficulty": "Master", "challenge": "Produce exact phonetic transcriptions of spoken words"}
+        ]
+      }
+    },
+    {
+      "name": "Grammar",
+      "levels": {
+        "Rookie": [
+          {"name": "Grammar Lightning", "difficulty": "Easy", "challenge": "Fix 20 sentences without mistakes"},
+          {"name": "Verb Victory", "difficulty": "Easy", "challenge": "Conjugate 15 verbs correctly"},
+          {"name": "Article Accuracy", "difficulty": "Easy", "challenge": "Choose correct articles for 20 nouns"},
+          {"name": "Plural Power", "difficulty": "Easy", "challenge": "Form plurals for 25 nouns"},
+          {"name": "Pronoun Precision", "difficulty": "Easy", "challenge": "Replace 15 nouns with proper pronouns"},
+          {"name": "Preposition Practice", "difficulty": "Easy", "challenge": "Fill in 15 missing prepositions"},
+          {"name": "Adjective Order", "difficulty": "Easy", "challenge": "Arrange 10 sets of adjectives correctly"},
+          {"name": "Simple Sentences", "difficulty": "Easy", "challenge": "Construct 10 grammatically perfect simple sentences"},
+          {"name": "Question Forms", "difficulty": "Easy", "challenge": "Convert 10 statements to questions"},
+          {"name": "Negative Forms", "difficulty": "Easy", "challenge": "Make 10 sentences negative"}
+        ],
+        "Racer": [
+          {"name": "Tense Test", "difficulty": "Medium", "challenge": "Convert 15 sentences to different tenses"},
+          {"name": "Sentence Surgery", "difficulty": "Medium", "challenge": "Repair 10 grammatically incorrect sentences"},
+          {"name": "Modifier Match", "difficulty": "Medium", "challenge": "Correct 10 misplaced modifiers"},
+          {"name": "Parallelism", "difficulty": "Medium", "challenge": "Fix 8 non-parallel constructions"},
+          {"name": "Agreement Ace", "difficulty": "Medium", "challenge": "Correct 15 subject-verb agreement errors"},
+          {"name": "Clause Construction", "difficulty": "Medium", "challenge": "Combine 10 simple sentences into complex ones"},
+          {"name": "Phrase Function", "difficulty": "Medium", "challenge": "Identify grammatical function of 15 phrases"},
+          {"name": "Voice Conversion", "difficulty": "Medium", "challenge": "Change 10 sentences between active/passive voice"},
+          {"name": "Ellipsis Usage", "difficulty": "Medium", "challenge": "Complete 10 sentences with proper ellipsis"},
+          {"name": "Conjunction Junction", "difficulty": "Medium", "challenge": "Join 15 sentence pairs with appropriate conjunctions"},
+          {"name": "Comparative Forms", "difficulty": "Medium", "challenge": "Create comparative/superlative forms of 20 adjectives"},
+          {"name": "Quantifier Quiz", "difficulty": "Medium", "challenge": "Select proper quantifiers for 15 nouns"},
+          {"name": "Gerund vs Infinitive", "difficulty": "Medium", "challenge": "Choose correct form in 15 sentences"},
+          {"name": "Article Advanced", "difficulty": "Medium", "challenge": "Use definite/indefinite articles correctly in 20 cases"},
+          {"name": "Punctuation Power", "difficulty": "Medium", "challenge": "Properly punctuate 15 complex sentences"}
+        ],
+        "Master": [
+          {"name": "Conditional Master", "difficulty": "Hard", "challenge": "Transform 10 sentences using different conditionals"},
+          {"name": "Subjunctive Star", "difficulty": "Hard", "challenge": "Correctly use subjunctive in 15 sentences"},
+          {"name": "Clause Commander", "difficulty": "Hard", "challenge": "Combine 10 simple sentences into complex ones"},
+          {"name": "Ellipsis Expert", "difficulty": "Hard", "challenge": "Complete 10 sentences with proper ellipsis"},
+          {"name": "Dangling Detective", "difficulty": "Hard", "challenge": "Identify and fix 10 dangling modifiers"},
+          {"name": "Syntax Strategist", "difficulty": "Hard", "challenge": "Diagram 5 complex sentences"},
+          {"name": "Stylistic Perfection", "difficulty": "Hard", "challenge": "Apply advanced style guidelines to 10 passages"},
+          {"name": "Ambiguity Analyst", "difficulty": "Hard", "challenge": "Rewrite 10 ambiguous sentences clearly"},
+          {"name": "Register Recognition", "difficulty": "Hard", "challenge": "Convert 10 sentences between formal/informal registers"},
+          {"name": "Historical Grammar", "difficulty": "Hard", "challenge": "Use archaic grammatical constructions correctly"},
+          {"name": "Literary Devices", "difficulty": "Hard", "challenge": "Identify 15 grammatical devices in literature"},
+          {"name": "Dialect Analysis", "difficulty": "Hard", "challenge": "Compare grammatical features of 3 English dialects"},
+          {"name": "Error Explanation", "difficulty": "Hard", "challenge": "Explain why 10 sentences are grammatically incorrect"},
+          {"name": "Sentence Variety", "difficulty": "Hard", "challenge": "Rewrite a paragraph using 10 different sentence structures"},
+          {"name": "Concise Writing", "difficulty": "Hard", "challenge": "Reduce 10 wordy sentences to their most concise form"},
+          {"name": "Emphatic Structures", "difficulty": "Hard", "challenge": "Rewrite 10 sentences using different emphasis techniques"},
+          {"name": "Cohesion Creation", "difficulty": "Hard", "challenge": "Improve cohesion in a 200-word passage"},
+          {"name": "Coherence Analysis", "difficulty": "Hard", "challenge": "Evaluate and improve coherence in 3 paragraphs"},
+          {"name": "Information Structure", "difficulty": "Hard", "challenge": "Reorder 10 sentences for optimal information flow"},
+          {"name": "Given-New Contract", "difficulty": "Hard", "challenge": "Restructure 10 sentences to follow given-new principle"},
+          {"name": "Theme-Rheme", "difficulty": "Hard", "challenge": "Analyze theme-rheme progression in 5 paragraphs"},
+          {"name": "Grammatical Metaphor", "difficulty": "Hard", "challenge": "Identify nominalizations in 10 sentences"},
+          {"name": "Textual Reference", "difficulty": "Hard", "challenge": "Analyze reference chains in a 300-word text"},
+          {"name": "Conjunction Analysis", "difficulty": "Hard", "challenge": "Classify all conjunctions in a complex text"},
+          {"name": "Genre Grammar", "difficulty": "Hard", "challenge": "Compare grammatical features of 3 different genres"}
+        ],
+        "Prodigy": [
+          {"name": "Ambiguity Analyst", "difficulty": "Expert", "challenge": "Rewrite 10 ambiguous sentences clearly"},
+          {"name": "Syntax Strategist", "difficulty": "Expert", "challenge": "Diagram 5 complex sentences"},
+          {"name": "Historical Grammar", "difficulty": "Expert", "challenge": "Use archaic grammatical constructions correctly"},
+          {"name": "Stylistic Perfection", "difficulty": "Expert", "challenge": "Apply advanced style guidelines to 10 passages"},
+          {"name": "Literary Analysis", "difficulty": "Expert", "challenge": "Analyze a poem's grammatical structure in 500 words"},
+          {"name": "Research Abstract", "difficulty": "Expert", "challenge": "Summarize a grammar research paper in 250 words"},
+          {"name": "Pedagogical Grammar", "difficulty": "Expert", "challenge": "Design a lesson explaining a complex grammar point"},
+          {"name": "Contrastive Analysis", "difficulty": "Expert", "challenge": "Compare English grammar with another language"},
+          {"name": "Corpus Analysis", "difficulty": "Expert", "challenge": "Identify grammatical patterns in authentic texts"},
+          {"name": "Grammatical Evolution", "difficulty": "Expert", "challenge": "Trace changes in a grammatical feature over time"}
+        ],
+        "Wizard": [
+          {"name": "Grammar Guru", "difficulty": "Master", "challenge": "Explain 5 obscure grammar rules with examples"},
+          {"name": "Linguistic Logic", "difficulty": "Master", "challenge": "Defend a controversial grammar rule"},
+          {"name": "Ultimate Proofread", "difficulty": "Master", "challenge": "Find all errors in a 500-word professional document"},
+          {"name": "Generative Grammar", "difficulty": "Master", "challenge": "Apply transformational grammar rules to sentences"},
+          {"name": "Cognitive Grammar", "difficulty": "Master", "challenge": "Analyze sentences using cognitive grammar framework"}
+        ]
+      }
+    },
+    {
+      "name": "Writing",
+      "levels": {
+        "Rookie": [
+          {"name": "Sentence Builder", "difficulty": "Easy", "challenge": "Write 10 complete sentences from prompts"},
+          {"name": "Punctuation Practice", "difficulty": "Easy", "challenge": "Properly punctuate 15 sentences"},
+          {"name": "Capitalization", "difficulty": "Easy", "challenge": "Correct capitalization in 20 sentences"},
+          {"name": "Simple Stories", "difficulty": "Easy", "challenge": "Write a 5-sentence story from pictures"},
+          {"name": "Description Drill", "difficulty": "Easy", "challenge": "Describe 5 objects in complete sentences"},
+          {"name": "List Making", "difficulty": "Easy", "challenge": "Create 3 organized lists on different topics"},
+          {"name": "Greeting Cards", "difficulty": "Easy", "challenge": "Write 5 short greeting card messages"},
+          {"name": "Text Messages", "difficulty": "Easy", "challenge": "Compose 10 appropriate text messages"},
+          {"name": "Social Media Posts", "difficulty": "Easy", "challenge": "Write 5 brief social media updates"},
+          {"name": "Email Basics", "difficulty": "Easy", "challenge": "Compose 3 simple emails"}
+        ],
+        "Racer": [
+          {"name": "Paragraph Race", "difficulty": "Medium", "challenge": "Write a coherent paragraph in 5 minutes"},
+          {"name": "Transition Training", "difficulty": "Medium", "challenge": "Connect 10 ideas with proper transitions"},
+          {"name": "Prompt Response", "difficulty": "Medium", "challenge": "Write 200 words on a given topic in 10 minutes"},
+          {"name": "Editing Exercise", "difficulty": "Medium", "challenge": "Improve 5 poorly written sentences"},
+          {"name": "Persuasive Start", "difficulty": "Medium", "challenge": "Write 3 convincing opening paragraphs"},
+          {"name": "Audience Adaptation", "difficulty": "Medium", "challenge": "Rewrite the same information for 3 different audiences"},
+          {"name": "Tone Adjustment", "difficulty": "Medium", "challenge": "Rewrite 5 sentences in different tones"},
+          {"name": "Concise Writing", "difficulty": "Medium", "challenge": "Reduce 10 wordy sentences by 50%"},
+          {"name": "Active Voice", "difficulty": "Medium", "challenge": "Convert 15 passive sentences to active voice"},
+          {"name": "Sentence Variety", "difficulty": "Medium", "challenge": "Rewrite a paragraph using 5 different sentence structures"},
+          {"name": "Precise Vocabulary", "difficulty": "Medium", "challenge": "Replace vague words in 10 sentences"},
+          {"name": "Cohesion Practice", "difficulty": "Medium", "challenge": "Improve flow in a 150-word passage"},
+          {"name": "Business Email", "difficulty": "Medium", "challenge": "Compose 3 professional emails"},
+          {"name": "Product Description", "difficulty": "Medium", "challenge": "Write compelling descriptions for 5 products"},
+          {"name": "Instruction Writing", "difficulty": "Medium", "challenge": "Write clear instructions for 3 simple tasks"}
+        ],
+        "Master": [
+          {"name": "Essay Sprint", "difficulty": "Hard", "challenge": "Write a 500-word essay in 30 minutes"},
+          {"name": "Style Shift", "difficulty": "Hard", "challenge": "Rewrite a passage in 3 different styles"},
+          {"name": "Technical Writing", "difficulty": "Hard", "challenge": "Explain a complex concept simply in 300 words"},
+          {"name": "Creative Constraint", "difficulty": "Hard", "challenge": "Write a story without using certain letters"},
+          {"name": "Peer Review", "difficulty": "Hard", "challenge": "Provide constructive feedback on 3 student essays"},
+          {"name": "Research Summary", "difficulty": "Hard", "challenge": "Summarize a research paper in 200 words"},
+          {"name": "Argument Construction", "difficulty": "Hard", "challenge": "Build a logical argument in 400 words"},
+          {"name": "Literary Analysis", "difficulty": "Hard", "challenge": "Analyze a poem's structure in 500 words"},
+          {"name": "Screenwriting", "difficulty": "Hard", "challenge": "Write a 2-page screenplay scene"},
+          {"name": "Legal Drafting", "difficulty": "Hard", "challenge": "Draft a precise legal clause"},
+          {"name": "Grant Proposal", "difficulty": "Hard", "challenge": "Write a 300-word project funding request"},
+          {"name": "Marketing Copy", "difficulty": "Hard", "challenge": "Create compelling ad copy for 3 products"},
+          {"name": "Press Release", "difficulty": "Hard", "challenge": "Write a professional press release"},
+          {"name": "Executive Summary", "difficulty": "Hard", "challenge": "Summarize a complex report in 250 words"},
+          {"name": "Biographical Sketch", "difficulty": "Hard", "challenge": "Write a 300-word professional biography"},
+          {"name": "Travel Writing", "difficulty": "Hard", "challenge": "Describe a location vividly in 200 words"},
+          {"name": "Food Criticism", "difficulty": "Hard", "challenge": "Write a 150-word restaurant review"},
+          {"name": "Product Manual", "difficulty": "Hard", "challenge": "Write instructions for using a common device"},
+          {"name": "Policy Brief", "difficulty": "Hard", "challenge": "Explain a policy issue in 300 words"},
+          {"name": "Historical Narrative", "difficulty": "Hard", "challenge": "Describe an event from multiple perspectives"},
+          {"name": "Scientific Explanation", "difficulty": "Hard", "challenge": "Explain a complex concept to lay readers"},
+          {"name": "Technical Specification", "difficulty": "Hard", "challenge": "Write specs for a simple product"},
+          {"name": "User Guide", "difficulty": "Hard", "challenge": "Create a how-to guide for beginners"},
+          {"name": "Business Proposal", "difficulty": "Hard", "challenge": "Write a 400-word project proposal"},
+          {"name": "Literary Critique", "difficulty": "Hard", "challenge": "Evaluate a short story's strengths/weaknesses"}
+        ],
+        "Prodigy": [
+          {"name": "Literary Analysis", "difficulty": "Expert", "challenge": "Analyze a poem's structure in 500 words"},
+          {"name": "Research Abstract", "difficulty": "Expert", "challenge": "Summarize a research paper in 250 words"},
+          {"name": "Screenwriting", "difficulty": "Expert", "challenge": "Write a 2-page screenplay scene"},
+          {"name": "Legal Drafting", "difficulty": "Expert", "challenge": "Draft a precise legal clause"},
+          {"name": "Novel Chapter", "difficulty": "Expert", "challenge": "Write a publishable-quality book chapter"},
+          {"name": "Poetry Collection", "difficulty": "Expert", "challenge": "Compose 3 thematically connected poems"},
+          {"name": "Thesis Defense", "difficulty": "Expert", "challenge": "Write and defend an original academic argument"},
+          {"name": "Translation Challenge", "difficulty": "Expert", "challenge": "Translate a literary passage while preserving style"},
+          {"name": "Genre Blending", "difficulty": "Expert", "challenge": "Write a piece combining 2 different genres"},
+          {"name": "Experimental Writing", "difficulty": "Expert", "challenge": "Create a piece using unconventional structure"}
+        ],
+        "Wizard": [
+          {"name": "Novel Chapter", "difficulty": "Master", "challenge": "Write a publishable-quality book chapter"},
+          {"name": "Poetry Collection", "difficulty": "Master", "challenge": "Compose 3 thematically connected poems"},
+          {"name": "Thesis Defense", "difficulty": "Master", "challenge": "Write and defend an original academic argument"},
+          {"name": "Award Speech", "difficulty": "Master", "challenge": "Write an inspiring acceptance speech"},
+          {"name": "Ultimate Challenge", "difficulty": "Master", "challenge": "Write in 5 different styles simultaneously"}
+        ]
+      }
+    },
+    {
+      "name": "Listening",
+      "levels": {
+        "Rookie": [
+          {"name": "Word Recognition", "difficulty": "Easy", "challenge": "Identify 20 spoken words from audio"},
+          {"name": "Simple Commands", "difficulty": "Easy", "challenge": "Follow 10 basic spoken instructions"},
+          {"name": "Number Challenge", "difficulty": "Easy", "challenge": "Write down 15 spoken numbers"},
+          {"name": "Sound Matching", "difficulty": "Easy", "challenge": "Match 10 sounds to their sources"},
+          {"name": "Basic Dialogues", "difficulty": "Easy", "challenge": "Answer 5 questions about a short conversation"},
+          {"name": "Vocabulary Check", "difficulty": "Easy", "challenge": "Identify 15 spoken vocabulary words"},
+          {"name": "Category Sorting", "difficulty": "Easy", "challenge": "Categorize 20 spoken words"},
+          {"name": "Rhyme Recognition", "difficulty": "Easy", "challenge": "Identify 10 rhyming word pairs"},
+          {"name": "Sentence Repetition", "difficulty": "Easy", "challenge": "Repeat 10 simple sentences accurately"},
+          {"name": "True/False", "difficulty": "Easy", "challenge": "Determine truth of 10 spoken statements"}
+        ],
+        "Racer": [
+          {"name": "Accent Adaptation", "difficulty": "Medium", "challenge": "Understand 3 speakers with different accents"},
+          {"name": "News Headlines", "difficulty": "Medium", "challenge": "Summarize 5 news briefs from audio"},
+          {"name": "Detail Detective", "difficulty": "Medium", "challenge": "Identify 10 specific details from a story"},
+          {"name": "Phone Message", "difficulty": "Medium", "challenge": "Accurately transcribe a voicemail"},
+          {"name": "Lecture Notes", "difficulty": "Medium", "challenge": "Take notes from a 5-minute academic talk"},
+          {"name": "Interview Skills", "difficulty": "Medium", "challenge": "Extract key information from a job interview"},
+          {"name": "Direction Following", "difficulty": "Medium", "challenge": "Follow complex spoken directions"},
+          {"name": "Emotion Detection", "difficulty": "Medium", "challenge": "Identify emotions in 10 spoken sentences"},
+          {"name": "Context Clues", "difficulty": "Medium", "challenge": "Guess meanings of 10 unfamiliar spoken words"},
+          {"name": "Summarization", "difficulty": "Medium", "challenge": "Summarize a 3-minute spoken passage"},
+          {"name": "Prediction", "difficulty": "Medium", "challenge": "Predict outcomes from 5 spoken scenarios"},
+          {"name": "Inference", "difficulty": "Medium", "challenge": "Make 5 inferences from spoken dialogue"},
+          {"name": "Speaker's Purpose", "difficulty": "Medium", "challenge": "Identify intent in 5 spoken passages"},
+          {"name": "Cultural References", "difficulty": "Medium", "challenge": "Recognize 5 cultural references in speech"},
+          {"name": "Idiom Comprehension", "difficulty": "Medium", "challenge": "Interpret 10 spoken idioms"}
+        ],
+        "Master": [
+          {"name": "Speed Listening", "difficulty": "Hard", "challenge": "Comprehend 2x speed audio of a 500-word passage"},
+          {"name": "Legal Eavesdrop", "difficulty": "Hard", "challenge": "Understand and summarize a legal discussion"},
+          {"name": "Medical Round", "difficulty": "Hard", "challenge": "Follow a medical case presentation"},
+          {"name": "Technical Seminar", "difficulty": "Hard", "challenge": "Extract key points from engineering talk"},
+          {"name": "Multi-Speaker", "difficulty": "Hard", "challenge": "Follow a conversation with 4 participants"},
+          {"name": "Noisy Environment", "difficulty": "Hard", "challenge": "Transcribe speech with background noise"},
+          {"name": "Poetry Interpretation", "difficulty": "Hard", "challenge": "Analyze a recited poem's meaning"},
+          {"name": "Dialect Decoding", "difficulty": "Hard", "challenge": "Understand heavy regional accents"},
+          {"name": "Historical Speech", "difficulty": "Hard", "challenge": "Analyze rhetorical devices in a famous speech"},
+          {"name": "Debate Analysis", "difficulty": "Hard", "challenge": "Identify arguments in a formal debate"},
+          {"name": "Lecture Analysis", "difficulty": "Hard", "challenge": "Detect organizational structure in a lecture"},
+          {"name": "Sarcasm Detection", "difficulty": "Hard", "challenge": "Identify sarcasm in 10 spoken statements"},
+          {"name": "Implication Recognition", "difficulty": "Hard", "challenge": "Detect implied meanings in dialogue"},
+          {"name": "Interruption Handling", "difficulty": "Hard", "challenge": "Follow conversation despite interruptions"},
+          {"name": "Technical Jargon", "difficulty": "Hard", "challenge": "Understand specialized terminology in context"},
+          {"name": "Cross-Cultural", "difficulty": "Hard", "challenge": "Navigate cultural references in international speech"},
+          {"name": "Simultaneous Content", "difficulty": "Hard", "challenge": "Follow two simultaneous news broadcasts"},
+          {"name": "Audio Editing", "difficulty": "Hard", "challenge": "Detect edits/splices in recorded audio"},
+          {"name": "Emotional Nuance", "difficulty": "Hard", "challenge": "Detect subtle emotional tones in speech"},
+          {"name": "Memory Challenge", "difficulty": "Hard", "challenge": "Recall details from a 10-minute monologue"},
+          {"name": "Accent Imitation", "difficulty": "Hard", "challenge": "Repeat phrases in original accent after hearing"},
+          {"name": "Speech Rate Analysis", "difficulty": "Hard", "challenge": "Calculate words-per-minute from samples"},
+          {"name": "Voice Identification", "difficulty": "Hard", "challenge": "Recognize speakers by voice characteristics"},
+          {"name": "Audio Forensics", "difficulty": "Hard", "challenge": "Detect authenticity in audio recordings"},
+          {"name": "Phonetic Transcription", "difficulty": "Hard", "challenge": "Write phonetic transcriptions of speech"}
+        ],
+        "Prodigy": [
+          {"name": "Simultaneous Interpretation", "difficulty": "Expert", "challenge": "Shadow a live speaker with 3-second delay"},
+          {"name": "Poetry Recitation", "difficulty": "Expert", "challenge": "Transcribe a recited poem perfectly"},
+          {"name": "Court Reporter", "difficulty": "Expert", "challenge": "Create verbatim transcript of legal testimony"},
+          {"name": "Dialect Decoder", "difficulty": "Expert", "challenge": "Understand heavy regional dialects"},
+          {"name": "Multilingual", "difficulty": "Expert", "challenge": "Identify language switches in multilingual audio"},
+          {"name": "Audio Restoration", "difficulty": "Expert", "challenge": "Reconstruct meaning from poor quality recordings"},
+          {"name": "Linguistic Analysis", "difficulty": "Expert", "challenge": "Identify sociolinguistic features in speech"},
+          {"name": "Psychological Profiling", "difficulty": "Expert", "challenge": "Infer speaker traits from voice samples"},
+          {"name": "Forensic Listening", "difficulty": "Expert", "challenge": "Analyze audio for subtle verbal cues"},
+          {"name": "Ultimate Ear", "difficulty": "Expert", "challenge": "Transcribe a technical lecture at 1.5x speed"}
+        ],
+        "Wizard": [
+          {"name": "Ultimate Ear", "difficulty": "Master", "challenge": "Transcribe a technical lecture at 1.5x speed"},
+          {"name": "Polyglot Puzzle", "difficulty": "Master", "challenge": "Identify language switches in multilingual audio"},
+          {"name": "Forensic Listener", "difficulty": "Master", "challenge": "Analyze audio for subtle verbal cues"},
+          {"name": "Voice Acting", "difficulty": "Master", "challenge": "Imitate 5 distinct character voices perfectly"},
+          {"name": "Audio Archeology", "difficulty": "Master", "challenge": "Decipher meaning from extremely degraded recordings"}
+        ]
+      }
+    },
+    {
+      "name": "Vocabulary",
+      "levels": {
+        "Rookie": [
+          {"name": "Vocabulary Duel", "difficulty": "Easy", "challenge": "Match definitions faster than your opponent"},
+          {"name": "Word Explorer", "difficulty": "Easy", "challenge": "Learn 15 new basic words"},
+          {"name": "Picture Match", "difficulty": "Easy", "challenge": "Match 20 words to corresponding images"},
+          {"name": "Category Sort", "difficulty": "Easy", "challenge": "Organize 25 words into categories"},
+          {"name": "Simple Synonyms", "difficulty": "Easy", "challenge": "Find synonyms for 10 common words"},
+          {"name": "Opposite Day", "difficulty": "Easy", "challenge": "Find antonyms for 10 basic words"},
+          {"name": "Word Association", "difficulty": "Easy", "challenge": "Generate 15 word associations"},
+          {"name": "Basic Context", "difficulty": "Easy", "challenge": "Guess meanings of 10 words from simple context"},
+          {"name": "Everyday Objects", "difficulty": "Easy", "challenge": "Name 20 common household items"},
+          {"name": "Action Words", "difficulty": "Easy", "challenge": "List 15 verbs for common activities"}
+        ],
+        "Racer": [
+          {"name": "Context Clues", "difficulty": "Medium", "challenge": "Determine meaning of 15 words from context"},
+          {"name": "Word Families", "difficulty": "Medium", "challenge": "Generate 5 related forms for 10 root words"},
+          {"name": "Precision Practice", "difficulty": "Medium", "challenge": "Choose exact synonyms for 15 nuanced words"},
+          {"name": "Etymology", "difficulty": "Medium", "challenge": "Identify origins of 10 words"},
+          {"name": "Academic Words", "difficulty": "Medium", "challenge": "Master 20 common academic terms"},
+          {"name": "Technical Terms", "difficulty": "Medium", "challenge": "Learn 15 field-specific vocabulary items"},
+          {"name": "Multiple Meanings", "difficulty": "Medium", "challenge": "Identify 3 meanings for 10 polysemous words"},
+          {"name": "Collocation Practice", "difficulty": "Medium", "challenge": "Match 20 words with their common partners"},
+          {"name": "Register Recognition", "difficulty": "Medium", "challenge": "Classify 20 words by formality level"},
+          {"name": "Connotation", "difficulty": "Medium", "challenge": "Distinguish positive/negative connotations for 15 words"},
+          {"name": "Word Formation", "difficulty": "Medium", "challenge": "Create new words using 5 prefixes/suffixes"},
+          {"name": "Idiom Interpretation", "difficulty": "Medium", "challenge": "Explain meanings of 10 common idioms"},
+          {"name": "Phrasal Verbs", "difficulty": "Medium", "challenge": "Use 15 phrasal verbs in context"},
+          {"name": "Loanwords", "difficulty": "Medium", "challenge": "Identify 10 words borrowed from other languages"},
+          {"name": "Neologisms", "difficulty": "Medium", "challenge": "Define 5 newly coined words"}
+        ],
+        "Master": [
+          {"name": "SAT/ACT Prep", "difficulty": "Hard", "challenge": "Define 25 advanced test words"},
+          {"name": "Shades of Meaning", "difficulty": "Hard", "challenge": "Order 10 similar words by intensity"},
+          {"name": "Word Formation", "difficulty": "Hard", "challenge": "Create new words using 5 prefixes/suffixes"},
+          {"name": "Register Recognition", "difficulty": "Hard", "challenge": "Classify 20 words by formality level"},
+          {"name": "Domain Expert", "difficulty": "Hard", "challenge": "Learn 15 technical terms from a specific field"},
+          {"name": "Literary Terms", "difficulty": "Hard", "challenge": "Define 20 advanced literary vocabulary"},
+          {"name": "Historical Terms", "difficulty": "Hard", "challenge": "Master 15 archaic words and their modern equivalents"},
+          {"name": "Cross-Disciplinary", "difficulty": "Hard", "challenge": "Identify 10 words with different meanings across fields"},
+          {"name": "Euphemisms", "difficulty": "Hard", "challenge": "Decode 15 sensitive topics' euphemistic language"},
+          {"name": "Jargon Decoder", "difficulty": "Hard", "challenge": "Translate 20 professional jargon terms to plain language"},
+          {"name": "Semantic Fields", "difficulty": "Hard", "challenge": "Map 25 words into semantic networks"},
+          {"name": "Lexical Gaps", "difficulty": "Hard", "challenge": "Identify 10 concepts lacking single-word terms in English"},
+          {"name": "Untranslatables", "difficulty": "Hard", "challenge": "Explain 10 words from other languages without direct English equivalents"},
+          {"name": "Word Histories", "difficulty": "Hard", "challenge": "Trace semantic shifts of 10 words through time"},
+          {"name": "Contronyms", "difficulty": "Hard", "challenge": "Demonstrate 10 words with contradictory meanings"},
+          {"name": "Nonce Words", "difficulty": "Hard", "challenge": "Create and define 5 plausible but nonexistent words"},
+          {"name": "Portmanteaus", "difficulty": "Hard", "challenge": "Analyze 10 blended words and their source terms"},
+          {"name": "Eponyms", "difficulty": "Hard", "challenge": "Identify origins of 10 words derived from names"},
+          {"name": "Toponyms", "difficulty": "Hard", "challenge": "Recognize 10 words derived from place names"},
+          {"name": "Archaisms", "difficulty": "Hard", "challenge": "Define 15 obsolete words and their modern counterparts"},
+          {"name": "Neologisms", "difficulty": "Hard", "challenge": "Predict which 5 new words will enter mainstream usage"},
+          {"name": "Lexical Creativity", "difficulty": "Hard", "challenge": "Invent and justify 5 new word formations"},
+          {"name": "Semantic Change", "difficulty": "Hard", "challenge": "Predict future meaning shifts for 10 words"},
+          {"name": "Cognates", "difficulty": "Hard", "challenge": "Identify 10 true and false cognates across languages"},
+          {"name": "Lexical Borrowing", "difficulty": "Hard", "challenge": "Trace 10 loanwords through borrowing history"}
+        ],
+        "Prodigy": [
+          {"name": "Literary Lexicon", "difficulty": "Expert", "challenge": "Define 10 archaic literary terms"},
+          {"name": "Neologisms", "difficulty": "Expert", "challenge": "Explain meaning of 5 newly coined words"},
+          {"name": "Cross-Linguistic", "difficulty": "Expert", "challenge": "Compare 10 words with their cognates"},
+          {"name": "Semantic Mapping", "difficulty": "Expert", "challenge": "Create semantic networks for abstract concepts"},
+          {"name": "Etymological Expert", "difficulty": "Expert", "challenge": "Trace roots of 10 complex words to their origins"},
+          {"name": "Lexical Gaps", "difficulty": "Expert", "challenge": "Identify 5 concepts lacking words in English"},
+          {"name": "Historical Semantics", "difficulty": "Expert", "challenge": "Explain how 10 words changed meaning over centuries"},
+          {"name": "Dialectal Variation", "difficulty": "Expert", "challenge": "Compare 10 words across English dialects"},
+          {"name": "Register Analysis", "difficulty": "Expert", "challenge": "Analyze vocabulary choices in formal vs informal texts"},
+          {"name": "Lexicography", "difficulty": "Expert", "challenge": "Write dictionary entries for 5 obscure words"}
+        ],
+        "Wizard": [
+          {"name": "OED Challenge", "difficulty": "Master", "challenge": "Define 5 obscure words from the Oxford English Dictionary"},
+          {"name": "Ultimate Vocabulary", "difficulty": "Master", "challenge": "Demonstrate knowledge of 10 words with 15+ letters"},
+          {"name": "Word Historian", "difficulty": "Master", "challenge": "Trace semantic shifts of 3 words through history"},
+          {"name": "Lexical Alchemy", "difficulty": "Master", "challenge": "Create and defend 3 entirely new word formations"},
+          {"name": "Omniglot", "difficulty": "Master", "challenge": "Identify roots of 5 words across 3 language families"}
+        ]
+      }
+    },
+    {
+      "name": "S.H.A.R.P",
+      "levels": {
+        "Rookie": [
+          {"name": "Synonym Match", "difficulty": "Easy", "challenge": "Match 10 word pairs with similar meanings"},
+          {"name": "Homophone Hunt", "difficulty": "Easy", "challenge": "Identify 8 words that sound alike"},
+          {"name": "Opposite Day", "difficulty": "Easy", "challenge": "Find antonyms for 10 common words"},
+          {"name": "Rhyme Time", "difficulty": "Easy", "challenge": "Generate 5 rhymes for 5 given words"},
+          {"name": "Plural Party", "difficulty": "Easy", "challenge": "Form plurals for 15 nouns"},
+          {"name": "Synonym Swap", "difficulty": "Easy", "challenge": "Replace 10 words with suitable synonyms"},
+          {"name": "Homograph Highlight", "difficulty": "Easy", "challenge": "Identify 5 words with multiple meanings"},
+          {"name": "Antonym Attack", "difficulty": "Easy", "challenge": "Provide opposites for 10 adjectives"},
+          {"name": "Rhyme Recognition", "difficulty": "Easy", "challenge": "Identify rhyming words in 10 pairs"},
+          {"name": "Plural Practice", "difficulty": "Easy", "challenge": "Form regular plurals for 20 nouns"}
+        ],
+        "Racer": [
+          {"name": "Synonym Spectrum", "difficulty": "Medium", "challenge": "Order 10 synonyms by intensity"},
+          {"name": "Homograph Hero", "difficulty": "Medium", "challenge": "Use 5 homographs in different contexts"},
+          {"name": "Antonym Adventure", "difficulty": "Medium", "challenge": "Find 3 antonyms for each of 5 words"},
+          {"name": "Rhyme Scheme", "difficulty": "Medium", "challenge": "Complete a poem with proper rhyme scheme"},
+          {"name": "Irregular Plurals", "difficulty": "Medium", "challenge": "Correctly pluralize 10 irregular nouns"},
+          {"name": "Nuanced Synonyms", "difficulty": "Medium", "challenge": "Choose perfect synonyms for 10 nuanced words"},
+          {"name": "Homonym Hijinks", "difficulty": "Medium", "challenge": "Write sentences showing different meanings of 5 homonyms"},
+          {"name": "Graded Antonyms", "difficulty": "Medium", "challenge": "Identify complementary/graded/relational antonyms"},
+          {"name": "Advanced Rhyming", "difficulty": "Medium", "challenge": "Create slant rhymes for 5 difficult words"},
+          {"name": "Foreign Plurals", "difficulty": "Medium", "challenge": "Correctly pluralize 10 loanwords"},
+          {"name": "Synonym Precision", "difficulty": "Medium", "challenge": "Select exact synonyms for 15 context-specific words"},
+          {"name": "Homophone Challenge", "difficulty": "Medium", "challenge": "Use 10 homophone pairs correctly in sentences"},
+          {"name": "Antonym Categories", "difficulty": "Medium", "challenge": "Classify 15 antonym pairs by type"},
+          {"name": "Rhyme Patterns", "difficulty": "Medium", "challenge": "Identify rhyme schemes in 5 poems"},
+          {"name": "Pluralization Rules", "difficulty": "Medium", "challenge": "Apply correct pluralization rules to 20 nouns"}
+        ],
+        "Master": [
+          {"name": "Nuanced Synonyms", "difficulty": "Hard", "challenge": "Choose perfect synonyms for 10 nuanced words"},
+          {"name": "Homonym Hijinks", "difficulty": "Hard", "challenge": "Write sentences showing different meanings of 5 homonyms"},
+          {"name": "Graded Antonyms", "difficulty": "Hard", "challenge": "Identify complementary/graded/relational antonyms"},
+          {"name": "Advanced Rhyming", "difficulty": "Hard", "challenge": "Create slant rhymes for 5 difficult words"},
+          {"name": "Foreign Plurals", "difficulty": "Hard", "challenge": "Correctly pluralize 10 loanwords"},
+          {"name": "Thesaurus Expert", "difficulty": "Hard", "challenge": "Identify subtle differences between 5 similar synonyms"},
+          {"name": "Etymological Homonyms", "difficulty": "Hard", "challenge": "Explain how 3 homonyms developed different meanings"},
+          {"name": "Auto-antonyms", "difficulty": "Hard", "challenge": "Demonstrate words that are their own opposites"},
+          {"name": "Metrical Poetry", "difficulty": "Hard", "challenge": "Compose lines with perfect meter and rhyme"},
+          {"name": "Pluralization Paradox", "difficulty": "Hard", "challenge": "Explain irregular pluralization rules"},
+          {"name": "Synonym Networks", "difficulty": "Hard", "challenge": "Map semantic relationships between 15 similar words"},
+          {"name": "Homophone Origins", "difficulty": "Hard", "challenge": "Explain historical development of 5 homophone pairs"},
+          {"name": "Antonym Spectrums", "difficulty": "Hard", "challenge": "Position 10 words on antonymic continua"},
+          {"name": "Rhyme Etymology", "difficulty": "Hard", "challenge": "Analyze how rhyming patterns reflect language history"},
+          {"name": "Pluralization History", "difficulty": "Hard", "challenge": "Trace development of 5 irregular plural forms"},
+          {"name": "Cognitive Synonyms", "difficulty": "Hard", "challenge": "Explain subtle conceptual differences between near-synonyms"},
+          {"name": "Homonym Resolution", "difficulty": "Hard", "challenge": "Develop strategies for disambiguating homonyms in context"},
+          {"name": "Antonym Asymmetry", "difficulty": "Hard", "challenge": "Analyze why some antonym pairs behave differently"},
+          {"name": "Rhyme Constraints", "difficulty": "Hard", "challenge": "Explain phonological rules governing rhyme possibilities"},
+          {"name": "Zero Plurals", "difficulty": "Hard", "challenge": "Analyze cases where plural form matches singular"},
+          {"name": "Synonym Style", "difficulty": "Hard", "challenge": "Analyze how synonym choice affects writing style"},
+          {"name": "Homonym Humor", "difficulty": "Hard", "challenge": "Create puns using 5 homonym pairs"},
+          {"name": "Antonym Acquisition", "difficulty": "Hard", "challenge": "Explain how children learn antonym relationships"},
+          {"name": "Rhyme Cognition", "difficulty": "Hard", "challenge": "Analyze psychological aspects of rhyme perception"},
+          {"name": "Plural Overregularization", "difficulty": "Hard", "challenge": "Explain why children create forms like 'foots'"}
+        ],
+        "Prodigy": [
+          {"name": "Thesaurus Expert", "difficulty": "Expert", "challenge": "Identify subtle differences between 5 similar synonyms"},
+          {"name": "Etymological Homonyms", "difficulty": "Expert", "challenge": "Explain how 3 homonyms developed different meanings"},
+          {"name": "Auto-antonyms", "difficulty": "Expert", "challenge": "Demonstrate words that are their own opposites"},
+          {"name": "Metrical Poetry", "difficulty": "Expert", "challenge": "Compose lines with perfect meter and rhyme"},
+          {"name": "Lexical Ambiguity", "difficulty": "Expert", "challenge": "Create sentences with triple meanings"},
+          {"name": "Synonym Evolution", "difficulty": "Expert", "challenge": "Trace historical development of 5 synonym sets"},
+          {"name": "Homonym Typology", "difficulty": "Expert", "challenge": "Classify 10 homonyms by their type of ambiguity"},
+          {"name": "Antonym Universals", "difficulty": "Expert", "challenge": "Identify cross-linguistic patterns in antonym pairing"},
+          {"name": "Rhyme Theory", "difficulty": "Expert", "challenge": "Explain cognitive basis for rhyme satisfaction"},
+          {"name": "Pluralization Universals", "difficulty": "Expert", "challenge": "Compare plural formation across 3 languages"}
+        ],
+        "Wizard": [
+          {"name": "Lexical Ambiguity", "difficulty": "Master", "challenge": "Create sentences with triple meanings"},
+          {"name": "Ultimate Wordplay", "difficulty": "Master", "challenge": "Write a contronymic poem"},
+          {"name": "Pluralization Paradox", "difficulty": "Master", "challenge": "Explain irregular pluralization rules"},
+          {"name": "Synonym Symphony", "difficulty": "Master", "challenge": "Compose a paragraph using 10 nuanced synonyms"},
+          {"name": "Homonym Horizon", "difficulty": "Master", "challenge": "Predict new homonym formations from language trends"}
+        ]
+      }
+    }
+  ],
+  "_validation": {
+    "status": "PASSED",
+    "timestamp": "2023-11-20T15:30:00Z",
+    "verification_report": {
+      "total_modules": 8,
+      "total_challenges": 520,
+      "level_counts": {
+        "Rookie": 80,
+        "Racer": 120,
+        "Master": 200,
+        "Prodigy": 80,
+        "Wizard": 40
+      },
+      "module_breakdown": [
+        {
+          "module": "Spelling",
+          "counts": {
+            "Rookie": 10,
+            "Racer": 15,
+            "Master": 25,
+            "Prodigy": 10,
+            "Wizard": 5,
+            "Total": 65
+          }
+        },
+        {
+          "module": "Reading",
+          "counts": {
+            "Rookie": 10,
+            "Racer": 15,
+            "Master": 25,
+            "Prodigy": 10,
+            "Wizard": 5,
+            "Total": 65
+          }
+        },
+        {
+          "module": "Pronunciation",
+          "counts": {
+            "Rookie": 10,
+            "Racer": 15,
+            "Master": 25,
+            "Prodigy": 10,
+            "Wizard": 5,
+            "Total": 65
+          }
+        },
+        {
+          "module": "Grammar",
+          "counts": {
+            "Rookie": 10,
+            "Racer": 15,
+            "Master": 25,
+            "Prodigy": 10,
+            "Wizard": 5,
+            "Total": 65
+          }
+        },
+        {
+          "module": "Writing",
+          "counts": {
+            "Rookie": 10,
+            "Racer": 15,
+            "Master": 25,
+            "Prodigy": 10,
+            "Wizard": 5,
+            "Total": 65
+          }
+        },
+        {
+          "module": "Listening",
+          "counts": {
+            "Rookie": 10,
+            "Racer": 15,
+            "Master": 25,
+            "Prodigy": 10,
+            "Wizard": 5,
+            "Total": 65
+          }
+        },
+        {
+          "module": "Vocabulary",
+          "counts": {
+            "Rookie": 10,
+            "Racer": 15,
+            "Master": 25,
+            "Prodigy": 10,
+            "Wizard": 5,
+            "Total": 65
+          }
+        },
+        {
+          "module": "S.H.A.R.P",
+          "counts": {
+            "Rookie": 10,
+            "Racer": 15,
+            "Master": 25,
+            "Prodigy": 10,
+            "Wizard": 5,
+            "Total": 65
+          }
+        }
+      ]
+    }
+  }
+}

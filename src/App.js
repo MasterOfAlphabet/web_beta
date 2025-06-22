@@ -53,6 +53,13 @@ import ResultShareCardWithControls from "./components/ResultShareCardWithControl
 import OffersAndPromotions from "./pages/OffersAndPromotions";
 import ProfilePage from "./pages/ProfilePage";
 import CARESTestSpellingSkills from "./components/CARES/pages/TestAssessment.js";
+import DailySeriesPage from './pages/DailySeriesPage';
+import CookiePolicyPage from './pages/CookiePolicyPage.js';
+import CookieConsentBanner from "./components/CookieConsentBanner";
+import SkillsImprovementPage from './pages/SkillsImprovementPage';
+//import EnhancedAssessmentComponent from "./components/QuestionDisplayCard";
+
+import TestListeningSkills from './pages/TestListeningSkills';
 
 // Games
 import EnglishSkillsBuildingGames from './pages/EnglishSkillsBuildingGames';
@@ -63,7 +70,6 @@ import ListenAndMatchGame from "./games/ListenAndMatchGame";
 import PunctuationAdventure from "./games/PunctuationAdventure.js";
 import SHARPWordHunt from "./games/SHARPWordHunt";
 import SpellingDuel from "./games/SpellingDuel";
-
 import SuperHeroReadingAcademy from "./games/SuperHeroReadingAcademy";
 
 // 1. Create and export the AuthContext
@@ -247,7 +253,15 @@ function App() {
 
  <Route path="/english-skills-building-games" element={<EnglishSkillsBuildingGames />} />
 
+ <Route path="/daily-series" element={<DailySeriesPage />} />
+ <Route path="/cookie-policy" element={<CookiePolicyPage />} />
+
+ <Route path="/improve-english-language-skills" element={<SkillsImprovementPage />} />
+ <Route path="/test-listening-skills" element={<TestListeningSkills />} />
+
         </Routes>
+
+ <CookieConsentBanner />
         <Footer />
       </Router>
     </AuthContext.Provider>

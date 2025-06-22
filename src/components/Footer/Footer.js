@@ -38,9 +38,9 @@ export default function Footer() {
               <span>&copy; {new Date().getFullYear()} Master Of Alphabet. All rights reserved.</span>
             </div>
             <div className="flex items-center gap-6">
-              <a href="/privacy" className="hover:text-yellow-200 transition-colors">Privacy Policy</a>
-              <a href="/terms" className="hover:text-yellow-200 transition-colors">Terms of Service</a>
-              <a href="/cookies" className="hover:text-yellow-200 transition-colors">Cookie Policy</a>
+              <a href="/privacy-policy" className="hover:text-yellow-200 transition-colors">Privacy Policy</a>
+              <a href="/terms-of-service" className="hover:text-yellow-200 transition-colors">Terms of Service</a>
+              <a href="/cookie-policy" className="hover:text-yellow-200 transition-colors">Cookie Policy</a>
             </div>
           </div>
         </div>

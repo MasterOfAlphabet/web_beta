@@ -2,9 +2,9 @@ import { BookOpen, Users, Award } from "lucide-react";
 
 export default function Features() {
   const features = [
-    { icon: BookOpen, text: "Interactive Learning" },
+    { icon: BookOpen, text: "Challenges" },
     { icon: Users, text: "Community Support" },
-    { icon: Award, text: "Certified Courses" }
+    { icon: Award, text: "Winners" }
   ];
 
   return (
