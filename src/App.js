@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useLocation,
+  useLocation, Navigate
 } from "react-router-dom";
 
 import { auth, firestore } from "./services/firebase";
@@ -52,17 +52,25 @@ import ResultShareDemo from "./pages/ResultShareDemo";
 import ResultShareCardWithControls from "./components/ResultShareCardWithControls";
 import OffersAndPromotions from "./pages/OffersAndPromotions";
 import ProfilePage from "./pages/ProfilePage";
-import CARESTestSpellingSkills from "./components/CARES/pages/TestAssessment.js";
-import DailySeriesPage from './pages/DailySeriesPage';
-import CookiePolicyPage from './pages/CookiePolicyPage.js';
+
+import DailySeriesPage from "./pages/DailySeriesPage";
+import CookiePolicyPage from "./pages/CookiePolicyPage.js";
 import CookieConsentBanner from "./components/CookieConsentBanner";
-import SkillsImprovementPage from './pages/SkillsImprovementPage';
+import SkillsImprovementPage from "./pages/SkillsImprovementPage";
 //import EnhancedAssessmentComponent from "./components/QuestionDisplayCard";
 
-import TestListeningSkills from './pages/TestListeningSkills';
+import TestListeningSkills from "./pages/TestListeningSkills";
+import ReadingRockStarGame from "./pages/ReadingRockStar";
+
+import BattlesHub from "./components/BattlesHub";
+import BattlePage from "./components/BattlePage";
+import AdminPanel from './components/AdminPanel';
+
+import BattleDashboardPage from "./pages/BattleDashboard";
+import BattleJoinCard from "./components/Battles/BattleJoinCard";
 
 // Games
-import EnglishSkillsBuildingGames from './pages/EnglishSkillsBuildingGames';
+import EnglishSkillsBuildingGames from "./pages/EnglishSkillsBuildingGames";
 
 import MagicSpellingCauldron from "./games/MagicSpellingCauldron";
 import BalloonPopGame from "./games/BalloonPopGame";
@@ -71,6 +79,7 @@ import PunctuationAdventure from "./games/PunctuationAdventure.js";
 import SHARPWordHunt from "./games/SHARPWordHunt";
 import SpellingDuel from "./games/SpellingDuel";
 import SuperHeroReadingAcademy from "./games/SuperHeroReadingAcademy";
+import Battles from "./components/Battles.js";
 
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
@@ -223,10 +232,7 @@ function App() {
           <Route path="/signinrequiredhero" element={<SignInRequiredHero />} />
           <Route path="/offers-promotions" element={<OffersAndPromotions />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route
-            path="/CARES/TestSpellingSkills"
-            element={<CARESTestSpellingSkills />}
-          />
+
           <Route path="*" element={<PageNotFound />} />
 
           <Route
@@ -245,23 +251,60 @@ function App() {
             path="/english-skills-building-games/listen-and-match"
             element={<ListenAndMatchGame />}
           />
-          <Route path="/english-skills-building-games/sharpwordhunt" element={<SHARPWordHunt />} />
-          <Route path="/english-skills-building-games/storyscramble" element={<StoryScrambleGame />} />
-          <Route path="/english-skills-building-games/spelling-duel" element={<SpellingDuel />} />
+          <Route
+            path="/english-skills-building-games/sharpwordhunt"
+            element={<SHARPWordHunt />}
+          />
+          <Route
+            path="/english-skills-building-games/storyscramble"
+            element={<StoryScrambleGame />}
+          />
+          <Route
+            path="/english-skills-building-games/spelling-duel"
+            element={<SpellingDuel />}
+          />
 
-          <Route path="/english-skills-building-games/super-hero-reading-academy" element={<SuperHeroReadingAcademy />} />
+          <Route
+            path="/english-skills-building-games/super-hero-reading-academy"
+            element={<SuperHeroReadingAcademy />}
+          />
 
- <Route path="/english-skills-building-games" element={<EnglishSkillsBuildingGames />} />
+          <Route
+            path="/english-skills-building-games"
+            element={<EnglishSkillsBuildingGames />}
+          />
 
- <Route path="/daily-series" element={<DailySeriesPage />} />
- <Route path="/cookie-policy" element={<CookiePolicyPage />} />
+          <Route path="/daily-series" element={<DailySeriesPage />} />
+          <Route path="/cookie-policy" element={<CookiePolicyPage />} />
 
- <Route path="/improve-english-language-skills" element={<SkillsImprovementPage />} />
- <Route path="/test-listening-skills" element={<TestListeningSkills />} />
+          <Route
+            path="/improve-english-language-skills"
+            element={<SkillsImprovementPage />}
+          />
+          <Route
+            path="/test-listening-skills"
+            element={<TestListeningSkills />}
+          />
+          <Route
+            path="/test-reading-skills"
+            element={<ReadingRockStarGame />}
+          />
+  <Route path="/startbattles" element={<Battles/>} />
+
+          <Route path="/battles-hub" element={<BattlesHub />} />
+
+            <Route path="/battles" element={<BattlePage />} />
+
+        <Route path="/battleshub/admin" element={<AdminPanel />} />
+        <Route path="/battle/:battleId" element={<Battles />} />
+        <Route path="/battle-dashboard" element={<BattleDashboardPage />} />
+        <Route path="/battle-dashboard/:battleId" element={<BattleDashboardPage />} />
+
+<Route path="/battle-join" element={<BattleJoinCard />} />
 
         </Routes>
 
- <CookieConsentBanner />
+        <CookieConsentBanner />
         <Footer />
       </Router>
     </AuthContext.Provider>

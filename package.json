@@ -23,6 +23,7 @@
     "ionicons": "^8.0.9",
     "lucide-react": "^0.517.0",
     "postcss": "^8.4.31",
+    "qrcode.react": "^4.2.0",
     "react": "^18.2.0",
     "react-confetti": "^6.4.0",
     "react-dom": "^18.2.0",
