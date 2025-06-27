@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { doc, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore';
 import { firestore, auth } from '../services/firebase';
 import { signInAnonymously } from 'firebase/auth';
-import Battles from './Battles.js_WIP';
+import Battles from './Battles.js';
 
 const BattlePage = () => {
   const { battleId } = useParams();

@@ -15,7 +15,6 @@ import {
   FaHeadphones,
   FaStar,
   FaSearch,
-  FaFilter,
   FaChartLine,
   FaGamepad,
   FaBolt,
@@ -27,7 +26,6 @@ import {
   FaShieldAlt,
   FaShare
 } from "react-icons/fa";
-import { IoMdClose, IoMdCheckmark } from "react-icons/io";
 import { HiLightningBolt } from "react-icons/hi";
 
 const BattlesHub = () => {
@@ -38,10 +36,6 @@ const BattlesHub = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [viewMode, setViewMode] = useState("grid");
   const [notifications, setNotifications] = useState([]);
-  const [selectedBattle, setSelectedBattle] = useState(null);
-  const [showJoinModal, setShowJoinModal] = useState(false);
-  const [playerName, setPlayerName] = useState("");
-  const [timeLeft, setTimeLeft] = useState(300);
 
   // Load all battles from Firestore
   useEffect(() => {
@@ -75,18 +69,8 @@ const BattlesHub = () => {
     );
 
     return () => unsubscribe();
+    // eslint-disable-next-line
   }, []);
-
-  // Timer countdown effect for selected battle
-  useEffect(() => {
-    if (!selectedBattle) return;
-    
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    
-    return () => clearInterval(timer);
-  }, [selectedBattle]);
 
   // Auto-remove notifications
   useEffect(() => {
@@ -162,18 +146,6 @@ const BattlesHub = () => {
     }
   };
 
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
-
-  const getTimeColor = () => {
-    if (timeLeft > 180) return "text-green-500";
-    if (timeLeft > 60) return "text-yellow-500";
-    return "text-red-500";
-  };
-
   const formatTimeRemaining = (createdAt, joinTimeLimit = 300) => {
     if (!createdAt?.toDate) return "0:00";
     const endTime = createdAt.toDate().getTime() + (joinTimeLimit * 1000);
@@ -182,28 +154,6 @@ const BattlesHub = () => {
     const minutes = Math.floor(diff / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-  };
-
-  const startBattle = (battleId) => {
-    navigate(`/battle/${battleId}`);
-  };
-
-  const openJoinModal = (battle) => {
-    setSelectedBattle(battle);
-    setTimeLeft(300);
-    setShowJoinModal(true);
-  };
-
-  const closeJoinModal = () => {
-    setShowJoinModal(false);
-    setPlayerName("");
-  };
-
-  const joinBattle = () => {
-    if (!playerName.trim()) return;
-    if (selectedBattle) {
-      startBattle(selectedBattle.id);
-    }
   };
 
   const getDifficultyColor = (difficulty) => {
@@ -232,6 +182,13 @@ const BattlesHub = () => {
     (sum, battle) => sum + (battle.players?.length || 0),
     0
   );
+
+  // Instead of modal, navigate to join page
+  const openJoinPage = (battle) => {
+    if (battle && battle.id) {
+      navigate(`/battle/${battle.id}/join`);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
@@ -352,7 +309,7 @@ const BattlesHub = () => {
                   className={`group bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 ${
                     isActive ? "cursor-pointer border-2 border-green-200" : "opacity-80"
                   } ${viewMode === "list" ? "flex" : ""}`}
-                  onClick={() => isActive && openJoinModal(module.battle)}
+                  onClick={() => isActive && openJoinPage(module.battle)}
                 >
                   {/* Status indicator */}
                   <div className={`${isActive ? "bg-green-400" : "bg-gray-300"} ${
@@ -423,9 +380,9 @@ const BattlesHub = () => {
                             : "bg-gray-100 hover:bg-gray-200 text-gray-500 cursor-not-allowed"
                         } ${viewMode === "list" ? "w-auto px-6" : ""}`}
                         disabled={!isActive}
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
-                          isActive && openJoinModal(module.battle);
+                          isActive && openJoinPage(module.battle);
                         }}
                       >
                         {isActive ? (
@@ -521,186 +478,6 @@ const BattlesHub = () => {
           </div>
         </div>
       </div>
-
-      {/* Join Battle Modal */}
-      {showJoinModal && selectedBattle && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-2xl bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-white/20">
-            {/* Header Section */}
-            <div className="relative bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8 text-white overflow-hidden">
-              <div className="absolute inset-0 bg-black/10"></div>
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h1 className="text-3xl font-bold flex items-center gap-3">
-                      <FaTrophy className="text-yellow-300" />
-                      Join Battle
-                    </h1>
-                    <div className="flex items-center gap-2 mt-2">
-                      <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
-                      <span className="text-lg font-medium">LIVE - {selectedBattle.module}</span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
-                      <div className="text-sm opacity-90">Difficulty</div>
-                      <div className="font-bold flex items-center gap-1">
-                        <FaFire className="text-orange-300" />
-                        {selectedBattle.difficulty || "Intermediate"}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Battle Rules Section */}
-            <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
-              <h3 className="flex items-center gap-3 text-xl font-bold mb-4 text-gray-800">
-                <div className="p-2 bg-blue-500 rounded-lg">
-                  <FaShieldAlt className="text-white" />
-                </div>
-                Battle Rules & Info
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                    <span className="font-medium">Battle starts with 2+ players</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="font-medium">15 seconds per question</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                    <span className="font-medium">{selectedBattle.questionsCount || 15} total questions</span>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                    <span className="font-medium">Correct answers earn points</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                    <span className="font-medium">Speed bonus for quick answers</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <span className="font-medium">Winner takes all glory!</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Stats Section */}
-            <div className="p-6">
-              <div className="grid grid-cols-2 gap-6 mb-8">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border border-blue-200 relative overflow-hidden">
-                  <div className="absolute top-2 right-2 opacity-10">
-                    <FaUsers className="text-4xl" />
-                  </div>
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 text-blue-700 mb-2">
-                      <FaUsers className="text-xl" />
-                      <span className="font-bold text-lg">Players</span>
-                    </div>
-                    <div className="text-4xl font-black text-blue-800">
-                      {selectedBattle.players?.length || 0}/{selectedBattle.maxPlayers || 5}
-                    </div>
-                    <div className="text-sm text-blue-600 mt-1">
-                      {selectedBattle.maxPlayers - (selectedBattle.players?.length || 0)} spots left
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-orange-50 to-red-100 p-6 rounded-2xl border border-orange-200 relative overflow-hidden">
-                  <div className="absolute top-2 right-2 opacity-10">
-                    <FaClock className="text-4xl" />
-                  </div>
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 text-orange-700 mb-2">
-                      <FaClock className="text-xl" />
-                      <span className="font-bold text-lg">Time Left</span>
-                    </div>
-                    <div className={`text-4xl font-black ${getTimeColor()}`}>
-                      {formatTime(timeLeft)}
-                    </div>
-                    <div className="text-sm text-orange-600 mt-1">
-                      {timeLeft <= 60 ? 'Hurry up!' : 'to join battle'}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Join Form */}
-              <div className="mb-8 p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl border border-indigo-200">
-                <label className="block text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
-                  <HiLightningBolt className="text-yellow-500" />
-                  Enter the Battle Arena
-                </label>
-                <div className="flex gap-4">
-                  <div className="flex-1">
-                    <input
-                      type="text"
-                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-300 text-lg font-medium placeholder-gray-400"
-                      placeholder="Your warrior name..."
-                      value={playerName}
-                      onChange={(e) => setPlayerName(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && joinBattle()}
-                    />
-                  </div>
-                  <button
-                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl"
-                    onClick={joinBattle}
-                    disabled={!playerName.trim() || timeLeft === 0}
-                  >
-                    Join Battle
-                  </button>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-4">
-                <button
-                  className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                  onClick={joinBattle}
-                  disabled={!playerName.trim()}
-                >
-                  <FaTrophy />
-                  Ready to Battle!
-                </button>
-                
-                <button
-                  className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white py-4 px-8 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2"
-                  onClick={() => navigator.clipboard.writeText(window.location.href)}
-                >
-                  <FaShare />
-                  Invite Friends
-                </button>
-              </div>
-            </div>
-
-            {/* Footer */}
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 border-t border-gray-200">
-              <div className="text-center">
-                <button
-                  className="text-gray-600 hover:text-gray-800 transition-colors absolute top-4 right-4"
-                  onClick={closeJoinModal}
-                >
-                  <IoMdClose size={24} />
-                </button>
-                <p className="text-gray-600 font-medium">
-                  🔥 Battle ID: <span className="font-mono bg-gray-200 px-2 py-1 rounded">BT-{selectedBattle.id.slice(0, 6).toUpperCase()}</span>
-                </p>
-                <p className="text-sm text-gray-500 mt-2">May the best warrior win! Good luck!</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

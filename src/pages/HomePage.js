@@ -126,22 +126,24 @@ const updates = [
   },
 ];
 
+
 const modules = [
-  { label: "Spelling", icon: <EmojiObjectsIcon color="primary" />, path: "/spelling" },
-  { label: "Reading", icon: <BookIcon color="success" />, path: "/reading" },
-  { label: "Grammar", icon: <EditNoteIcon color="secondary" />, path: "/grammar" },
-  { label: "Writing", icon: <SchoolIcon color="primary" />, path: "/writing" },
-  { label: "Listening", icon: <BoltIcon color="warning" />, path: "/listening" },
-  { label: "Pronunciation", icon: <RecordVoiceOverIcon color="info" />, path: "/pronunciation" },
-  { label: "Vocabulary", icon: <QuizIcon color="error" />, path: "/vocabulary" },
-  { label: "S.H.A.R.P", icon: <WorkspacePremiumIcon color="secondary" />, path: "/sharp" },
-  { label: "8-In-1", icon: <WorkspacePremiumIcon color="secondary" />, path: "/all-modules" },
+  { label: "Spelling", icon: <EmojiObjectsIcon color="primary" />, path: "/spelling", bgColor: "#f44336" },
+  { label: "Reading", icon: <BookIcon color="success" />, path: "/reading", bgColor: "#e91e63"  },
+  { label: "Pronunciation", icon: <RecordVoiceOverIcon color="info" />, path: "/pronunciation", bgColor: "#9c27b0" },
+  { label: "Grammar", icon: <EditNoteIcon color="secondary" />, path: "/grammar", bgColor: "#673ab7"  },
+  { label: "Writing", icon: <SchoolIcon color="primary" />, path: "/writing", bgColor: "#3f51b5" },
+  { label: "Listening", icon: <BoltIcon color="warning" />, path: "/listening", bgColor: "#2196f3" },
+  { label: "Vocabulary", icon: <QuizIcon color="error" />, path: "/vocabulary", bgColor: "#4caf50"  },
+  { label: "S.H.A.R.P", icon: <WorkspacePremiumIcon color="secondary" />, path: "/sharp",bgColor: "#ff9800"  },
+  { label: "8-In-1", icon: <WorkspacePremiumIcon color="secondary" />, path: "/all-modules", bgColor: "#4caf50" },
 ];
 
 const improveSkills = [
   { label: "Learn", icon: <BookIcon />, color: "primary", path: "/learn" },
   { label: "Practice", icon: <EditNoteIcon />, color: "success", path: "/practice" },
   { label: "Test", icon: <QuizIcon />, color: "warning", path: "/test" },
+  { label: "Quiz", icon: <EmojiEventsIcon />, color: "success", path: "/quiz" },
   { label: "Battles", icon: <SportsKabaddiIcon />, color: "secondary", path: "/battles" },
   { label: "Challenges", icon: <EmojiEventsIcon />, color: "error", path: "/challenges" },
 ];
@@ -586,7 +588,7 @@ export default function HomePage() {
               </Button>
             </Paper>
           </Grid>
-          {/* Daily Learning */}
+          {/* Play & Learn */}
           <Grid item xs={12} sm={6} md={3}>
             <Paper
               sx={{
@@ -599,10 +601,10 @@ export default function HomePage() {
                 borderRadius: 3,
               }}
               tabIndex={0}
-              aria-label="Daily Learning"
-              onClick={() => navigate("/learn")}
+              aria-label="Play & Learn"
+              onClick={() => navigate("/english-skills-building-games")}
               onKeyDown={e => {
-                if (e.key === "Enter" || e.key === " ") navigate("/learn");
+                if (e.key === "Enter" || e.key === " ") navigate("/english-skills-building-games");
               }}
               role="button"
               style={{ cursor: "pointer" }}
@@ -610,7 +612,7 @@ export default function HomePage() {
               <Box sx={{ display: "flex", alignItems: "center", mb: 1, minHeight: 32 }}>
                 <BookIcon sx={{ fontSize: 28, color: "#00bfae" }} />
                 <Typography variant="h6" fontWeight={700} ml={1} color="primary">
-                  Daily Learning
+                  Play & Learn
                 </Typography>
               </Box>
               <Typography sx={{
@@ -619,7 +621,7 @@ export default function HomePage() {
                 lineHeight: 1.4,
                 color: "#333"
               }}>
-                Bite-sized lessons, every single day!
+                Engaging, Educational and Creative Games!
               </Typography>
               <Button
                 size="small"
@@ -634,15 +636,15 @@ export default function HomePage() {
                 }}
                 onClick={e => {
                   e.stopPropagation();
-                  navigate("/learn");
+                  navigate("/english-skills-building-games");
                 }}
                 tabIndex={-1}
               >
-                Start Learning
+                Visit Games Hub
               </Button>
             </Paper>
           </Grid>
-          {/* Daily Challenges */}
+          {/* Skills Improvement */}
           <Grid item xs={12} sm={6} md={3}>
             <Paper
               sx={{
@@ -655,10 +657,10 @@ export default function HomePage() {
                 borderRadius: 3,
               }}
               tabIndex={0}
-              aria-label="Daily Challenges"
-              onClick={() => navigate("/challenges")}
+              aria-label="Skills Improvement"
+              onClick={() => navigate("/skills-improvement")}
               onKeyDown={e => {
-                if (e.key === "Enter" || e.key === " ") navigate("/challenges");
+                if (e.key === "Enter" || e.key === " ") navigate("/skills-improvement");
               }}
               role="button"
               style={{ cursor: "pointer" }}
@@ -666,7 +668,7 @@ export default function HomePage() {
               <Box sx={{ display: "flex", alignItems: "center", mb: 1, minHeight: 32 }}>
                 <EmojiEventsIcon sx={{ fontSize: 28, color: "#f57c00" }} />
                 <Typography variant="h6" fontWeight={700} ml={1} color="warning.dark">
-                  Daily Challenges
+                  Skills Improvement
                 </Typography>
               </Box>
               <Typography sx={{
@@ -675,7 +677,7 @@ export default function HomePage() {
                 lineHeight: 1.4,
                 color: "#333"
               }}>
-                Compete, have fun, and win rewards!
+                Learn, Practice, Test, Quiz, Battles and Challenges
               </Typography>
               <Button
                 size="small"
@@ -690,11 +692,11 @@ export default function HomePage() {
                 }}
                 onClick={e => {
                   e.stopPropagation();
-                  navigate("/challenges");
+                  navigate("/skills-improvement");
                 }}
                 tabIndex={-1}
               >
-                View Challenges
+                Improve Skills Today
               </Button>
             </Paper>
           </Grid>
@@ -761,7 +763,7 @@ export default function HomePage() {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  bgcolor: "#fff",
+                  bgcolor: mod.bgColor,
                   borderRadius: 3,
                   px: 2,
                   py: 3,

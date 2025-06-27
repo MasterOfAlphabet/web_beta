@@ -1,22 +1,36 @@
 import React, { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../services/firebase";
 import { Crown, Star, Gift, Clock, Zap, Sparkles } from "lucide-react";
 import SignInRequiredHero from "./SignInRequiredHero";
 
 const StudentWelcomeSection = () => {
   const [userInfo, setUserInfo] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const cachedUser = localStorage.getItem("studentUser");
-    if (cachedUser) {
-      try {
-        setUserInfo(JSON.parse(cachedUser));
-      } catch (err) {
-        console.error("Invalid user data in localStorage:", err);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const cachedUser = localStorage.getItem("studentUser");
+        if (cachedUser) {
+          try {
+            setUserInfo(JSON.parse(cachedUser));
+            setIsAuthenticated(true);
+          } catch (err) {
+            console.error("Invalid localStorage user data:", err);
+          }
+        }
+      } else {
+        setIsAuthenticated(false);
+        localStorage.removeItem("studentUser"); // cleanup
+        setUserInfo(null);
       }
-    }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  if (!userInfo) {
+  if (!isAuthenticated || !userInfo) {
     return (
       <div className="w-full bg-gradient-to-r from-rose-50 to-pink-100 py-8 px-4 sm:px-8 text-center border-b border-pink-200 shadow">
         <h2 className="text-xl sm:text-2xl font-semibold text-rose-600 mb-3">
@@ -33,7 +47,7 @@ const StudentWelcomeSection = () => {
 
         <div className="mt-6">
           <div className="max-w-2xl mx-auto">
-            {/* Optional Overlay Animation */}
+            {/* Optional Animation */}
             {/* <SignInRequiredHero redirectTo="/challenges" /> */}
           </div>
         </div>
@@ -48,16 +62,14 @@ const StudentWelcomeSection = () => {
     if (isPremium) {
       return (
         <span className="inline-flex items-center gap-2 px-4 py-1 text-sm font-medium bg-yellow-500 text-white rounded-full">
-          <Crown className="w-4 h-4" />
-          Premium
+          <Crown className="w-4 h-4" /> Premium
         </span>
       );
     }
     if (isTrial) {
       return (
         <span className="inline-flex items-center gap-2 px-4 py-1 text-sm font-medium bg-blue-600 text-white rounded-full">
-          <Star className="w-4 h-4" />
-          Trial
+          <Star className="w-4 h-4" /> Trial
         </span>
       );
     }
@@ -85,9 +97,7 @@ const StudentWelcomeSection = () => {
       <div className="flex gap-3">
         <Zap className="w-6 h-6 text-indigo-500 mt-1" />
         <div>
-          <p className="text-indigo-800 font-semibold">
-            You're using a trial account!
-          </p>
+          <p className="text-indigo-800 font-semibold">You're using a trial account!</p>
           <p className="text-indigo-700 text-sm mt-1">
             Upgrade to unlock all 9 modules, participate in challenges, track your performance,
             and access full-featured assessments.
@@ -106,7 +116,6 @@ const StudentWelcomeSection = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        {/* Left Column */}
         <div>
           <div className="flex flex-wrap items-center gap-3 mb-4 text-sm text-slate-700 font-medium">
             <span>Subscription Type:</span> {getStatusBadge()}
@@ -140,12 +149,12 @@ const StudentWelcomeSection = () => {
           </div>
         </div>
 
-        {/* Right Column */}
         <div className="bg-white rounded-xl border shadow p-6">
           <div className="flex items-center gap-3 mb-3">
             <Sparkles className="text-purple-500 w-6 h-6" />
             <p className="text-lg font-semibold text-purple-700">
-              Class Group: <span className="inline-block bg-purple-100 text-purple-700 font-bold px-3 py-1 rounded-lg ml-1">
+              Class Group:{" "}
+              <span className="inline-block bg-purple-100 text-purple-700 font-bold px-3 py-1 rounded-lg ml-1">
                 {userInfo.classGroup || "N/A"}
               </span>
             </p>

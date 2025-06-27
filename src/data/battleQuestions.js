@@ -1,6 +1,6 @@
 export const allQuestions = {
   Spelling: {
-    1: {
+    class_1_2: {
       Dictation: [
         {
           type: "Dictation",

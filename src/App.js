@@ -3,7 +3,8 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useLocation, Navigate
+  useLocation,
+  Navigate,
 } from "react-router-dom";
 
 import { auth, firestore } from "./services/firebase";
@@ -13,6 +14,8 @@ import { doc, getDoc } from "firebase/firestore";
 import MenuBar from "./components/MenuBar";
 import SubscriptionBanner from "./components/SubscriptionBanner";
 import Footer from "./components/Footer/Footer.js"; // Import the Footer component
+
+import { ToastContainer } from "react-toastify";
 
 import HomePage from "./pages/HomePage";
 import ChallengesPage from "./pages/ChallengesPage";
@@ -64,7 +67,7 @@ import ReadingRockStarGame from "./pages/ReadingRockStar";
 
 import BattlesHub from "./components/BattlesHub";
 import BattlePage from "./components/BattlePage";
-import AdminPanel from './components/AdminPanel';
+import BattleControlCenter from "./components/BattleControlCenter";
 
 import BattleDashboardPage from "./pages/BattleDashboard";
 import BattleJoinCard from "./components/Battles/BattleJoinCard";
@@ -79,7 +82,19 @@ import PunctuationAdventure from "./games/PunctuationAdventure.js";
 import SHARPWordHunt from "./games/SHARPWordHunt";
 import SpellingDuel from "./games/SpellingDuel";
 import SuperHeroReadingAcademy from "./games/SuperHeroReadingAcademy";
+import ShadowReadingRace from "./games/ShadowReadingRace";
+import TongueTwisterShowdown from "./games/TongueTwisterShowdown";
+
+import GrammarDetective from "./games/GrammarDetective";
+import GrammarGalaxy from "./games/GrammarGalaxy";
+import GrammarRestaurant from "./games/GrammarRestaurant";
+import MasterOfAlphabet from "./games/MasterOfAlphabet";
+
+import ReadingRockStar from "./games/ReadingRockStarGame";
+
 import Battles from "./components/Battles.js";
+import BattleJoinPage from "./components/Battles/BattleJoinPage";
+import SpectatorScreen from "./components/Battles/SpectatorScreen";
 
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
@@ -179,6 +194,10 @@ function App() {
       <Router>
         <MenuBar />
         <ConditionalBanner />
+
+        {/* ToastContainer should be here — NOT inside <Routes> */}
+        <ToastContainer position="top-right" autoClose={3000} />
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/skills-hub" element={<SkillsHubPage />} />
@@ -289,19 +308,57 @@ function App() {
             path="/test-reading-skills"
             element={<ReadingRockStarGame />}
           />
-  <Route path="/startbattles" element={<Battles/>} />
+          <Route path="/startbattles" element={<Battles />} />
 
           <Route path="/battles-hub" element={<BattlesHub />} />
 
-            <Route path="/battles" element={<BattlePage />} />
+          <Route path="/battles" element={<BattlePage />} />
 
-        <Route path="/battleshub/admin" element={<AdminPanel />} />
-        <Route path="/battle/:battleId" element={<Battles />} />
-        <Route path="/battle-dashboard" element={<BattleDashboardPage />} />
-        <Route path="/battle-dashboard/:battleId" element={<BattleDashboardPage />} />
+          <Route path="/battleshub/admin" element={<BattleControlCenter />} />
+          <Route path="/battle/:battleId" element={<Battles />} />
+          <Route path="/battle-dashboard" element={<BattleDashboardPage />} />
+          <Route
+            path="/battle-dashboard/:battleId"
+            element={<BattleDashboardPage />}
+          />
 
-<Route path="/battle-join" element={<BattleJoinCard />} />
+          <Route path="/battle-join" element={<BattleJoinCard />} />
 
+          <Route
+            path="/english-skills-building-games/shadow-reading-race"
+            element={<ShadowReadingRace />}
+          />
+
+          <Route
+            path="/english-skills-building-games/tongue-twister-showdown"
+            element={<TongueTwisterShowdown />}
+          />
+
+          <Route path="/battle/:battleId/join" element={<BattleJoinPage />} />
+
+          <Route path="/watch-live/:battleId" element={<SpectatorScreen />} />
+
+          <Route
+            path="/english-skills-building-games/grammar-detective"
+            element={<GrammarDetective />}
+          />
+          <Route
+            path="/english-skills-building-games/grammar-galaxy"
+            element={<GrammarGalaxy />}
+          />
+          <Route
+            path="/english-skills-building-games/grammar-restaurant"
+            element={<GrammarRestaurant />}
+          />
+
+          <Route
+            path="/english-skills-building-games/master-of-alphabet"
+            element={<MasterOfAlphabet />}
+          />
+          <Route
+            path="/english-skills-building-games/reading-rockstar"
+            element={<ReadingRockStar />}
+          />
         </Routes>
 
         <CookieConsentBanner />

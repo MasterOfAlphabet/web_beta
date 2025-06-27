@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   BookOpen, Puzzle, CheckCircle, XCircle, RotateCcw, Volume2, Lightbulb,
   Award, Clock, Star, Trophy, Info, ChevronRight, Lock
@@ -106,7 +106,6 @@ const timedSentences = [
   }
 ];
 
-
 const shuffleArray = (array) => {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
@@ -115,6 +114,11 @@ const shuffleArray = (array) => {
   }
   return newArray;
 };
+
+// Utility: tokenize a story for highlighting
+function tokenize(text) {
+  return text.match(/[\w'-]+|[^\w\s]|[\s]+/g) || [];
+}
 
 const StoryScrambleGame = () => {
   const [gameMode, setGameMode] = useState(null);
@@ -130,10 +134,16 @@ const StoryScrambleGame = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [achievements, setAchievements] = useState([]);
   const [showAchievements, setShowAchievements] = useState(false);
-  
+
+  // For story reading with highlight
+  const [highlightedWord, setHighlightedWord] = useState(null);
+  const utteranceRef = useRef(null);
+
   const timeLeftRef = useRef(null);
   const currentSentences = gameMode === 'story' ? storySentences : timedSentences;
   const currentSentence = currentSentences[currentSentenceIndex];
+
+  // ---------- EFFECTS ----------
 
   // Initialize game when mode is selected
   useEffect(() => {
@@ -147,11 +157,23 @@ const StoryScrambleGame = () => {
     return () => {
       clearInterval(timeLeftRef.current);
     };
+    // eslint-disable-next-line
   }, [gameMode, currentSentenceIndex]);
 
-    const resetGameState = () => {
-    const wordsWithOriginalIndex = currentSentence.parts.map((word, idx) => ({ 
-      word, 
+  // Cleanup for speech synthesis
+  useEffect(() => {
+    return () => {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      setHighlightedWord(null);
+    };
+  }, []);
+
+  // ---------- HANDLERS ----------
+
+  const resetGameState = () => {
+    const wordsWithOriginalIndex = currentSentence.parts.map((word, idx) => ({
+      word,
       originalIndex: idx,
       id: `${currentSentence.id}-${idx}`
     }));
@@ -160,6 +182,7 @@ const StoryScrambleGame = () => {
     setFeedback(null);
     setShowHint(false);
     setIsSpeaking(false);
+    setHighlightedWord(null);
   };
 
   const startTimedMode = () => {
@@ -197,18 +220,18 @@ const StoryScrambleGame = () => {
     }
 
     const isCorrect = assembledSentence.every((w, idx) => w.originalIndex === idx);
-    
+
     if (isCorrect) {
       const pointsEarned = calculatePoints();
       setScore(prev => prev + pointsEarned);
       setFeedback('correct');
-      
+
       if (!storyProgress.includes(currentSentence.storySegment)) {
         setStoryProgress(prev => [...prev, currentSentence.storySegment]);
       }
-      
+
       checkAchievements(pointsEarned);
-      
+
       if (gameMode === 'timed') {
         setTimeLeft(prev => prev + (currentSentence.timeBonus || 0));
       }
@@ -220,7 +243,7 @@ const StoryScrambleGame = () => {
   const calculatePoints = () => {
     let points = currentSentence.points;
     if (showHint) points = Math.floor(points * 0.7);
-    if (gameMode === 'timed') points = Math.floor(points * (1 + timeLeft/60));
+    if (gameMode === 'timed') points = Math.floor(points * (1 + timeLeft / 60));
     return points;
   };
 
@@ -245,7 +268,7 @@ const StoryScrambleGame = () => {
       setCurrentSentenceIndex(prev => prev + 1);
     } else {
       setFeedback('game-complete');
-      setHasStarted(false); // Allow mode switching after completion
+      setHasStarted(false);
     }
   };
 
@@ -257,6 +280,7 @@ const StoryScrambleGame = () => {
     setAchievements([]);
     setFeedback(null);
     setHasStarted(false);
+    setHighlightedWord(null);
     if (mode === 'timed') {
       setTimeLeft(60);
     }
@@ -264,6 +288,7 @@ const StoryScrambleGame = () => {
 
   const speakSentence = (text) => {
     if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => setIsSpeaking(false);
@@ -272,15 +297,59 @@ const StoryScrambleGame = () => {
     }
   };
 
+  // --- Story Read with Highlight (Production ready) ---
+
+  const readStoryWithHighlight = useCallback(() => {
+    if (!storyProgress.length || isSpeaking) return;
+
+    window.speechSynthesis.cancel();
+    setIsSpeaking(true);
+    setHighlightedWord(null);
+
+    const fullStory = storyProgress.join(' ');
+    const tokens = tokenize(fullStory);
+
+    const utterance = new window.SpeechSynthesisUtterance(fullStory);
+    utteranceRef.current = utterance;
+
+    // Only works if browser supports onboundary
+    utterance.onboundary = (event) => {
+      if (event.name === 'word') {
+        const charIndex = event.charIndex;
+        let charCount = 0;
+        for (let i = 0; i < tokens.length; i++) {
+          charCount += tokens[i].length;
+          // Only highlight words, not spaces/punctuation
+          if (charIndex < charCount && /\w/.test(tokens[i])) {
+            setHighlightedWord(i);
+            break;
+          }
+        }
+      }
+    };
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      setHighlightedWord(null);
+    };
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+      setHighlightedWord(null);
+    };
+
+    window.speechSynthesis.speak(utterance);
+  }, [storyProgress, isSpeaking]);
+
+  // ----------- COMPONENTS -----------
+
   const GameHeader = () => (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
       <h1 className="text-3xl md:text-4xl font-extrabold text-purple-700 flex items-center">
-        <BookOpen className="w-8 h-8 md:w-10 md:h-10 text-purple-600 mr-3" /> 
+        <BookOpen className="w-8 h-8 md:w-10 md:h-10 text-purple-600 mr-3" />
         Story Scramble
       </h1>
       {gameMode && (
         <div className="flex items-center space-x-3">
-          <button 
+          <button
             onClick={() => setShowAchievements(true)}
             className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors relative"
             aria-label="Show achievements"
@@ -323,8 +392,8 @@ const StoryScrambleGame = () => {
           className={`px-6 py-2 rounded-full font-medium transition-all flex flex-col items-center ${
             hasStarted && gameMode !== 'story' ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'
           } ${
-            gameMode === 'story' 
-              ? 'bg-purple-600 text-white shadow-md' 
+            gameMode === 'story'
+              ? 'bg-purple-600 text-white shadow-md'
               : 'bg-gray-100 hover:bg-gray-200'
           }`}
         >
@@ -341,8 +410,8 @@ const StoryScrambleGame = () => {
           className={`px-6 py-2 rounded-full font-medium transition-all flex flex-col items-center ${
             hasStarted && gameMode !== 'timed' ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'
           } ${
-            gameMode === 'timed' 
-              ? 'bg-purple-600 text-white shadow-md' 
+            gameMode === 'timed'
+              ? 'bg-purple-600 text-white shadow-md'
               : 'bg-gray-100 hover:bg-gray-200'
           }`}
         >
@@ -356,15 +425,14 @@ const StoryScrambleGame = () => {
       </div>
       {hasStarted && (
         <p className="text-center text-sm text-gray-500 mt-2">
-          {gameMode === 'story' 
-            ? "Complete the story to switch modes" 
+          {gameMode === 'story'
+            ? "Complete the story to switch modes"
             : "Finish the timed challenge to switch modes"}
         </p>
       )}
     </div>
   );
 
-  // Add this function to handle sentence reset
   const handleResetSentence = () => {
     resetGameState();
   };
@@ -381,7 +449,7 @@ const StoryScrambleGame = () => {
             className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg font-bold text-base md:text-lg transition-all
               ${feedback === 'correct' ? 'bg-green-200 text-green-800 animate-pulse' :
                 feedback === 'incorrect' ? 'bg-red-200 text-red-800' :
-                'bg-purple-300 text-purple-900 hover:bg-purple-400'
+                  'bg-purple-300 text-purple-900 hover:bg-purple-400'
               }
               ${isSpeaking ? 'opacity-70 cursor-not-allowed' : ''}
             `}
@@ -419,7 +487,7 @@ const StoryScrambleGame = () => {
     </div>
   );
 
-    const GameControls = () => (
+  const GameControls = () => (
     <div className="flex flex-col sm:flex-row justify-center items-center gap-3 mb-6">
       <button
         onClick={checkSentence}
@@ -432,9 +500,9 @@ const StoryScrambleGame = () => {
       >
         <CheckCircle className="inline-block w-5 h-5 mr-2" /> Check
       </button>
-      
+
       <button
-        onClick={handleResetSentence}  // Changed from resetSentence to handleResetSentence
+        onClick={handleResetSentence}
         disabled={assembledSentence.length === 0 || isSpeaking}
         className={`px-5 py-2.5 font-bold rounded-full shadow-md transition-all flex-1 sm:flex-none
           ${assembledSentence.length === 0 || isSpeaking
@@ -444,7 +512,7 @@ const StoryScrambleGame = () => {
       >
         <RotateCcw className="inline-block w-5 h-5 mr-2" /> Reset
       </button>
-      
+
       <button
         onClick={() => speakSentence(currentSentence.parts.join(' '))}
         disabled={isSpeaking}
@@ -502,7 +570,6 @@ const StoryScrambleGame = () => {
         <h2 className="text-2xl font-bold text-purple-700 mb-4 flex items-center">
           <Trophy className="mr-2" /> Your Achievements
         </h2>
-        
         {achievements.length > 0 ? (
           <div className="space-y-3">
             {achievements.includes('high-scorer') && (
@@ -538,7 +605,6 @@ const StoryScrambleGame = () => {
             <p className="text-gray-500 italic">Complete sentences to earn achievements!</p>
           </div>
         )}
-        
         <button
           onClick={() => setShowAchievements(false)}
           className="mt-6 w-full py-2 bg-purple-600 text-white rounded-full font-bold hover:bg-purple-700 transition-colors"
@@ -549,26 +615,65 @@ const StoryScrambleGame = () => {
     </div>
   );
 
+  // -- Story display with read+highlight after completion
+  const StoryDisplay = () => {
+    if (!storyProgress.length) return null;
+    const fullStory = storyProgress.join(' ');
+    const tokens = tokenize(fullStory);
+    return (
+      <div className="bg-white p-4 rounded-lg shadow-inner mb-6 max-h-96 overflow-y-auto">
+        <h3 className="text-lg md:text-xl font-semibold mb-3 md:mb-4 text-gray-700">
+          Your Completed Story:
+        </h3>
+        <div className="text-left" aria-live="polite">
+          <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+            {tokens.map((token, index) => {
+              const isWord = /\w/.test(token);
+              return (
+                <span
+                  key={index}
+                  className={`transition-colors duration-200 ${
+                    isWord && highlightedWord === index
+                      ? 'bg-yellow-200 text-yellow-900 rounded px-1'
+                      : ''
+                  }`}
+                >
+                  {token}
+                </span>
+              );
+            })}
+          </p>
+        </div>
+        <button
+          onClick={readStoryWithHighlight}
+          disabled={isSpeaking}
+          className={`mt-4 px-4 py-2 rounded-full font-medium flex items-center justify-center mx-auto ${
+            isSpeaking
+              ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+              : 'bg-green-500 text-white hover:bg-green-600'
+          }`}
+          aria-label={isSpeaking ? 'Reading the story' : 'Read me the story'}
+        >
+          <Volume2 className="w-5 h-5 mr-2" />
+          {isSpeaking ? 'Reading...' : 'Read Me The Story'}
+        </button>
+        {!('onboundary' in window.SpeechSynthesisUtterance.prototype) && (
+          <div className="mt-2 text-xs text-red-500 text-center">
+            Word highlighting is not supported in this browser.
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const GameCompleteScreen = () => (
     <div className="text-center p-6 md:p-8 bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl border-2 border-purple-300 shadow-lg">
       <h2 className="text-2xl md:text-3xl font-bold text-purple-700 mb-4 animate-bounce">
         {feedback === 'game-complete' ? '🎉 Game Complete! 🎉' : '⏰ Time Up! ⏰'}
       </h2>
-      
-      <div className="bg-white p-4 md:p-6 rounded-lg shadow-inner mb-6 max-h-96 overflow-y-auto">
-        <h3 className="text-lg md:text-xl font-semibold mb-3 md:mb-4 text-gray-700">
-          {gameMode === 'story' ? "Your Completed Story:" : "Your Progress:"}
-        </h3>
-        <div className="text-left space-y-2">
-          {storyProgress.map((segment, idx) => (
-            <p key={idx} className="text-base md:text-lg text-gray-600">"{segment}"</p>
-          ))}
-        </div>
-      </div>
-      
+      <StoryDisplay />
       <div className="bg-white p-3 md:p-4 rounded-lg shadow-sm mb-6">
         <h3 className="text-lg md:text-xl font-semibold mb-2 text-purple-600">Final Score: {score}</h3>
-        
         <div className="mt-4 bg-yellow-50 p-3 rounded-lg border border-yellow-200">
           <h4 className="text-md font-semibold text-yellow-800 flex items-center justify-center mb-2">
             <Trophy className="mr-2" /> Achievements Earned
@@ -579,8 +684,8 @@ const StoryScrambleGame = () => {
                 <div key={idx} className="bg-white px-3 py-1 rounded-full border border-yellow-300 flex items-center">
                   <Award className="w-4 h-4 text-yellow-600 mr-1" />
                   <span className="text-sm font-medium text-yellow-700">
-                    {ach === 'high-scorer' ? 'High Scorer' : 
-                     ach === 'game-completer' ? 'Game Master' : 'Point Master'}
+                    {ach === 'high-scorer' ? 'High Scorer' :
+                      ach === 'game-completer' ? 'Game Master' : 'Point Master'}
                   </span>
                 </div>
               ))
@@ -590,7 +695,6 @@ const StoryScrambleGame = () => {
           </div>
         </div>
       </div>
-      
       <button
         onClick={() => handleSelectMode(gameMode === 'story' ? 'timed' : 'story')}
         className="px-6 md:px-8 py-2.5 md:py-3 bg-purple-600 text-white font-bold rounded-full shadow-lg hover:bg-purple-700 transition-colors mb-4"
@@ -605,6 +709,8 @@ const StoryScrambleGame = () => {
       </button>
     </div>
   );
+
+  // ----------- MAIN RETURN -----------
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100 p-4 md:p-6">
@@ -642,7 +748,7 @@ const StoryScrambleGame = () => {
               <>
                 <div className="text-center mb-4">
                   <p className="text-lg font-semibold text-gray-700">
-                    {gameMode === 'story' 
+                    {gameMode === 'story'
                       ? `Story Part ${currentSentenceIndex + 1} of ${currentSentences.length}`
                       : `Challenge ${currentSentenceIndex + 1} of ${currentSentences.length}`}
                   </p>
@@ -653,7 +759,6 @@ const StoryScrambleGame = () => {
                     )}
                   </p>
                 </div>
-
                 <SentenceConstructionArea />
                 <WordBank />
                 <GameControls />
@@ -664,7 +769,6 @@ const StoryScrambleGame = () => {
           </>
         )}
       </div>
-
       {/* Custom CSS for animations */}
       <style jsx>{`
         @keyframes fade-in {

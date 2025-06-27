@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import ModuleGrid from "../components/ModuleGrid";
 import StudentWelcomeSection from "../components/StudentWelcomeSection";
 
+import UltimateAssessmentCard from "../components/UltimateAssessmentCard";
+
 export default function SkillAssessmentPage() {
   const navigate = useNavigate();
   const [selectedModuleKey, setSelectedModuleKey] = useState("");
@@ -27,13 +29,16 @@ export default function SkillAssessmentPage() {
         <StudentWelcomeSection />
       </Box>
 
+      <UltimateAssessmentCard />
+
       <Box sx={{ maxWidth: 1100, mx: "auto", p: 3 }}>
         <Paper elevation={6} sx={{ p: 4, mb: 4, textAlign: "center" }}>
           <Typography variant="h4" fontWeight="bold" gutterBottom>
             🎯 Select a Module to Start Assessment
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Practice your English skills and get instant feedback on where you shine and where to improve!
+            Practice your English skills and get instant feedback on where you
+            shine and where to improve!
           </Typography>
         </Paper>
 

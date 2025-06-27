@@ -100,26 +100,50 @@ export default function Battles() {
     // eslint-disable-next-line
   }, [battle?.id]);
 
-  // 4. Match timer (15 min)
+  // 4) 15-min match timer (REFINED FOR LITMUS TEST)
   useEffect(() => {
     if (!battle || !battle.createdAt || battle.status === "ended") return;
-    if (!battle.createdAt.toDate) return;
+    if (!battle.createdAt.toDate) {
+      console.error("Invalid createdAt field:", battle.createdAt);
+      return;
+    }
+
     const createdMs = battle.createdAt.toDate().getTime();
-    const matchDeadline = createdMs + 15 * 60 * 1000;
-    const timer = setInterval(() => {
+    const matchDeadline = createdMs + 15 * 60 * 1000; // 15 minutes
+
+    const handleMatchTimer = setInterval(async () => {
       const now = Date.now();
       const diff = matchDeadline - now;
       if (diff <= 0) {
         setMatchTimeLeft(0);
-        if (battle.status === "waiting") cancelBattle();
-        else if (battle.status === "ongoing") endBattle("matchTimeUp");
+        if (battle.status === "waiting") {
+          const playersCount = battle.players.length;
+          if (playersCount >= 2) {
+            // Start the battle even if MAX_PLAYERS not reached!
+            try {
+              await updateDoc(doc(firestore, "battles", battle.id), {
+                status: "ongoing",
+                questions: battle.questions && battle.questions.length > 0 ? battle.questions : getRandomQuestions(10),
+              });
+              // (No need to setQuestions here, real-time listener will update via onSnapshot)
+            } catch (err) {
+              console.error("Failed to start battle after timer:", err);
+              cancelBattle();
+            }
+          } else {
+            cancelBattle(); // not enough players
+          }
+        } else if (battle.status === "ongoing") {
+          endBattle("matchTimeUp");
+        }
       } else {
         setMatchTimeLeft(Math.floor(diff / 1000));
       }
     }, 1000);
-    return () => clearInterval(timer);
-    // eslint-disable-next-line
+
+    return () => clearInterval(handleMatchTimer);
   }, [battle]);
+
 
   // 5. Question timer (15s)
   useEffect(() => {

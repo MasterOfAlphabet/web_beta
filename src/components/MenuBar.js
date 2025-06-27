@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate} from "react-router-dom";
 import {
   Menu as MenuIcon,
   User,
@@ -11,6 +11,9 @@ import {
 import { signOut } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { AuthContext } from "../App";
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -48,17 +51,33 @@ export default function MenuBar() {
   }, [dropdownOpen]);
 
   async function handleSignOut() {
-    try {
-      await signOut(auth);
-      setDropdownOpen(false);
-      if (typeof setLoggedInUser === "function") {
-        setLoggedInUser(null);
-      }
-      navigate("/");
-    } catch (error) {
-      console.error("Sign out error:", error);
+  try {
+    await signOut(auth);
+
+    // Clear all relevant storage
+    localStorage.removeItem("studentUser");
+    localStorage.removeItem("classGroup");
+    localStorage.removeItem("moduleSelection");
+    sessionStorage.clear(); // optional but good cleanup
+
+    toast.success("You have been signed out.");
+
+    // Close dropdown
+    setDropdownOpen(false);
+
+    // Reset app state
+    if (typeof setLoggedInUser === "function") {
+      setLoggedInUser(null);
     }
+
+    // Navigate to homepage or login
+    navigate("/"); // or "/" if you prefer
+  } catch (error) {
+    toast.error("Sign out failed. Please try again.");
+    console.error("Sign out error:", error);
   }
+}
+
 
   const getDaysRemaining = () => {
     const remaining = user?.subscriptionDaysRemaining;

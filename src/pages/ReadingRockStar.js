@@ -22,18 +22,18 @@ const ReadingRockStar = () => {
 
   const gameContent = {
     words: {
-      rookie: ['cat', 'dog', 'sun', 'hat', 'run'],
-      racer: ['elephant', 'butterfly', 'umbrella', 'adventure', 'celebrate'],
-      master: ['extravaganza', 'phenomenon', 'quintessential', 'magnificent', 'extraordinary'],
-      prodigy: ['antidisestablishmentarianism', 'pneumonoultramicroscopicsilicovolcanoconiosis', 'floccinaucinihilipilification', 'pseudopseudohypoparathyroidism'],
-      wizard: ['sesquipedalian', 'xenotransplantation', 'quizzaciously', 'syzygy', 'onomatopoeia']
+      rookie: ['cat', 'dog', 'sun', 'hat', 'run', 'fun', 'big', 'red', 'yes'],
+      racer: ['happy', 'jumping', 'beautiful', 'wonderful', 'elephant', 'butterfly', 'umbrella', 'adventure', 'celebrate'],
+      master: ['sophisticated', 'responsible', 'independent', 'extravaganza', 'phenomenon', 'quintessential', 'magnificent', 'extraordinary'],
+      prodigy: ['incomprehensible', 'extraordinarily', 'simultaneously', 'internationally'],
+      wizard: ['sesquipedalian', 'quizzaciously', 'onomatopoeia']
     },
     sentences: {
-      rookie: ['The sun is bright.', 'I like to play.', 'She has a red hat.', 'We run fast.', 'It is fun.'],
-      racer: ['The quick brown fox jumps over the lazy dog.', 'Reading regularly improves comprehension skills.', 'Adventure awaits around every corner.', 'Celebrate small victories every day.', 'Learning new words expands your world.'],
-      master: ['The phenomenon of bioluminescence occurs in various marine organisms.', 'Her magnanimous donation helped build the new community center.', 'Quintessential examples of Renaissance art can be found in Florence.', 'The extraterrestrial hypothesis remains controversial among scientists.'],
-      prodigy: ['The antidisestablishmentarianism movement opposed the withdrawal of state support from an established church.', 'Pneumonoultramicroscopicsilicovolcanoconiosis is a lung disease caused by inhaling very fine silicate or quartz dust.', 'His argument was dismissed as mere floccinaucinihilipilification by the academic panel.'],
-      wizard: ['The sesquipedalian professor\'s loquacious discourse on xenotransplantation left the audience both enlightened and exhausted.', 'Quizzaciously, she solved the cryptic crossword while juggling three other mental puzzles.', 'The syzygy of celestial bodies created a spectacular astronomical event visible across the hemisphere.']
+      rookie: ['The cat is big.', 'I like to run.', 'The sun is hot.', 'Dogs can jump.', 'The sun is bright.', 'I like to play.', 'She has a red hat.', 'We run fast.', 'It is fun.'],
+      racer: ['The beautiful butterfly flies in the garden.', 'My friend likes to read interesting books.', 'The quick brown fox jumps over the lazy dog.', 'Reading regularly improves comprehension skills.', 'Adventure awaits around every corner.', 'Celebrate small victories every day.', 'Learning new words expands your world.'],
+      master: ['The magnificent elephant walked gracefully through the jungle.', 'Scientists discovered extraordinary fossils in the ancient cave.', 'The phenomenon of bioluminescence occurs in various marine organisms.', 'Her magnanimous donation helped build the new community center.', 'Quintessential examples of Renaissance art can be found in Florence.', 'The extraterrestrial hypothesis remains controversial among scientists.'],
+      prodigy: ['The sophisticated technology revolutionized our understanding of quantum mechanics.', 'International cooperation facilitates unprecedented scientific breakthroughs.'],
+      wizard: ['Interdisciplinary collaboration among researchers from diverse backgrounds catalyzes innovative solutions to complex global challenges.']
     },
     paragraphs: {
       rookie: [

@@ -1,64 +1,110 @@
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, serverTimestamp, onSnapshot, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import {
+  collection, addDoc, serverTimestamp, onSnapshot, deleteDoc, doc, updateDoc
+} from 'firebase/firestore';
 import { firestore } from '../services/firebase';
-import { 
-  FaPlus, FaTrash, FaUsers, FaClock, FaPlay, FaPause, FaStop, 
-  FaTrophy, FaChartBar, FaFilter, FaSearch, FaRefresh, FaBolt,
-  FaEye, FaCog, FaCalendarAlt, FaGamepad, FaTimes, FaCheck,
-  FaBookReader, FaReader, FaMicrophone, FaEdit, FaPencilAlt, FaHeadphones,
-  FaBookOpen, FaFlash, FaLayerGroup, FaGraduationCap, FaGlobe,
-  FaRocket, FaShieldAlt, FaMedal, FaStar, FaFire, FaComments,
-  FaBootstrap
+import {
+  FaPlus, FaTrash, FaUsers, FaClock, FaPlay, FaTrophy, FaChartBar,
+  FaSearch, FaBolt, FaEye, FaCog, FaCalendarAlt, FaGamepad, FaTimes, FaCheck,
+  FaBookReader, FaMicrophone, FaEdit, FaPencilAlt, FaHeadphones,
+  FaBookOpen, FaBootstrap, FaLayerGroup, FaRocket, FaShieldAlt, FaComments
 } from 'react-icons/fa';
-
-import BattleCard from '../components/Battles/BattleDisplayCardForAdmin';
-
 import { Link } from 'react-router-dom';
 
-const BattleCreationDashboardForAdmin = () => {
+import { allQuestions } from '../data/battleQuestions';
+
+const modules_icons_colors = [
+  { name: "Spelling", icon: FaBookReader, color: "#f44336", bgGradient: "from-red-400 to-red-600" },
+  { name: "Reading", icon: FaBookReader, color: "#e91e63", bgGradient: "from-pink-400 to-pink-600" },
+  { name: "Pronunciation", icon: FaMicrophone, color: "#9c27b0", bgGradient: "from-purple-400 to-purple-600" },
+  { name: "Grammar", icon: FaEdit, color: "#673ab7", bgGradient: "from-indigo-400 to-indigo-600" },
+  { name: "Writing", icon: FaPencilAlt, color: "#3f51b5", bgGradient: "from-blue-400 to-blue-600" },
+  { name: "Listening", icon: FaHeadphones, color: "#2196f3", bgGradient: "from-cyan-400 to-cyan-600" },
+  { name: "Vocabulary", icon: FaBookOpen, color: "#4caf50", bgGradient: "from-green-400 to-green-600" },
+  { name: "S.H.A.R.P", icon: FaBootstrap, color: "#ff9800", bgGradient: "from-amber-400 to-orange-500" },
+  { name: "8-In-1", icon: FaLayerGroup, color: "#795548", bgGradient: "from-slate-400 to-slate-600" },
+];
+
+const classGroups = [
+  { value: 'class_1_2', label: 'Class I-II' },
+  { value: 'class_3_5', label: 'Class III-V' },
+  { value: 'class_6_10', label: 'Class VI-X' }
+];
+
+const difficultyLevels = [
+  { value: 'Rookie', label: 'Rookie ⭐', questions: 25 },
+  { value: 'Racer', label: 'Racer ⭐⭐', questions: 20 },
+  { value: 'Master', label: 'Master ⭐⭐⭐', questions: 15 },
+  { value: 'Prodigy', label: 'Prodigy ⭐⭐⭐⭐', questions: 10 },
+  { value: 'Wizard', label: 'Wizard ⭐⭐⭐⭐⭐', questions: 5 }
+];
+
+const playerCounts = [5, 10, 25, 50, 100];
+const battleModes = [
+  { value: 'standard', label: 'Standard Battle', icon: FaGamepad },
+  { value: 'speed', label: 'Speed Round', icon: FaRocket },
+  { value: 'survival', label: 'Survival Mode', icon: FaShieldAlt },
+  { value: 'tournament', label: 'Tournament Style', icon: FaTrophy }
+];
+
+const battleTypes = [
+  { value: 'public', label: 'Public Battle', desc: 'Anyone can join' },
+  { value: 'private', label: 'Private Battle', desc: 'Invite only' },
+  { value: 'scheduled', label: 'Scheduled Battle', desc: 'Starts at specific time' }
+];
+
+function getRandomQuestions(module, classGroup, count) {
+  let pool = [];
+  if (module === "8-In-1" || module === "8-in-1") {
+    Object.values(allQuestions).forEach((modData) => {
+      if (modData[classGroup]) {
+        if (Array.isArray(modData[classGroup])) {
+          pool = [...pool, ...modData[classGroup]];
+        } else {
+          Object.values(modData[classGroup]).forEach((qt) => {
+            pool = [...pool, ...qt];
+          });
+        }
+      }
+    });
+  } else {
+    const modData = allQuestions[module];
+    if (modData && modData[classGroup]) {
+      if (Array.isArray(modData[classGroup])) {
+        pool = [...modData[classGroup]];
+      } else {
+        Object.values(modData[classGroup]).forEach((qt) => {
+          pool = [...pool, ...qt];
+        });
+      }
+    }
+  }
+  if (!pool.length) return [];
+  const shuffled = pool.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
+const BattleControlCenter = () => {
   const [activeBattles, setActiveBattles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [moduleFilter, setModuleFilter] = useState('all');
+  const [classGroupFilter, setClassGroupFilter] = useState('all');
   const [showStats, setShowStats] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedModule, setSelectedModule] = useState(null);
-
-  const [classGroupFilter, setClassGroupFilter] = useState('all');
-
-  // Enhanced modules with icons and colors
-  const modules_icons_colors = [
-    { name: "Spelling", icon: FaBookReader, color: "#f44336", bgGradient: "from-red-400 to-red-600" },
-    { name: "Reading", icon: FaBookReader, color: "#e91e63", bgGradient: "from-pink-400 to-pink-600" },
-    { name: "Pronunciation", icon: FaMicrophone, color: "#9c27b0", bgGradient: "from-purple-400 to-purple-600" },
-    { name: "Grammar", icon: FaEdit, color: "#673ab7", bgGradient: "from-indigo-400 to-indigo-600" },
-    { name: "Writing", icon: FaPencilAlt, color: "#3f51b5", bgGradient: "from-blue-400 to-blue-600" },
-    { name: "Listening", icon: FaHeadphones, color: "#2196f3", bgGradient: "from-cyan-400 to-cyan-600" },
-    { name: "Vocabulary", icon: FaBookOpen, color: "#4caf50", bgGradient: "from-green-400 to-green-600" },
-    { name: "S.H.A.R.P", icon: FaBootstrap, color: "#ff9800", bgGradient: "from-amber-400 to-orange-500" },
-    { name: "8-In-1", icon: FaLayerGroup, color: "#795548", bgGradient: "from-slate-400 to-slate-600" },
-  ];
-
-    // Class groups
-  const classGroups = [
-    { value: 'class_1_2', label: 'Class I-II' },
-    { value: 'class_3_5', label: 'Class III-V' },
-    { value: 'class_6_10', label: 'Class VI-X' }
-  ];
-
-  // Modal state
   const [modalForm, setModalForm] = useState({
-    classGroup: 'beginner',
-    difficultyLevel: 'easy',
+    classGroup: 'class_1_2',
+    difficultyLevel: 'Rookie',
     configurationType: 'basic',
     numberOfQuestions: 25,
     numberOfPlayers: 10,
     startDate: '',
     startTime: '',
     battleMode: 'standard',
-    timeLimit: 10,
+    timeLimitMinutes: 10, // Changed to minutes for clarity
     allowSpectators: true,
     enableChat: true,
     showLeaderboard: true,
@@ -67,38 +113,6 @@ const BattleCreationDashboardForAdmin = () => {
     description: ''
   });
 
-  // Configuration options
- /**
-  const classGroups = [
-    { value: 'beginner', label: 'Beginner (Ages 6-8)' },
-    { value: 'intermediate', label: 'Intermediate (Ages 9-12)' },
-    { value: 'advanced', label: 'Advanced (Ages 13+)' }
-  ];
-  */
-
-  const difficultyLevels = [
-    { value: 'Rookie', label: 'Rookie ⭐', questions: 25 },
-    { value: 'Racer', label: 'Racer ⭐⭐', questions: 20 },
-    { value: 'Master', label: 'Master ⭐⭐⭐', questions: 15 },
-    { value: 'Prodigy', label: 'Prodigy ⭐⭐⭐⭐', questions: 10 },
-    { value: 'Wizard', label: 'Wizard ⭐⭐⭐⭐⭐', questions: 5 }
-  ];
-
-  const playerCounts = [5, 10, 25, 50, 100];
-  const battleModes = [
-    { value: 'standard', label: 'Standard Battle', icon: FaGamepad },
-    { value: 'speed', label: 'Speed Round', icon: FaRocket },
-    { value: 'survival', label: 'Survival Mode', icon: FaShieldAlt },
-    { value: 'tournament', label: 'Tournament Style', icon: FaTrophy }
-  ];
-
-  const battleTypes = [
-    { value: 'public', label: 'Public Battle', desc: 'Anyone can join' },
-    { value: 'private', label: 'Private Battle', desc: 'Invite only' },
-    { value: 'scheduled', label: 'Scheduled Battle', desc: 'Starts at specific time' }
-  ];
-
-  // Load active battles
   useEffect(() => {
     const battlesRef = collection(firestore, 'battles');
     const unsubscribe = onSnapshot(battlesRef, (snapshot) => {
@@ -106,11 +120,9 @@ const BattleCreationDashboardForAdmin = () => {
       setActiveBattles(battles);
       setIsLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
-  // Add notification
   const addNotification = (message, type = 'success') => {
     const id = Date.now();
     setNotifications(prev => [...prev, { id, message, type }]);
@@ -119,7 +131,6 @@ const BattleCreationDashboardForAdmin = () => {
     }, 3000);
   };
 
-  // Open customization modal
   const openCustomizationModal = (module) => {
     setSelectedModule(module);
     setModalForm({
@@ -129,40 +140,55 @@ const BattleCreationDashboardForAdmin = () => {
     setShowModal(true);
   };
 
-  // Handle form changes
   const handleFormChange = (field, value) => {
     setModalForm(prev => {
       const updated = { ...prev, [field]: value };
-      
-      // Auto-update questions count based on difficulty
       if (field === 'difficultyLevel') {
         const difficulty = difficultyLevels.find(d => d.value === value);
         updated.numberOfQuestions = difficulty?.questions || 25;
       }
-      
       return updated;
     });
   };
 
-  // Create a new battle with customization
   const createCustomBattle = async () => {
     try {
+      // Validate time limit
+      if (modalForm.timeLimitMinutes < 5 || modalForm.timeLimitMinutes > 60) {
+        addNotification('Time limit must be between 5 and 60 minutes', 'error');
+        return;
+      }
+
+      const questions = getRandomQuestions(
+        selectedModule.name,
+        modalForm.classGroup,
+        modalForm.numberOfQuestions
+      );
+      
+      if (!questions.length) {
+        addNotification('No questions available for this module/class group.', 'error');
+        return;
+      }
+
       const battleData = {
         module: selectedModule.name,
         status: modalForm.battleType === 'scheduled' ? 'scheduled' : 'waiting',
         createdAt: serverTimestamp(),
-        ...modalForm,
+        classGroup: modalForm.classGroup,
+        difficultyLevel: modalForm.difficultyLevel,
+        numberOfQuestions: modalForm.numberOfQuestions,
+        numberOfPlayers: modalForm.numberOfPlayers,
+        battleType: modalForm.battleType,
         players: [],
         scores: {},
+        questions,
         settings: {
-          classGroup: modalForm.classGroup,
-          difficulty: modalForm.difficultyLevel,
-          configurationType: modalForm.configurationType,
           battleMode: modalForm.battleMode,
-          timeLimit: modalForm.timeLimit * 60, // Convert to seconds
+          timeLimit: modalForm.timeLimitMinutes * 60, // Convert to seconds
           allowSpectators: modalForm.allowSpectators,
           enableChat: modalForm.enableChat,
-          showLeaderboard: modalForm.showLeaderboard
+          showLeaderboard: modalForm.showLeaderboard,
+          configurationType: modalForm.configurationType
         }
       };
 
@@ -181,7 +207,6 @@ const BattleCreationDashboardForAdmin = () => {
     }
   };
 
-  // Cancel a battle
   const cancelBattle = async (battleId) => {
     try {
       await deleteDoc(doc(firestore, 'battles', battleId));
@@ -192,12 +217,22 @@ const BattleCreationDashboardForAdmin = () => {
     }
   };
 
-  // Start battle manually
-  const startBattle = async (battleId) => {
+  const startBattle = async (battle) => {
     try {
-      await updateDoc(doc(firestore, 'battles', battleId), {
+      let questions = (battle.questions && battle.questions.length > 0)
+        ? battle.questions
+        : getRandomQuestions(battle.module, battle.settings?.classGroup, battle.numberOfQuestions || 10);
+
+      if (!questions.length) {
+        addNotification('No questions available for this module/class group.', 'error');
+        return;
+      }
+
+      await updateDoc(doc(firestore, 'battles', battle.id), {
         status: 'ongoing',
-        startedAt: serverTimestamp()
+        questions,
+        startedAt: serverTimestamp(),
+        answeredPlayers: [],
       });
       addNotification('Battle started!');
     } catch (error) {
@@ -206,21 +241,6 @@ const BattleCreationDashboardForAdmin = () => {
     }
   };
 
-  // Pause battle
-  const pauseBattle = async (battleId) => {
-    try {
-      await updateDoc(doc(firestore, 'battles', battleId), {
-        status: 'paused',
-        pausedAt: serverTimestamp()
-      });
-      addNotification('Battle paused!');
-    } catch (error) {
-      console.error('Error pausing battle:', error);
-      addNotification('Failed to pause battle', 'error');
-    }
-  };
-
-  // Format time remaining
   const formatTimeRemaining = (createdAt, joinTimeLimit) => {
     if (!createdAt?.toDate) return '0:00';
     const endTime = createdAt.toDate().getTime() + (joinTimeLimit * 1000);
@@ -231,26 +251,21 @@ const BattleCreationDashboardForAdmin = () => {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  // Filter battles
   const filteredBattles = activeBattles.filter(battle => {
     const matchesSearch = battle.module.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || battle.status === statusFilter;
     const matchesModule = moduleFilter === 'all' || battle.module === moduleFilter;
-    
-    const matchesClassGroup = classGroupFilter === 'all' || 
+    const matchesClassGroup = classGroupFilter === 'all' ||
       (battle.settings?.classGroup === classGroupFilter);
     return matchesSearch && matchesStatus && matchesModule && matchesClassGroup;
-
   });
 
-  // Get battle statistics
   const getBattleStats = () => {
     const total = activeBattles.length;
     const waiting = activeBattles.filter(b => b.status === 'waiting').length;
     const ongoing = activeBattles.filter(b => b.status === 'ongoing').length;
     const paused = activeBattles.filter(b => b.status === 'paused').length;
     const totalPlayers = activeBattles.reduce((sum, b) => sum + (b.players?.length || 0), 0);
-    
     return { total, waiting, ongoing, paused, totalPlayers };
   };
 
@@ -264,8 +279,8 @@ const BattleCreationDashboardForAdmin = () => {
           <div
             key={notification.id}
             className={`px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 ${
-              notification.type === 'error' 
-                ? 'bg-red-500 text-white' 
+              notification.type === 'error'
+                ? 'bg-red-500 text-white'
                 : 'bg-emerald-500 text-white'
             }`}
           >
@@ -299,16 +314,13 @@ const BattleCreationDashboardForAdmin = () => {
                 </button>
               </div>
             </div>
-
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Basic Settings */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
                     <FaCog className="text-blue-500" />
                     Basic Settings
                   </h3>
-                  
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Class Group</label>
                     <select
@@ -321,7 +333,6 @@ const BattleCreationDashboardForAdmin = () => {
                       ))}
                     </select>
                   </div>
-
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Difficulty Level</label>
                     <select
@@ -334,7 +345,6 @@ const BattleCreationDashboardForAdmin = () => {
                       ))}
                     </select>
                   </div>
-
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Configuration Type</label>
                     <div className="grid grid-cols-2 gap-2">
@@ -354,16 +364,15 @@ const BattleCreationDashboardForAdmin = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* Battle Configuration */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
                     <FaGamepad className="text-green-500" />
                     Battle Configuration
                   </h3>
-
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Battle Mode</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Battle Mode
+                    </label>
                     <div className="grid grid-cols-2 gap-2">
                       {battleModes.map(mode => (
                         <button
@@ -381,7 +390,6 @@ const BattleCreationDashboardForAdmin = () => {
                       ))}
                     </div>
                   </div>
-
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Number of Questions: {modalForm.numberOfQuestions}
@@ -390,7 +398,6 @@ const BattleCreationDashboardForAdmin = () => {
                       Auto-set based on difficulty level
                     </div>
                   </div>
-
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Number of Players</label>
                     <select
@@ -406,18 +413,17 @@ const BattleCreationDashboardForAdmin = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Advanced Settings */}
               {modalForm.configurationType === 'advanced' && (
                 <div className="border-t pt-6">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
                     <FaRocket className="text-purple-500" />
                     Advanced Settings
                   </h3>
-                  
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Battle Type</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Battle Type
+                      </label>
                       <select
                         value={modalForm.battleType}
                         onChange={(e) => handleFormChange('battleType', e.target.value)}
@@ -428,23 +434,25 @@ const BattleCreationDashboardForAdmin = () => {
                         ))}
                       </select>
                     </div>
-
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Time Limit (minutes)</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Time Limit (minutes)
+                      </label>
                       <input
                         type="number"
                         min="5"
                         max="60"
-                        value={modalForm.timeLimit}
-                        onChange={(e) => handleFormChange('timeLimit', parseInt(e.target.value))}
+                        value={modalForm.timeLimitMinutes}
+                        onChange={(e) => handleFormChange('timeLimitMinutes', parseInt(e.target.value))}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
-
                     {modalForm.battleType === 'scheduled' && (
                       <>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Start Date
+                          </label>
                           <input
                             type="date"
                             value={modalForm.startDate}
@@ -453,7 +461,9 @@ const BattleCreationDashboardForAdmin = () => {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Start Time</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Start Time
+                          </label>
                           <input
                             type="time"
                             value={modalForm.startTime}
@@ -464,8 +474,6 @@ const BattleCreationDashboardForAdmin = () => {
                       </>
                     )}
                   </div>
-
-                  {/* Toggle Options */}
                   <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                     {[
                       { key: 'allowSpectators', label: 'Allow Spectators', icon: FaEye },
@@ -490,9 +498,10 @@ const BattleCreationDashboardForAdmin = () => {
                       </div>
                     ))}
                   </div>
-
                   <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Battle Description (Optional)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Battle Description (Optional)
+                    </label>
                     <textarea
                       value={modalForm.description}
                       onChange={(e) => handleFormChange('description', e.target.value)}
@@ -502,8 +511,6 @@ const BattleCreationDashboardForAdmin = () => {
                   </div>
                 </div>
               )}
-
-              {/* Action Buttons */}
               <div className="flex gap-3 pt-4 border-t">
                 <button
                   onClick={() => setShowModal(false)}
@@ -525,7 +532,6 @@ const BattleCreationDashboardForAdmin = () => {
       )}
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header Section */}
         <div className="mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div>
@@ -534,8 +540,6 @@ const BattleCreationDashboardForAdmin = () => {
               </h1>
               <p className="text-gray-600">Manage and monitor all educational battles</p>
             </div>
-            
-            {/* Quick Stats */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-white/20 shadow-lg">
                 <div className="flex items-center gap-2">
@@ -576,10 +580,6 @@ const BattleCreationDashboardForAdmin = () => {
             </div>
           </div>
         </div>
-
-        
-
-        {/* Create Battle Section - Compact 2-row layout */}
         <div className="mb-10">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
             <span className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
@@ -597,11 +597,11 @@ const BattleCreationDashboardForAdmin = () => {
                   className="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1"
                   style={{ minHeight: '120px' }}
                 >
-                  <div 
+                  <div
                     className={`absolute inset-0 bg-gradient-to-br ${module.bgGradient} opacity-0 group-hover:opacity-15 transition-opacity duration-300`}
                   ></div>
                   <div className="relative z-10 flex flex-col items-center justify-center h-full">
-                    <div 
+                    <div
                       className={`w-10 h-10 rounded-lg bg-gradient-to-br ${module.bgGradient} flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300`}
                     >
                       <IconComponent className="text-white text-lg" />
@@ -621,12 +621,9 @@ const BattleCreationDashboardForAdmin = () => {
             })}
           </div>
         </div>
-
-{/* Controls Section */}
         <div className="mb-8">
           <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-lg">
             <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-              {/* Search */}
               <div className="relative flex-grow max-w-md">
                 <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
@@ -637,8 +634,6 @@ const BattleCreationDashboardForAdmin = () => {
                   className="w-full pl-10 pr-4 py-2 bg-white/50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-
-              {/* Filters */}
               <div className="flex gap-3">
                 <select
                   value={statusFilter}
@@ -650,7 +645,6 @@ const BattleCreationDashboardForAdmin = () => {
                   <option value="ongoing">Ongoing</option>
                   <option value="paused">Paused</option>
                 </select>
-
                 <select
                   value={moduleFilter}
                   onChange={(e) => setModuleFilter(e.target.value)}
@@ -661,8 +655,7 @@ const BattleCreationDashboardForAdmin = () => {
                     <option key={module.name} value={module.name}>{module.name}</option>
                   ))}
                 </select>
-
-                                <select
+                <select
                   value={classGroupFilter}
                   onChange={(e) => setClassGroupFilter(e.target.value)}
                   className="px-4 py-2 bg-white/50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -672,8 +665,6 @@ const BattleCreationDashboardForAdmin = () => {
                     <option key={group.value} value={group.value}>{group.label}</option>
                   ))}
                 </select>
-
-
                 <button
                   onClick={() => setShowStats(!showStats)}
                   className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
@@ -685,8 +676,6 @@ const BattleCreationDashboardForAdmin = () => {
             </div>
           </div>
         </div>
-        
-        {/* Active Battles Section */}
         <div>
           <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
             <span className="w-8 h-8 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center">
@@ -694,7 +683,6 @@ const BattleCreationDashboardForAdmin = () => {
             </span>
             Active Battles ({filteredBattles.length})
           </h2>
-          
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
@@ -712,13 +700,13 @@ const BattleCreationDashboardForAdmin = () => {
               {filteredBattles.map((battle) => {
                 const moduleData = modules_icons_colors.find(m => m.name === battle.module) || modules_icons_colors[0];
                 const IconComponent = moduleData.icon;
+                const canStart =
+                  battle.status === 'waiting' &&
+                  (battle.players?.length || 0) >= 2;
                 return (
                   <div key={battle.id} className="group bg-white/70 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300">
-                    {/* Header with gradient */}
                     <div className={`h-2 bg-gradient-to-r ${moduleData.bgGradient}`}></div>
-                    
                     <div className="p-6">
-                      {/* Battle Title & Status */}
                       <div className="flex justify-between items-start mb-4">
                         <div className="flex items-center gap-3">
                           <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${moduleData.bgGradient} flex items-center justify-center`}>
@@ -732,8 +720,8 @@ const BattleCreationDashboardForAdmin = () => {
                           </div>
                         </div>
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          battle.status === 'waiting' ? 'bg-amber-100 text-amber-800' : 
-                          battle.status === 'ongoing' ? 'bg-green-100 text-green-800' : 
+                          battle.status === 'waiting' ? 'bg-amber-100 text-amber-800' :
+                          battle.status === 'ongoing' ? 'bg-green-100 text-green-800' :
                           battle.status === 'paused' ? 'bg-orange-100 text-orange-800' :
                           battle.status === 'scheduled' ? 'bg-blue-100 text-blue-800' :
                           'bg-gray-100 text-gray-800'
@@ -741,8 +729,6 @@ const BattleCreationDashboardForAdmin = () => {
                           {battle.status.toUpperCase()}
                         </span>
                       </div>
-                      
-                      {/* Battle Info */}
                       <div className="space-y-3 mb-6">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center text-gray-600">
@@ -755,28 +741,24 @@ const BattleCreationDashboardForAdmin = () => {
                             </span>
                           )}
                         </div>
-                        
                         {battle.numberOfQuestions && (
                           <div className="flex items-center text-gray-600">
                             <FaBookReader className="mr-2 text-sm" />
                             <span className="text-sm">{battle.numberOfQuestions} questions</span>
                           </div>
                         )}
-
                         {battle.settings?.timeLimit && (
                           <div className="flex items-center text-gray-600">
                             <FaClock className="mr-2 text-sm" />
                             <span className="text-sm">{Math.floor(battle.settings.timeLimit / 60)} min limit</span>
                           </div>
                         )}
-
                         {battle.status === 'waiting' && battle.joinTimeLimit && (
                           <div className="flex items-center text-gray-600">
                             <FaClock className="mr-2 text-sm" />
                             <span className="text-sm">{formatTimeRemaining(battle.createdAt, battle.joinTimeLimit)} remaining</span>
                           </div>
                         )}
-
                         {battle.createdAt && (
                           <div className="flex items-center text-gray-500">
                             <FaCalendarAlt className="mr-2 text-sm" />
@@ -785,8 +767,6 @@ const BattleCreationDashboardForAdmin = () => {
                             </span>
                           </div>
                         )}
-
-                        {/* Battle Settings Tags */}
                         <div className="flex flex-wrap gap-1">
                           {battle.settings?.battleMode && (
                             <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">
@@ -805,44 +785,30 @@ const BattleCreationDashboardForAdmin = () => {
                           )}
                         </div>
                       </div>
-                      
-                      {/* Action Buttons */}
-<div className="flex gap-2">
-  {battle.status === 'scheduled' && battle.scheduledStartTime ? (
-    <div className="flex-1 py-2 bg-blue-100 text-blue-800 rounded-lg flex items-center justify-center gap-2 text-sm font-medium">
-<FaClock className="text-xs" />
-                            {(() => {
-                              const now = new Date();
-                              const startTime = battle.scheduledStartTime.toDate();
-                              const diff = startTime - now;
-                              const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                              const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                              const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                              const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                              
-                              if (days > 0) return `Starts in ${days}d ${hours}h`;
-                              if (hours > 0) return `Starts in ${hours}h ${minutes}m`;
-                              if (minutes > 0) return `Starts in ${minutes}m ${seconds}s`;
-                              return `Starts in ${seconds}s`;
-                            })()}
-                          </div>
-                        ) : (
-                          <Link
-                            to={`/battle-dashboard/${battle.id}`}
-                            className="flex-1 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+                      <div className="flex gap-2">
+                        {canStart && (
+                          <button
+                            onClick={() => startBattle(battle)}
+                            className="flex-1 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center gap-2 text-sm font-medium"
                           >
-                            <FaChartBar />
-                            Battle Dashboard
-                          </Link>
+                            <FaPlay />
+                            Start the Battle
+                          </button>
                         )}
-  
-  <button
-    onClick={() => cancelBattle(battle.id)}
-    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
-  >
-    <FaTrash className="text-xs" />
-  </button>
-</div>
+                        <Link
+                          to={`/battle-dashboard/${battle.id}`}
+                          className="flex-1 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+                        >
+                          <FaChartBar />
+                          Battle Dashboard
+                        </Link>
+                        <button
+                          onClick={() => cancelBattle(battle.id)}
+                          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
+                        >
+                          <FaTrash className="text-xs" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 );
@@ -855,4 +821,4 @@ const BattleCreationDashboardForAdmin = () => {
   );
 };
 
-export default BattleCreationDashboardForAdmin;
+export default BattleControlCenter;
