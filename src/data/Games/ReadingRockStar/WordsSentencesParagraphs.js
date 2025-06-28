@@ -127,7 +127,7 @@ const WordsSentencesParagraphs = {
       ]
     }
   },
-    III_V: {
+    "III-V": {
     words: {
       rookie: [
         "forest", "river", "mountain", "courage", "garden",
@@ -230,7 +230,7 @@ const WordsSentencesParagraphs = {
       ]
     }
   },
-    VI_X: {
+    "VI-X": {
     words: {
       rookie: [
         "eclipse", "horizon", "culture", "society", "biology",
