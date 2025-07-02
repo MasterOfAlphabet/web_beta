@@ -1,0 +1,631 @@
+{
+  "grammar_quiz": {
+    "concept": "Common and Proper Nouns",
+    "class_groups": {
+      "I-II": {
+        "mcq": [
+          {
+            "id": 1,
+            "question": "Which word is a proper noun?",
+            "options": ["boy", "Delhi", "book", "cat"],
+            "correct_answer": 1,
+            "explanation": "Delhi is a proper noun because it is the name of a specific city in India."
+          },
+          {
+            "id": 2,
+            "question": "What type of noun is 'Ganga'?",
+            "options": ["common noun", "proper noun", "both", "neither"],
+            "correct_answer": 1,
+            "explanation": "Ganga is a proper noun as it is the name of a specific river in India."
+          },
+          {
+            "id": 3,
+            "question": "Which is a common noun?",
+            "options": ["Mumbai", "Taj Mahal", "school", "Ram"],
+            "correct_answer": 2,
+            "explanation": "School is a common noun as it refers to any school in general."
+          },
+          {
+            "id": 4,
+            "question": "How should we write proper nouns?",
+            "options": ["small letters", "capital letters", "both ways", "no letters"],
+            "correct_answer": 1,
+            "explanation": "Proper nouns always start with capital letters."
+          },
+          {
+            "id": 5,
+            "question": "Which word is a proper noun?",
+            "options": ["teacher", "student", "Priya", "mother"],
+            "correct_answer": 2,
+            "explanation": "Priya is a proper noun as it is a specific person's name."
+          },
+          {
+            "id": 6,
+            "question": "What type of noun is 'cow'?",
+            "options": ["proper noun", "common noun", "special noun", "big noun"],
+            "correct_answer": 1,
+            "explanation": "Cow is a common noun as it refers to any cow in general."
+          },
+          {
+            "id": 7,
+            "question": "Which is a proper noun?",
+            "options": ["dog", "India", "house", "tree"],
+            "correct_answer": 1,
+            "explanation": "India is a proper noun as it is the name of our specific country."
+          },
+          {
+            "id": 8,
+            "question": "What type of noun is 'festival'?",
+            "options": ["proper noun", "common noun", "action noun", "small noun"],
+            "correct_answer": 1,
+            "explanation": "Festival is a common noun as it refers to any festival in general."
+          },
+          {
+            "id": 9,
+            "question": "Which word needs a capital letter?",
+            "options": ["apple", "diwali", "book", "chair"],
+            "correct_answer": 1,
+            "explanation": "Diwali is a proper noun (name of a specific festival) and needs a capital letter."
+          },
+          {
+            "id": 10,
+            "question": "What type of noun is 'Himalaya'?",
+            "options": ["common noun", "proper noun", "small noun", "action noun"],
+            "correct_answer": 1,
+            "explanation": "Himalaya is a proper noun as it is the name of specific mountains in India."
+          }
+        ],
+        "fill_in_the_blank": [
+          {
+            "id": 1,
+            "question": "My friend _____ lives in Chennai.",
+            "answer": "Ravi",
+            "explanation": "Ravi is a proper noun (person's name) and should be capitalized."
+          },
+          {
+            "id": 2,
+            "question": "The _____ flows through many Indian cities. (Ganga/river)",
+            "answer": "Ganga",
+            "explanation": "Ganga is a proper noun as it refers to a specific river."
+          },
+          {
+            "id": 3,
+            "question": "We celebrate _____ with lights and sweets.",
+            "answer": "Diwali",
+            "explanation": "Diwali is a proper noun as it is the name of a specific festival."
+          },
+          {
+            "id": 4,
+            "question": "The _____ is very tall. (building/Red Fort)",
+            "answer": "Red Fort",
+            "explanation": "Red Fort is a proper noun as it is the name of a specific monument."
+          },
+          {
+            "id": 5,
+            "question": "My _____ teaches us Hindi.",
+            "answer": "teacher",
+            "explanation": "Teacher is a common noun as it refers to any teacher in general."
+          },
+          {
+            "id": 6,
+            "question": "_____ is the capital of India.",
+            "answer": "Delhi",
+            "explanation": "Delhi is a proper noun as it is the name of a specific city."
+          },
+          {
+            "id": 7,
+            "question": "The _____ gives us milk.",
+            "answer": "cow",
+            "explanation": "Cow is a common noun as it refers to any cow in general."
+          },
+          {
+            "id": 8,
+            "question": "We visited the _____ last Sunday. (Taj Mahal/palace)",
+            "answer": "Taj Mahal",
+            "explanation": "Taj Mahal is a proper noun as it is the name of a specific monument."
+          },
+          {
+            "id": 9,
+            "question": "_____ is my favorite month.",
+            "answer": "January",
+            "explanation": "January is a proper noun as it is the name of a specific month."
+          },
+          {
+            "id": 10,
+            "question": "The _____ is playing in the garden.",
+            "answer": "child",
+            "explanation": "Child is a common noun as it refers to any child in general."
+          }
+        ],
+        "true_false": [
+          {
+            "id": 1,
+            "statement": "India is a proper noun.",
+            "answer": true,
+            "explanation": "True. India is a proper noun as it is the name of our specific country."
+          },
+          {
+            "id": 2,
+            "statement": "Common nouns start with small letters.",
+            "answer": true,
+            "explanation": "True. Common nouns usually start with small letters unless they begin a sentence."
+          },
+          {
+            "id": 3,
+            "statement": "Mumbai is a common noun.",
+            "answer": false,
+            "explanation": "False. Mumbai is a proper noun as it is the name of a specific city."
+          },
+          {
+            "id": 4,
+            "statement": "Proper nouns always start with capital letters.",
+            "answer": true,
+            "explanation": "True. All proper nouns must start with capital letters."
+          },
+          {
+            "id": 5,
+            "statement": "Ganga is a common noun.",
+            "answer": false,
+            "explanation": "False. Ganga is a proper noun as it is the name of a specific river in India."
+          },
+          {
+            "id": 6,
+            "statement": "The word 'school' is a common noun.",
+            "answer": true,
+            "explanation": "True. School is a common noun as it refers to any school in general."
+          },
+          {
+            "id": 7,
+            "statement": "Diwali should be written with a small 'd'.",
+            "answer": false,
+            "explanation": "False. Diwali is a proper noun and must start with a capital letter."
+          },
+          {
+            "id": 8,
+            "statement": "The word 'boy' is a proper noun.",
+            "answer": false,
+            "explanation": "False. Boy is a common noun as it refers to any boy in general."
+          },
+          {
+            "id": 9,
+            "statement": "Taj Mahal is a proper noun.",
+            "answer": true,
+            "explanation": "True. Taj Mahal is a proper noun as it is the name of a specific monument."
+          },
+          {
+            "id": 10,
+            "statement": "All names of people are common nouns.",
+            "answer": false,
+            "explanation": "False. Names of people are proper nouns, not common nouns."
+          }
+        ]
+      },
+      "III-V": {
+        "mcq": [
+          {
+            "id": 1,
+            "question": "Which of the following is a proper noun?",
+            "options": ["mountain", "Himalayas", "river", "festival"],
+            "correct_answer": 1,
+            "explanation": "Himalayas is a proper noun as it refers to the specific mountain range in India."
+          },
+          {
+            "id": 2,
+            "question": "Identify the common noun in this sentence: 'Mahatma Gandhi was a great leader.'",
+            "options": ["Mahatma", "Gandhi", "leader", "great"],
+            "correct_answer": 2,
+            "explanation": "Leader is a common noun as it refers to any leader in general."
+          },
+          {
+            "id": 3,
+            "question": "Which sentence uses proper nouns correctly?",
+            "options": ["i live in bangalore", "I live in Bangalore", "I Live In bangalore", "i Live in bangalore"],
+            "correct_answer": 1,
+            "explanation": "Proper nouns like 'Bangalore' must be capitalized, and 'I' is always capitalized."
+          },
+          {
+            "id": 4,
+            "question": "What type of noun is 'Indian Ocean'?",
+            "options": ["common noun", "proper noun", "collective noun", "abstract noun"],
+            "correct_answer": 1,
+            "explanation": "Indian Ocean is a proper noun as it is the name of a specific ocean."
+          },
+          {
+            "id": 5,
+            "question": "In 'The students visited Red Fort during their Delhi trip', how many proper nouns are there?",
+            "options": ["1", "2", "3", "4"],
+            "correct_answer": 1,
+            "explanation": "There are 2 proper nouns: 'Red Fort' and 'Delhi'."
+          },
+          {
+            "id": 6,
+            "question": "Which is the correct way to write the name of our national bird?",
+            "options": ["peacock", "Peacock", "PEACOCK", "pEaCoCk"],
+            "correct_answer": 0,
+            "explanation": "Peacock is a common noun when referring to the species in general, so it starts with a small letter."
+          },
+          {
+            "id": 7,
+            "question": "Identify the proper noun: 'The Ramayana is an ancient Indian epic.'",
+            "options": ["ancient", "Indian", "Ramayana", "epic"],
+            "correct_answer": 2,
+            "explanation": "Ramayana is a proper noun as it is the name of a specific epic."
+          },
+          {
+            "id": 8,
+            "question": "Which word should be capitalized?",
+            "options": ["president", "prime minister", "narendra modi", "politician"],
+            "correct_answer": 2,
+            "explanation": "Narendra Modi is a proper noun (person's name) and should be capitalized."
+          },
+          {
+            "id": 9,
+            "question": "What type of noun is 'Bollywood'?",
+            "options": ["common noun", "proper noun", "collective noun", "material noun"],
+            "correct_answer": 1,
+            "explanation": "Bollywood is a proper noun as it refers to the specific Hindi film industry."
+          },
+          {
+            "id": 10,
+            "question": "In 'Sachin Tendulkar is a famous cricketer from Mumbai', identify the common noun.",
+            "options": ["Sachin", "Tendulkar", "cricketer", "Mumbai"],
+            "correct_answer": 2,
+            "explanation": "Cricketer is a common noun as it refers to any person who plays cricket."
+          }
+        ],
+        "fill_in_the_blank": [
+          {
+            "id": 1,
+            "question": "The _____ is the longest river in India. (river/Ganga)",
+            "answer": "Ganga",
+            "explanation": "Ganga is a proper noun as it refers to the specific longest river in India."
+          },
+          {
+            "id": 2,
+            "question": "Dr. _____ was the first President of India. (Rajendra Prasad/president)",
+            "answer": "Rajendra Prasad",
+            "explanation": "Rajendra Prasad is a proper noun as it is a specific person's name."
+          },
+          {
+            "id": 3,
+            "question": "The _____ of India is New Delhi. (capital/city)",
+            "answer": "capital",
+            "explanation": "Capital is a common noun referring to the main city of a country."
+          },
+          {
+            "id": 4,
+            "question": "_____ is celebrated as the festival of lights in India.",
+            "answer": "Diwali",
+            "explanation": "Diwali is a proper noun as it is the name of a specific festival."
+          },
+          {
+            "id": 5,
+            "question": "The Indian _____ is located in the Arabian Sea. (Ocean/peninsula)",
+            "answer": "peninsula",
+            "explanation": "Peninsula is a common noun referring to a geographical feature."
+          },
+          {
+            "id": 6,
+            "question": "_____ wrote the Indian national anthem.",
+            "answer": "Rabindranath Tagore",
+            "explanation": "Rabindranath Tagore is a proper noun as it is a specific person's name."
+          },
+          {
+            "id": 7,
+            "question": "The _____ flows through the city of Varanasi. (Ganga/river)",
+            "answer": "Ganga",
+            "explanation": "Ganga is a proper noun referring to the specific river."
+          },
+          {
+            "id": 8,
+            "question": "_____ is known as the Pink City of India.",
+            "answer": "Jaipur",
+            "explanation": "Jaipur is a proper noun as it is the name of a specific city."
+          },
+          {
+            "id": 9,
+            "question": "The Indian _____ includes states like Kerala and Tamil Nadu. (subcontinent/peninsula)",
+            "answer": "peninsula",
+            "explanation": "Peninsula is a common noun referring to the southern part of India."
+          },
+          {
+            "id": 10,
+            "question": "_____ is the financial capital of India.",
+            "answer": "Mumbai",
+            "explanation": "Mumbai is a proper noun as it is the name of a specific city."
+          }
+        ],
+        "true_false": [
+          {
+            "id": 1,
+            "statement": "The Himalayas is a proper noun.",
+            "answer": true,
+            "explanation": "True. The Himalayas is a proper noun as it refers to a specific mountain range."
+          },
+          {
+            "id": 2,
+            "statement": "Common nouns refer to specific people, places, or things.",
+            "answer": false,
+            "explanation": "False. Common nouns refer to general people, places, or things, not specific ones."
+          },
+          {
+            "id": 3,
+            "statement": "The word 'cricket' in 'Cricket is popular in India' is a proper noun.",
+            "answer": false,
+            "explanation": "False. Cricket is a common noun as it refers to the sport in general."
+          },
+          {
+            "id": 4,
+            "statement": "Mahatma Gandhi contains two proper nouns.",
+            "answer": true,
+            "explanation": "True. Both 'Mahatma' and 'Gandhi' are parts of a proper noun (person's name)."
+          },
+          {
+            "id": 5,
+            "statement": "The Arabian Sea is a common noun.",
+            "answer": false,
+            "explanation": "False. The Arabian Sea is a proper noun as it is the name of a specific sea."
+          },
+          {
+            "id": 6,
+            "statement": "Days of the week are proper nouns.",
+            "answer": true,
+            "explanation": "True. Days like Monday, Tuesday are proper nouns and should be capitalized."
+          },
+          {
+            "id": 7,
+            "statement": "The word 'temple' in 'We visited a temple' is a proper noun.",
+            "answer": false,
+            "explanation": "False. Temple is a common noun as it refers to any temple in general."
+          },
+          {
+            "id": 8,
+            "statement": "Indian languages like Hindi and Tamil are proper nouns.",
+            "answer": true,
+            "explanation": "True. Names of languages are proper nouns and should be capitalized."
+          },
+          {
+            "id": 9,
+            "statement": "The word 'state' in 'Rajasthan is a state' is a proper noun.",
+            "answer": false,
+            "explanation": "False. State is a common noun, while Rajasthan is the proper noun."
+          },
+          {
+            "id": 10,
+            "statement": "Proper nouns can be made plural.",
+            "answer": true,
+            "explanation": "True. Proper nouns can be plural (e.g., 'The Sharmas live next door')."
+          }
+        ]
+      },
+      "VI-X": {
+        "mcq": [
+          {
+            "id": 1,
+            "question": "Which sentence demonstrates the correct use of proper and common nouns?",
+            "options": [
+              "The prime minister of india addressed the nation",
+              "The Prime Minister of India addressed the Nation",
+              "The Prime Minister of India addressed the nation",
+              "the prime minister of India addressed the nation"
+            ],
+            "correct_answer": 2,
+            "explanation": "Titles before names and country names are proper nouns, while 'nation' is a common noun."
+          },
+          {
+            "id": 2,
+            "question": "In the phrase 'the Constitution of India', which words are proper nouns?",
+            "options": ["Constitution only", "India only", "Constitution and India", "None"],
+            "correct_answer": 2,
+            "explanation": "Both 'Constitution' (when referring to India's Constitution) and 'India' are proper nouns."
+          },
+          {
+            "id": 3,
+            "question": "Identify the function of proper nouns in: 'Shakespeare's Hamlet is studied in Indian universities.'",
+            "options": [
+              "They provide general information",
+              "They specify particular entities",
+              "They describe qualities",
+              "They show relationships"
+            ],
+            "correct_answer": 1,
+            "explanation": "Proper nouns specify particular entities - Shakespeare (specific author), Hamlet (specific play), Indian (specific nationality)."
+          },
+          {
+            "id": 4,
+            "question": "Which statement about the capitalization of proper nouns is correct?",
+            "options": [
+              "Only the first word needs capitalization",
+              "All words in a proper noun must be capitalized",
+              "Principal words in proper nouns are capitalized",
+              "Capitalization is optional for proper nouns"
+            ],
+            "correct_answer": 2,
+            "explanation": "Principal words in proper nouns are capitalized, while articles and prepositions may not be."
+          },
+          {
+            "id": 5,
+            "question": "In 'The Indian Space Research Organisation launched Chandrayaan-3', how many proper nouns are present?",
+            "options": ["2", "3", "4", "5"],
+            "correct_answer": 1,
+            "explanation": "Three proper nouns: 'Indian Space Research Organisation' and 'Chandrayaan-3'."
+          },
+          {
+            "id": 6,
+            "question": "Which category do brand names like 'Tata', 'Reliance', and 'Infosys' belong to?",
+            "options": ["Common nouns", "Proper nouns", "Collective nouns", "Abstract nouns"],
+            "correct_answer": 1,
+            "explanation": "Brand names are proper nouns as they refer to specific companies."
+          },
+          {
+            "id": 7,
+            "question": "What happens when a proper noun becomes commonly used?",
+            "options": [
+              "It remains a proper noun always",
+              "It can become a common noun",
+              "It loses its meaning",
+              "It becomes an abstract noun"
+            ],
+            "correct_answer": 1,
+            "explanation": "Some proper nouns can become common nouns through usage (e.g., 'sandwich' from Earl of Sandwich)."
+          },
+          {
+            "id": 8,
+            "question": "In academic writing, which is the correct way to refer to historical periods?",
+            "options": [
+              "the mughal period",
+              "The Mughal Period",
+              "the Mughal period",
+              "THE MUGHAL PERIOD"
+            ],
+            "correct_answer": 2,
+            "explanation": "Historical periods with proper names are capitalized: 'the Mughal period'."
+          },
+          {
+            "id": 9,
+            "question": "Which linguistic rule applies to proper nouns derived from common nouns?",
+            "options": [
+              "They follow the same rules as common nouns",
+              "They require capitalization and specific usage",
+              "They can be used interchangeably",
+              "They don't need articles"
+            ],
+            "correct_answer": 1,
+            "explanation": "Proper nouns derived from common nouns require capitalization and follow specific grammatical rules."
+          },
+          {
+            "id": 10,
+            "question": "In the context of Indian literature, what type of nouns are 'Vedas', 'Upanishads', and 'Puranas'?",
+            "options": ["Common nouns", "Proper nouns", "Collective nouns", "Material nouns"],
+            "correct_answer": 1,
+            "explanation": "These are proper nouns as they refer to specific religious and literary texts."
+          }
+        ],
+        "fill_in_the_blank": [
+          {
+            "id": 1,
+            "question": "The _____ of the Supreme Court delivered a landmark judgment. (Chief Justice/judge)",
+            "answer": "Chief Justice",
+            "explanation": "Chief Justice is a proper noun when referring to the specific position/title."
+          },
+          {
+            "id": 2,
+            "question": "_____ is considered the father of the Indian Constitution. (Dr. B.R. Ambedkar/lawyer)",
+            "answer": "Dr. B.R. Ambedkar",
+            "explanation": "Dr. B.R. Ambedkar is a proper noun as it is a specific person's name with title."
+          },
+          {
+            "id": 3,
+            "question": "The _____ flows through multiple states before reaching the Bay of Bengal. (Ganges/river)",
+            "answer": "Ganges",
+            "explanation": "Ganges is a proper noun referring to the specific river (formal name for Ganga)."
+          },
+          {
+            "id": 4,
+            "question": "_____ revolutionized the Indian IT industry in the 1990s. (Software companies/Infosys)",
+            "answer": "Infosys",
+            "explanation": "Infosys is a proper noun as it is the name of a specific company."
+          },
+          {
+            "id": 5,
+            "question": "The _____ connects the Arabian Sea with the Bay of Bengal. (Indian Ocean/ocean)",
+            "answer": "Indian Ocean",
+            "explanation": "Indian Ocean is a proper noun as it is the name of a specific ocean."
+          },
+          {
+            "id": 6,
+            "question": "_____ architecture is evident in monuments like the Red Fort. (Mughal/Islamic)",
+            "answer": "Mughal",
+            "explanation": "Mughal is a proper noun when referring to the specific architectural style of the Mughal empire."
+          },
+          {
+            "id": 7,
+            "question": "The _____ is India's premier space research organization. (ISRO/organization)",
+            "answer": "ISRO",
+            "explanation": "ISRO is a proper noun as it is the specific name/acronym of the organization."
+          },
+          {
+            "id": 8,
+            "question": "_____ literature includes works by authors like R.K. Narayan and Mulk Raj Anand. (Indian English/Regional)",
+            "answer": "Indian English",
+            "explanation": "Indian English is a proper noun referring to the specific variety of English literature from India."
+          },
+          {
+            "id": 9,
+            "question": "The _____ movement was led by Mahatma Gandhi. (Independence/freedom struggle)",
+            "answer": "Independence",
+            "explanation": "Independence movement is a proper noun when referring to India's specific historical movement."
+          },
+          {
+            "id": 10,
+            "question": "_____ is known as the Silicon Valley of India. (Bangalore/city)",
+            "answer": "Bangalore",
+            "explanation": "Bangalore is a proper noun as it is the name of a specific city."
+          }
+        ],
+        "true_false": [
+          {
+            "id": 1,
+            "statement": "Proper nouns can function as subjects, objects, and complements in sentences.",
+            "answer": true,
+            "explanation": "True. Proper nouns can serve all major grammatical functions like common nouns."
+          },
+          {
+            "id": 2,
+            "statement": "The word 'government' in 'The Indian Government' should always be capitalized.",
+            "answer": false,
+            "explanation": "False. 'Government' is capitalized only when part of an official title or when referring to a specific government formally."
+          },
+          {
+            "id": 3,
+            "statement": "Adjectives derived from proper nouns (like 'Indian', 'American') are called proper adjectives.",
+            "answer": true,
+            "explanation": "True. Adjectives derived from proper nouns are called proper adjectives and are capitalized."
+          },
+          {
+            "id": 4,
+            "statement": "In formal writing, months and days are considered proper nouns.",
+            "answer": true,
+            "explanation": "True. Names of months and days are proper nouns and should be capitalized."
+          },
+          {
+            "id": 5,
+            "statement": "The phrase 'the Ramayana and the Mahabharata' contains four proper nouns.",
+            "answer": false,
+            "explanation": "False. It contains two proper nouns: 'Ramayana' and 'Mahabharata'. The articles 'the' are not proper nouns."
+          },
+          {
+            "id": 6,
+            "statement": "Academic subjects like 'mathematics' and 'history' are proper nouns.",
+            "answer": false,
+            "explanation": "False. Academic subjects are common nouns unless they refer to specific courses or include proper nouns (e.g., 'Indian History')."
+          },
+          {
+            "id": 7,
+            "statement": "Proper nouns typically do not take indefinite articles (a, an).",
+            "answer": true,
+            "explanation": "True. Proper nouns usually don't take indefinite articles as they refer to specific, unique entities."
+          },
+          {
+            "id": 8,
+            "statement": "The names of Indian classical dance forms like Bharatanatyam and Kathak are proper nouns.",
+            "answer": true,
+            "explanation": "True. Names of specific dance forms, art forms, and cultural practices are proper nouns."
+          },
+          {
+            "id": 9,
+            "statement": "In 'He is studying at Delhi University', both 'Delhi' and 'University' are proper nouns.",
+            "answer": true,
+            "explanation": "True. 'Delhi University' is a proper noun as it refers to a specific institution."
+          },
+          {
+            "id": 10,
+            "statement": "Proper nouns maintain their capitalization even when used in the middle of sentences.",
+            "answer": true,
+            "explanation": "True. Proper nouns are always capitalized regardless of their position in a sentence."
+          }
+        ]
+      }
+    }
+  }
+}

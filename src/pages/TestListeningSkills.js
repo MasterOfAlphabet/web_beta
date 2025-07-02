@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FaFeather,
   FaParagraph,
@@ -28,6 +28,51 @@ import {
   IoStopCircle,
 } from "react-icons/io5";
 
+// --- [NEW] --- For speech recognition
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition || null;
+
+function normalize(str) {
+  return str
+    .trim()
+    .toLowerCase()
+    .replace(/[^\w\s]/g, "");
+}
+
+// --- [NEW] --- Word-by-word highlight for spoken vs prompt
+function renderSpokenFeedback(prompt, spoken) {
+  if (!prompt || !spoken) return null;
+  const promptWords = prompt.trim().split(/\s+/);
+  const spokenWords = spoken.trim().split(/\s+/);
+  // Align using index for simplicity (can upgrade to align algo if needed)
+  const maxLen = Math.max(promptWords.length, spokenWords.length);
+  const elements = [];
+  for (let i = 0; i < maxLen; i++) {
+    const promptWord = promptWords[i] || "";
+    const spokenWord = spokenWords[i] || "";
+    let colorClass = "";
+    if (!spokenWord) {
+      colorClass = "bg-yellow-100 text-yellow-600 font-bold";
+    } else if (normalize(promptWord) === normalize(spokenWord)) {
+      colorClass = "bg-green-100 text-green-700 font-bold";
+    } else {
+      colorClass = "bg-red-100 text-red-700 font-bold";
+    }
+    elements.push(
+      <span
+        key={i}
+        className={
+          "inline-block px-2 py-1 mx-1 my-1 rounded-xl transition-colors " +
+          colorClass
+        }
+      >
+        {spokenWord || <span className="opacity-40">{promptWord}</span>}
+      </span>
+    );
+  }
+  return elements;
+}
+
 // Enhanced mock data with difficulty levels
 const comprehensionTitles = [
   { id: 1, title: "The Cat and the Mouse", level: "Beginner", xp: 10, gems: 2 },
@@ -42,7 +87,7 @@ const listeningPassages = [
     id: 1,
     title: "The Cat and the Mouse",
     passage:
-      "Once upon a time, a cat and a mouse lived in the same house. The cat was lazy, but the mouse was very hardworking. One day, the mouse found a piece of cheese and decided to save it for the winter. The cat, however, wanted to eat the cheese right away.",
+      "Once upon a time, a cat and a mouse lived in the same house. The cat was lazy, but the mouse was very hardworking. One day, the mouse found a piece of cheese and decided to save it for the winter. The cat, however, wanted to eat it right away. The mouse hid the cheese, but the cat found it and ate it all.",
     questions: [
       {
         question: "What did the mouse find?",
@@ -68,7 +113,7 @@ const listeningPassages = [
     id: 2,
     title: "The Solar System",
     passage:
-      "The solar system consists of the Sun and the objects that orbit around it, including planets, moons, asteroids, and comets. The Sun is the largest object in the solar system and provides light and heat to all the planets.",
+      "The solar system consists of the Sun and the objects that orbit around it, including planets, moons, asteroids, and comets. The Sun is the largest object in the solar system and provides light and heat to the planets.",
     questions: [
       {
         question: "What is the largest object in the solar system?",
@@ -97,16 +142,6 @@ const sentences = {
   "Extremely Long":
     "The majestic mountain stood tall, covered in a blanket of snow, as the sun slowly rose over the horizon.",
 };
-
-/**
-const paragraphs = [
-  "The early bird catches the worm. This is a well-known saying. It emphasizes starting your day early. Being proactive leads to success.",
-  "A journey begins with a single step. This proverb teaches us about beginnings. Small actions lead to big achievements. Every master was once a beginner.",
-  "Practice makes perfect. Consistent effort improves skills. Mastery comes from repetition. Don't give up when progress seems slow.",
-  "Honesty is the best policy. Truthfulness leads to better outcomes. Integrity builds trust in relationships. A good reputation is valuable.",
-  "Where there's a will, there's a way. Determination finds solutions. Persistence overcomes obstacles. Challenges make us stronger. The only true failure is giving up.",
-];
-*/
 
 const paragraphs = [
   "The early bird catches the worm.",
@@ -204,6 +239,150 @@ const achievements = [
   },
 ];
 
+// --- [NEW] --- Main Mic/Listening Section Component (incremental, not removing original code)
+function MicListeningSection({
+  prompt,
+  disabled,
+  onResult,
+  micLabel = "🎤 Speak",
+  placeholder = "Click mic and repeat...",
+  sectionType = "sentence", // "word", "sentence", or "paragraph"
+}) {
+  const [isListening, setIsListening] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [spokenText, setSpokenText] = useState("");
+  const [error, setError] = useState("");
+  const recognitionRef = useRef(null);
+
+  useEffect(() => {
+    setIsListening(false);
+    setIsProcessing(false);
+    setSpokenText("");
+    setError("");
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      recognitionRef.current = null;
+    }
+  }, [prompt]);
+
+  const startListening = () => {
+    if (!SpeechRecognition) {
+      setError(
+        "Speech recognition not supported in your browser. Please use Chrome, Edge, or Safari."
+      );
+      return;
+    }
+    setIsListening(true);
+    setIsProcessing(false);
+    setSpokenText("");
+    setError("");
+    recognitionRef.current = new SpeechRecognition();
+    recognitionRef.current.lang = "en-US";
+    recognitionRef.current.interimResults = false;
+    recognitionRef.current.onresult = (event) => {
+      setIsProcessing(true);
+      const transcript = Array.from(event.results)
+        .map((result) => result[0].transcript)
+        .join(" ");
+      setIsListening(false);
+      setIsProcessing(false);
+      setSpokenText(transcript);
+      setError("");
+      if (onResult) onResult(transcript);
+    };
+    recognitionRef.current.onend = () => {
+      setIsListening(false);
+      setIsProcessing(false);
+    };
+    recognitionRef.current.onerror = (event) => {
+      setIsListening(false);
+      setIsProcessing(false);
+      let msg = "Please try again.";
+      switch (event.error) {
+        case "no-speech":
+          msg = "No speech detected. Please speak clearly!";
+          break;
+        case "audio-capture":
+          msg = "Microphone not found. Please check your microphone!";
+          break;
+        case "not-allowed":
+          msg = "Microphone permission denied. Please allow microphone access!";
+          break;
+        case "network":
+          msg = "Network error. Please check your connection!";
+          break;
+        default:
+          msg = "An unknown error occurred.";
+          break;
+      }
+      setError(msg);
+    };
+    setIsListening(true);
+    setIsProcessing(false);
+    recognitionRef.current.start();
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) recognitionRef.current.stop();
+    setIsListening(false);
+    setIsProcessing(false);
+  };
+
+  return (
+    <div className="my-6">
+      <div className="flex items-center justify-center mb-4 gap-4">
+        <button
+          onClick={isListening ? stopListening : startListening}
+          disabled={disabled}
+          className={`${
+            isListening
+              ? "bg-red-500 hover:bg-red-600"
+              : "bg-green-500 hover:bg-green-600"
+          } text-white p-5 rounded-full text-2xl font-bold transition-all duration-300 transform hover:scale-110 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
+          aria-label={isListening ? "Stop listening" : "Start listening"}
+        >
+          {isListening ? (
+            <IoMic className="w-8 h-8" />
+          ) : (
+            <FaMicrophone className="w-8 h-8" />
+          )}
+        </button>
+        <span className="text-lg font-semibold">
+          {isListening ? "🎤 Listening... Speak now!" : placeholder}
+        </span>
+      </div>
+      {isProcessing && (
+        <div className="flex items-center justify-center text-gray-500 mb-2">
+          <span className="animate-spin mr-2">
+            <FaMagic />
+          </span>
+          Processing your answer...
+        </div>
+      )}
+      {error && (
+        <div className="bg-red-100 text-red-700 rounded-lg p-3 mb-2 text-center">
+          {error}
+        </div>
+      )}
+      {spokenText && (
+        <div className="bg-gray-100 rounded-2xl p-5 text-center mb-2">
+          <div className="text-sm text-gray-600 mb-1">You said:</div>
+          <div
+            className={`${
+              sectionType === "word"
+                ? "text-4xl"
+                : sectionType === "sentence"
+                ? "text-2xl"
+                : "text-xl"
+            } font-bold`}
+          >
+            {renderSpokenFeedback(prompt, spokenText)}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 const TestListeningSkills = () => {
   const [selectedCategory, setSelectedCategory] = useState("Words");
   const [selectedClass, setSelectedClass] = useState("Class I & II");
@@ -845,7 +1024,6 @@ const TestListeningSkills = () => {
   };
 
   const startReadingParagraphs = () => {
-   ;
     if ("speechSynthesis" in window) {
       const lines = parseInt(selectedLines, 10);
       const paragraph = paragraphs[lines - 1] || paragraphs[0];
@@ -1197,6 +1375,21 @@ const TestListeningSkills = () => {
               </button>
             )}
 
+            {selectedCategory === "Paragraphs" && selectedLines && (
+              <div className="mb-6">
+                <MicListeningSection
+                  prompt={
+                    paragraphs[parseInt(selectedLines, 10) - 1] || paragraphs[0]
+                  }
+                  disabled={!selectedLines}
+                  micLabel="🎤 Speak Paragraph"
+                  placeholder="Click mic and repeat the paragraph you heard"
+                  sectionType="paragraph"
+                  // You can set result handler if you want to use the transcript
+                />
+              </div>
+            )}
+
             {hasRecorded && (
               <div className="space-y-6">
                 <div className="bg-purple-50 p-4 rounded-xl border-2 border-purple-200">
@@ -1413,6 +1606,19 @@ const TestListeningSkills = () => {
               </div>
             )}
 
+            {selectedCategory === "Sentences" && selectedSentence && (
+              <div className="mb-6">
+                <MicListeningSection
+                  prompt={sentences[selectedSentence]}
+                  disabled={!sentences[selectedSentence]}
+                  micLabel="🎤 Speak Sentence"
+                  placeholder="Click mic and repeat the sentence you heard"
+                  sectionType="sentence"
+                  // You can set result handler if you want to use the transcript
+                />
+              </div>
+            )}
+
             {hasRecorded && (
               <div className="space-y-6">
                 <div className="bg-orange-50 p-4 rounded-xl border-2 border-orange-200">
@@ -1622,6 +1828,18 @@ const TestListeningSkills = () => {
               </div>
             )}
 
+            {selectedCategory === "Words" && selectedWords && (
+              <div className="mb-6">
+                <MicListeningSection
+                  prompt={currentWordsList.join(" ")}
+                  disabled={!currentWordsList.length}
+                  micLabel="🎤 Speak Words"
+                  placeholder="Click mic and repeat the words you heard"
+                  sectionType="word"
+                  // You can set result handler if you want to use the transcript
+                />
+              </div>
+            )}
             {hasRecorded && (
               <div className="space-y-6">
                 <div className="bg-blue-50 p-4 rounded-xl border-2 border-blue-200">

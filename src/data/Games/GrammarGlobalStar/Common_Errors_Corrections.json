@@ -1,0 +1,2323 @@
+{
+  "I_II": {
+    "MCQ": [
+      {
+        "id": 1,
+        "type": "multiple-choice",
+        "question": "Which sentence is correct?",
+        "options": [
+          "He go to school.",
+          "He goes to school.",
+          "He going to school."
+        ],
+        "correct": 1,
+        "explanation": "'He goes' is correct because 'he' needs 's'."
+      },
+      {
+        "id": 2,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["They is here.", "They are here.", "They am here."],
+        "correct": 1,
+        "explanation": "'They are' is correct for plural."
+      },
+      {
+        "id": 3,
+        "type": "multiple-choice",
+        "question": "Choose the right option.",
+        "options": ["She have a cat.", "She has a cat.", "She haves a cat."],
+        "correct": 1,
+        "explanation": "'She has' is correct."
+      },
+      {
+        "id": 4,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["We was at home.", "We were at home.", "We is at home."],
+        "correct": 1,
+        "explanation": "'We were' is correct for 'we'."
+      },
+      {
+        "id": 5,
+        "type": "multiple-choice",
+        "question": "Select the correct form.",
+        "options": ["the dog runs.", "The Dog runs.", "The dog runs."],
+        "correct": 2,
+        "explanation": "Sentence starts with a capital letter."
+      },
+      {
+        "id": 6,
+        "type": "multiple-choice",
+        "question": "Which is written correctly?",
+        "options": [
+          "I playing football.",
+          "I play football.",
+          "I plays football."
+        ],
+        "correct": 1,
+        "explanation": "'I play' is correct."
+      },
+      {
+        "id": 7,
+        "type": "multiple-choice",
+        "question": "Choose the correct word.",
+        "options": ["It am cold.", "It is cold.", "It are cold."],
+        "correct": 1,
+        "explanation": "'It is' is correct."
+      },
+      {
+        "id": 8,
+        "type": "multiple-choice",
+        "question": "Pick the correct answer.",
+        "options": [
+          "You am my friend.",
+          "You is my friend.",
+          "You are my friend."
+        ],
+        "correct": 2,
+        "explanation": "'You are' is correct."
+      },
+      {
+        "id": 9,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["Cats drinks milk.", "Cats drink milk.", "Cat drink milk."],
+        "correct": 1,
+        "explanation": "Plural 'Cats' → 'drink'."
+      },
+      {
+        "id": 10,
+        "type": "multiple-choice",
+        "question": "Select the correct sentence.",
+        "options": ["He play well.", "He playing well.", "He plays well."],
+        "correct": 2,
+        "explanation": "'He plays' is correct."
+      },
+      {
+        "id": 11,
+        "type": "multiple-choice",
+        "question": "Choose the correct one.",
+        "options": ["I am go home.", "I am going home.", "I am goes home."],
+        "correct": 1,
+        "explanation": "'I am going' is correct."
+      },
+      {
+        "id": 12,
+        "type": "multiple-choice",
+        "question": "Pick the correct option.",
+        "options": ["Birds flys.", "Birds fly.", "Bird fly."],
+        "correct": 1,
+        "explanation": "'Birds fly' — no 's' for plural subject."
+      },
+      {
+        "id": 13,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["She like cake.", "She liking cake.", "She likes cake."],
+        "correct": 2,
+        "explanation": "'She likes' is correct."
+      },
+      {
+        "id": 14,
+        "type": "multiple-choice",
+        "question": "Pick the right sentence.",
+        "options": ["He don't know.", "He doesn't know.", "He not know."],
+        "correct": 1,
+        "explanation": "'Doesn't' is correct for he/she/it."
+      },
+      {
+        "id": 15,
+        "type": "multiple-choice",
+        "question": "Select the correct.",
+        "options": ["She am here.", "She is here.", "She are here."],
+        "correct": 1,
+        "explanation": "'She is' is correct."
+      },
+      {
+        "id": 16,
+        "type": "multiple-choice",
+        "question": "Choose the correct one.",
+        "options": ["It have rained.", "It has rained.", "It haves rained."],
+        "correct": 1,
+        "explanation": "'It has' is correct."
+      },
+      {
+        "id": 17,
+        "type": "multiple-choice",
+        "question": "Which sentence is correct?",
+        "options": [
+          "My sister go to school.",
+          "My sister goes to school.",
+          "My sister going to school."
+        ],
+        "correct": 1,
+        "explanation": "'Sister goes'."
+      },
+      {
+        "id": 18,
+        "type": "multiple-choice",
+        "question": "Pick the correct word.",
+        "options": ["She are playing.", "She is playing.", "She am playing."],
+        "correct": 1,
+        "explanation": "'She is'."
+      },
+      {
+        "id": 19,
+        "type": "multiple-choice",
+        "question": "Choose the right sentence.",
+        "options": ["We goes home.", "We go home.", "We going home."],
+        "correct": 1,
+        "explanation": "'We go'."
+      },
+      {
+        "id": 20,
+        "type": "multiple-choice",
+        "question": "Select the correct answer.",
+        "options": [
+          "She have done it.",
+          "She has done it.",
+          "She haves done it."
+        ],
+        "correct": 1,
+        "explanation": "'She has'."
+      },
+      {
+        "id": 21,
+        "type": "multiple-choice",
+        "question": "Which one is right?",
+        "options": [
+          "It do not matter.",
+          "It does not matter.",
+          "It did not matter."
+        ],
+        "correct": 1,
+        "explanation": "'It does'."
+      },
+      {
+        "id": 22,
+        "type": "multiple-choice",
+        "question": "Choose the correct.",
+        "options": ["He not going.", "He is not going.", "He am not going."],
+        "correct": 1,
+        "explanation": "'He is not'."
+      },
+      {
+        "id": 23,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": [
+          "You has a pencil.",
+          "You have a pencil.",
+          "You haves a pencil."
+        ],
+        "correct": 1,
+        "explanation": "'You have'."
+      },
+      {
+        "id": 24,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["The dog bark.", "The dog barks.", "The dog barking."],
+        "correct": 1,
+        "explanation": "'Dog barks'."
+      },
+      {
+        "id": 25,
+        "type": "multiple-choice",
+        "question": "Select the correct word.",
+        "options": ["It rain.", "It raining.", "It rains."],
+        "correct": 2,
+        "explanation": "'It rains'."
+      },
+
+      {
+        "id": 26,
+        "type": "multiple-choice",
+        "question": "Choose the correct sentence.",
+        "options": ["We was tired.", "We is tired.", "We are tired."],
+        "correct": 2,
+        "explanation": "'We are' is correct."
+      },
+      {
+        "id": 27,
+        "type": "multiple-choice",
+        "question": "Pick the right one.",
+        "options": ["He have a dog.", "He has a dog.", "He haves a dog."],
+        "correct": 1,
+        "explanation": "'He has' is correct."
+      },
+      {
+        "id": 28,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["She are reading.", "She is reading.", "She am reading."],
+        "correct": 1,
+        "explanation": "'She is'."
+      },
+      {
+        "id": 29,
+        "type": "multiple-choice",
+        "question": "Choose the correct answer.",
+        "options": ["It are cold.", "It am cold.", "It is cold."],
+        "correct": 2,
+        "explanation": "'It is'."
+      },
+      {
+        "id": 30,
+        "type": "multiple-choice",
+        "question": "Select the right option.",
+        "options": ["You is good.", "You are good.", "You am good."],
+        "correct": 1,
+        "explanation": "'You are'."
+      },
+      {
+        "id": 31,
+        "type": "multiple-choice",
+        "question": "Pick the correct.",
+        "options": ["The cat sleep.", "The cat sleeps.", "The cats sleeps."],
+        "correct": 1,
+        "explanation": "'Cat sleeps'."
+      },
+      {
+        "id": 32,
+        "type": "multiple-choice",
+        "question": "Which one is correct?",
+        "options": [
+          "I do my homework.",
+          "I does my homework.",
+          "I doing my homework."
+        ],
+        "correct": 0,
+        "explanation": "'I do'."
+      },
+      {
+        "id": 33,
+        "type": "multiple-choice",
+        "question": "Choose the right sentence.",
+        "options": ["They has books.", "They have books.", "They haves books."],
+        "correct": 1,
+        "explanation": "'They have'."
+      },
+      {
+        "id": 34,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["He is play.", "He is playing.", "He playing."],
+        "correct": 1,
+        "explanation": "'He is playing'."
+      },
+      {
+        "id": 35,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["We going home.", "We go home.", "We are going home."],
+        "correct": 2,
+        "explanation": "'We are going'."
+      },
+      {
+        "id": 36,
+        "type": "multiple-choice",
+        "question": "Select the correct option.",
+        "options": ["She sings good.", "She sing good.", "She singing good."],
+        "correct": 0,
+        "explanation": "'She sings'."
+      },
+      {
+        "id": 37,
+        "type": "multiple-choice",
+        "question": "Choose the correct one.",
+        "options": ["I am eats.", "I am eat.", "I am eating."],
+        "correct": 2,
+        "explanation": "'I am eating'."
+      },
+      {
+        "id": 38,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["Dogs barks.", "Dogs bark.", "Dog bark."],
+        "correct": 1,
+        "explanation": "Plural 'Dogs' → 'bark'."
+      },
+      {
+        "id": 39,
+        "type": "multiple-choice",
+        "question": "Pick the right sentence.",
+        "options": ["He are sleeping.", "He is sleeping.", "He am sleeping."],
+        "correct": 1,
+        "explanation": "'He is sleeping'."
+      },
+      {
+        "id": 40,
+        "type": "multiple-choice",
+        "question": "Choose the correct word.",
+        "options": ["They is sad.", "They are sad.", "They am sad."],
+        "correct": 1,
+        "explanation": "'They are'."
+      },
+      {
+        "id": 41,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["Birds flies.", "Bird fly.", "Birds fly."],
+        "correct": 2,
+        "explanation": "'Birds fly'."
+      },
+      {
+        "id": 42,
+        "type": "multiple-choice",
+        "question": "Select the right answer.",
+        "options": [
+          "He am my brother.",
+          "He is my brother.",
+          "He are my brother."
+        ],
+        "correct": 1,
+        "explanation": "'He is'."
+      },
+      {
+        "id": 43,
+        "type": "multiple-choice",
+        "question": "Choose the correct.",
+        "options": ["We has fun.", "We have fun.", "We haves fun."],
+        "correct": 1,
+        "explanation": "'We have'."
+      },
+      {
+        "id": 44,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["It raining.", "It rains.", "It rain."],
+        "correct": 1,
+        "explanation": "'It rains'."
+      },
+      {
+        "id": 45,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["She am tall.", "She is tall.", "She are tall."],
+        "correct": 1,
+        "explanation": "'She is'."
+      },
+      {
+        "id": 46,
+        "type": "multiple-choice",
+        "question": "Select the right option.",
+        "options": ["You is ready.", "You am ready.", "You are ready."],
+        "correct": 2,
+        "explanation": "'You are'."
+      },
+      {
+        "id": 47,
+        "type": "multiple-choice",
+        "question": "Choose the right answer.",
+        "options": ["It are raining.", "It is raining.", "It am raining."],
+        "correct": 1,
+        "explanation": "'It is raining'."
+      },
+      {
+        "id": 48,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["I am hungry.", "I is hungry.", "I are hungry."],
+        "correct": 0,
+        "explanation": "'I am'."
+      },
+      {
+        "id": 49,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["Cats plays.", "Cats play.", "Cat play."],
+        "correct": 1,
+        "explanation": "'Cats play'."
+      },
+      {
+        "id": 50,
+        "type": "multiple-choice",
+        "question": "Select the right option.",
+        "options": ["We was there.", "We were there.", "We is there."],
+        "correct": 1,
+        "explanation": "'We were'."
+      }
+    ],
+
+    "FillBlank": [
+      {
+        "id": 51,
+        "type": "fill-blank",
+        "question": "She ___ (has/have) a doll.",
+        "answer": "has",
+        "explanation": "'She has' is correct."
+      },
+      {
+        "id": 52,
+        "type": "fill-blank",
+        "question": "I ___ (am/is) going to school.",
+        "answer": "am",
+        "explanation": "'I am' is correct."
+      },
+      {
+        "id": 53,
+        "type": "fill-blank",
+        "question": "They ___ (is/are) playing.",
+        "answer": "are",
+        "explanation": "'They are' is correct."
+      },
+      {
+        "id": 54,
+        "type": "fill-blank",
+        "question": "The sun ___ (rise/rises) every morning.",
+        "answer": "rises",
+        "explanation": "'Sun rises'."
+      },
+      {
+        "id": 55,
+        "type": "fill-blank",
+        "question": "We ___ (was/were) at home.",
+        "answer": "were",
+        "explanation": "'We were'."
+      },
+      {
+        "id": 56,
+        "type": "fill-blank",
+        "question": "He ___ (has/have) a bike.",
+        "answer": "has",
+        "explanation": "'He has'."
+      },
+      {
+        "id": 57,
+        "type": "fill-blank",
+        "question": "It ___ (is/are) cold today.",
+        "answer": "is",
+        "explanation": "'It is'."
+      },
+      {
+        "id": 58,
+        "type": "fill-blank",
+        "question": "You ___ (is/are) my friend.",
+        "answer": "are",
+        "explanation": "'You are'."
+      },
+      {
+        "id": 59,
+        "type": "fill-blank",
+        "question": "Cats ___ (drink/drinks) milk.",
+        "answer": "drink",
+        "explanation": "Plural → 'drink'."
+      },
+      {
+        "id": 60,
+        "type": "fill-blank",
+        "question": "My sister ___ (go/goes) to school.",
+        "answer": "goes",
+        "explanation": "'Sister goes'."
+      },
+      {
+        "id": 61,
+        "type": "fill-blank",
+        "question": "She ___ (like/likes) chocolate.",
+        "answer": "likes",
+        "explanation": "'She likes'."
+      },
+      {
+        "id": 62,
+        "type": "fill-blank",
+        "question": "They ___ (was/were) happy.",
+        "answer": "were",
+        "explanation": "'They were'."
+      },
+      {
+        "id": 63,
+        "type": "fill-blank",
+        "question": "I ___ (am/is) ready.",
+        "answer": "am",
+        "explanation": "'I am'."
+      },
+      {
+        "id": 64,
+        "type": "fill-blank",
+        "question": "He ___ (play/plays) football.",
+        "answer": "plays",
+        "explanation": "'He plays'."
+      },
+      {
+        "id": 65,
+        "type": "fill-blank",
+        "question": "We ___ (is/are) reading books.",
+        "answer": "are",
+        "explanation": "'We are'."
+      },
+      {
+        "id": 66,
+        "type": "fill-blank",
+        "question": "It ___ (rain/rains) often.",
+        "answer": "rains",
+        "explanation": "'It rains'."
+      },
+      {
+        "id": 67,
+        "type": "fill-blank",
+        "question": "She ___ (has/have) done it.",
+        "answer": "has",
+        "explanation": "'She has'."
+      },
+      {
+        "id": 68,
+        "type": "fill-blank",
+        "question": "They ___ (do/does) their work.",
+        "answer": "do",
+        "explanation": "'They do'."
+      },
+      {
+        "id": 69,
+        "type": "fill-blank",
+        "question": "I ___ (have/has) a pen.",
+        "answer": "have",
+        "explanation": "'I have'."
+      },
+      {
+        "id": 70,
+        "type": "fill-blank",
+        "question": "You ___ (is/are) welcome.",
+        "answer": "are",
+        "explanation": "'You are'."
+      },
+      {
+        "id": 71,
+        "type": "fill-blank",
+        "question": "Birds ___ (fly/flies) high.",
+        "answer": "fly",
+        "explanation": "'Birds fly'."
+      },
+      {
+        "id": 72,
+        "type": "fill-blank",
+        "question": "She ___ (is/am) my mother.",
+        "answer": "is",
+        "explanation": "'She is'."
+      },
+      {
+        "id": 73,
+        "type": "fill-blank",
+        "question": "It ___ (is/are) raining now.",
+        "answer": "is",
+        "explanation": "'It is'."
+      },
+      {
+        "id": 74,
+        "type": "fill-blank",
+        "question": "The dog ___ (bark/barks) loudly.",
+        "answer": "barks",
+        "explanation": "'Dog barks'."
+      },
+      {
+        "id": 75,
+        "type": "fill-blank",
+        "question": "He ___ (has/have) many books.",
+        "answer": "has",
+        "explanation": "'He has'."
+      }
+    ],
+
+    "TrueFalse": [
+      {
+        "id": 76,
+        "type": "true-false",
+        "question": "The sun rise in the east.",
+        "correct": false,
+        "explanation": "Should be 'rises'."
+      },
+      {
+        "id": 77,
+        "type": "true-false",
+        "question": "Cats drinks milk.",
+        "correct": false,
+        "explanation": "Should be 'Cats drink'."
+      },
+      {
+        "id": 78,
+        "type": "true-false",
+        "question": "I is a boy.",
+        "correct": false,
+        "explanation": "Should be 'I am'."
+      },
+      {
+        "id": 79,
+        "type": "true-false",
+        "question": "We are friends.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 80,
+        "type": "true-false",
+        "question": "He have a toy.",
+        "correct": false,
+        "explanation": "Should be 'He has'."
+      },
+      {
+        "id": 81,
+        "type": "true-false",
+        "question": "She is reading.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 82,
+        "type": "true-false",
+        "question": "They is playing.",
+        "correct": false,
+        "explanation": "Should be 'They are'."
+      },
+      {
+        "id": 83,
+        "type": "true-false",
+        "question": "I am happy.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 84,
+        "type": "true-false",
+        "question": "It raining now.",
+        "correct": false,
+        "explanation": "Should be 'It is raining'."
+      },
+      {
+        "id": 85,
+        "type": "true-false",
+        "question": "We was late.",
+        "correct": false,
+        "explanation": "Should be 'We were'."
+      },
+      {
+        "id": 86,
+        "type": "true-false",
+        "question": "Birds fly.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 87,
+        "type": "true-false",
+        "question": "He is here.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 88,
+        "type": "true-false",
+        "question": "You is my friend.",
+        "correct": false,
+        "explanation": "Should be 'You are'."
+      },
+      {
+        "id": 89,
+        "type": "true-false",
+        "question": "She have done it.",
+        "correct": false,
+        "explanation": "Should be 'She has'."
+      },
+      {
+        "id": 90,
+        "type": "true-false",
+        "question": "I have a book.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 91,
+        "type": "true-false",
+        "question": "He are sleeping.",
+        "correct": false,
+        "explanation": "Should be 'He is'."
+      },
+      {
+        "id": 92,
+        "type": "true-false",
+        "question": "We is ready.",
+        "correct": false,
+        "explanation": "Should be 'We are'."
+      },
+      {
+        "id": 93,
+        "type": "true-false",
+        "question": "She likes apples.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 94,
+        "type": "true-false",
+        "question": "Dogs bark.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 95,
+        "type": "true-false",
+        "question": "I has a pencil.",
+        "correct": false,
+        "explanation": "Should be 'I have'."
+      },
+      {
+        "id": 96,
+        "type": "true-false",
+        "question": "You are welcome.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 97,
+        "type": "true-false",
+        "question": "It rains.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 98,
+        "type": "true-false",
+        "question": "The cat sleep.",
+        "correct": false,
+        "explanation": "Should be 'sleeps'."
+      },
+      {
+        "id": 99,
+        "type": "true-false",
+        "question": "He is my brother.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 100,
+        "type": "true-false",
+        "question": "She am going.",
+        "correct": false,
+        "explanation": "Should be 'She is'."
+      }
+    ]
+  },
+
+  "III_V": {
+    "MCQ": [
+      {
+        "id": 1,
+        "type": "multiple-choice",
+        "question": "Which sentence is correct?",
+        "options": ["He don't like it.", "He doesn't like it.", "He not like it."],
+        "correct": 1,
+        "explanation": "'Doesn't' is correct for he/she/it."
+      },
+      {
+        "id": 2,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["I didn't went there.", "I didn't go there.", "I not went there."],
+        "correct": 1,
+        "explanation": "'Didn't go' is correct."
+      },
+      {
+        "id": 3,
+        "type": "multiple-choice",
+        "question": "Choose the right option.",
+        "options": ["She do her homework.", "She did her homework.", "She done her homework."],
+        "correct": 1,
+        "explanation": "'Did' is past tense."
+      },
+      {
+        "id": 4,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["We was playing.", "We were playing.", "We is playing."],
+        "correct": 1,
+        "explanation": "'We were' for plural."
+      },
+      {
+        "id": 5,
+        "type": "multiple-choice",
+        "question": "Select the correct option.",
+        "options": ["She don't know.", "She doesn't know.", "She no know."],
+        "correct": 1,
+        "explanation": "'Doesn't' for he/she/it."
+      },
+      {
+        "id": 6,
+        "type": "multiple-choice",
+        "question": "Choose the right answer.",
+        "options": ["They was here.", "They is here.", "They were here."],
+        "correct": 2,
+        "explanation": "'They were'."
+      },
+      {
+        "id": 7,
+        "type": "multiple-choice",
+        "question": "Pick the correct.",
+        "options": ["He can sings.", "He can sing.", "He can sang."],
+        "correct": 1,
+        "explanation": "'Can' + base verb."
+      },
+      {
+        "id": 8,
+        "type": "multiple-choice",
+        "question": "Which is written correctly?",
+        "options": ["I am not knowing.", "I don't know.", "I no know."],
+        "correct": 1,
+        "explanation": "'I don't know'."
+      },
+      {
+        "id": 9,
+        "type": "multiple-choice",
+        "question": "Choose the correct option.",
+        "options": ["She has went.", "She has gone.", "She has go."],
+        "correct": 1,
+        "explanation": "'Has gone' is present perfect."
+      },
+      {
+        "id": 10,
+        "type": "multiple-choice",
+        "question": "Pick the right one.",
+        "options": ["Did you saw it?", "Did you see it?", "Did you seeing it?"],
+        "correct": 1,
+        "explanation": "'Did' + base verb: 'see'."
+      },
+      {
+        "id": 11,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["He didn't knew.", "He didn't know.", "He did knew."],
+        "correct": 1,
+        "explanation": "'Didn't know'."
+      },
+      {
+        "id": 12,
+        "type": "multiple-choice",
+        "question": "Select the right sentence.",
+        "options": ["She can sings.", "She can sing.", "She cans sing."],
+        "correct": 1,
+        "explanation": "'Can sing'."
+      },
+      {
+        "id": 13,
+        "type": "multiple-choice",
+        "question": "Choose the correct sentence.",
+        "options": ["I have eat.", "I have eaten.", "I have eats."],
+        "correct": 1,
+        "explanation": "'Have eaten'."
+      },
+      {
+        "id": 14,
+        "type": "multiple-choice",
+        "question": "Which one is correct?",
+        "options": ["He was went.", "He has went.", "He went."],
+        "correct": 2,
+        "explanation": "'He went'."
+      },
+      {
+        "id": 15,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["She have done it.", "She has done it.", "She done it."],
+        "correct": 1,
+        "explanation": "'She has done'."
+      },
+      {
+        "id": 16,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["They has finished.", "They have finished.", "They haves finished."],
+        "correct": 1,
+        "explanation": "'They have'."
+      },
+      {
+        "id": 17,
+        "type": "multiple-choice",
+        "question": "Select the right one.",
+        "options": ["I has a book.", "I have a book.", "I haves a book."],
+        "correct": 1,
+        "explanation": "'I have'."
+      },
+      {
+        "id": 18,
+        "type": "multiple-choice",
+        "question": "Pick the correct option.",
+        "options": ["Did she went?", "Did she go?", "Did she goes?"],
+        "correct": 1,
+        "explanation": "'Did' + base: 'go'."
+      },
+      {
+        "id": 19,
+        "type": "multiple-choice",
+        "question": "Choose the right sentence.",
+        "options": ["He do not play.", "He does not play.", "He don't play."],
+        "correct": 1,
+        "explanation": "'Does not'."
+      },
+      {
+        "id": 20,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["I doesn't know.", "I don't know.", "I not know."],
+        "correct": 1,
+        "explanation": "'I don't know'."
+      },
+      {
+        "id": 21,
+        "type": "multiple-choice",
+        "question": "Select the right sentence.",
+        "options": ["He is play.", "He is playing.", "He are playing."],
+        "correct": 1,
+        "explanation": "'He is playing'."
+      },
+      {
+        "id": 22,
+        "type": "multiple-choice",
+        "question": "Pick the correct answer.",
+        "options": ["She do homework.", "She does homework.", "She doing homework."],
+        "correct": 1,
+        "explanation": "'She does'."
+      },
+      {
+        "id": 23,
+        "type": "multiple-choice",
+        "question": "Choose the right one.",
+        "options": ["They was late.", "They were late.", "They is late."],
+        "correct": 1,
+        "explanation": "'They were'."
+      },
+      {
+        "id": 24,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["She don't plays.", "She doesn't play.", "She not plays."],
+        "correct": 1,
+        "explanation": "'Doesn't play'."
+      },
+      {
+        "id": 25,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["I have did it.", "I did it.", "I have do it."],
+        "correct": 1,
+        "explanation": "'I did it'."
+      },
+      
+      {
+        "id": 26,
+        "type": "multiple-choice",
+        "question": "Which sentence is correct?",
+        "options": ["She did not knew.", "She did not know.", "She does not knew."],
+        "correct": 1,
+        "explanation": "'Did not know'."
+      },
+      {
+        "id": 27,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["He was go.", "He was gone.", "He went."],
+        "correct": 2,
+        "explanation": "'He went'."
+      },
+      {
+        "id": 28,
+        "type": "multiple-choice",
+        "question": "Choose the right sentence.",
+        "options": ["I have ate.", "I have eaten.", "I has eaten."],
+        "correct": 1,
+        "explanation": "'Have eaten'."
+      },
+      {
+        "id": 29,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["They didn't saw.", "They didn't see.", "They did saw."],
+        "correct": 1,
+        "explanation": "'Didn't see'."
+      },
+      {
+        "id": 30,
+        "type": "multiple-choice",
+        "question": "Select the correct sentence.",
+        "options": ["She can to swim.", "She can swim.", "She can swims."],
+        "correct": 1,
+        "explanation": "'Can swim'."
+      },
+      {
+        "id": 31,
+        "type": "multiple-choice",
+        "question": "Pick the correct option.",
+        "options": ["He didn't went.", "He didn't go.", "He not go."],
+        "correct": 1,
+        "explanation": "'Didn't go'."
+      },
+      {
+        "id": 32,
+        "type": "multiple-choice",
+        "question": "Choose the right sentence.",
+        "options": ["I doesn't like that.", "I don't like that.", "I not like that."],
+        "correct": 1,
+        "explanation": "'Don't' for I/we/you/they."
+      },
+      {
+        "id": 33,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["Does he goes?", "Does he go?", "Do he go?"],
+        "correct": 1,
+        "explanation": "'Does he go?'."
+      },
+      {
+        "id": 34,
+        "type": "multiple-choice",
+        "question": "Select the right sentence.",
+        "options": ["We has done it.", "We have done it.", "We haves done it."],
+        "correct": 1,
+        "explanation": "'We have'."
+      },
+      {
+        "id": 35,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["He has eat.", "He has eats.", "He has eaten."],
+        "correct": 2,
+        "explanation": "'Has eaten'."
+      },
+      {
+        "id": 36,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["They did went.", "They did go.", "They does go."],
+        "correct": 1,
+        "explanation": "'Did go'."
+      },
+      {
+        "id": 37,
+        "type": "multiple-choice",
+        "question": "Choose the right one.",
+        "options": ["He could goes.", "He could go.", "He could going."],
+        "correct": 1,
+        "explanation": "'Could go'."
+      },
+      {
+        "id": 38,
+        "type": "multiple-choice",
+        "question": "Pick the correct option.",
+        "options": ["Did she gone?", "Did she go?", "Did she goes?"],
+        "correct": 1,
+        "explanation": "'Did go'."
+      },
+      {
+        "id": 39,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["I have wrote.", "I have written.", "I have write."],
+        "correct": 1,
+        "explanation": "'Have written'."
+      },
+      {
+        "id": 40,
+        "type": "multiple-choice",
+        "question": "Select the right one.",
+        "options": ["He don't know.", "He doesn't know.", "He not knows."],
+        "correct": 1,
+        "explanation": "'Doesn't know'."
+      },
+      {
+        "id": 41,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["We did went.", "We did go.", "We does go."],
+        "correct": 1,
+        "explanation": "'Did go'."
+      },
+      {
+        "id": 42,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["They didn't know.", "They didn't knew.", "They doesn't know."],
+        "correct": 0,
+        "explanation": "'Didn't know'."
+      },
+      {
+        "id": 43,
+        "type": "multiple-choice",
+        "question": "Select the right option.",
+        "options": ["She have a car.", "She has a car.", "She haves a car."],
+        "correct": 1,
+        "explanation": "'She has'."
+      },
+      {
+        "id": 44,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["He can sings.", "He can sing.", "He cans sing."],
+        "correct": 1,
+        "explanation": "'Can sing'."
+      },
+      {
+        "id": 45,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["Does you know?", "Do you know?", "Do you knows?"],
+        "correct": 1,
+        "explanation": "'Do you know?'."
+      },
+      {
+        "id": 46,
+        "type": "multiple-choice",
+        "question": "Choose the right one.",
+        "options": ["He do homework.", "He does homework.", "He doing homework."],
+        "correct": 1,
+        "explanation": "'Does homework'."
+      },
+      {
+        "id": 47,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["She has gone.", "She have gone.", "She haves gone."],
+        "correct": 0,
+        "explanation": "'Has gone'."
+      },
+      {
+        "id": 48,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["I was go.", "I was gone.", "I went."],
+        "correct": 2,
+        "explanation": "'I went'."
+      },
+      {
+        "id": 49,
+        "type": "multiple-choice",
+        "question": "Select the right sentence.",
+        "options": ["We can goes.", "We can go.", "We can going."],
+        "correct": 1,
+        "explanation": "'Can go'."
+      },
+      {
+        "id": 50,
+        "type": "multiple-choice",
+        "question": "Pick the correct option.",
+        "options": ["He not knows.", "He does not know.", "He do not knows."],
+        "correct": 1,
+        "explanation": "'Does not know'."
+      }
+    ],
+    
+    "FillBlank": [
+      {
+        "id": 51,
+        "type": "fill-blank",
+        "question": "He ___ (do/does) his homework daily.",
+        "answer": "does",
+        "explanation": "He/she/it uses 'does'."
+      },
+      {
+        "id": 52,
+        "type": "fill-blank",
+        "question": "I ___ (don't/doesn't) know the answer.",
+        "answer": "don't",
+        "explanation": "'I' uses 'don't'."
+      },
+      {
+        "id": 53,
+        "type": "fill-blank",
+        "question": "She ___ (has/have) finished her work.",
+        "answer": "has",
+        "explanation": "'She has'."
+      },
+      {
+        "id": 54,
+        "type": "fill-blank",
+        "question": "We ___ (was/were) playing outside.",
+        "answer": "were",
+        "explanation": "'We were'."
+      },
+      {
+        "id": 55,
+        "type": "fill-blank",
+        "question": "He ___ (did/done) it already.",
+        "answer": "did",
+        "explanation": "'Did' is simple past."
+      },
+      {
+        "id": 56,
+        "type": "fill-blank",
+        "question": "They ___ (don't/doesn't) want to go.",
+        "answer": "don't",
+        "explanation": "'They don't'."
+      },
+      {
+        "id": 57,
+        "type": "fill-blank",
+        "question": "I ___ (have/has) completed the task.",
+        "answer": "have",
+        "explanation": "'I have'."
+      },
+      {
+        "id": 58,
+        "type": "fill-blank",
+        "question": "She ___ (didn't/don't) like the food.",
+        "answer": "didn't",
+        "explanation": "'She didn't'."
+      },
+      {
+        "id": 59,
+        "type": "fill-blank",
+        "question": "He ___ (was/were) there yesterday.",
+        "answer": "was",
+        "explanation": "'He was'."
+      },
+      {
+        "id": 60,
+        "type": "fill-blank",
+        "question": "They ___ (has/have) a big house.",
+        "answer": "have",
+        "explanation": "'They have'."
+      },
+      {
+        "id": 61,
+        "type": "fill-blank",
+        "question": "Does she ___ (know/knows) the truth?",
+        "answer": "know",
+        "explanation": "'Does' takes base verb."
+      },
+      {
+        "id": 62,
+        "type": "fill-blank",
+        "question": "I ___ (was/were) waiting for you.",
+        "answer": "was",
+        "explanation": "'I was'."
+      },
+      {
+        "id": 63,
+        "type": "fill-blank",
+        "question": "She ___ (doesn't/don't) like sweets.",
+        "answer": "doesn't",
+        "explanation": "'She doesn't'."
+      },
+      {
+        "id": 64,
+        "type": "fill-blank",
+        "question": "We ___ (did/done) our project.",
+        "answer": "did",
+        "explanation": "'Did' is correct here."
+      },
+      {
+        "id": 65,
+        "type": "fill-blank",
+        "question": "They ___ (didn't/don't) come yesterday.",
+        "answer": "didn't",
+        "explanation": "'Didn't' for past."
+      },
+      {
+        "id": 66,
+        "type": "fill-blank",
+        "question": "I ___ (don't/doesn't) like that movie.",
+        "answer": "don't",
+        "explanation": "'I don't'."
+      },
+      {
+        "id": 67,
+        "type": "fill-blank",
+        "question": "She ___ (has/have) been here before.",
+        "answer": "has",
+        "explanation": "'She has'."
+      },
+      {
+        "id": 68,
+        "type": "fill-blank",
+        "question": "They ___ (were/was) singing a song.",
+        "answer": "were",
+        "explanation": "'They were'."
+      },
+      {
+        "id": 69,
+        "type": "fill-blank",
+        "question": "He ___ (do/does) not play chess.",
+        "answer": "does",
+        "explanation": "'He does'."
+      },
+      {
+        "id": 70,
+        "type": "fill-blank",
+        "question": "I ___ (didn't/doesn't) see him.",
+        "answer": "didn't",
+        "explanation": "'Didn't' for I."
+      },
+      {
+        "id": 71,
+        "type": "fill-blank",
+        "question": "She ___ (was/were) absent yesterday.",
+        "answer": "was",
+        "explanation": "'She was'."
+      },
+      {
+        "id": 72,
+        "type": "fill-blank",
+        "question": "He ___ (has/have) a new car.",
+        "answer": "has",
+        "explanation": "'He has'."
+      },
+      {
+        "id": 73,
+        "type": "fill-blank",
+        "question": "They ___ (has/have) done it already.",
+        "answer": "have",
+        "explanation": "'They have'."
+      },
+      {
+        "id": 74,
+        "type": "fill-blank",
+        "question": "I ___ (am/is) ready to go.",
+        "answer": "am",
+        "explanation": "'I am'."
+      },
+      {
+        "id": 75,
+        "type": "fill-blank",
+        "question": "Does he ___ (need/needs) help?",
+        "answer": "need",
+        "explanation": "'Does' + base verb."
+      }
+    ],
+    
+    "TrueFalse": [
+      {
+        "id": 76,
+        "type": "true-false",
+        "question": "He don't like pizza.",
+        "correct": false,
+        "explanation": "Should be 'He doesn't like pizza'."
+      },
+      {
+        "id": 77,
+        "type": "true-false",
+        "question": "They were at the park.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 78,
+        "type": "true-false",
+        "question": "I didn't went there.",
+        "correct": false,
+        "explanation": "Should be 'I didn't go there'."
+      },
+      {
+        "id": 79,
+        "type": "true-false",
+        "question": "She has done her work.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 80,
+        "type": "true-false",
+        "question": "They doesn't play cricket.",
+        "correct": false,
+        "explanation": "Should be 'They don't play cricket'."
+      },
+      {
+        "id": 81,
+        "type": "true-false",
+        "question": "We have completed the task.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 82,
+        "type": "true-false",
+        "question": "Does he needs help?",
+        "correct": false,
+        "explanation": "Should be 'Does he need help?'."
+      },
+      {
+        "id": 83,
+        "type": "true-false",
+        "question": "She didn't know the answer.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 84,
+        "type": "true-false",
+        "question": "He do not sing well.",
+        "correct": false,
+        "explanation": "Should be 'He does not sing well'."
+      },
+      {
+        "id": 85,
+        "type": "true-false",
+        "question": "I don't like spinach.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 86,
+        "type": "true-false",
+        "question": "They has finished their homework.",
+        "correct": false,
+        "explanation": "Should be 'They have finished'."
+      },
+      {
+        "id": 87,
+        "type": "true-false",
+        "question": "He has gone home.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 88,
+        "type": "true-false",
+        "question": "Did you saw the movie?",
+        "correct": false,
+        "explanation": "Should be 'Did you see the movie?'."
+      },
+      {
+        "id": 89,
+        "type": "true-false",
+        "question": "I did my homework.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 90,
+        "type": "true-false",
+        "question": "She don't has a pen.",
+        "correct": false,
+        "explanation": "Should be 'She doesn't have a pen'."
+      },
+      {
+        "id": 91,
+        "type": "true-false",
+        "question": "We were playing in the garden.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 92,
+        "type": "true-false",
+        "question": "He have two sisters.",
+        "correct": false,
+        "explanation": "Should be 'He has two sisters'."
+      },
+      {
+        "id": 93,
+        "type": "true-false",
+        "question": "They don't know the answer.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 94,
+        "type": "true-false",
+        "question": "Does she likes chocolate?",
+        "correct": false,
+        "explanation": "Should be 'Does she like chocolate?'."
+      },
+      {
+        "id": 95,
+        "type": "true-false",
+        "question": "He doesn't play football.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 96,
+        "type": "true-false",
+        "question": "She did not knew that.",
+        "correct": false,
+        "explanation": "Should be 'did not know'."
+      },
+      {
+        "id": 97,
+        "type": "true-false",
+        "question": "They were dancing.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 98,
+        "type": "true-false",
+        "question": "He has did it.",
+        "correct": false,
+        "explanation": "Should be 'He did it' or 'He has done it'."
+      },
+      {
+        "id": 99,
+        "type": "true-false",
+        "question": "I haven't seen him today.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 100,
+        "type": "true-false",
+        "question": "We doesn't go there.",
+        "correct": false,
+        "explanation": "Should be 'We don't go there'."
+      }
+    ]
+  },
+  
+  "VI_X": {
+    "MCQ": [
+      {
+        "id": 1,
+        "type": "multiple-choice",
+        "question": "Which sentence is correct?",
+        "options": ["She don't knows the answer.", "She doesn't know the answer.", "She doesn't knows the answer."],
+        "correct": 1,
+        "explanation": "'Doesn't know' is correct for she/he/it."
+      },
+      {
+        "id": 2,
+        "type": "multiple-choice",
+        "question": "Pick the correct option.",
+        "options": ["If I was you, I will help.", "If I were you, I would help.", "If I was you, I would helps."],
+        "correct": 1,
+        "explanation": "Subjunctive mood: 'If I were you'."
+      },
+      {
+        "id": 3,
+        "type": "multiple-choice",
+        "question": "Choose the correct sentence.",
+        "options": ["He has went to the store.", "He have gone to the store.", "He has gone to the store."],
+        "correct": 2,
+        "explanation": "'Has gone' is correct present perfect."
+      },
+      {
+        "id": 4,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["Neither of them are ready.", "Neither of them is ready.", "Neither of them be ready."],
+        "correct": 1,
+        "explanation": "'Neither' takes singular verb."
+      },
+      {
+        "id": 5,
+        "type": "multiple-choice",
+        "question": "Select the correct sentence.",
+        "options": ["Each student have a book.", "Each student has a book.", "Each students has a book."],
+        "correct": 1,
+        "explanation": "'Each' takes singular: 'has'."
+      },
+      {
+        "id": 6,
+        "type": "multiple-choice",
+        "question": "Choose the right one.",
+        "options": ["He didn't went there.", "He didn't go there.", "He did went there."],
+        "correct": 1,
+        "explanation": "'Did' + base: 'go'."
+      },
+      {
+        "id": 7,
+        "type": "multiple-choice",
+        "question": "Pick the correct option.",
+        "options": ["She do her homework daily.", "She does her homework daily.", "She did her homework daily."],
+        "correct": 1,
+        "explanation": "'Does' for present tense she/he/it."
+      },
+      {
+        "id": 8,
+        "type": "multiple-choice",
+        "question": "Which sentence is right?",
+        "options": ["He suggested me to go.", "He suggested that I go.", "He suggested me going."],
+        "correct": 1,
+        "explanation": "Use 'suggest that I'."
+      },
+      {
+        "id": 9,
+        "type": "multiple-choice",
+        "question": "Choose the correct option.",
+        "options": ["He did not knew.", "He did not know.", "He does not knew."],
+        "correct": 1,
+        "explanation": "'Did not know'."
+      },
+      {
+        "id": 10,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["He is senior than me.", "He is more senior than me.", "He is senior to me."],
+        "correct": 2,
+        "explanation": "'Senior to' is correct."
+      },
+      {
+        "id": 11,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["I look forward to meet you.", "I look forward to meeting you.", "I looking forward to meet you."],
+        "correct": 1,
+        "explanation": "'Look forward to' + gerund."
+      },
+      {
+        "id": 12,
+        "type": "multiple-choice",
+        "question": "Select the right one.",
+        "options": ["He is married with a doctor.", "He is married to a doctor.", "He married with a doctor."],
+        "correct": 1,
+        "explanation": "'Married to'."
+      },
+      {
+        "id": 13,
+        "type": "multiple-choice",
+        "question": "Pick the correct option.",
+        "options": ["I prefer coffee than tea.", "I prefer coffee over tea.", "I prefer coffee to tea."],
+        "correct": 2,
+        "explanation": "'Prefer X to Y'."
+      },
+      {
+        "id": 14,
+        "type": "multiple-choice",
+        "question": "Choose the right answer.",
+        "options": ["He said me the truth.", "He told me the truth.", "He tell me the truth."],
+        "correct": 1,
+        "explanation": "'Told' is correct."
+      },
+      {
+        "id": 15,
+        "type": "multiple-choice",
+        "question": "Which sentence is right?",
+        "options": ["It is high time he goes.", "It is high time he go.", "It is high time he went."],
+        "correct": 2,
+        "explanation": "'High time' → past tense."
+      },
+      {
+        "id": 16,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["Despite of the rain, we went.", "Inspite of the rain, we went.", "Despite the rain, we went."],
+        "correct": 2,
+        "explanation": "Use 'despite' without 'of'."
+      },
+      {
+        "id": 17,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["Suppose if he comes.", "Suppose he comes.", "Supposing if he comes."],
+        "correct": 1,
+        "explanation": "'Suppose' alone, no 'if'."
+      },
+      {
+        "id": 18,
+        "type": "multiple-choice",
+        "question": "Choose the correct option.",
+        "options": ["The news are good.", "The news is good.", "The news be good."],
+        "correct": 1,
+        "explanation": "'News' is singular."
+      },
+      {
+        "id": 19,
+        "type": "multiple-choice",
+        "question": "Pick the correct answer.",
+        "options": ["He has gave me a book.", "He has given me a book.", "He gave me a book."],
+        "correct": 1,
+        "explanation": "'Has given'."
+      },
+      {
+        "id": 20,
+        "type": "multiple-choice",
+        "question": "Which is right?",
+        "options": ["Many a man have failed.", "Many a man has failed.", "Many men has failed."],
+        "correct": 1,
+        "explanation": "'Many a' → singular verb."
+      },
+      {
+        "id": 21,
+        "type": "multiple-choice",
+        "question": "Select the correct.",
+        "options": ["Each of them know.", "Each of them knows.", "Each of them knowing."],
+        "correct": 1,
+        "explanation": "'Each' takes singular."
+      },
+      {
+        "id": 22,
+        "type": "multiple-choice",
+        "question": "Pick the correct.",
+        "options": ["It is me.", "It is I.", "It me is."],
+        "correct": 1,
+        "explanation": "Formal: 'It is I'."
+      },
+      {
+        "id": 23,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["I have a good news.", "I have good news.", "I have good new."],
+        "correct": 1,
+        "explanation": "'News' is uncountable."
+      },
+      {
+        "id": 24,
+        "type": "multiple-choice",
+        "question": "Choose the right one.",
+        "options": ["Neither of them know.", "Neither of them knows.", "Neither of them knowing."],
+        "correct": 1,
+        "explanation": "'Neither' takes singular."
+      },
+      {
+        "id": 25,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["He has broke the vase.", "He has broken the vase.", "He have broke the vase."],
+        "correct": 1,
+        "explanation": "'Has broken'."
+      },
+
+      {
+        "id": 26,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["He insisted to go.", "He insisted on going.", "He insist to go."],
+        "correct": 1,
+        "explanation": "'Insist on' + gerund."
+      },
+      {
+        "id": 27,
+        "type": "multiple-choice",
+        "question": "Choose the correct sentence.",
+        "options": ["She has ate dinner.", "She has eaten dinner.", "She have eaten dinner."],
+        "correct": 1,
+        "explanation": "'Has eaten'."
+      },
+      {
+        "id": 28,
+        "type": "multiple-choice",
+        "question": "Pick the right one.",
+        "options": ["I look forward to see you.", "I look forward seeing you.", "I look forward to seeing you."],
+        "correct": 2,
+        "explanation": "'Look forward to' + gerund."
+      },
+      {
+        "id": 29,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["I suggest you to go.", "I suggest you going.", "I suggest that you go."],
+        "correct": 2,
+        "explanation": "Use 'suggest that you'."
+      },
+      {
+        "id": 30,
+        "type": "multiple-choice",
+        "question": "Select the correct option.",
+        "options": ["Neither of them know.", "Neither of them knows.", "Neither of them knowing."],
+        "correct": 1,
+        "explanation": "'Neither' takes singular."
+      },
+      {
+        "id": 31,
+        "type": "multiple-choice",
+        "question": "Choose the right one.",
+        "options": ["She said me to come.", "She told me to come.", "She says me to come."],
+        "correct": 1,
+        "explanation": "'Told me'."
+      },
+      {
+        "id": 32,
+        "type": "multiple-choice",
+        "question": "Pick the correct answer.",
+        "options": ["It is high time you go.", "It is high time you went.", "It is high time you goes."],
+        "correct": 1,
+        "explanation": "'High time' → past tense."
+      },
+      {
+        "id": 33,
+        "type": "multiple-choice",
+        "question": "Which is right?",
+        "options": ["The team are winning.", "The team is winning.", "The team be winning."],
+        "correct": 1,
+        "explanation": "'Team' is singular collective."
+      },
+      {
+        "id": 34,
+        "type": "multiple-choice",
+        "question": "Choose the correct sentence.",
+        "options": ["I prefer coffee than tea.", "I prefer coffee to tea.", "I prefer coffee over tea."],
+        "correct": 1,
+        "explanation": "'Prefer X to Y'."
+      },
+      {
+        "id": 35,
+        "type": "multiple-choice",
+        "question": "Pick the correct sentence.",
+        "options": ["He is senior than me.", "He is senior to me.", "He is more senior than me."],
+        "correct": 1,
+        "explanation": "'Senior to'."
+      },
+      {
+        "id": 36,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["Suppose if he comes.", "Suppose he comes.", "Supposing if he comes."],
+        "correct": 1,
+        "explanation": "No 'if' after 'suppose'."
+      },
+      {
+        "id": 37,
+        "type": "multiple-choice",
+        "question": "Choose the right option.",
+        "options": ["He did not knew.", "He did not know.", "He does not knew."],
+        "correct": 1,
+        "explanation": "'Did not know'."
+      },
+      {
+        "id": 38,
+        "type": "multiple-choice",
+        "question": "Pick the correct one.",
+        "options": ["The news are true.", "The news is true.", "The news be true."],
+        "correct": 1,
+        "explanation": "'News' is singular."
+      },
+      {
+        "id": 39,
+        "type": "multiple-choice",
+        "question": "Which is right?",
+        "options": ["He has gave it.", "He has given it.", "He have given it."],
+        "correct": 1,
+        "explanation": "'Has given'."
+      },
+      {
+        "id": 40,
+        "type": "multiple-choice",
+        "question": "Choose the correct sentence.",
+        "options": ["Each of them know.", "Each of them knows.", "Each of them knowing."],
+        "correct": 1,
+        "explanation": "'Each' → singular."
+      },
+      {
+        "id": 41,
+        "type": "multiple-choice",
+        "question": "Select the correct option.",
+        "options": ["It is me.", "It is I.", "It me is."],
+        "correct": 1,
+        "explanation": "'It is I'."
+      },
+      {
+        "id": 42,
+        "type": "multiple-choice",
+        "question": "Pick the correct.",
+        "options": ["Neither of them know.", "Neither of them knows.", "Neither of them knowing."],
+        "correct": 1,
+        "explanation": "'Neither' → singular."
+      },
+      {
+        "id": 43,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["I have a good news.", "I have good news.", "I have good new."],
+        "correct": 1,
+        "explanation": "'News' is uncountable."
+      },
+      {
+        "id": 44,
+        "type": "multiple-choice",
+        "question": "Pick the correct option.",
+        "options": ["He has broke it.", "He has broken it.", "He have broken it."],
+        "correct": 1,
+        "explanation": "'Has broken'."
+      },
+      {
+        "id": 45,
+        "type": "multiple-choice",
+        "question": "Choose the right sentence.",
+        "options": ["He insisted to leave.", "He insisted on leaving.", "He insist to leave."],
+        "correct": 1,
+        "explanation": "'Insist on' + gerund."
+      },
+      {
+        "id": 46,
+        "type": "multiple-choice",
+        "question": "Which is correct?",
+        "options": ["I look forward to see him.", "I look forward to seeing him.", "I look forward see him."],
+        "correct": 1,
+        "explanation": "'Look forward to' + gerund."
+      },
+      {
+        "id": 47,
+        "type": "multiple-choice",
+        "question": "Pick the correct.",
+        "options": ["I suggest him to leave.", "I suggest that he leave.", "I suggest him leave."],
+        "correct": 1,
+        "explanation": "'Suggest that'."
+      },
+      {
+        "id": 48,
+        "type": "multiple-choice",
+        "question": "Choose the right option.",
+        "options": ["He is married with a doctor.", "He is married to a doctor.", "He married with a doctor."],
+        "correct": 1,
+        "explanation": "'Married to'."
+      },
+      {
+        "id": 49,
+        "type": "multiple-choice",
+        "question": "Select the correct answer.",
+        "options": ["Suppose if he calls.", "Suppose he calls.", "Supposing if he calls."],
+        "correct": 1,
+        "explanation": "'Suppose' alone, no 'if'."
+      },
+      {
+        "id": 50,
+        "type": "multiple-choice",
+        "question": "Pick the right sentence.",
+        "options": ["Neither of them are ready.", "Neither of them is ready.", "Neither of them be ready."],
+        "correct": 1,
+        "explanation": "'Neither' → singular verb."
+      }
+    ],
+    
+    "FillBlank": [
+      {
+        "id": 51,
+        "type": "fill-blank",
+        "question": "He ___ (has/have) gone to school.",
+        "answer": "has",
+        "explanation": "'He has gone'."
+      },
+      {
+        "id": 52,
+        "type": "fill-blank",
+        "question": "Neither of them ___ (is/are) present.",
+        "answer": "is",
+        "explanation": "'Neither' takes singular verb."
+      },
+      {
+        "id": 53,
+        "type": "fill-blank",
+        "question": "Each student ___ (has/have) a notebook.",
+        "answer": "has",
+        "explanation": "'Each' uses singular."
+      },
+      {
+        "id": 54,
+        "type": "fill-blank",
+        "question": "Suppose he ___ (comes/come).",
+        "answer": "comes",
+        "explanation": "No 'if'. Just 'Suppose he comes'."
+      },
+      {
+        "id": 55,
+        "type": "fill-blank",
+        "question": "I look forward to ___ (see/seeing) you.",
+        "answer": "seeing",
+        "explanation": "'Look forward to' + gerund."
+      },
+      {
+        "id": 56,
+        "type": "fill-blank",
+        "question": "He insisted ___ (to/on) going.",
+        "answer": "on",
+        "explanation": "'Insist on'."
+      },
+      {
+        "id": 57,
+        "type": "fill-blank",
+        "question": "I prefer tea ___ (than/to) coffee.",
+        "answer": "to",
+        "explanation": "'Prefer X to Y'."
+      },
+      {
+        "id": 58,
+        "type": "fill-blank",
+        "question": "The news ___ (is/are) surprising.",
+        "answer": "is",
+        "explanation": "'News' is singular."
+      },
+      {
+        "id": 59,
+        "type": "fill-blank",
+        "question": "Many a man ___ (has/have) failed.",
+        "answer": "has",
+        "explanation": "'Many a' uses singular."
+      },
+      {
+        "id": 60,
+        "type": "fill-blank",
+        "question": "Each of them ___ (know/knows) the rule.",
+        "answer": "knows",
+        "explanation": "'Each' → singular."
+      },
+      {
+        "id": 61,
+        "type": "fill-blank",
+        "question": "It is ___ (I/me).",
+        "answer": "I",
+        "explanation": "'It is I' (formal)."
+      },
+      {
+        "id": 62,
+        "type": "fill-blank",
+        "question": "She suggested that he ___ (leave/leaves).",
+        "answer": "leave",
+        "explanation": "Subjunctive: 'suggest that he leave'."
+      },
+      {
+        "id": 63,
+        "type": "fill-blank",
+        "question": "He has ___ (broke/broken) the glass.",
+        "answer": "broken",
+        "explanation": "'Has broken'."
+      },
+      {
+        "id": 64,
+        "type": "fill-blank",
+        "question": "Despite ___ (of/—) the rain, we went out.",
+        "answer": "—",
+        "explanation": "Use 'despite' alone."
+      },
+      {
+        "id": 65,
+        "type": "fill-blank",
+        "question": "I suggest you ___ (to go/go).",
+        "answer": "go",
+        "explanation": "'Suggest you go'."
+      },
+      {
+        "id": 66,
+        "type": "fill-blank",
+        "question": "He ___ (insist/insisted) on going.",
+        "answer": "insisted",
+        "explanation": "Past tense: 'insisted'."
+      },
+      {
+        "id": 67,
+        "type": "fill-blank",
+        "question": "She ___ (has/have) eaten already.",
+        "answer": "has",
+        "explanation": "'She has eaten'."
+      },
+      {
+        "id": 68,
+        "type": "fill-blank",
+        "question": "Suppose he ___ (calls/call).",
+        "answer": "calls",
+        "explanation": "No 'if'."
+      },
+      {
+        "id": 69,
+        "type": "fill-blank",
+        "question": "He is married ___ (to/with) a doctor.",
+        "answer": "to",
+        "explanation": "'Married to'."
+      },
+      {
+        "id": 70,
+        "type": "fill-blank",
+        "question": "It is high time he ___ (go/goes/went).",
+        "answer": "went",
+        "explanation": "'High time' → past tense."
+      },
+      {
+        "id": 71,
+        "type": "fill-blank",
+        "question": "Neither of them ___ (is/are) ready.",
+        "answer": "is",
+        "explanation": "Singular: 'Neither is'."
+      },
+      {
+        "id": 72,
+        "type": "fill-blank",
+        "question": "The team ___ (is/are) winning.",
+        "answer": "is",
+        "explanation": "'Team' → singular."
+      },
+      {
+        "id": 73,
+        "type": "fill-blank",
+        "question": "She ___ (has/have) given me the book.",
+        "answer": "has",
+        "explanation": "'She has given'."
+      },
+      {
+        "id": 74,
+        "type": "fill-blank",
+        "question": "I look forward to ___ (meet/meeting) you.",
+        "answer": "meeting",
+        "explanation": "'Look forward to' + gerund."
+      },
+      {
+        "id": 75,
+        "type": "fill-blank",
+        "question": "He suggested that I ___ (leave/leaves).",
+        "answer": "leave",
+        "explanation": "Subjunctive: 'suggested that I leave'."
+      }
+    ],
+    
+    "TrueFalse": [
+      {
+        "id": 76,
+        "type": "true-false",
+        "question": "Neither of them know the answer.",
+        "correct": false,
+        "explanation": "Should be 'Neither of them knows'."
+      },
+      {
+        "id": 77,
+        "type": "true-false",
+        "question": "Each student has a book.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 78,
+        "type": "true-false",
+        "question": "Suppose if he calls.",
+        "correct": false,
+        "explanation": "Should be 'Suppose he calls'."
+      },
+      {
+        "id": 79,
+        "type": "true-false",
+        "question": "I look forward to meeting you.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 80,
+        "type": "true-false",
+        "question": "He insisted to go.",
+        "correct": false,
+        "explanation": "Should be 'insisted on going'."
+      },
+      {
+        "id": 81,
+        "type": "true-false",
+        "question": "I prefer tea to coffee.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 82,
+        "type": "true-false",
+        "question": "The news are good.",
+        "correct": false,
+        "explanation": "Should be 'news is'."
+      },
+      {
+        "id": 83,
+        "type": "true-false",
+        "question": "Many a man has failed.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 84,
+        "type": "true-false",
+        "question": "Each of them know the truth.",
+        "correct": false,
+        "explanation": "Should be 'knows'."
+      },
+      {
+        "id": 85,
+        "type": "true-false",
+        "question": "It is I who am responsible.",
+        "correct": true,
+        "explanation": "Correct formal usage."
+      },
+      {
+        "id": 86,
+        "type": "true-false",
+        "question": "She has broken the glass.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 87,
+        "type": "true-false",
+        "question": "Despite of the rain, we went out.",
+        "correct": false,
+        "explanation": "Should be 'Despite the rain'."
+      },
+      {
+        "id": 88,
+        "type": "true-false",
+        "question": "I suggest you go there.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 89,
+        "type": "true-false",
+        "question": "She has ate dinner.",
+        "correct": false,
+        "explanation": "Should be 'has eaten'."
+      },
+      {
+        "id": 90,
+        "type": "true-false",
+        "question": "He is married to a doctor.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 91,
+        "type": "true-false",
+        "question": "It is high time he goes.",
+        "correct": false,
+        "explanation": "Should be 'he went'."
+      },
+      {
+        "id": 92,
+        "type": "true-false",
+        "question": "Neither of them is ready.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 93,
+        "type": "true-false",
+        "question": "The team is winning.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 94,
+        "type": "true-false",
+        "question": "He has gave me the book.",
+        "correct": false,
+        "explanation": "Should be 'has given'."
+      },
+      {
+        "id": 95,
+        "type": "true-false",
+        "question": "I look forward to seeing you.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 96,
+        "type": "true-false",
+        "question": "He suggested that I leave.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 97,
+        "type": "true-false",
+        "question": "He is senior to me.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 98,
+        "type": "true-false",
+        "question": "He said me the truth.",
+        "correct": false,
+        "explanation": "Should be 'told me'."
+      },
+      {
+        "id": 99,
+        "type": "true-false",
+        "question": "He did not know.",
+        "correct": true,
+        "explanation": "Correct."
+      },
+      {
+        "id": 100,
+        "type": "true-false",
+        "question": "I have a good news.",
+        "correct": false,
+        "explanation": "Should be 'I have good news'."
+      }
+    ]
+  }
+}

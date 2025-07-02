@@ -1,0 +1,293 @@
+{
+  "I_II": [
+    {
+      "id": 1,
+      "type": "multiple-choice",
+      "question": "Which sentence is correct?",
+      "options": ["He go to school.", "He goes to school.", "He going to school."],
+      "correct": 1
+    },
+    {
+      "id": 2,
+      "type": "multiple-choice",
+      "question": "Which word fits?",
+      "options": ["sit", "sits"],
+      "correct": 1
+    },
+    {
+      "id": 3,
+      "type": "multiple-choice",
+      "question": "She ___ her homework.",
+      "options": ["do", "does"],
+      "correct": 1
+    },
+    {
+      "id": 4,
+      "type": "multiple-choice",
+      "question": "A dog ___ bones.",
+      "options": ["like", "likes"],
+      "correct": 1
+    },
+    {
+      "id": 5,
+      "type": "multiple-choice",
+      "question": "Birds ___ in the sky.",
+      "options": ["fly", "flies"],
+      "correct": 0
+    },
+    {
+      "id": 6,
+      "type": "fill-blank",
+      "question": "The boy ___ a red ball.",
+      "answer": "has"
+    },
+    {
+      "id": 7,
+      "type": "fill-blank",
+      "question": "She ___ to the park every day.",
+      "answer": "goes"
+    },
+    {
+      "id": 8,
+      "type": "fill-blank",
+      "question": "The dogs ___ loud.",
+      "answer": "bark"
+    },
+    {
+      "id": 9,
+      "type": "fill-blank",
+      "question": "It ___ a sunny day.",
+      "answer": "is"
+    },
+    {
+      "id": 10,
+      "type": "fill-blank",
+      "question": "We ___ happy.",
+      "answer": "are"
+    },
+    {
+      "id": 11,
+      "type": "true-false",
+      "question": "“He play football” is correct.",
+      "correct": false
+    },
+    {
+      "id": 12,
+      "type": "true-false",
+      "question": "“They are my friends.” is correct.",
+      "correct": true
+    },
+    {
+      "id": 13,
+      "type": "true-false",
+      "question": "“I am a student.” is correct.",
+      "correct": true
+    },
+    {
+      "id": 14,
+      "type": "true-false",
+      "question": "“She have a book.” is correct.",
+      "correct": false
+    },
+    {
+      "id": 15,
+      "type": "true-false",
+      "question": "“Cats eats fish.” is correct.",
+      "correct": false
+    }
+  ],
+  "III_V": [
+    {
+      "id": 1,
+      "type": "multiple-choice",
+      "question": "Which sentence is compound?",
+      "options": ["I like cake.", "I like cake and I like ice cream."],
+      "correct": 1
+    },
+    {
+      "id": 2,
+      "type": "multiple-choice",
+      "question": "Choose the correct one:",
+      "options": ["She ran fast and she won the race.", "She ran fast. She won the race."],
+      "correct": 0
+    },
+    {
+      "id": 3,
+      "type": "multiple-choice",
+      "question": "Pick the best sentence:",
+      "options": ["He wanted to play but it rained.", "He wanted play but it rained."],
+      "correct": 0
+    },
+    {
+      "id": 4,
+      "type": "multiple-choice",
+      "question": "Which uses ‘because’ correctly?",
+      "options": ["I stayed inside because it was raining.", "I stayed inside it was raining because."],
+      "correct": 0
+    },
+    {
+      "id": 5,
+      "type": "multiple-choice",
+      "question": "Which is a simple sentence?",
+      "options": ["I read a book.", "I read a book and I drank tea."],
+      "correct": 0
+    },
+    {
+      "id": 6,
+      "type": "fill-blank",
+      "question": "I wanted to go out ___ it was too cold.",
+      "answer": "but"
+    },
+    {
+      "id": 7,
+      "type": "fill-blank",
+      "question": "She is tired ___ she finished her work.",
+      "answer": "because"
+    },
+    {
+      "id": 8,
+      "type": "fill-blank",
+      "question": "Do you want tea ___ coffee?",
+      "answer": "or"
+    },
+    {
+      "id": 9,
+      "type": "fill-blank",
+      "question": "I read a story ___ I went to bed.",
+      "answer": "and"
+    },
+    {
+      "id": 10,
+      "type": "fill-blank",
+      "question": "He was late ___ he missed the bus.",
+      "answer": "because"
+    },
+    {
+      "id": 11,
+      "type": "true-false",
+      "question": "“I love dogs and I love cats.” is a compound sentence.",
+      "correct": true
+    },
+    {
+      "id": 12,
+      "type": "true-false",
+      "question": "“I ran fast but I lost.” is a simple sentence.",
+      "correct": false
+    },
+    {
+      "id": 13,
+      "type": "true-false",
+      "question": "“He eats apples.” is a compound sentence.",
+      "correct": false
+    },
+    {
+      "id": 14,
+      "type": "true-false",
+      "question": "A compound sentence joins ideas with ‘and’, ‘but’, or ‘because’.",
+      "correct": true
+    },
+    {
+      "id": 15,
+      "type": "true-false",
+      "question": "“She likes pizza.” is compound.",
+      "correct": false
+    }
+  ],
+  "VI_X": [
+    {
+      "id": 1,
+      "type": "multiple-choice",
+      "question": "Which is a complex sentence?",
+      "options": ["I read a book.", "I read a book because I love stories."],
+      "correct": 1
+    },
+    {
+      "id": 2,
+      "type": "multiple-choice",
+      "question": "Pick the passive sentence:",
+      "options": ["The teacher praised the student.", "The student was praised by the teacher."],
+      "correct": 1
+    },
+    {
+      "id": 3,
+      "type": "multiple-choice",
+      "question": "Which uses a dependent clause?",
+      "options": ["She sings loudly.", "She sings because she is happy."],
+      "correct": 1
+    },
+    {
+      "id": 4,
+      "type": "multiple-choice",
+      "question": "Which is active voice?",
+      "options": ["The cake was eaten by him.", "He ate the cake."],
+      "correct": 1
+    },
+    {
+      "id": 5,
+      "type": "multiple-choice",
+      "question": "Pick the complex sentence:",
+      "options": ["She smiled.", "She smiled when she saw her friend."],
+      "correct": 1
+    },
+    {
+      "id": 6,
+      "type": "fill-blank",
+      "question": "The project ___ (was completed / completed) by the team.",
+      "answer": "was completed"
+    },
+    {
+      "id": 7,
+      "type": "fill-blank",
+      "question": "She left the room ___ she was upset.",
+      "answer": "because"
+    },
+    {
+      "id": 8,
+      "type": "fill-blank",
+      "question": "If it rains, ___ will stay inside.",
+      "answer": "we"
+    },
+    {
+      "id": 9,
+      "type": "fill-blank",
+      "question": "The homework ___ done by the students.",
+      "answer": "was"
+    },
+    {
+      "id": 10,
+      "type": "fill-blank",
+      "question": "He works hard ___ he wants to succeed.",
+      "answer": "because"
+    },
+    {
+      "id": 11,
+      "type": "true-false",
+      "question": "“The door was opened by John.” is passive voice.",
+      "correct": true
+    },
+    {
+      "id": 12,
+      "type": "true-false",
+      "question": "“When she arrives, we will start.” is a complex sentence.",
+      "correct": true
+    },
+    {
+      "id": 13,
+      "type": "true-false",
+      "question": "“The boy kicked the ball.” is passive voice.",
+      "correct": false
+    },
+    {
+      "id": 14,
+      "type": "true-false",
+      "question": "“Because he was tired, he slept early.” is a complex sentence.",
+      "correct": true
+    },
+    {
+      "id": 15,
+      "type": "true-false",
+      "question": "“The homework do by students.” is correct.",
+      "correct": false
+    }
+  ]
+}

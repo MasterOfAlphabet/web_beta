@@ -91,10 +91,17 @@ import GrammarRestaurant from "./games/GrammarRestaurant";
 import MasterOfAlphabet from "./games/MasterOfAlphabet";
 
 import ReadingRockStar from "./games/ReadingRockStarGame";
+import PronunciationPowerStar from "./games/PronunciationPowerStarGame";
+import SHARPStylishStarGame from "./games/SHARPStylishStarGame";
+import GrammarGlobalStarGame from "./games/GrammarGlobalStarGame";
+import TenseTimeTravelGame from "./games/TenseTimeTravelGame";
+import VocabularyVarietyStarGame from "./games/VocabularyVarietyStar";
 
 import Battles from "./components/Battles.js";
 import BattleJoinPage from "./components/Battles/BattleJoinPage";
 import SpectatorScreen from "./components/Battles/SpectatorScreen";
+
+import GamificationLevels from "./pages/GamificationLevels";
 
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
@@ -359,6 +366,16 @@ function App() {
             path="/english-skills-building-games/reading-rockstar"
             element={<ReadingRockStar />}
           />
+
+          <Route path="/english-skills-building-games/pronunciation-powerstar" element={<PronunciationPowerStar />} />
+
+<Route path="/english-skills-building-games/sharp-stylishstar" element={<SHARPStylishStarGame />} />
+<Route path="/english-skills-building-games/grammar-globalstar" element={<GrammarGlobalStarGame />} />
+<Route path="/english-skills-building-games/tense-time-travel" element={<TenseTimeTravelGame />} />
+<Route path="/english-skills-building-games/vocabulary-varietystar" element={<VocabularyVarietyStarGame />} />
+
+<Route path="/gamification-levels" element={<GamificationLevels />} />
+
         </Routes>
 
         <CookieConsentBanner />
