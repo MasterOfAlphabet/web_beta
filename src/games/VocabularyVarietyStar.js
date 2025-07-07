@@ -1,192 +1,213 @@
-import React, { useState, useEffect } from 'react';
-import { Star, Users, BookOpen, ArrowRight, Home, Clock, Zap, Trophy, Heart, Volume2, CheckCircle, XCircle, Target, Flame } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import {
+  Star,
+  Users,
+  BookOpen,
+  ArrowRight,
+  Home,
+  Clock,
+  Zap,
+  Trophy,
+  Heart,
+  Volume2,
+  CheckCircle,
+  XCircle,
+  Target,
+  Flame,
+} from "lucide-react";
 
 const VocabularyVarietyStar = () => {
   // Game selection states
-  const [selectedClass, setSelectedClass] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedClass, setSelectedClass] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [gameStarted, setGameStarted] = useState(false);
-  
+
   // Game play states
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [lives, setLives] = useState(3);
   const [timeLeft, setTimeLeft] = useState(30);
-  const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [selectedAnswer, setSelectedAnswer] = useState("");
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [level, setLevel] = useState(1);
   const [experience, setExperience] = useState(0);
-  const [powerUps, setPowerUps] = useState({ hint: 2, extraTime: 1, skipQuestion: 1 });
+  const [powerUps, setPowerUps] = useState({
+    hint: 2,
+    extraTime: 1,
+    skipQuestion: 1,
+  });
   const [showHint, setShowHint] = useState(false);
 
   // Game configuration
   const classGroups = [
     {
-      id: 'I-II',
-      name: 'Class I-II',
-      description: 'Beginner Level',
-      color: 'bg-gradient-to-br from-pink-400 to-purple-500',
-      icon: '🌟'
+      id: "I-II",
+      name: "Class I-II",
+      description: "Beginner Level",
+      color: "bg-gradient-to-br from-pink-400 to-purple-500",
+      icon: "🌟",
     },
     {
-      id: 'III-V',
-      name: 'Class III-V',
-      description: 'Intermediate Level',
-      color: 'bg-gradient-to-br from-blue-400 to-cyan-500',
-      icon: '⭐'
+      id: "III-V",
+      name: "Class III-V",
+      description: "Intermediate Level",
+      color: "bg-gradient-to-br from-blue-400 to-cyan-500",
+      icon: "⭐",
     },
     {
-      id: 'VI-X',
-      name: 'Class VI-X',
-      description: 'Advanced Level',
-      color: 'bg-gradient-to-br from-green-400 to-emerald-500',
-      icon: '✨'
-    }
+      id: "VI-X",
+      name: "Class VI-X",
+      description: "Advanced Level",
+      color: "bg-gradient-to-br from-green-400 to-emerald-500",
+      icon: "✨",
+    },
   ];
 
-    const categories = [
+  const categories = [
     {
-      id: 'puzzle-pundit',
-      name: 'Puzzle Pundit',
-      description: 'Word puzzles',
-      icon: '🧩',
-      color: 'bg-gradient-to-br from-pink-500 to-rose-600'
+      id: "puzzle-pundit",
+      name: "Puzzle Pundit",
+      description: "Word puzzles",
+      icon: "🧩",
+      color: "bg-gradient-to-br from-pink-500 to-rose-600",
     },
     {
-      id: 'definition-dynamo',
-      name: 'Definition Dynamo',
-      description: 'Match meanings',
-      icon: '💡',
-      color: 'bg-gradient-to-br from-red-500 to-orange-600'
+      id: "definition-dynamo",
+      name: "Definition Dynamo",
+      description: "Match meanings",
+      icon: "💡",
+      color: "bg-gradient-to-br from-red-500 to-orange-600",
     },
     {
-      id: 'word-wizard',
-      name: 'Word Wizard',
-      description: 'Create words',
-      icon: '🪄',
-      color: 'bg-gradient-to-br from-yellow-500 to-amber-600'
-    },
-       {
-      id: 'anagram',
-      name: 'Anagram',
-      description: 'earranging the letters of a different word or phrase',
-      icon: '🪄',
-      color: 'bg-gradient-to-br from-yellow-500 to-amber-600'
+      id: "word-wizard",
+      name: "Word Wizard",
+      description: "Create words",
+      icon: "🪄",
+      color: "bg-gradient-to-br from-yellow-500 to-amber-600",
     },
     {
-      id: 'anthyakshari-avatars',
-      name: 'Anthyakshari',
-      description: 'Word chain',
-      icon: '👥',
-      color: 'bg-gradient-to-br from-purple-500 to-indigo-600'
+      id: "anagram",
+      name: "Anagram",
+      description: "earranging the letters of a different word or phrase",
+      icon: "🪄",
+      color: "bg-gradient-to-br from-yellow-500 to-amber-600",
     },
     {
-      id: 'sequential-sensation',
-      name: 'Sequential',
-      description: 'Word sequences',
-      icon: '🔄',
-      color: 'bg-gradient-to-br from-blue-500 to-cyan-600'
-    }
+      id: "anthyakshari-avatars",
+      name: "Anthyakshari",
+      description: "Word chain",
+      icon: "👥",
+      color: "bg-gradient-to-br from-purple-500 to-indigo-600",
+    },
+    {
+      id: "sequential-sensation",
+      name: "Sequential",
+      description: "Word sequences",
+      icon: "🔄",
+      color: "bg-gradient-to-br from-blue-500 to-cyan-600",
+    },
   ];
   // Question database
   const questionSets = {
-    'definition-dynamo': {
-      'I-II': [
+    "definition-dynamo": {
+      "I-II": [
         {
           question: "What does 'BIG' mean?",
-          options: ['Small', 'Large', 'Fast', 'Slow'],
+          options: ["Small", "Large", "Fast", "Slow"],
           correct: 1,
           hint: "Think of an elephant!",
-          image: "🐘"
+          image: "🐘",
         },
         {
           question: "What does 'HAPPY' mean?",
-          options: ['Sad', 'Angry', 'Joyful', 'Tired'],
+          options: ["Sad", "Angry", "Joyful", "Tired"],
           correct: 2,
           hint: "When you smile, you feel...",
-          image: "😊"
+          image: "😊",
         },
         {
           question: "What does 'RUN' mean?",
-          options: ['Walk slowly', 'Move quickly on foot', 'Swim', 'Sleep'],
+          options: ["Walk slowly", "Move quickly on foot", "Swim", "Sleep"],
           correct: 1,
           hint: "What you do in a race",
-          image: "🏃"
-        }
+          image: "🏃",
+        },
       ],
-      'III-V': [
+      "III-V": [
         {
           question: "What does 'MAGNIFICENT' mean?",
-          options: ['Ordinary', 'Splendid', 'Broken', 'Small'],
+          options: ["Ordinary", "Splendid", "Broken", "Small"],
           correct: 1,
           hint: "Something truly impressive and grand",
-          image: "🏰"
+          image: "🏰",
         },
         {
           question: "What does 'CAUTIOUS' mean?",
-          options: ['Reckless', 'Careful', 'Fast', 'Loud'],
+          options: ["Reckless", "Careful", "Fast", "Loud"],
           correct: 1,
           hint: "Being aware of danger",
-          image: "⚠️"
-        }
+          image: "⚠️",
+        },
       ],
-      'VI-X': [
+      "VI-X": [
         {
           question: "What does 'TENACIOUS' mean?",
-          options: ['Weak', 'Persistent', 'Careless', 'Temporary'],
+          options: ["Weak", "Persistent", "Careless", "Temporary"],
           correct: 1,
           hint: "Never giving up, holding firmly",
-          image: "💪"
+          image: "💪",
         },
         {
           question: "What does 'EUPHORIC' mean?",
-          options: ['Depressed', 'Confused', 'Extremely happy', 'Angry'],
+          options: ["Depressed", "Confused", "Extremely happy", "Angry"],
           correct: 2,
           hint: "A feeling of intense joy and excitement",
-          image: "🎉"
-        }
-      ]
+          image: "🎉",
+        },
+      ],
     },
-    'word-wizard': {
-      'I-II': [
+    "word-wizard": {
+      "I-II": [
         {
           question: "Make a word from: A, P, P, L, E",
-          options: ['PEPLA', 'APPLE', 'LEPAP', 'PAPEL'],
+          options: ["PEPLA", "APPLE", "LEPAP", "PAPEL"],
           correct: 1,
           hint: "A red or green fruit",
-          image: "🍎"
-        }
+          image: "🍎",
+        },
       ],
-      'III-V': [
+      "III-V": [
         {
           question: "Make a word from: E, X, C, I, T, E, D",
-          options: ['EXCITED', 'DEXCITE', 'TICEXED', 'CITEDEX'],
+          options: ["EXCITED", "DEXCITE", "TICEXED", "CITEDEX"],
           correct: 0,
           hint: "How you feel on your birthday",
-          image: "🎂"
-        }
+          image: "🎂",
+        },
       ],
-      'VI-X': [
+      "VI-X": [
         {
           question: "Make a word from: P, E, R, S, I, S, T, E, N, T",
-          options: ['PERSISTENT', 'PRESISTENT', 'PERSISTENT', 'PERSISTENT'],
+          options: ["PERSISTENT", "PRESISTENT", "PERSISTENT", "PERSISTENT"],
           correct: 0,
           hint: "Continuing despite difficulties",
-          image: "🧗"
-        }
-      ]
-    }
+          image: "🧗",
+        },
+      ],
+    },
   };
 
-  const currentQuestions = questionSets[selectedCategory]?.[selectedClass] || questionSets['definition-dynamo']['III-V'];
+  const currentQuestions =
+    questionSets[selectedCategory]?.[selectedClass] ||
+    questionSets["definition-dynamo"]["III-V"];
   const currentQ = currentQuestions[currentQuestion];
 
   // Timer effect
   useEffect(() => {
     if (!gameStarted) return;
-    
+
     const timer = setInterval(() => {
       if (timeLeft > 0 && !showResult) {
         setTimeLeft(timeLeft - 1);
@@ -200,7 +221,7 @@ const VocabularyVarietyStar = () => {
 
   const handleClassSelect = (classId) => {
     setSelectedClass(classId);
-    setSelectedCategory('');
+    setSelectedCategory("");
   };
 
   const handleCategorySelect = (categoryId) => {
@@ -218,7 +239,7 @@ const VocabularyVarietyStar = () => {
     setStreak(0);
     setLives(3);
     setTimeLeft(30);
-    setSelectedAnswer('');
+    setSelectedAnswer("");
     setShowResult(false);
     setIsCorrect(false);
     setLevel(1);
@@ -241,7 +262,7 @@ const VocabularyVarietyStar = () => {
 
   const handleAnswerSelect = (answerIndex) => {
     if (showResult) return;
-    
+
     setSelectedAnswer(answerIndex);
     setShowResult(true);
     const correct = answerIndex === currentQ.correct;
@@ -266,7 +287,7 @@ const VocabularyVarietyStar = () => {
   const nextQuestion = () => {
     if (currentQuestion < currentQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
-      setSelectedAnswer('');
+      setSelectedAnswer("");
       setShowResult(false);
       setTimeLeft(30);
       setShowHint(false);
@@ -278,17 +299,19 @@ const VocabularyVarietyStar = () => {
   const handlePowerUp = (type) => {
     if (powerUps[type] <= 0) return;
 
-    setPowerUps({...powerUps, [type]: powerUps[type] - 1});
+    setPowerUps({ ...powerUps, [type]: powerUps[type] - 1 });
 
-    switch(type) {
-      case 'hint':
+    switch (type) {
+      case "hint":
         setShowHint(true);
         break;
-      case 'extraTime':
+      case "extraTime":
         setTimeLeft(timeLeft + 15);
         break;
-      case 'skipQuestion':
+      case "skipQuestion":
         nextQuestion();
+        break;
+      default:
         break;
     }
   };
@@ -305,7 +328,7 @@ const VocabularyVarietyStar = () => {
         <div className="relative z-10 p-4 max-w-6xl mx-auto">
           {/* Top HUD */}
           <div className="flex justify-between items-center mb-8">
-            <button 
+            <button
               onClick={handleReturnToMenu}
               className="p-3 bg-white/10 backdrop-blur-lg rounded-full border border-white/20 text-white hover:bg-white/20 transition-all"
             >
@@ -331,9 +354,11 @@ const VocabularyVarietyStar = () => {
 
             <div className="flex gap-1">
               {[...Array(3)].map((_, i) => (
-                <Heart 
-                  key={i} 
-                  className={`w-8 h-8 ${i < lives ? 'text-red-400 fill-red-400' : 'text-gray-600'}`} 
+                <Heart
+                  key={i}
+                  className={`w-8 h-8 ${
+                    i < lives ? "text-red-400 fill-red-400" : "text-gray-600"
+                  }`}
                 />
               ))}
             </div>
@@ -342,24 +367,44 @@ const VocabularyVarietyStar = () => {
           {/* Progress Bar */}
           <div className="mb-8">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-white/60">Question {currentQuestion + 1} of {currentQuestions.length}</span>
-              <span className="text-white/60">XP: {experience}/{level * 100}</span>
+              <span className="text-white/60">
+                Question {currentQuestion + 1} of {currentQuestions.length}
+              </span>
+              <span className="text-white/60">
+                XP: {experience}/{level * 100}
+              </span>
             </div>
             <div className="w-full bg-white/10 rounded-full h-3 backdrop-blur-lg border border-white/20">
-              <div 
+              <div
                 className="bg-gradient-to-r from-green-400 to-blue-500 h-3 rounded-full transition-all duration-500"
-                style={{ width: `${((currentQuestion + 1) / currentQuestions.length) * 100}%` }}
+                style={{
+                  width: `${
+                    ((currentQuestion + 1) / currentQuestions.length) * 100
+                  }%`,
+                }}
               ></div>
             </div>
           </div>
 
           {/* Timer */}
           <div className="text-center mb-8">
-            <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-lg border-2 transition-all duration-300 ${
-              timeLeft <= 10 ? 'bg-red-500/20 border-red-400 animate-pulse' : 'bg-white/10 border-white/20'
-            }`}>
-              <Clock className={`w-6 h-6 ${timeLeft <= 10 ? 'text-red-400' : 'text-white'}`} />
-              <span className={`text-2xl font-bold ${timeLeft <= 10 ? 'text-red-400' : 'text-white'}`}>
+            <div
+              className={`inline-flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-lg border-2 transition-all duration-300 ${
+                timeLeft <= 10
+                  ? "bg-red-500/20 border-red-400 animate-pulse"
+                  : "bg-white/10 border-white/20"
+              }`}
+            >
+              <Clock
+                className={`w-6 h-6 ${
+                  timeLeft <= 10 ? "text-red-400" : "text-white"
+                }`}
+              />
+              <span
+                className={`text-2xl font-bold ${
+                  timeLeft <= 10 ? "text-red-400" : "text-white"
+                }`}
+              >
                 {timeLeft}s
               </span>
             </div>
@@ -378,7 +423,9 @@ const VocabularyVarietyStar = () => {
                 </h2>
                 {showHint && (
                   <div className="p-4 bg-yellow-400/20 backdrop-blur-lg rounded-2xl border border-yellow-400/30 animate-pulse">
-                    <p className="text-yellow-200 font-medium">💡 Hint: {currentQ.hint}</p>
+                    <p className="text-yellow-200 font-medium">
+                      💡 Hint: {currentQ.hint}
+                    </p>
                   </div>
                 )}
               </div>
@@ -387,13 +434,19 @@ const VocabularyVarietyStar = () => {
             {/* Answer Options */}
             <div className="grid md:grid-cols-2 gap-4 mb-8">
               {currentQ.options.map((option, index) => {
-                let buttonClass = "group p-6 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 text-white font-bold text-xl hover:bg-white/20 transform hover:scale-105 transition-all duration-300 cursor-pointer";
-                
+                let buttonClass =
+                  "group p-6 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 text-white font-bold text-xl hover:bg-white/20 transform hover:scale-105 transition-all duration-300 cursor-pointer";
+
                 if (showResult) {
                   if (index === currentQ.correct) {
-                    buttonClass = "group p-6 bg-green-500/30 backdrop-blur-lg rounded-2xl border-2 border-green-400 text-green-100 font-bold text-xl animate-pulse";
-                  } else if (index === selectedAnswer && selectedAnswer !== currentQ.correct) {
-                    buttonClass = "group p-6 bg-red-500/30 backdrop-blur-lg rounded-2xl border-2 border-red-400 text-red-100 font-bold text-xl";
+                    buttonClass =
+                      "group p-6 bg-green-500/30 backdrop-blur-lg rounded-2xl border-2 border-green-400 text-green-100 font-bold text-xl animate-pulse";
+                  } else if (
+                    index === selectedAnswer &&
+                    selectedAnswer !== currentQ.correct
+                  ) {
+                    buttonClass =
+                      "group p-6 bg-red-500/30 backdrop-blur-lg rounded-2xl border-2 border-red-400 text-red-100 font-bold text-xl";
                   }
                 }
 
@@ -404,13 +457,17 @@ const VocabularyVarietyStar = () => {
                     className={buttonClass}
                   >
                     <div className="flex items-center justify-between">
-                      <span>{String.fromCharCode(65 + index)}. {option}</span>
+                      <span>
+                        {String.fromCharCode(65 + index)}. {option}
+                      </span>
                       {showResult && index === currentQ.correct && (
                         <CheckCircle className="w-8 h-8 text-green-400 animate-bounce" />
                       )}
-                      {showResult && index === selectedAnswer && selectedAnswer !== currentQ.correct && (
-                        <XCircle className="w-8 h-8 text-red-400" />
-                      )}
+                      {showResult &&
+                        index === selectedAnswer &&
+                        selectedAnswer !== currentQ.correct && (
+                          <XCircle className="w-8 h-8 text-red-400" />
+                        )}
                     </div>
                   </div>
                 );
@@ -420,25 +477,25 @@ const VocabularyVarietyStar = () => {
             {/* Power-ups */}
             <div className="flex justify-center gap-4">
               <button
-                onClick={() => handlePowerUp('hint')}
+                onClick={() => handlePowerUp("hint")}
                 disabled={powerUps.hint <= 0}
                 className="flex items-center gap-2 px-4 py-2 bg-yellow-500/20 backdrop-blur-lg rounded-full border border-yellow-400/30 text-yellow-200 hover:bg-yellow-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Target className="w-5 h-5" />
                 <span>Hint ({powerUps.hint})</span>
               </button>
-              
+
               <button
-                onClick={() => handlePowerUp('extraTime')}
+                onClick={() => handlePowerUp("extraTime")}
                 disabled={powerUps.extraTime <= 0}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-500/20 backdrop-blur-lg rounded-full border border-blue-400/30 text-blue-200 hover:bg-blue-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Clock className="w-5 h-5" />
                 <span>+15s ({powerUps.extraTime})</span>
               </button>
-              
+
               <button
-                onClick={() => handlePowerUp('skipQuestion')}
+                onClick={() => handlePowerUp("skipQuestion")}
                 disabled={powerUps.skipQuestion <= 0}
                 className="flex items-center gap-2 px-4 py-2 bg-purple-500/20 backdrop-blur-lg rounded-full border border-purple-400/30 text-purple-200 hover:bg-purple-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -451,25 +508,26 @@ const VocabularyVarietyStar = () => {
           {/* Result Popup */}
           {showResult && (
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-              <div className={`p-8 rounded-3xl backdrop-blur-lg border-2 shadow-2xl transform scale-110 animate-bounce ${
-                isCorrect 
-                  ? 'bg-green-500/20 border-green-400' 
-                  : 'bg-red-500/20 border-red-400'
-              }`}>
+              <div
+                className={`p-8 rounded-3xl backdrop-blur-lg border-2 shadow-2xl transform scale-110 animate-bounce ${
+                  isCorrect
+                    ? "bg-green-500/20 border-green-400"
+                    : "bg-red-500/20 border-red-400"
+                }`}
+              >
                 <div className="text-center">
-                  <div className="text-6xl mb-4">
-                    {isCorrect ? '🎉' : '😔'}
-                  </div>
-                  <h3 className={`text-3xl font-bold mb-2 ${
-                    isCorrect ? 'text-green-200' : 'text-red-200'
-                  }`}>
-                    {isCorrect ? 'Correct!' : 'Wrong!'}
+                  <div className="text-6xl mb-4">{isCorrect ? "🎉" : "😔"}</div>
+                  <h3
+                    className={`text-3xl font-bold mb-2 ${
+                      isCorrect ? "text-green-200" : "text-red-200"
+                    }`}
+                  >
+                    {isCorrect ? "Correct!" : "Wrong!"}
                   </h3>
                   <p className="text-white/80 text-lg">
-                    {isCorrect 
-                      ? `+${Math.max(10, timeLeft * 2)} points!` 
-                      : `Correct answer: ${currentQ.options[currentQ.correct]}`
-                    }
+                    {isCorrect
+                      ? `+${Math.max(10, timeLeft * 2)} points!`
+                      : `Correct answer: ${currentQ.options[currentQ.correct]}`}
                   </p>
                 </div>
               </div>
@@ -505,8 +563,12 @@ const VocabularyVarietyStar = () => {
               <div
                 key={group.id}
                 onClick={() => handleClassSelect(group.id)}
-                className={`p-4 rounded-lg cursor-pointer transition-all ${group.color} ${
-                  selectedClass === group.id ? 'ring-2 ring-white' : 'opacity-80 hover:opacity-100'
+                className={`p-4 rounded-lg cursor-pointer transition-all ${
+                  group.color
+                } ${
+                  selectedClass === group.id
+                    ? "ring-2 ring-white"
+                    : "opacity-80 hover:opacity-100"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -527,15 +589,25 @@ const VocabularyVarietyStar = () => {
               {categories.map((category) => (
                 <div
                   key={category.id}
-                  onClick={() => selectedClass && handleCategorySelect(category.id)}
-                  className={`p-3 rounded-lg cursor-pointer transition-all ${category.color} ${
-                    selectedCategory === category.id ? 'ring-2 ring-yellow-400' : 'opacity-80 hover:opacity-100'
-                  } ${!selectedClass ? 'opacity-50 pointer-events-none' : ''}`}
+                  onClick={() =>
+                    selectedClass && handleCategorySelect(category.id)
+                  }
+                  className={`p-3 rounded-lg cursor-pointer transition-all ${
+                    category.color
+                  } ${
+                    selectedCategory === category.id
+                      ? "ring-2 ring-yellow-400"
+                      : "opacity-80 hover:opacity-100"
+                  } ${!selectedClass ? "opacity-50 pointer-events-none" : ""}`}
                 >
                   <div className="flex flex-col items-center text-center">
                     <span className="text-2xl mb-1">{category.icon}</span>
-                    <h3 className="font-bold text-white text-sm">{category.name}</h3>
-                    <p className="text-xs text-white/80">{category.description}</p>
+                    <h3 className="font-bold text-white text-sm">
+                      {category.name}
+                    </h3>
+                    <p className="text-xs text-white/80">
+                      {category.description}
+                    </p>
                   </div>
                 </div>
               ))}

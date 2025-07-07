@@ -28,7 +28,6 @@ import {
   IoStopCircle,
 } from "react-icons/io5";
 
-// --- [NEW] --- For speech recognition
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition || null;
 
@@ -39,12 +38,10 @@ function normalize(str) {
     .replace(/[^\w\s]/g, "");
 }
 
-// --- [NEW] --- Word-by-word highlight for spoken vs prompt
 function renderSpokenFeedback(prompt, spoken) {
   if (!prompt || !spoken) return null;
   const promptWords = prompt.trim().split(/\s+/);
   const spokenWords = spoken.trim().split(/\s+/);
-  // Align using index for simplicity (can upgrade to align algo if needed)
   const maxLen = Math.max(promptWords.length, spokenWords.length);
   const elements = [];
   for (let i = 0; i < maxLen; i++) {
@@ -73,7 +70,6 @@ function renderSpokenFeedback(prompt, spoken) {
   return elements;
 }
 
-// Enhanced mock data with difficulty levels
 const comprehensionTitles = [
   { id: 1, title: "The Cat and the Mouse", level: "Beginner", xp: 10, gems: 2 },
   { id: 2, title: "The Solar System", level: "Intermediate", xp: 15, gems: 3 },
@@ -239,14 +235,58 @@ const achievements = [
   },
 ];
 
-// --- [NEW] --- Main Mic/Listening Section Component (incremental, not removing original code)
+function AnswerStyleSelector({ answerStyle, setAnswerStyle }) {
+  return (
+    <div className="mb-6">
+      <label className="block text-sm font-bold mb-2 text-gray-700">
+        Answer Style:
+      </label>
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() => setAnswerStyle("drag")}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            answerStyle === "drag"
+              ? "bg-blue-500 text-white shadow-md"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+          }`}
+        >
+          🧩 Drag & Drop
+        </button>
+        <button
+          onClick={() => setAnswerStyle("record")}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            answerStyle === "record"
+              ? "bg-green-500 text-white shadow-md"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+          }`}
+        >
+          🎤 Record Answer
+        </button>
+        <button
+          onClick={() => setAnswerStyle("type")}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            answerStyle === "type"
+              ? "bg-purple-500 text-white shadow-md"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+          }`}
+        >
+          ✍️ Type Answer
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function MicListeningSection({
   prompt,
   disabled,
   onResult,
+  onCheckAnswer,
   micLabel = "🎤 Speak",
   placeholder = "Click mic and repeat...",
-  sectionType = "sentence", // "word", "sentence", or "paragraph"
+  sectionType = "sentence",
+  showFeedback = false,
+  feedbackMessage = "",
 }) {
   const [isListening, setIsListening] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -351,6 +391,7 @@ function MicListeningSection({
           {isListening ? "🎤 Listening... Speak now!" : placeholder}
         </span>
       </div>
+
       {isProcessing && (
         <div className="flex items-center justify-center text-gray-500 mb-2">
           <span className="animate-spin mr-2">
@@ -359,30 +400,58 @@ function MicListeningSection({
           Processing your answer...
         </div>
       )}
+
       {error && (
         <div className="bg-red-100 text-red-700 rounded-lg p-3 mb-2 text-center">
           {error}
         </div>
       )}
+
       {spokenText && (
-        <div className="bg-gray-100 rounded-2xl p-5 text-center mb-2">
-          <div className="text-sm text-gray-600 mb-1">You said:</div>
-          <div
-            className={`${
-              sectionType === "word"
-                ? "text-4xl"
-                : sectionType === "sentence"
-                ? "text-2xl"
-                : "text-xl"
-            } font-bold`}
-          >
-            {renderSpokenFeedback(prompt, spokenText)}
+        <div className="space-y-4">
+          <div className="bg-gray-100 rounded-2xl p-5 text-center mb-2">
+            <div className="text-sm text-gray-600 mb-1">You said:</div>
+            <div
+              className={`${
+                sectionType === "word"
+                  ? "text-4xl"
+                  : sectionType === "sentence"
+                  ? "text-2xl"
+                  : "text-xl"
+              } font-bold`}
+            >
+              {showFeedback
+                ? renderSpokenFeedback(prompt, spokenText)
+                : spokenText}
+            </div>
           </div>
+
+          {onCheckAnswer && (
+            <button
+              onClick={() => onCheckAnswer(spokenText)}
+              className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold hover:scale-105 hover:shadow-lg transition-all duration-200"
+            >
+              🎯 Check My Answer
+            </button>
+          )}
+
+          {feedbackMessage && (
+            <div
+              className={`p-3 rounded-xl ${
+                feedbackMessage.includes("Perfect")
+                  ? "bg-green-100 text-green-800"
+                  : "bg-yellow-100 text-yellow-800"
+              }`}
+            >
+              {feedbackMessage}
+            </div>
+          )}
         </div>
       )}
     </div>
   );
 }
+
 const TestListeningSkills = () => {
   const [selectedCategory, setSelectedCategory] = useState("Words");
   const [selectedClass, setSelectedClass] = useState("Class I & II");
@@ -397,8 +466,6 @@ const TestListeningSkills = () => {
   const [showResults, setShowResults] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [isPassageRead, setIsPassageRead] = useState(false);
-
-  // Additional state variables to add to your component state:
   const [wordInputs, setWordInputs] = useState({});
   const [currentWordsList, setCurrentWordsList] = useState([]);
   const [wordCheckResults, setWordCheckResults] = useState({
@@ -408,23 +475,21 @@ const TestListeningSkills = () => {
     message: "",
     xpEarned: 0,
     gemsEarned: 0,
+    showFeedback: false,
   });
-
-  // Sentence validation states
-  const [sentenceInputs, setSentenceInputs] = useState({});
+  const [sentenceInput, setSentenceInput] = useState("");
   const [currentSentenceWords, setCurrentSentenceWords] = useState([]);
   const [jumbledWords, setJumbledWords] = useState([]);
+  const [arrangedWords, setArrangedWords] = useState([]);
   const [sentenceCheckResults, setSentenceCheckResults] = useState({
     submitted: false,
     isCorrect: false,
     message: "",
     xpEarned: 0,
     gemsEarned: 0,
+    showFeedback: false,
   });
   const [draggedWord, setDraggedWord] = useState(null);
-  const [arrangedWords, setArrangedWords] = useState([]);
-
-  // Add these with your other state declarations
   const [paragraphSentences, setParagraphSentences] = useState([]);
   const [jumbledParagraphSentences, setJumbledParagraphSentences] = useState(
     []
@@ -432,6 +497,7 @@ const TestListeningSkills = () => {
   const [arrangedParagraphSentences, setArrangedParagraphSentences] = useState(
     []
   );
+  const [paragraphInput, setParagraphInput] = useState("");
   const [draggedItem, setDraggedItem] = useState(null);
   const [paragraphCheckResults, setParagraphCheckResults] = useState({
     submitted: false,
@@ -439,130 +505,470 @@ const TestListeningSkills = () => {
     message: "",
     xpEarned: 0,
     gemsEarned: 0,
+    showFeedback: false,
   });
+  const [userStats, setUserStats] = useState({
+    xp: 0,
+    gems: 0,
+    streak: 0,
+    totalCompleted: 0,
+    hearts: 5,
+    level: 1,
+  });
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [currentStreak, setCurrentStreak] = useState(0);
+  const [isRecording, setIsRecording] = useState(false);
+  const [hasRecorded, setHasRecorded] = useState(false);
+  const [showAchievement, setShowAchievement] = useState(null);
+  const [userAchievements, setUserAchievements] = useState(achievements);
+  const [exerciseStats, setExerciseStats] = useState({
+    words: 0,
+    sentences: 0,
+    paragraphs: 0,
+    comprehension: 0,
+  });
+  const [micEnabled, setMicEnabled] = useState(false);
+  const [spokenText, setSpokenText] = useState("");
+  const [answerStyle, setAnswerStyle] = useState("drag");
 
-  // Add these helper functions
-  const handleParagraphDragStart = (e, item, index, source) => {
-    setDraggedItem({ item, index, source });
-    e.dataTransfer.effectAllowed = "move";
+  const currentCategory = categories.find((c) => c.key === selectedCategory);
+
+  // Add this state to track the current interaction mode
+  const [interactionMode, setInteractionMode] = useState("typing"); // 'typing' or 'drag'
+
+  // Add a state to track submission
+  const [checkedAnswers, setCheckedAnswers] = useState({});
+
+  const [userAnswers, setUserAnswers] = useState({});
+  // Make sure activeTab is properly declared as state/prop
+  const [activeTab, setActiveTab] = useState("words"); // or from props
+
+  
+  useEffect(() => {
+    setUserAnswers({});
+    setCheckedAnswers({});
+    // Add other resets as needed
+  }, [activeTab]);
+
+  useEffect(() => {
+    const newLevel = Math.floor(userStats.xp / 50) + 1;
+    if (newLevel > userStats.level) {
+      setUserStats((prev) => ({ ...prev, level: newLevel }));
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 3000);
+    }
+  }, [userStats.xp]);
+
+  const checkAchievements = (category) => {
+    const newAchievements = [...userAchievements];
+    let achievementUnlocked = false;
+
+    if (userStats.totalCompleted === 1 && !newAchievements[0].unlocked) {
+      newAchievements[0].unlocked = true;
+      achievementUnlocked = true;
+      setShowAchievement(newAchievements[0]);
+    }
+
+    if (exerciseStats.words >= 5 && !newAchievements[1].unlocked) {
+      newAchievements[1].unlocked = true;
+      achievementUnlocked = true;
+      setShowAchievement(newAchievements[1]);
+    }
+
+    if (exerciseStats.sentences >= 3 && !newAchievements[2].unlocked) {
+      newAchievements[2].unlocked = true;
+      achievementUnlocked = true;
+      setShowAchievement(newAchievements[2]);
+    }
+
+    if (exerciseStats.paragraphs >= 2 && !newAchievements[3].unlocked) {
+      newAchievements[3].unlocked = true;
+      achievementUnlocked = true;
+      setShowAchievement(newAchievements[3]);
+    }
+
+    if (achievementUnlocked) {
+      setUserAchievements(newAchievements);
+      setTimeout(() => setShowAchievement(null), 4000);
+    }
   };
 
-  const handleParagraphDragOver = (e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
+  const awardRewards = (xp, gems, category) => {
+    setUserStats((prev) => ({
+      ...prev,
+      xp: prev.xp + xp,
+      gems: prev.gems + gems,
+      totalCompleted: prev.totalCompleted + 1,
+      streak: prev.streak + 1,
+    }));
+
+    setExerciseStats((prev) => ({
+      ...prev,
+      [category.toLowerCase()]: prev[category.toLowerCase()] + 1,
+    }));
+
+    checkAchievements(category);
+    setShowCelebration(true);
+    setTimeout(() => setShowCelebration(false), 2000);
   };
 
-  const handleParagraphDropToArranged = (e, dropIndex) => {
-    e.preventDefault();
-    if (!draggedItem) return;
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    setSelectedTitle("");
+    setSelectedLines("");
+    setSelectedSentence("");
+    setSelectedWords("");
+    setCurrentPassage(null);
+    setIsPassageRead(false);
+    setShowResults(false);
+    setFeedback("");
+    setSelectedAnswers({});
+    setCurrentQuestionIndex(0);
+    setHasRecorded(false);
+    setMicEnabled(false);
+    setAnswerStyle("drag");
+  };
 
-    if (draggedItem.source === "jumbled") {
-      // Moving from jumbled to arranged
-      const newJumbled = [...jumbledParagraphSentences];
-      newJumbled.splice(draggedItem.index, 1);
+  const handleClassChange = (e) => {
+    setSelectedClass(e.target.value);
+  };
 
-      const newArranged = [...arrangedParagraphSentences];
-      newArranged.splice(dropIndex, 0, draggedItem.item);
+  const handleLevelChange = (e) => {
+    setSelectedLevel(e.target.value);
+  };
 
-      setJumbledParagraphSentences(newJumbled);
-      setArrangedParagraphSentences(newArranged);
+  const handleTitleChange = (e) => {
+    const value = e.target.value;
+    setSelectedTitle(value);
+    const passage = listeningPassages.find((p) => p.title === value);
+    setCurrentPassage(passage);
+    setCurrentQuestionIndex(0);
+    setSelectedAnswers({});
+    setShowResults(false);
+    setFeedback("");
+    setIsPassageRead(false);
+  };
+
+  const handleLinesChange = (e) => {
+    setSelectedLines(e.target.value);
+    setHasRecorded(false);
+    setMicEnabled(false);
+  };
+
+  const handleSentenceChange = (e) => {
+    setSelectedSentence(e.target.value);
+    setHasRecorded(false);
+    setMicEnabled(false);
+    setSentenceInput("");
+    setCurrentSentenceWords([]);
+    setJumbledWords([]);
+    setArrangedWords([]);
+    setSentenceCheckResults({
+      submitted: false,
+      isCorrect: false,
+      message: "",
+      xpEarned: 0,
+      gemsEarned: 0,
+      showFeedback: false,
+    });
+  };
+
+  const handleWordsChange = (e) => {
+    setSelectedWords(e.target.value);
+    setHasRecorded(false);
+    setMicEnabled(false);
+    setWordInputs({});
+    setWordCheckResults({
+      submitted: false,
+      results: {},
+      score: 0,
+      message: "",
+      xpEarned: 0,
+      gemsEarned: 0,
+      showFeedback: false,
+    });
+  };
+
+  const handleAnswerSelect = (questionIndex, optionIndex) => {
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [questionIndex]: optionIndex,
+    }));
+
+    const currentQuestion = currentPassage.questions[questionIndex];
+    if (optionIndex === currentQuestion.correctAnswer) {
+      setFeedback(`🎉 Correct! ${currentQuestion.explanation}`);
     } else {
-      // Reordering within arranged
-      const newArranged = [...arrangedParagraphSentences];
-      const [movedItem] = newArranged.splice(draggedItem.index, 1);
-      newArranged.splice(dropIndex, 0, movedItem);
-      setArrangedParagraphSentences(newArranged);
+      setFeedback(
+        `❌ Incorrect. The correct answer is: "${
+          currentQuestion.options[currentQuestion.correctAnswer]
+        }". ${currentQuestion.explanation}`
+      );
     }
-    setDraggedItem(null);
   };
 
-  const handleParagraphDropToJumbled = (e) => {
-    e.preventDefault();
-    if (!draggedItem || draggedItem.source !== "arranged") return;
-
-    const newArranged = [...arrangedParagraphSentences];
-    newArranged.splice(draggedItem.index, 1);
-
-    const newJumbled = [...jumbledParagraphSentences, draggedItem.item];
-
-    setArrangedParagraphSentences(newArranged);
-    setJumbledParagraphSentences(shuffleArray(newJumbled));
-    setDraggedItem(null);
-  };
-
-  // Sentence validation helper functions
-  const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
-
-  const handleDragStart = (e, word, index) => {
-    setDraggedWord({ word, index, source: "jumbled" });
-    e.dataTransfer.effectAllowed = "move";
-  };
-
-  const handleDragStartArranged = (e, word, index) => {
-    setDraggedWord({ word, index, source: "arranged" });
-    e.dataTransfer.effectAllowed = "move";
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-  };
-
-  const handleDropToArranged = (e, dropIndex) => {
-    e.preventDefault();
-    if (!draggedWord) return;
-
-    if (draggedWord.source === "jumbled") {
-      // Moving from jumbled to arranged
-      const newJumbled = jumbledWords.filter((_, i) => i !== draggedWord.index);
-      const newArranged = [...arrangedWords];
-      newArranged.splice(dropIndex, 0, draggedWord.word);
-
-      setJumbledWords(newJumbled);
-      setArrangedWords(newArranged);
+  const nextQuestion = () => {
+    if (currentQuestionIndex < currentPassage.questions.length - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+      setFeedback("");
     } else {
-      // Reordering within arranged
-      const newArranged = [...arrangedWords];
-      const [movedWord] = newArranged.splice(draggedWord.index, 1);
-      newArranged.splice(dropIndex, 0, movedWord);
-      setArrangedWords(newArranged);
+      setShowResults(true);
+      const { score } = calculateScore();
+      if (score.includes("100%")) {
+        const newAchievements = [...userAchievements];
+        if (!newAchievements[4].unlocked) {
+          newAchievements[4].unlocked = true;
+          setUserAchievements(newAchievements);
+          setShowAchievement(newAchievements[4]);
+        }
+      }
     }
-    setDraggedWord(null);
   };
 
-  const handleDropToJumbled = (e) => {
-    e.preventDefault();
-    if (!draggedWord || draggedWord.source !== "arranged") return;
+  const calculateScore = () => {
+    if (!currentPassage) {
+      return { score: "0/0", feedbackMessage: "" };
+    }
+    const correctCount = Object.values(selectedAnswers).filter(
+      (answer, idx) => answer === currentPassage.questions[idx].correctAnswer
+    ).length;
+    const total = currentPassage.questions.length;
+    const scorePercent = (correctCount / total) * 100;
 
-    // Moving from arranged back to jumbled
-    const newArranged = arrangedWords.filter((_, i) => i !== draggedWord.index);
-    const newJumbled = [...jumbledWords, draggedWord.word];
+    let feedbackMessage = "";
+    let xpReward = 0;
+    let gemReward = 0;
 
-    setArrangedWords(newArranged);
-    setJumbledWords(shuffleArray(newJumbled));
-    setDraggedWord(null);
+    if (scorePercent === 100) {
+      feedbackMessage = "🌟 Amazing job! You got all answers right!";
+      xpReward = 20;
+      gemReward = 5;
+    } else if (scorePercent >= 70) {
+      feedbackMessage =
+        "👍 Good work! You did well, but there's room for improvement.";
+      xpReward = 10;
+      gemReward = 2;
+    } else {
+      feedbackMessage = "💪 Keep practicing to improve your listening skills!";
+      xpReward = 5;
+      gemReward = 1;
+    }
+
+    setTimeout(() => {
+      awardRewards(xpReward, gemReward, "Comprehension");
+    }, 1000);
+
+    return {
+      score: `${correctCount}/${total} (${Math.round(scorePercent)}%)`,
+      feedbackMessage,
+      xpReward,
+      gemReward,
+    };
+  };
+
+  const startListeningComprehension = () => {
+    if (currentPassage && "speechSynthesis" in window) {
+      const utteranceTitle = new SpeechSynthesisUtterance(
+        `Listen carefully to: ${currentPassage.title}`
+      );
+      const utterancePassage = new SpeechSynthesisUtterance(
+        currentPassage.passage
+      );
+
+      utteranceTitle.rate = 0.8;
+      utterancePassage.rate = 0.8;
+
+      utteranceTitle.onend = () => {
+        setTimeout(() => {
+          speechSynthesis.speak(utterancePassage);
+        }, 1000);
+      };
+
+      utterancePassage.onend = () => {
+        setIsPassageRead(true);
+      };
+
+      speechSynthesis.speak(utteranceTitle);
+    } else {
+      alert(
+        "Text-to-speech is not supported in your browser or no passage is selected."
+      );
+    }
+  };
+
+  const checkParagraphOrder = () => {
+    const expectedCount = parseInt(selectedLines);
+    const isComplete = arrangedParagraphSentences.length === expectedCount;
+    const isCorrect =
+      isComplete &&
+      arrangedParagraphSentences.every(
+        (sentence, index) => sentence === paragraphSentences[index]
+      );
+
+    let message, xpEarned, gemsEarned;
+    const baseXP = expectedCount * 4;
+
+    if (isCorrect) {
+      message = "🌟 Perfect! You arranged all sentences correctly!";
+      xpEarned = baseXP * 2;
+      gemsEarned = expectedCount;
+    } else if (isComplete) {
+      const correctCount = arrangedParagraphSentences.reduce(
+        (count, sentence, index) =>
+          count + (sentence === paragraphSentences[index] ? 1 : 0),
+        0
+      );
+      message = `👍 ${correctCount}/${expectedCount} correct. Keep trying!`;
+      xpEarned = Math.floor(baseXP * (correctCount / expectedCount));
+      gemsEarned = Math.max(1, correctCount);
+    } else {
+      message = `Please arrange all ${expectedCount} sentences.`;
+      xpEarned = 0;
+      gemsEarned = 0;
+    }
+
+    setParagraphCheckResults({
+      submitted: isComplete,
+      isCorrect,
+      message,
+      xpEarned,
+      gemsEarned,
+      showFeedback: true,
+    });
+
+    if (isCorrect) {
+      setTimeout(() => {
+        awardRewards(xpEarned, gemsEarned, "Paragraphs");
+      }, 1000);
+    }
+  };
+
+  const retryParagraphExercise = () => {
+    setJumbledParagraphSentences(shuffleArray([...paragraphSentences]));
+    setArrangedParagraphSentences([]);
+    setParagraphCheckResults({
+      submitted: false,
+      isCorrect: false,
+      message: "",
+      xpEarned: 0,
+      gemsEarned: 0,
+      showFeedback: false,
+    });
+  };
+
+  const startReadingParagraphs = () => {
+    if ("speechSynthesis" in window) {
+      const lines = parseInt(selectedLines, 10);
+      const paragraph = paragraphs[lines - 1] || paragraphs[0];
+
+      const sentences = splitSentences(paragraph, lines);
+
+      if (sentences.length < lines) {
+        while (sentences.length < lines) {
+          sentences.push("Sample sentence " + (sentences.length + 1) + ".");
+        }
+      } else if (sentences.length > lines) {
+        sentences.length = lines;
+      }
+
+      setParagraphSentences(sentences);
+      setJumbledParagraphSentences(shuffleArray([...sentences]));
+      setArrangedParagraphSentences([]);
+      setParagraphCheckResults({
+        submitted: false,
+        isCorrect: false,
+        message: "",
+        xpEarned: 0,
+        gemsEarned: 0,
+        showFeedback: false,
+      });
+
+      const utterance = new SpeechSynthesisUtterance(
+        `Listen carefully to this paragraph and remember the order of ${lines} sentences: ${paragraph}`
+      );
+      utterance.rate = 0.8;
+
+      utterance.onend = () => {
+        setHasRecorded(true);
+        setMicEnabled(true);
+      };
+
+      speechSynthesis.speak(utterance);
+    } else {
+      alert("Text-to-speech is not supported in your browser.");
+    }
+  };
+
+  const splitSentences = (paragraph) => {
+    return paragraph
+      .split(/(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s+/)
+      .filter((s) => s.trim().length > 0)
+      .map((s) => {
+        let sentence = s.trim();
+        if (!/[.!?]$/.test(sentence)) {
+          sentence += ".";
+        }
+        return sentence;
+      });
+  };
+
+  const startReadingSentences = () => {
+    if ("speechSynthesis" in window) {
+      const sentence = sentences[selectedSentence];
+      const utterance = new SpeechSynthesisUtterance(
+        `Listen carefully and remember this sentence: ${sentence}`
+      );
+      utterance.rate = 0.7;
+
+      utterance.onend = () => {
+        setHasRecorded(true);
+        setMicEnabled(true);
+        const words = sentence.split(" ");
+        setCurrentSentenceWords(words);
+        setJumbledWords(shuffleArray([...words]));
+        setArrangedWords([]);
+        setSentenceCheckResults({
+          submitted: false,
+          isCorrect: false,
+          message: "",
+          xpEarned: 0,
+          gemsEarned: 0,
+          showFeedback: false,
+        });
+      };
+
+      speechSynthesis.speak(utterance);
+    } else {
+      alert("Text-to-speech is not supported in your browser.");
+    }
   };
 
   const checkSentenceAnswer = () => {
-    const userSentence = arrangedWords.join(" ").toLowerCase().trim();
-    const correctSentence = sentences[selectedSentence].toLowerCase().trim();
-    const isCorrect = userSentence === correctSentence;
+    let userSentence = "";
+    let isCorrect = false;
+    let message = "";
+    let xpEarned = 0;
+    let gemsEarned = 0;
 
-    let message, xpEarned, gemsEarned;
+    if (answerStyle === "drag") {
+      userSentence = arrangedWords.join(" ").toLowerCase().trim();
+      isCorrect =
+        userSentence === sentences[selectedSentence].toLowerCase().trim();
+    } else if (answerStyle === "record") {
+      // Already handled in onCheckAnswer
+      return;
+    } else if (answerStyle === "type") {
+      userSentence = sentenceInput.toLowerCase().trim();
+      isCorrect =
+        userSentence === sentences[selectedSentence].toLowerCase().trim();
+    }
 
     if (isCorrect) {
-      message = "🌟 Perfect! You arranged the sentence correctly!";
-      xpEarned = getSentenceXP(selectedSentence) * 2; // Double XP for validation
+      message = "🌟 Perfect! You got the sentence correct!";
+      xpEarned = getSentenceXP(selectedSentence) * 2;
       gemsEarned = getSentenceGems(selectedSentence);
     } else {
-      message = "💪 Not quite right. Try rearranging the words!";
+      message = "💪 Not quite right. Try again!";
       xpEarned = Math.floor(getSentenceXP(selectedSentence) * 0.3);
       gemsEarned = 1;
     }
@@ -573,6 +979,40 @@ const TestListeningSkills = () => {
       message,
       xpEarned,
       gemsEarned,
+      showFeedback: true,
+    });
+
+    if (isCorrect) {
+      setTimeout(() => {
+        awardRewards(xpEarned, gemsEarned, "Sentences");
+      }, 1000);
+    }
+  };
+
+  const checkTypedSentence = () => {
+    const userSentence = sentenceInput.toLowerCase().trim();
+    const correctSentence = sentences[selectedSentence].toLowerCase().trim();
+    const isCorrect = userSentence === correctSentence;
+
+    let message, xpEarned, gemsEarned;
+
+    if (isCorrect) {
+      message = "🌟 Perfect! You typed the sentence correctly!";
+      xpEarned = getSentenceXP(selectedSentence) * 2;
+      gemsEarned = getSentenceGems(selectedSentence);
+    } else {
+      message = "💪 Not quite right. Try again!";
+      xpEarned = Math.floor(getSentenceXP(selectedSentence) * 0.3);
+      gemsEarned = 1;
+    }
+
+    setSentenceCheckResults({
+      submitted: true,
+      isCorrect,
+      message,
+      xpEarned,
+      gemsEarned,
+      showFeedback: true,
     });
 
     if (isCorrect) {
@@ -610,16 +1050,129 @@ const TestListeningSkills = () => {
     setCurrentSentenceWords(words);
     setJumbledWords(shuffleArray([...words]));
     setArrangedWords([]);
+    setSentenceInput("");
     setSentenceCheckResults({
       submitted: false,
       isCorrect: false,
       message: "",
       xpEarned: 0,
       gemsEarned: 0,
+      showFeedback: false,
     });
   };
 
-  // Additional functions to add to your component:
+  const handleListeningComplete = (transcript) => {
+    setSpokenText(transcript);
+
+    if (selectedCategory === "Words") {
+      const wordCount = parseInt(selectedWords);
+      const transcriptWords = transcript.toLowerCase().split(/\s+/);
+
+      const newWordInputs = {};
+      for (let i = 0; i < wordCount && i < transcriptWords.length; i++) {
+        newWordInputs[i] = transcriptWords[i];
+      }
+      setWordInputs(newWordInputs);
+    }
+  };
+
+  const startReadingWords = () => {
+    setCheckedAnswers({});
+    if ("speechSynthesis" in window) {
+      const wordCount = parseInt(selectedWords, 10);
+      const selectedWordsList = words.slice(0, wordCount);
+      setCurrentWordsList(selectedWordsList);
+
+      const wordsString = selectedWordsList.join(", ");
+      const utterance = new SpeechSynthesisUtterance(
+        `Listen carefully and remember these words: ${wordsString}`
+      );
+      utterance.rate = 0.7;
+
+      utterance.onend = () => {
+        setHasRecorded(true);
+        setMicEnabled(true);
+        setWordInputs({});
+        setWordCheckResults({
+          submitted: false,
+          results: {},
+          score: 0,
+          message: "",
+          xpEarned: 0,
+          gemsEarned: 0,
+          showFeedback: false,
+        });
+      };
+
+      speechSynthesis.speak(utterance);
+    } else {
+      alert("Text-to-speech is not supported in your browser.");
+    }
+  };
+
+  const simulateRecording = () => {
+    setIsRecording(true);
+    setTimeout(() => {
+      setIsRecording(false);
+      setHasRecorded(true);
+    }, 3000);
+  };
+
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  const handleDragStart = (e, word, index) => {
+    setDraggedWord({ word, index, source: "jumbled" });
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDragStartArranged = (e, word, index) => {
+    setDraggedWord({ word, index, source: "arranged" });
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  };
+
+  const handleDropToArranged = (e, dropIndex) => {
+    e.preventDefault();
+    if (!draggedWord) return;
+
+    if (draggedWord.source === "jumbled") {
+      const newJumbled = jumbledWords.filter((_, i) => i !== draggedWord.index);
+      const newArranged = [...arrangedWords];
+      newArranged.splice(dropIndex, 0, draggedWord.word);
+
+      setJumbledWords(newJumbled);
+      setArrangedWords(newArranged);
+    } else {
+      const newArranged = [...arrangedWords];
+      const [movedWord] = newArranged.splice(draggedWord.index, 1);
+      newArranged.splice(dropIndex, 0, movedWord);
+      setArrangedWords(newArranged);
+    }
+    setDraggedWord(null);
+  };
+
+  const handleDropToJumbled = (e) => {
+    e.preventDefault();
+    if (!draggedWord || draggedWord.source !== "arranged") return;
+
+    const newArranged = arrangedWords.filter((_, i) => i !== draggedWord.index);
+    const newJumbled = [...jumbledWords, draggedWord.word];
+
+    setArrangedWords(newArranged);
+    setJumbledWords(shuffleArray(newJumbled));
+    setDraggedWord(null);
+  };
 
   const handleWordInputChange = (index, value) => {
     setWordInputs((prev) => ({
@@ -678,9 +1231,9 @@ const TestListeningSkills = () => {
       message,
       xpEarned,
       gemsEarned,
+      showFeedback: true,
     });
 
-    // Award the rewards
     setTimeout(() => {
       awardRewards(xpEarned, gemsEarned, "Words");
     }, 1000);
@@ -695,313 +1248,83 @@ const TestListeningSkills = () => {
       message: "",
       xpEarned: 0,
       gemsEarned: 0,
+      showFeedback: false,
     });
   };
 
-  // Gamification states
-  const [userStats, setUserStats] = useState({
-    xp: 0,
-    gems: 0,
-    streak: 0,
-    totalCompleted: 0,
-    hearts: 5,
-    level: 1,
-  });
-  const [showCelebration, setShowCelebration] = useState(false);
-  const [currentStreak, setCurrentStreak] = useState(0);
-  const [isRecording, setIsRecording] = useState(false);
-  const [hasRecorded, setHasRecorded] = useState(false);
-  const [showAchievement, setShowAchievement] = useState(null);
-  const [userAchievements, setUserAchievements] = useState(achievements);
-  const [exerciseStats, setExerciseStats] = useState({
-    words: 0,
-    sentences: 0,
-    paragraphs: 0,
-    comprehension: 0,
-  });
-
-  const currentCategory = categories.find((c) => c.key === selectedCategory);
-
-  // Calculate user level based on XP
-  useEffect(() => {
-    const newLevel = Math.floor(userStats.xp / 50) + 1;
-    if (newLevel > userStats.level) {
-      setUserStats((prev) => ({ ...prev, level: newLevel }));
-      setShowCelebration(true);
-      setTimeout(() => setShowCelebration(false), 3000);
-    }
-  }, [userStats.xp]);
-
-  // Check for achievements
-  const checkAchievements = (category) => {
-    const newAchievements = [...userAchievements];
-    let achievementUnlocked = false;
-
-    if (userStats.totalCompleted === 1 && !newAchievements[0].unlocked) {
-      newAchievements[0].unlocked = true;
-      achievementUnlocked = true;
-      setShowAchievement(newAchievements[0]);
-    }
-
-    if (exerciseStats.words >= 5 && !newAchievements[1].unlocked) {
-      newAchievements[1].unlocked = true;
-      achievementUnlocked = true;
-      setShowAchievement(newAchievements[1]);
-    }
-
-    if (exerciseStats.sentences >= 3 && !newAchievements[2].unlocked) {
-      newAchievements[2].unlocked = true;
-      achievementUnlocked = true;
-      setShowAchievement(newAchievements[2]);
-    }
-
-    if (exerciseStats.paragraphs >= 2 && !newAchievements[3].unlocked) {
-      newAchievements[3].unlocked = true;
-      achievementUnlocked = true;
-      setShowAchievement(newAchievements[3]);
-    }
-
-    if (achievementUnlocked) {
-      setUserAchievements(newAchievements);
-      setTimeout(() => setShowAchievement(null), 4000);
-    }
+  const handleParagraphDragStart = (e, item, index, source) => {
+    setDraggedItem({ item, index, source });
+    e.dataTransfer.effectAllowed = "move";
   };
 
-  // Award XP and gems
-  const awardRewards = (xp, gems, category) => {
-    setUserStats((prev) => ({
-      ...prev,
-      xp: prev.xp + xp,
-      gems: prev.gems + gems,
-      totalCompleted: prev.totalCompleted + 1,
-      streak: prev.streak + 1,
-    }));
-
-    setExerciseStats((prev) => ({
-      ...prev,
-      [category.toLowerCase()]: prev[category.toLowerCase()] + 1,
-    }));
-
-    checkAchievements(category);
-    setShowCelebration(true);
-    setTimeout(() => setShowCelebration(false), 2000);
+  const handleParagraphDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
   };
 
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    setSelectedTitle("");
-    setSelectedLines("");
-    setSelectedSentence("");
-    setSelectedWords("");
-    setCurrentPassage(null);
-    setIsPassageRead(false);
-    setShowResults(false);
-    setFeedback("");
-    setSelectedAnswers({});
-    setCurrentQuestionIndex(0);
-    setHasRecorded(false);
-  };
+  const handleParagraphDropToArranged = (e, dropIndex) => {
+    e.preventDefault();
+    if (!draggedItem) return;
 
-  const handleClassChange = (e) => {
-    setSelectedClass(e.target.value);
-  };
+    if (draggedItem.source === "jumbled") {
+      const newJumbled = [...jumbledParagraphSentences];
+      newJumbled.splice(draggedItem.index, 1);
 
-  const handleLevelChange = (e) => {
-    setSelectedLevel(e.target.value);
-  };
+      const newArranged = [...arrangedParagraphSentences];
+      newArranged.splice(dropIndex, 0, draggedItem.item);
 
-  const handleTitleChange = (e) => {
-    const value = e.target.value;
-    setSelectedTitle(value);
-    const passage = listeningPassages.find((p) => p.title === value);
-    setCurrentPassage(passage);
-    setCurrentQuestionIndex(0);
-    setSelectedAnswers({});
-    setShowResults(false);
-    setFeedback("");
-    setIsPassageRead(false);
-  };
-
-  const handleLinesChange = (e) => {
-    setSelectedLines(e.target.value);
-    setHasRecorded(false);
-  };
-
-  const handleSentenceChange = (e) => {
-    setSelectedSentence(e.target.value);
-    setHasRecorded(false);
-    // Reset sentence validation states
-    setSentenceInputs({});
-    setCurrentSentenceWords([]);
-    setJumbledWords([]);
-    setArrangedWords([]);
-    setSentenceCheckResults({
-      submitted: false,
-      isCorrect: false,
-      message: "",
-      xpEarned: 0,
-      gemsEarned: 0,
-    });
-  };
-
-  const handleWordsChange = (e) => {
-    setSelectedWords(e.target.value);
-    setHasRecorded(false);
-  };
-
-  const handleAnswerSelect = (questionIndex, optionIndex) => {
-    setSelectedAnswers((prev) => ({
-      ...prev,
-      [questionIndex]: optionIndex,
-    }));
-
-    const currentQuestion = currentPassage.questions[questionIndex];
-    if (optionIndex === currentQuestion.correctAnswer) {
-      setFeedback(`🎉 Correct! ${currentQuestion.explanation}`);
+      setJumbledParagraphSentences(newJumbled);
+      setArrangedParagraphSentences(newArranged);
     } else {
-      setFeedback(
-        `❌ Incorrect. The correct answer is: "${
-          currentQuestion.options[currentQuestion.correctAnswer]
-        }". ${currentQuestion.explanation}`
-      );
+      const newArranged = [...arrangedParagraphSentences];
+      const [movedItem] = newArranged.splice(draggedItem.index, 1);
+      newArranged.splice(dropIndex, 0, movedItem);
+      setArrangedParagraphSentences(newArranged);
     }
+    setDraggedItem(null);
   };
 
-  const nextQuestion = () => {
-    if (currentQuestionIndex < currentPassage.questions.length - 1) {
-      setCurrentQuestionIndex((prev) => prev + 1);
-      setFeedback("");
-    } else {
-      setShowResults(true);
-      const { score } = calculateScore();
-      if (score.includes("100%")) {
-        // Perfect score achievement
-        const newAchievements = [...userAchievements];
-        if (!newAchievements[4].unlocked) {
-          newAchievements[4].unlocked = true;
-          setUserAchievements(newAchievements);
-          setShowAchievement(newAchievements[4]);
-        }
-      }
-    }
+  const handleParagraphDropToJumbled = (e) => {
+    e.preventDefault();
+    if (!draggedItem || draggedItem.source !== "arranged") return;
+
+    const newArranged = [...arrangedParagraphSentences];
+    newArranged.splice(draggedItem.index, 1);
+
+    const newJumbled = [...jumbledParagraphSentences, draggedItem.item];
+
+    setArrangedParagraphSentences(newArranged);
+    setJumbledParagraphSentences(shuffleArray(newJumbled));
+    setDraggedItem(null);
   };
 
-  const calculateScore = () => {
-    if (!currentPassage) {
-      return { score: "0/0", feedbackMessage: "" };
-    }
-    const correctCount = Object.values(selectedAnswers).filter(
-      (answer, idx) => answer === currentPassage.questions[idx].correctAnswer
-    ).length;
-    const total = currentPassage.questions.length;
-    const scorePercent = (correctCount / total) * 100;
-
-    let feedbackMessage = "";
-    let xpReward = 0;
-    let gemReward = 0;
-
-    if (scorePercent === 100) {
-      feedbackMessage = "🌟 Amazing job! You got all answers right!";
-      xpReward = 20;
-      gemReward = 5;
-    } else if (scorePercent >= 70) {
-      feedbackMessage =
-        "👍 Good work! You did well, but there's room for improvement.";
-      xpReward = 10;
-      gemReward = 2;
-    } else {
-      feedbackMessage = "💪 Keep practicing to improve your listening skills!";
-      xpReward = 5;
-      gemReward = 1;
-    }
-
-    // Award rewards
-    setTimeout(() => {
-      awardRewards(xpReward, gemReward, "Comprehension");
-    }, 1000);
-
-    return {
-      score: `${correctCount}/${total} (${Math.round(scorePercent)}%)`,
-      feedbackMessage,
-      xpReward,
-      gemReward,
-    };
-  };
-
-  const startListeningComprehension = () => {
-    if (currentPassage && "speechSynthesis" in window) {
-      const utteranceTitle = new SpeechSynthesisUtterance(
-        `Listen carefully to: ${currentPassage.title}`
-      );
-      const utterancePassage = new SpeechSynthesisUtterance(
-        currentPassage.passage
-      );
-
-      utteranceTitle.rate = 0.8;
-      utterancePassage.rate = 0.8;
-
-      utteranceTitle.onend = () => {
-        setTimeout(() => {
-          speechSynthesis.speak(utterancePassage);
-        }, 1000);
-      };
-
-      utterancePassage.onend = () => {
-        setIsPassageRead(true);
-      };
-
-      speechSynthesis.speak(utteranceTitle);
-    } else {
-      alert(
-        "Text-to-speech is not supported in your browser or no passage is selected."
-      );
-    }
-  };
-
-  const checkParagraphOrder = () => {
-    const expectedCount = parseInt(selectedLines);
-    const isComplete = arrangedParagraphSentences.length === expectedCount;
-    const isCorrect =
-      isComplete &&
-      arrangedParagraphSentences.every(
-        (sentence, index) => sentence === paragraphSentences[index]
-      );
-
-    console.log("Validation:", {
-      expected: expectedCount,
-      actual: arrangedParagraphSentences.length,
-      isComplete,
-      isCorrect,
-    });
+  const checkTypedParagraph = () => {
+    const userText = paragraphInput.toLowerCase().trim();
+    const correctText = paragraphs[parseInt(selectedLines) - 1]
+      .toLowerCase()
+      .trim();
+    const isCorrect = userText === correctText;
 
     let message, xpEarned, gemsEarned;
-    const baseXP = expectedCount * 4;
+    const baseXP = parseInt(selectedLines) * 4;
 
     if (isCorrect) {
-      message = "🌟 Perfect! You arranged all sentences correctly!";
+      message = "🌟 Perfect! You typed the paragraph correctly!";
       xpEarned = baseXP * 2;
-      gemsEarned = expectedCount;
-    } else if (isComplete) {
-      const correctCount = arrangedParagraphSentences.reduce(
-        (count, sentence, index) =>
-          count + (sentence === paragraphSentences[index] ? 1 : 0),
-        0
-      );
-      message = `👍 ${correctCount}/${expectedCount} correct. Keep trying!`;
-      xpEarned = Math.floor(baseXP * (correctCount / expectedCount));
-      gemsEarned = Math.max(1, correctCount);
+      gemsEarned = parseInt(selectedLines);
     } else {
-      message = `Please arrange all ${expectedCount} sentences.`;
-      xpEarned = 0;
-      gemsEarned = 0;
+      message = "💪 Some parts were incorrect. Try again!";
+      xpEarned = Math.floor(baseXP * 0.5);
+      gemsEarned = 1;
     }
 
     setParagraphCheckResults({
-      submitted: isComplete,
+      submitted: true,
       isCorrect,
       message,
       xpEarned,
       gemsEarned,
+      showFeedback: true,
     });
 
     if (isCorrect) {
@@ -1009,148 +1332,6 @@ const TestListeningSkills = () => {
         awardRewards(xpEarned, gemsEarned, "Paragraphs");
       }, 1000);
     }
-  };
-
-  const retryParagraphExercise = () => {
-    setJumbledParagraphSentences(shuffleArray([...paragraphSentences]));
-    setArrangedParagraphSentences([]);
-    setParagraphCheckResults({
-      submitted: false,
-      isCorrect: false,
-      message: "",
-      xpEarned: 0,
-      gemsEarned: 0,
-    });
-  };
-
-  const startReadingParagraphs = () => {
-    if ("speechSynthesis" in window) {
-      const lines = parseInt(selectedLines, 10);
-      const paragraph = paragraphs[lines - 1] || paragraphs[0];
-
-      const sentences = splitSentences(paragraph, lines);
-      console.log("Extracted sentences:", sentences);
-
-      // Verify we got the expected number of sentences
-      if (sentences.length < lines) {
-        // If we got fewer sentences than expected, pad with empty ones
-        while (sentences.length < lines) {
-          sentences.push("Sample sentence " + (sentences.length + 1) + ".");
-        }
-      } else if (sentences.length > lines) {
-        // If we got more, truncate to expected number
-        sentences.length = lines;
-      }
-
-      setParagraphSentences(sentences);
-      setJumbledParagraphSentences(shuffleArray([...sentences]));
-      setArrangedParagraphSentences([]);
-      setParagraphCheckResults({
-        submitted: false,
-        isCorrect: false,
-        message: "",
-        xpEarned: 0,
-        gemsEarned: 0,
-      });
-
-      const utterance = new SpeechSynthesisUtterance(
-        `Listen carefully to this paragraph and remember the order of ${lines} sentences: ${paragraph}`
-      );
-      utterance.rate = 0.8;
-
-      utterance.onend = () => {
-        setHasRecorded(true);
-      };
-
-      speechSynthesis.speak(utterance);
-    } else {
-      alert("Text-to-speech is not supported in your browser.");
-    }
-  };
-
-  const splitSentences = (paragraph) => {
-    // Improved splitting that handles various cases
-    return paragraph
-      .split(/(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s+/)
-      .filter((s) => s.trim().length > 0)
-      .map((s) => {
-        let sentence = s.trim();
-        if (!/[.!?]$/.test(sentence)) {
-          sentence += ".";
-        }
-        return sentence;
-      });
-  };
-
-  const startReadingSentences = () => {
-    if ("speechSynthesis" in window) {
-      const sentence = sentences[selectedSentence];
-      const utterance = new SpeechSynthesisUtterance(
-        `Listen carefully and remember this sentence: ${sentence}`
-      );
-      utterance.rate = 0.7;
-
-      utterance.onend = () => {
-        setHasRecorded(true);
-        // Set up the sentence for validation
-        const words = sentence.split(" ");
-        setCurrentSentenceWords(words);
-        setJumbledWords(shuffleArray([...words]));
-        setArrangedWords([]);
-        setSentenceCheckResults({
-          submitted: false,
-          isCorrect: false,
-          message: "",
-          xpEarned: 0,
-          gemsEarned: 0,
-        });
-      };
-
-      speechSynthesis.speak(utterance);
-    } else {
-      alert("Text-to-speech is not supported in your browser.");
-    }
-  };
-
-  // Modified startReadingWords function:
-  const startReadingWords = () => {
-    if ("speechSynthesis" in window) {
-      const wordCount = parseInt(selectedWords, 10);
-      const selectedWordsList = words.slice(0, wordCount);
-      setCurrentWordsList(selectedWordsList); // Store the words for checking
-
-      const wordsString = selectedWordsList.join(", ");
-      const utterance = new SpeechSynthesisUtterance(
-        `Listen carefully and remember these words: ${wordsString}`
-      );
-      utterance.rate = 0.7;
-
-      utterance.onend = () => {
-        setHasRecorded(true);
-        // Reset input states when starting new exercise
-        setWordInputs({});
-        setWordCheckResults({
-          submitted: false,
-          results: {},
-          score: 0,
-          message: "",
-          xpEarned: 0,
-          gemsEarned: 0,
-        });
-      };
-
-      speechSynthesis.speak(utterance);
-    } else {
-      alert("Text-to-speech is not supported in your browser.");
-    }
-  };
-
-  const simulateRecording = () => {
-    setIsRecording(true);
-    setTimeout(() => {
-      setIsRecording(false);
-      setHasRecorded(true);
-    }, 3000);
   };
 
   return (
@@ -1318,9 +1499,7 @@ const TestListeningSkills = () => {
                         }
                         disabled={feedback !== ""}
                       >
-                        <span className="font-medium">
-                          {String.fromCharCode(65 + idx)}. {option}
-                        </span>
+                        {option}
                       </button>
                     )
                   )}
@@ -1375,144 +1554,220 @@ const TestListeningSkills = () => {
               </button>
             )}
 
-            {selectedCategory === "Paragraphs" && selectedLines && (
-              <div className="mb-6">
-                <MicListeningSection
-                  prompt={
-                    paragraphs[parseInt(selectedLines, 10) - 1] || paragraphs[0]
-                  }
-                  disabled={!selectedLines}
-                  micLabel="🎤 Speak Paragraph"
-                  placeholder="Click mic and repeat the paragraph you heard"
-                  sectionType="paragraph"
-                  // You can set result handler if you want to use the transcript
-                />
-              </div>
-            )}
-
-            {hasRecorded && (
+            {selectedLines && hasRecorded && (
               <div className="space-y-6">
-                <div className="bg-purple-50 p-4 rounded-xl border-2 border-purple-200">
-                  <h4 className="font-bold text-purple-800 mb-3 flex items-center">
-                    <span className="mr-2">📝</span>
-                    Arrange the sentences in the correct order:
-                  </h4>
+                <AnswerStyleSelector
+                  answerStyle={answerStyle}
+                  setAnswerStyle={setAnswerStyle}
+                />
 
-                  {/* Jumbled Sentences Section */}
-                  <div className="mb-4">
-                    <h5 className="font-semibold text-gray-700 mb-2">
-                      Available Sentences:
-                    </h5>
-                    <div
-                      className="min-h-[100px] p-3 bg-white rounded-xl border-2 border-dashed border-gray-300 space-y-2"
-                      onDragOver={handleParagraphDragOver}
-                      onDrop={handleParagraphDropToJumbled}
-                    >
-                      {jumbledParagraphSentences.map((sentence, index) => (
-                        <div
-                          key={`jumbled-${index}`}
-                          draggable
-                          onDragStart={(e) =>
-                            handleParagraphDragStart(
-                              e,
-                              sentence,
-                              index,
-                              "jumbled"
-                            )
-                          }
-                          className="bg-purple-100 text-purple-800 px-3 py-2 rounded-lg cursor-move hover:bg-purple-200 transition-colors border-2 border-purple-300 font-medium select-none"
-                        >
-                          {sentence}
-                        </div>
-                      ))}
-                      {jumbledParagraphSentences.length === 0 && (
-                        <div className="text-gray-400 italic text-center w-full py-4">
-                          All sentences used! 🎉
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                {answerStyle === "drag" ? (
+                  <div className="bg-purple-50 p-4 rounded-xl border-2 border-purple-200">
+                    <h4 className="font-bold text-purple-800 mb-3 flex items-center">
+                      <span className="mr-2">📝</span>
+                      Arrange the sentences in the correct order:
+                    </h4>
 
-                  {/* Arranged Paragraph Section */}
-                  <div className="mb-4">
-                    <h5 className="font-semibold text-gray-700 mb-2">
-                      Your Paragraph:
-                    </h5>
-                    <div
-                      className="min-h-[150px] p-3 bg-white rounded-xl border-2 border-purple-400 space-y-2"
-                      onDragOver={handleParagraphDragOver}
-                      onDrop={(e) =>
-                        handleParagraphDropToArranged(
-                          e,
-                          arrangedParagraphSentences.length
-                        )
-                      }
-                    >
-                      {arrangedParagraphSentences.map((sentence, index) => (
-                        <div
-                          key={`arranged-${index}`}
-                          className="relative group"
-                        >
+                    {/* Jumbled Sentences Section */}
+                    <div className="mb-4">
+                      <h5 className="font-semibold text-gray-700 mb-2">
+                        Available Sentences:
+                      </h5>
+                      <div
+                        className="min-h-[100px] p-3 bg-white rounded-xl border-2 border-dashed border-gray-300 space-y-2"
+                        onDragOver={handleParagraphDragOver}
+                        onDrop={handleParagraphDropToJumbled}
+                      >
+                        {jumbledParagraphSentences.map((sentence, index) => (
                           <div
+                            key={`jumbled-${index}`}
                             draggable
                             onDragStart={(e) =>
                               handleParagraphDragStart(
                                 e,
                                 sentence,
                                 index,
-                                "arranged"
+                                "jumbled"
                               )
                             }
-                            className="bg-white text-purple-700 px-3 py-2 rounded-lg cursor-move hover:bg-purple-50 transition-colors border-2 border-purple-400 font-medium select-none"
+                            className="bg-purple-100 text-purple-800 px-3 py-2 rounded-lg cursor-move hover:bg-purple-200 transition-colors border-2 border-purple-300 font-medium select-none"
                           >
                             {sentence}
                           </div>
-                          {/* Drop zone after each sentence */}
+                        ))}
+                        {jumbledParagraphSentences.length === 0 && (
+                          <div className="text-gray-400 italic text-center w-full py-4">
+                            All sentences used! 🎉
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Arranged Paragraph Section */}
+                    <div className="mb-4">
+                      <h5 className="font-semibold text-gray-700 mb-2">
+                        Your Paragraph:
+                      </h5>
+                      <div
+                        className="min-h-[150px] p-3 bg-white rounded-xl border-2 border-purple-400 space-y-2"
+                        onDragOver={handleParagraphDragOver}
+                        onDrop={(e) =>
+                          handleParagraphDropToArranged(
+                            e,
+                            arrangedParagraphSentences.length
+                          )
+                        }
+                      >
+                        {arrangedParagraphSentences.map((sentence, index) => (
                           <div
-                            className="absolute -bottom-1 left-0 w-full h-2 opacity-0 hover:opacity-100 bg-purple-300 rounded transition-opacity"
-                            onDragOver={handleParagraphDragOver}
-                            onDrop={(e) =>
-                              handleParagraphDropToArranged(e, index + 1)
-                            }
-                          ></div>
-                        </div>
-                      ))}
-                      {arrangedParagraphSentences.length === 0 && (
-                        <div className="text-gray-400 italic text-center w-full py-4">
-                          Drop sentences here to build your paragraph
-                        </div>
+                            key={`arranged-${index}`}
+                            className="relative group"
+                          >
+                            <div
+                              draggable
+                              onDragStart={(e) =>
+                                handleParagraphDragStart(
+                                  e,
+                                  sentence,
+                                  index,
+                                  "arranged"
+                                )
+                              }
+                              className="bg-white text-purple-700 px-3 py-2 rounded-lg cursor-move hover:bg-purple-50 transition-colors border-2 border-purple-400 font-medium select-none"
+                            >
+                              {sentence}
+                            </div>
+                            {/* Drop zone after each sentence */}
+                            <div
+                              className="absolute -bottom-1 left-0 w-full h-2 opacity-0 hover:opacity-100 bg-purple-300 rounded transition-opacity"
+                              onDragOver={handleParagraphDragOver}
+                              onDrop={(e) =>
+                                handleParagraphDropToArranged(e, index + 1)
+                              }
+                            ></div>
+                          </div>
+                        ))}
+                        {arrangedParagraphSentences.length === 0 && (
+                          <div className="text-gray-400 italic text-center w-full py-4">
+                            Drop sentences here to build your paragraph
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex space-x-3">
+                      <button
+                        onClick={checkParagraphOrder}
+                        disabled={
+                          paragraphCheckResults.submitted ||
+                          arrangedParagraphSentences.length === 0
+                        }
+                        className={`flex-1 py-3 px-6 rounded-lg font-bold transition-all duration-200 ${
+                          paragraphCheckResults.submitted ||
+                          arrangedParagraphSentences.length === 0
+                            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            : "bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:scale-105 hover:shadow-lg"
+                        } flex items-center justify-center space-x-2`}
+                      >
+                        <span>🎯 Check Order</span>
+                      </button>
+
+                      {paragraphCheckResults.submitted && (
+                        <button
+                          onClick={retryParagraphExercise}
+                          className="flex-1 py-3 px-6 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold hover:scale-105 hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2"
+                        >
+                          <span>🔄 Try Again</span>
+                        </button>
                       )}
                     </div>
                   </div>
+                ) : answerStyle === "record" ? (
+                  <div className="bg-green-50 p-4 rounded-xl border-2 border-green-200">
+                    <MicListeningSection
+                      prompt={
+                        paragraphs[parseInt(selectedLines) - 1] || paragraphs[0]
+                      }
+                      disabled={!micEnabled}
+                      micLabel="🎤 Speak Paragraph"
+                      placeholder="Click mic and repeat the paragraph you heard"
+                      sectionType="paragraph"
+                      onListeningComplete={(transcript) => {
+                        setParagraphInput(transcript);
+                      }}
+                      onCheckAnswer={(transcript) => {
+                        const userText = transcript.toLowerCase().trim();
+                        const correctText = paragraphs[
+                          parseInt(selectedLines) - 1
+                        ]
+                          .toLowerCase()
+                          .trim();
+                        const isCorrect = userText === correctText;
 
-                  {/* Action Buttons */}
-                  <div className="flex space-x-3">
+                        let message, xpEarned, gemsEarned;
+                        const baseXP = parseInt(selectedLines) * 4;
+
+                        if (isCorrect) {
+                          message =
+                            "🌟 Perfect! You repeated the paragraph correctly!";
+                          xpEarned = baseXP * 2;
+                          gemsEarned = parseInt(selectedLines);
+                        } else {
+                          message = "💪 Some parts were incorrect. Try again!";
+                          xpEarned = Math.floor(baseXP * 0.5);
+                          gemsEarned = 1;
+                        }
+
+                        setParagraphCheckResults({
+                          submitted: true,
+                          isCorrect,
+                          message,
+                          xpEarned,
+                          gemsEarned,
+                          showFeedback: true,
+                        });
+
+                        if (isCorrect) {
+                          setTimeout(() => {
+                            awardRewards(xpEarned, gemsEarned, "Paragraphs");
+                          }, 1000);
+                        }
+                      }}
+                      showFeedback={paragraphCheckResults.showFeedback}
+                      feedbackMessage={paragraphCheckResults.message}
+                    />
+                  </div>
+                ) : (
+                  <div className="bg-purple-50 p-4 rounded-xl border-2 border-purple-200">
+                    <h4 className="font-bold text-purple-800 mb-3 flex items-center">
+                      <span className="mr-2">✍️</span>
+                      Type the paragraph you heard:
+                    </h4>
+                    <textarea
+                      value={paragraphInput}
+                      onChange={(e) => setParagraphInput(e.target.value)}
+                      className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-purple-500 focus:outline-none transition-colors min-h-[150px]"
+                      placeholder="Type the paragraph here..."
+                      disabled={paragraphCheckResults.submitted}
+                    />
                     <button
-                      onClick={checkParagraphOrder}
+                      onClick={checkTypedParagraph}
                       disabled={
                         paragraphCheckResults.submitted ||
-                        arrangedParagraphSentences.length === 0
+                        !paragraphInput.trim()
                       }
-                      className={`flex-1 py-3 px-6 rounded-xl font-bold transition-all duration-200 ${
+                      className={`mt-4 w-full py-3 px-6 rounded-xl font-bold ${
                         paragraphCheckResults.submitted ||
-                        arrangedParagraphSentences.length === 0
+                        !paragraphInput.trim()
                           ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                          : "bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:scale-105 hover:shadow-lg"
-                      } flex items-center justify-center space-x-2`}
+                          : "bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:scale-105 hover:shadow-lg"
+                      }`}
                     >
-                      <span>🎯 Check Order</span>
+                      🎯 Check Answer
                     </button>
-
-                    {paragraphCheckResults.submitted && (
-                      <button
-                        onClick={retryParagraphExercise}
-                        className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold hover:scale-105 hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2"
-                      >
-                        <span>🔄 Try Again</span>
-                      </button>
-                    )}
                   </div>
-                </div>
+                )}
 
                 {/* Results Display */}
                 {paragraphCheckResults.submitted && (
@@ -1525,29 +1780,23 @@ const TestListeningSkills = () => {
                   >
                     <div className="text-center">
                       <div className="text-4xl mb-2">
-                        {paragraphCheckResults.isCorrect ? "🎉" : "💪"}
+                        {paragraphCheckResults.isCorrect ? "🎉" : "👍"}
                       </div>
                       <p className="text-gray-700 mb-3 font-medium">
                         {paragraphCheckResults.message}
                       </p>
 
-                      {!paragraphCheckResults.isCorrect && (
-                        <div className="bg-white p-3 rounded-xl mb-3">
-                          <h5 className="font-bold text-gray-800 mb-2">
-                            ✅ Correct Order:
-                          </h5>
-                          <div className="space-y-2">
-                            {paragraphSentences.map((sentence, index) => (
-                              <div
-                                key={`correct-${index}`}
-                                className="bg-green-50 text-green-800 px-3 py-2 rounded-lg"
-                              >
-                                {index + 1}. {sentence}
-                              </div>
-                            ))}
+                      {!paragraphCheckResults.isCorrect &&
+                        answerStyle !== "drag" && (
+                          <div className="bg-white p-3 rounded-xl mb-3">
+                            <h5 className="font-bold text-gray-800 mb-2">
+                              ✅ Correct Paragraph:
+                            </h5>
+                            <p className="text-gray-700">
+                              {paragraphs[parseInt(selectedLines) - 1]}
+                            </p>
                           </div>
-                        </div>
-                      )}
+                        )}
 
                       <div className="bg-white p-3 rounded-xl">
                         <h5 className="font-bold text-gray-800 mb-2">
@@ -1606,125 +1855,198 @@ const TestListeningSkills = () => {
               </div>
             )}
 
-            {selectedCategory === "Sentences" && selectedSentence && (
-              <div className="mb-6">
-                <MicListeningSection
-                  prompt={sentences[selectedSentence]}
-                  disabled={!sentences[selectedSentence]}
-                  micLabel="🎤 Speak Sentence"
-                  placeholder="Click mic and repeat the sentence you heard"
-                  sectionType="sentence"
-                  // You can set result handler if you want to use the transcript
-                />
-              </div>
-            )}
-
-            {hasRecorded && (
+            {selectedSentence && hasRecorded && (
               <div className="space-y-6">
-                <div className="bg-orange-50 p-4 rounded-xl border-2 border-orange-200">
-                  <h4 className="font-bold text-orange-800 mb-3 flex items-center">
-                    <span className="mr-2">🧩</span>
-                    Drag and drop the words to recreate the sentence:
-                  </h4>
+                <AnswerStyleSelector
+                  answerStyle={answerStyle}
+                  setAnswerStyle={setAnswerStyle}
+                />
 
-                  {/* Jumbled Words Section */}
-                  <div className="mb-4">
-                    <h5 className="font-semibold text-gray-700 mb-2">
-                      Available Words:
-                    </h5>
-                    <div
-                      className="min-h-[60px] p-3 bg-white rounded-xl border-2 border-dashed border-gray-300 flex flex-wrap gap-2"
-                      onDragOver={handleDragOver}
-                      onDrop={handleDropToJumbled}
-                    >
-                      {jumbledWords.map((word, index) => (
-                        <div
-                          key={`jumbled-${index}`}
-                          draggable
-                          onDragStart={(e) => handleDragStart(e, word, index)}
-                          className="bg-orange-100 text-orange-800 px-3 py-2 rounded-lg cursor-move hover:bg-orange-200 transition-colors border-2 border-orange-300 font-medium select-none"
-                        >
-                          {word}
-                        </div>
-                      ))}
-                      {jumbledWords.length === 0 && (
-                        <div className="text-gray-400 italic text-center w-full py-2">
-                          All words used! 🎉
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                {answerStyle === "drag" ? (
+                  <div className="bg-orange-50 p-4 rounded-xl border-2 border-orange-200">
+                    <h4 className="font-bold text-orange-800 mb-3 flex items-center">
+                      <span className="mr-2">🧩</span>
+                      Drag and drop the words to recreate the sentence:
+                    </h4>
 
-                  {/* Arranged Sentence Section */}
-                  <div className="mb-4">
-                    <h5 className="font-semibold text-gray-700 mb-2">
-                      Your Sentence:
-                    </h5>
-                    <div
-                      className="min-h-[60px] p-3 bg-blue-50 rounded-xl border-2 border-blue-300 flex flex-wrap gap-2"
-                      onDragOver={handleDragOver}
-                      onDrop={(e) =>
-                        handleDropToArranged(e, arrangedWords.length)
-                      }
-                    >
-                      {arrangedWords.map((word, index) => (
-                        <div
-                          key={`arranged-${index}`}
-                          className="relative group"
-                        >
+                    {/* Jumbled Words Section */}
+                    <div className="mb-4">
+                      <h5 className="font-semibold text-gray-700 mb-2">
+                        Available Words:
+                      </h5>
+                      <div
+                        className="min-h-[60px] p-3 bg-white rounded-xl border-2 border-dashed border-gray-300 flex flex-wrap gap-2"
+                        onDragOver={handleDragOver}
+                        onDrop={handleDropToJumbled}
+                      >
+                        {jumbledWords.map((word, index) => (
                           <div
+                            key={`jumbled-${index}`}
                             draggable
-                            onDragStart={(e) =>
-                              handleDragStartArranged(e, word, index)
-                            }
-                            className="bg-blue-100 text-blue-800 px-3 py-2 rounded-lg cursor-move hover:bg-blue-200 transition-colors border-2 border-blue-400 font-medium select-none"
+                            onDragStart={(e) => handleDragStart(e, word, index)}
+                            className="bg-orange-100 text-orange-800 px-3 py-2 rounded-lg cursor-move hover:bg-orange-200 transition-colors border-2 border-orange-300 font-medium select-none"
                           >
                             {word}
                           </div>
-                          {/* Drop zones between words */}
+                        ))}
+                        {jumbledWords.length === 0 && (
+                          <div className="text-gray-400 italic text-center w-full py-2">
+                            All words used! 🎉
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Arranged Sentence Section */}
+                    <div className="mb-4">
+                      <h5 className="font-semibold text-gray-700 mb-2">
+                        Your Sentence:
+                      </h5>
+                      <div
+                        className="min-h-[60px] p-3 bg-blue-50 rounded-xl border-2 border-blue-300 flex flex-wrap gap-2"
+                        onDragOver={handleDragOver}
+                        onDrop={(e) =>
+                          handleDropToArranged(e, arrangedWords.length)
+                        }
+                      >
+                        {arrangedWords.map((word, index) => (
                           <div
-                            className="absolute -right-1 top-0 w-2 h-full opacity-0 hover:opacity-100 bg-blue-400 rounded transition-opacity"
-                            onDragOver={handleDragOver}
-                            onDrop={(e) => handleDropToArranged(e, index + 1)}
-                          ></div>
-                        </div>
-                      ))}
-                      {arrangedWords.length === 0 && (
-                        <div className="text-gray-400 italic text-center w-full py-2">
-                          Drop words here to build your sentence
-                        </div>
+                            key={`arranged-${index}`}
+                            className="relative group"
+                          >
+                            <div
+                              draggable
+                              onDragStart={(e) =>
+                                handleDragStartArranged(e, word, index)
+                              }
+                              className="bg-blue-100 text-blue-800 px-3 py-2 rounded-lg cursor-move hover:bg-blue-200 transition-colors border-2 border-blue-400 font-medium select-none"
+                            >
+                              {word}
+                            </div>
+                            {/* Drop zones between words */}
+                            <div
+                              className="absolute -right-1 top-0 w-2 h-full opacity-0 hover:opacity-100 bg-blue-400 rounded transition-opacity"
+                              onDragOver={handleDragOver}
+                              onDrop={(e) => handleDropToArranged(e, index + 1)}
+                            ></div>
+                          </div>
+                        ))}
+                        {arrangedWords.length === 0 && (
+                          <div className="text-gray-400 italic text-center w-full py-2">
+                            Drop words here to build your sentence
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex space-x-3">
+                      <button
+                        onClick={checkSentenceAnswer}
+                        disabled={
+                          sentenceCheckResults.submitted ||
+                          arrangedWords.length === 0
+                        }
+                        className={`flex-1 py-3 px-6 rounded-lg font-bold transition-all duration-200 ${
+                          sentenceCheckResults.submitted ||
+                          arrangedWords.length === 0
+                            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            : "bg-gradient-to-r from-orange-500 to-red-600 text-white hover:scale-105 hover:shadow-lg"
+                        } flex items-center justify-center space-x-2`}
+                      >
+                        <span>🎯 Check My Sentence</span>
+                      </button>
+
+                      {sentenceCheckResults.submitted && (
+                        <button
+                          onClick={retrySentenceExercise}
+                          className="flex-1 py-3 px-6 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold hover:scale-105 hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2"
+                        >
+                          <span>🔄 Try Again</span>
+                        </button>
                       )}
                     </div>
                   </div>
+                ) : answerStyle === "record" ? (
+                  <div className="bg-green-50 p-4 rounded-xl border-2 border-green-200">
+                    <MicListeningSection
+                      prompt={sentences[selectedSentence]}
+                      disabled={!micEnabled}
+                      micLabel="🎤 Speak Sentence"
+                      placeholder="Click mic and repeat the sentence you heard"
+                      sectionType="sentence"
+                      onListeningComplete={(transcript) => {
+                        setSentenceInput(transcript);
+                      }}
+                      onCheckAnswer={(transcript) => {
+                        const userSentence = transcript.toLowerCase().trim();
+                        const correctSentence = sentences[selectedSentence]
+                          .toLowerCase()
+                          .trim();
+                        const isCorrect = userSentence === correctSentence;
 
-                  {/* Action Buttons */}
-                  <div className="flex space-x-3">
-                    <button
-                      onClick={checkSentenceAnswer}
-                      disabled={
-                        sentenceCheckResults.submitted ||
-                        arrangedWords.length === 0
-                      }
-                      className={`flex-1 py-3 px-6 rounded-xl font-bold transition-all duration-200 ${
-                        sentenceCheckResults.submitted ||
-                        arrangedWords.length === 0
-                          ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                          : "bg-gradient-to-r from-orange-500 to-red-600 text-white hover:scale-105 hover:shadow-lg"
-                      } flex items-center justify-center space-x-2`}
-                    >
-                      <span>🎯 Check My Sentence</span>
-                    </button>
+                        let message, xpEarned, gemsEarned;
 
-                    {sentenceCheckResults.submitted && (
-                      <button
-                        onClick={retrySentenceExercise}
-                        className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold hover:scale-105 hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2"
-                      >
-                        <span>🔄 Try Again</span>
-                      </button>
-                    )}
+                        if (isCorrect) {
+                          message =
+                            "🌟 Perfect! You repeated the sentence correctly!";
+                          xpEarned = getSentenceXP(selectedSentence) * 2;
+                          gemsEarned = getSentenceGems(selectedSentence);
+                        } else {
+                          message = "💪 Not quite right. Try again!";
+                          xpEarned = Math.floor(
+                            getSentenceXP(selectedSentence) * 0.3
+                          );
+                          gemsEarned = 1;
+                        }
+
+                        setSentenceCheckResults({
+                          submitted: true,
+                          isCorrect,
+                          message,
+                          xpEarned,
+                          gemsEarned,
+                          showFeedback: true,
+                        });
+
+                        if (isCorrect) {
+                          setTimeout(() => {
+                            awardRewards(xpEarned, gemsEarned, "Sentences");
+                          }, 1000);
+                        }
+                      }}
+                      showFeedback={sentenceCheckResults.showFeedback}
+                      feedbackMessage={sentenceCheckResults.message}
+                    />
                   </div>
-                </div>
+                ) : (
+                  <div className="bg-purple-50 p-4 rounded-xl border-2 border-purple-200">
+                    <h4 className="font-bold text-purple-800 mb-3 flex items-center">
+                      <span className="mr-2">✍️</span>
+                      Type the sentence you heard:
+                    </h4>
+                    <textarea
+                      value={sentenceInput}
+                      onChange={(e) => setSentenceInput(e.target.value)}
+                      className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-purple-500 focus:outline-none transition-colors min-h-[100px]"
+                      placeholder="Type the sentence here..."
+                      disabled={sentenceCheckResults.submitted}
+                    />
+                    <button
+                      onClick={checkTypedSentence}
+                      disabled={
+                        sentenceCheckResults.submitted || !sentenceInput.trim()
+                      }
+                      className={`mt-4 w-full py-3 px-6 rounded-xl font-bold ${
+                        sentenceCheckResults.submitted || !sentenceInput.trim()
+                          ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          : "bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:scale-105 hover:shadow-lg"
+                      }`}
+                    >
+                      🎯 Check Answer
+                    </button>
+                  </div>
+                )}
 
                 {/* Results Display */}
                 {sentenceCheckResults.submitted && (
@@ -1743,27 +2065,10 @@ const TestListeningSkills = () => {
                         {sentenceCheckResults.message}
                       </p>
 
-                      {sentenceCheckResults.isCorrect && (
-                        <div className="bg-white p-3 rounded-xl mb-3">
-                          <h5 className="font-bold text-gray-800 mb-2">
-                            ✅ Perfect Sentence:
-                          </h5>
-                          <p className="text-lg font-medium text-blue-700">
-                            "{sentences[selectedSentence]}"
-                          </p>
-                        </div>
-                      )}
-
                       {!sentenceCheckResults.isCorrect && (
                         <div className="bg-white p-3 rounded-xl mb-3">
                           <h5 className="font-bold text-gray-800 mb-2">
-                            📝 Your Answer:
-                          </h5>
-                          <p className="text-lg font-medium text-orange-700 mb-2">
-                            "{arrangedWords.join(" ")}"
-                          </p>
-                          <h5 className="font-bold text-gray-800 mb-2">
-                            ✅ Correct Answer:
+                            ✅ Correct Sentence:
                           </h5>
                           <p className="text-lg font-medium text-green-700">
                             "{sentences[selectedSentence]}"
@@ -1828,86 +2133,224 @@ const TestListeningSkills = () => {
               </div>
             )}
 
-            {selectedCategory === "Words" && selectedWords && (
-              <div className="mb-6">
-                <MicListeningSection
-                  prompt={currentWordsList.join(" ")}
-                  disabled={!currentWordsList.length}
-                  micLabel="🎤 Speak Words"
-                  placeholder="Click mic and repeat the words you heard"
-                  sectionType="word"
-                  // You can set result handler if you want to use the transcript
-                />
-              </div>
-            )}
-            {hasRecorded && (
+            {selectedWords && hasRecorded && (
               <div className="space-y-6">
-                <div className="bg-blue-50 p-4 rounded-xl border-2 border-blue-200">
-                  <h4 className="font-bold text-blue-800 mb-3 flex items-center">
-                    <span className="mr-2">✍️</span>
-                    Type the words you heard in the correct order:
-                  </h4>
+                <AnswerStyleSelector
+                  answerStyle={answerStyle}
+                  setAnswerStyle={setAnswerStyle}
+                />
 
-                  <div className="grid gap-3">
-                    {Array.from(
-                      { length: parseInt(selectedWords) },
-                      (_, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center space-x-3"
+                {answerStyle === "drag" ? (
+                  <div className="bg-blue-50 p-4 rounded-xl border-2 border-blue-200">
+                    <h4 className="font-bold text-blue-800 mb-3 flex items-center">
+                      <span className="mr-2">✍️</span>
+                      Type the words you heard in the correct order:
+                    </h4>
+
+                    <div className="grid gap-3">
+                      {Array.from(
+                        { length: parseInt(selectedWords) },
+                        (_, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center space-x-3"
+                          >
+                            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-bold min-w-[2rem] text-center">
+                              {index + 1}
+                            </span>
+                            <input
+                              type="text"
+                              placeholder={`Word ${index + 1}...`}
+                              value={wordInputs[index] || ""}
+                              onChange={(e) =>
+                                handleWordInputChange(index, e.target.value)
+                              }
+                              className="flex-1 p-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
+                              disabled={wordCheckResults.submitted}
+                            />
+                            {wordCheckResults.submitted && (
+                              <div className="w-8 h-8 flex items-center justify-center">
+                                {wordCheckResults.results[index] ? (
+                                  <IoCheckmarkCircle className="text-green-500 text-xl" />
+                                ) : (
+                                  <IoCloseCircle className="text-red-500 text-xl" />
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )}
+                    </div>
+
+                    <div className="mt-4 flex space-x-3">
+                      <button
+                        onClick={checkWordAnswers}
+                        disabled={
+                          wordCheckResults.submitted || !allWordsEntered()
+                        }
+                        className={`flex-1 py-3 px-6 rounded-xl font-bold transition-all duration-200 ${
+                          wordCheckResults.submitted || !allWordsEntered()
+                            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            : "bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:scale-105 hover:shadow-lg"
+                        } flex items-center justify-center space-x-2`}
+                      >
+                        <span>🎯 Check Answers</span>
+                      </button>
+
+                      {wordCheckResults.submitted && (
+                        <button
+                          onClick={retryWordExercise}
+                          className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold hover:scale-105 hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2"
                         >
-                          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-bold min-w-[2rem] text-center">
-                            {index + 1}
-                          </span>
-                          <input
-                            type="text"
-                            placeholder={`Word ${index + 1}...`}
-                            value={wordInputs[index] || ""}
-                            onChange={(e) =>
-                              handleWordInputChange(index, e.target.value)
-                            }
-                            className="flex-1 p-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
-                            disabled={wordCheckResults.submitted}
-                          />
-                          {wordCheckResults.submitted && (
-                            <div className="w-8 h-8 flex items-center justify-center">
-                              {wordCheckResults.results[index] ? (
-                                <IoCheckmarkCircle className="text-green-500 text-xl" />
-                              ) : (
-                                <IoCloseCircle className="text-red-500 text-xl" />
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    )}
+                          <span>🔄 Try Again</span>
+                        </button>
+                      )}
+                    </div>
                   </div>
+                ) : answerStyle === "record" ? (
+                  <div className="bg-green-50 p-4 rounded-xl border-2 border-green-200">
+                    <MicListeningSection
+                      prompt={currentWordsList.join(" ")}
+                      disabled={!micEnabled}
+                      micLabel="🎤 Speak Words"
+                      placeholder="Click mic and repeat the words you heard"
+                      sectionType="word"
+                      onListeningComplete={(transcript) => {
+                        const wordCount = parseInt(selectedWords);
+                        const transcriptWords = transcript
+                          .toLowerCase()
+                          .split(/\s+/);
 
-                  <div className="mt-4 flex space-x-3">
+                        const newWordInputs = {};
+                        for (
+                          let i = 0;
+                          i < wordCount && i < transcriptWords.length;
+                          i++
+                        ) {
+                          newWordInputs[i] = transcriptWords[i];
+                        }
+                        setWordInputs(newWordInputs);
+                      }}
+                      onCheckAnswer={(transcript) => {
+                        const wordCount = parseInt(selectedWords);
+                        const results = {};
+                        let correctCount = 0;
+                        const transcriptWords = transcript
+                          .toLowerCase()
+                          .split(/\s+/);
+
+                        for (let i = 0; i < wordCount; i++) {
+                          const userAnswer = (transcriptWords[i] || "")
+                            .toLowerCase()
+                            .trim();
+                          const correctAnswer =
+                            currentWordsList[i].toLowerCase();
+                          results[i] = userAnswer === correctAnswer;
+                          if (results[i]) correctCount++;
+                        }
+
+                        const percentage = (correctCount / wordCount) * 100;
+                        let message, xpEarned, gemsEarned;
+
+                        if (percentage === 100) {
+                          message = "🌟 Perfect! You got all words correct!";
+                          xpEarned = parseInt(selectedWords) * 3;
+                          gemsEarned = parseInt(selectedWords);
+                        } else if (percentage >= 70) {
+                          message = "👍 Good job! Most words are correct!";
+                          xpEarned = parseInt(selectedWords) * 2;
+                          gemsEarned = Math.floor(
+                            parseInt(selectedWords) * 0.7
+                          );
+                        } else if (percentage >= 50) {
+                          message = "👌 Not bad! Keep practicing to improve!";
+                          xpEarned = parseInt(selectedWords);
+                          gemsEarned = Math.floor(
+                            parseInt(selectedWords) * 0.5
+                          );
+                        } else {
+                          message = "💪 Keep trying! Practice makes perfect!";
+                          xpEarned = Math.floor(parseInt(selectedWords) * 0.5);
+                          gemsEarned = 1;
+                        }
+
+                        setWordCheckResults({
+                          submitted: true,
+                          results,
+                          score: correctCount,
+                          message,
+                          xpEarned,
+                          gemsEarned,
+                          showFeedback: true,
+                        });
+
+                        if (percentage === 100) {
+                          setTimeout(() => {
+                            awardRewards(xpEarned, gemsEarned, "Words");
+                          }, 1000);
+                        }
+                      }}
+                      showFeedback={wordCheckResults.showFeedback}
+                      feedbackMessage={wordCheckResults.message}
+                    />
+                  </div>
+                ) : (
+                  <div className="bg-purple-50 p-4 rounded-xl border-2 border-purple-200">
+                    <h4 className="font-bold text-purple-800 mb-3 flex items-center">
+                      <span className="mr-2">✍️</span>
+                      Type the words you heard in order:
+                    </h4>
+
+                    <div className="grid gap-3">
+                      {Array.from(
+                        { length: parseInt(selectedWords) },
+                        (_, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center space-x-3"
+                          >
+                            <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-bold min-w-[2rem] text-center">
+                              {index + 1}
+                            </span>
+                            <input
+                              type="text"
+                              placeholder={`Word ${index + 1}...`}
+                              value={wordInputs[index] || ""}
+                              onChange={(e) =>
+                                handleWordInputChange(index, e.target.value)
+                              }
+                              className="flex-1 p-3 border-2 border-gray-300 rounded-xl focus:border-purple-500 focus:outline-none transition-colors"
+                              disabled={wordCheckResults.submitted}
+                            />
+                            {wordCheckResults.submitted && (
+                              <div className="w-8 h-8 flex items-center justify-center">
+                                {wordCheckResults.results[index] ? (
+                                  <IoCheckmarkCircle className="text-green-500 text-xl" />
+                                ) : (
+                                  <IoCloseCircle className="text-red-500 text-xl" />
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )}
+                    </div>
+
                     <button
                       onClick={checkWordAnswers}
                       disabled={
                         wordCheckResults.submitted || !allWordsEntered()
                       }
-                      className={`flex-1 py-3 px-6 rounded-xl font-bold transition-all duration-200 ${
+                      className={`mt-4 w-full py-3 px-6 rounded-xl font-bold ${
                         wordCheckResults.submitted || !allWordsEntered()
                           ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                          : "bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:scale-105 hover:shadow-lg"
-                      } flex items-center justify-center space-x-2`}
+                          : "bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:scale-105 hover:shadow-lg"
+                      }`}
                     >
-                      <span>🎯 Check Answers</span>
+                      🎯 Check Answers
                     </button>
-
-                    {wordCheckResults.submitted && (
-                      <button
-                        onClick={retryWordExercise}
-                        className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold hover:scale-105 hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2"
-                      >
-                        <span>🔄 Try Again</span>
-                      </button>
-                    )}
                   </div>
-                </div>
+                )}
 
                 {wordCheckResults.submitted && (
                   <div
@@ -1943,7 +2386,11 @@ const TestListeningSkills = () => {
                           {currentWordsList.map((word, index) => (
                             <span
                               key={index}
-                              className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium"
+                              className={`px-3 py-1 rounded-full font-medium ${
+                                wordCheckResults.results[index]
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-red-100 text-red-800"
+                              }`}
                             >
                               {index + 1}. {word}
                             </span>

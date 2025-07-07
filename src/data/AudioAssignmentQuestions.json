@@ -1,0 +1,232 @@
+{
+  "I-II": [
+    {
+      "text": "What is your name?",
+      "type": "personal",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "Which month were you born in?",
+      "type": "personal",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "Which is your favourite day of the week?",
+      "type": "personal",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "Which is your favourite subject?",
+      "type": "academic",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "Who sits next to you in class?",
+      "type": "social",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "Who is your teacher?",
+      "type": "academic",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "What is the name of your school?",
+      "type": "academic",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "What is the name of the town/city you live in?",
+      "type": "geography",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "Who is your best friend?",
+      "type": "social",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "Which cartoon show do you like the most?",
+      "type": "entertainment",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "How old are you?",
+      "type": "personal",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "What color do you like?",
+      "type": "sensory",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "What is your favorite animal?",
+      "type": "sensory",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "What do you eat for breakfast?",
+      "type": "personal",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "What toy do you like to play with?",
+      "type": "entertainment",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "Do you have a pet? What is its name?",
+      "type": "personal",
+      "difficulty": "Easy"
+    },
+    {
+      "text": "What do you see outside your window?",
+      "type": "observation",
+      "difficulty": "Easy"
+    }
+  ],
+  "III-V": [
+    {
+      "text": "Describe your favorite holiday memory.",
+      "type": "narrative",
+      "difficulty": "Medium"
+    },
+    {
+      "text": "What would you do if you were principal for a day?",
+      "type": "hypothetical",
+      "difficulty": "Medium"
+    },
+    {
+      "text": "Explain how to make your favorite food.",
+      "type": "instructional",
+      "difficulty": "Medium"
+    },
+    {
+      "text": "If you could invent something, what would it be?",
+      "type": "creative",
+      "difficulty": "Medium"
+    },
+    {
+      "text": "Describe your favorite book or story.",
+      "type": "literary",
+      "difficulty": "Medium"
+    },
+    {
+      "text": "What makes a good friend?",
+      "type": "social",
+      "difficulty": "Medium"
+    },
+    {
+      "text": "What would you do if you saw someone being bullied?",
+      "type": "ethical",
+      "difficulty": "Medium"
+    },
+    {
+      "text": "Describe a time you helped someone.",
+      "type": "narrative",
+      "difficulty": "Medium"
+    },
+    {
+      "text": "What do you think is the most important school rule?",
+      "type": "critical-thinking",
+      "difficulty": "Medium"
+    },
+    {
+      "text": "If you could have any superpower, what would you choose?",
+      "type": "creative",
+      "difficulty": "Medium"
+    }
+  ],
+  "VI-X": [
+    {
+      "text": "Discuss the importance of environmental conservation.",
+      "type": "analytical",
+      "difficulty": "Hard"
+    },
+    {
+      "text": "How has technology changed education in recent years?",
+      "type": "analytical",
+      "difficulty": "Hard"
+    },
+    {
+      "text": "What are the qualities of an effective leader?",
+      "type": "critical-thinking",
+      "difficulty": "Hard"
+    },
+    {
+      "text": "Explain a current event that interests you and why.",
+      "type": "current-affairs",
+      "difficulty": "Hard"
+    },
+    {
+      "text": "How would you address the problem of plastic pollution?",
+      "type": "problem-solving",
+      "difficulty": "Hard"
+    },
+    {
+      "text": "What career are you considering and why?",
+      "type": "reflective",
+      "difficulty": "Hard"
+    },
+    {
+      "text": "Discuss the role of social media in modern society.",
+      "type": "analytical",
+      "difficulty": "Hard"
+    },
+    {
+      "text": "How can schools better prepare students for the future?",
+      "type": "critical-thinking",
+      "difficulty": "Hard"
+    },
+    {
+      "text": "What historical figure do you admire most and why?",
+      "type": "reflective",
+      "difficulty": "Hard"
+    },
+    {
+      "text": "Explain the importance of mental health awareness.",
+      "type": "analytical",
+      "difficulty": "Hard"
+    }
+  ]
+}
+
+const baseQuestionsI_II = [
+  "What is your name?",
+  "Which month were you born in?",
+  "Which is your favourite day of the week?",
+  "Which is your favourite subject?",
+  "Who sits next to you in class?",
+  "Who is your teacher?",
+  "What is the name of your school?",
+  "What is the name of the town/city you live in?",
+  "Who is your best friend?",
+  "Which cartoon show do you like the most?",
+];
+
+const baseQuestionsIII_V = [
+  "Describe your favorite holiday memory.",
+  "What would you do if you were principal for a day?",
+  "Explain how to make your favorite food.",
+  "If you could invent something, what would it be?",
+  "Describe your favorite book or story.",
+  "What makes a good friend?",
+  "What would you do if you saw someone being bullied?",
+  "Describe a time you helped someone.",
+  "What do you think is the most important school rule?",
+  "If you could have any superpower, what would you choose?",
+];
+
+const baseQuestionsVI_X = [
+  "Discuss the importance of environmental conservation.",
+  "How has technology changed education in recent years?",
+  "What are the qualities of an effective leader?",
+  "Explain a current event that interests you and why.",
+  "How would you address the problem of plastic pollution?",
+  "What career are you considering and why?",
+  "Discuss the role of social media in modern society.",
+  "How can schools better prepare students for the future?",
+  "What historical figure do you admire most and why?",
+  "Explain the importance of mental health awareness.",
+];

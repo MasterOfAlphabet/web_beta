@@ -103,6 +103,11 @@ import SpectatorScreen from "./components/Battles/SpectatorScreen";
 
 import GamificationLevels from "./pages/GamificationLevels";
 
+import ModulesIntro from "./pages/ModulesIntro";
+
+import DictationMaster from "./pages/DictationMaster";
+import DictationAssignmentApp from "./pages/DictationAssignmentApp";
+
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
 
@@ -367,15 +372,35 @@ function App() {
             element={<ReadingRockStar />}
           />
 
-          <Route path="/english-skills-building-games/pronunciation-powerstar" element={<PronunciationPowerStar />} />
+          <Route
+            path="/english-skills-building-games/pronunciation-powerstar"
+            element={<PronunciationPowerStar />}
+          />
 
-<Route path="/english-skills-building-games/sharp-stylishstar" element={<SHARPStylishStarGame />} />
-<Route path="/english-skills-building-games/grammar-globalstar" element={<GrammarGlobalStarGame />} />
-<Route path="/english-skills-building-games/tense-time-travel" element={<TenseTimeTravelGame />} />
-<Route path="/english-skills-building-games/vocabulary-varietystar" element={<VocabularyVarietyStarGame />} />
+          <Route
+            path="/english-skills-building-games/sharp-stylishstar"
+            element={<SHARPStylishStarGame />}
+          />
+          <Route
+            path="/english-skills-building-games/grammar-globalstar"
+            element={<GrammarGlobalStarGame />}
+          />
+          <Route
+            path="/english-skills-building-games/tense-time-travel"
+            element={<TenseTimeTravelGame />}
+          />
+          <Route
+            path="/english-skills-building-games/vocabulary-varietystar"
+            element={<VocabularyVarietyStarGame />}
+          />
 
-<Route path="/gamification-levels" element={<GamificationLevels />} />
+          <Route path="/gamification-levels" element={<GamificationLevels />} />
 
+          <Route path="/modules-intro" element={<ModulesIntro />} />
+
+          <Route path="/dictation-master" element={<DictationMaster />} />
+        <Route path="/audio-assignment" element={<DictationAssignmentApp />} />
+        
         </Routes>
 
         <CookieConsentBanner />
