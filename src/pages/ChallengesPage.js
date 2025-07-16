@@ -1,108 +1,613 @@
 import React, { useEffect, useState } from "react";
 import { firestore, auth } from "../services/firebase";
-import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
-import StudentDataForm from "../components/StudentDataForm";
+import {
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
+
 import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
   CircularProgress,
   Modal,
-  Avatar
+  Avatar,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { formatDistanceToNow } from "date-fns";
 import { onAuthStateChanged } from "firebase/auth";
 import StudentWelcomeSection from "../components/StudentWelcomeSection";
 
-// Styled components
-const HeroSection = styled(Box)(({ theme }) => ({
-  background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
-  color: theme.palette.common.white,
-  padding: theme.spacing(4),
-  textAlign: "center",
-  width: "100%"
-}));
+import SignInRequiredHeroOverlay from "../components/SignInRequiredHero";
 
-const CLASS_GROUPS = [
-  {
-    key: "Class I/II",
-    gradient: { from: "#ff9a9e", to: "#fad0c4" },
-    title: "Little Champs",
-    subtitle: "Class I-II",
-    icon: "🎓"
-  },
-  {
-    key: "Class III-V",
-    gradient: { from: "#a1c4fd", to: "#c2e9fb" },
-    title: "Rising Stars",
-    subtitle: "Class III-V",
-    icon: "🏆"
-  },
-  {
-    key: "Class VI-X",
-    gradient: { from: "#84fab0", to: "#8fd3f4" },
-    title: "Word Wizards",
-    subtitle: "Class VI-X",
-    icon: "🧙‍♂️"
-  }
-];
+import {
+  BookOpen,
+  Mic,
+  Eye,
+  PenTool,
+  Headphones,
+  Users,
+  Zap,
+  Target,
+  Trophy,
+  Award,
+  Medal,
+  BadgeCheck,
+  Clock,
+  Star,
+  Play,
+  Share2,
+  Calendar,
+  TrendingUp,
+  Gift,
+} from "lucide-react";
 
 const CATEGORY_COLORS = {
-  "Dictation": "#FF7043",
+  Dictation: "#FF7043",
   "Find the correct spelling": "#42A5F5",
   "Find the missing letter": "#66BB6A",
-  "Unscramble": "#FFA726",
+  Unscramble: "#FFA726",
   "Spell the pic": "#AB47BC",
   "Correct Spelling": "#EC407A",
-  "Spelling": "#EC407A"
+  Spelling: "#EC407A",
+  Reading: "#4CAF50",
+  Writing: "#FF9800",
+  Grammar: "#E91E63",
+  Vocabulary: "#9C27B0",
+  Pronunciation: "#673AB7",
+  Listening: "#3F51B5",
 };
 
+export const SKILL_COLORS = {
+  Rookie: "#4CAF50", // Green
+  Racer: "#2196F3", // Blue
+  Prodigy: "#FF9800", // Orange
+  Master: "#9C27B0", // Purple
+  Wizard: "#F44336", // Red
+};
+
+export const SKILL_ICONS = {
+  Rookie: "🌟",
+  Racer: "🏎️",
+  Prodigy: "🧠",
+  Master: "👑",
+  Wizard: "🧙‍♂️",
+};
+
+function LanguageChallengesHero() {
+  const modules = [
+    {
+      name: "Spelling",
+      icon: <PenTool className="w-5 h-5" />,
+      color: "bg-blue-500",
+    },
+    {
+      name: "Reading",
+      icon: <BookOpen className="w-5 h-5" />,
+      color: "bg-green-500",
+    },
+    {
+      name: "Pronunciation",
+      icon: <Mic className="w-5 h-5" />,
+      color: "bg-purple-500",
+    },
+    {
+      name: "Grammar",
+      icon: <Target className="w-5 h-5" />,
+      color: "bg-red-500",
+    },
+    {
+      name: "Writing",
+      icon: <PenTool className="w-5 h-5" />,
+      color: "bg-yellow-500",
+    },
+    {
+      name: "Listening",
+      icon: <Headphones className="w-5 h-5" />,
+      color: "bg-indigo-500",
+    },
+    {
+      name: "Vocabulary",
+      icon: <BookOpen className="w-5 h-5" />,
+      color: "bg-pink-500",
+    },
+    {
+      name: "S.H.A.R.P",
+      icon: <Zap className="w-5 h-5" />,
+      color: "bg-orange-500",
+    },
+    {
+      name: "All-in-One",
+      icon: <Trophy className="w-5 h-5" />,
+      color: "bg-gradient-to-r from-purple-600 to-pink-600",
+    },
+  ];
+
+  const rewards = [
+    {
+      name: "Awards",
+      icon: <Award className="w-6 h-6" />,
+      color: "text-yellow-400",
+    },
+    {
+      name: "Prizes",
+      icon: <Trophy className="w-6 h-6" />,
+      color: "text-green-400",
+    },
+    {
+      name: "Certificates",
+      icon: <BadgeCheck className="w-6 h-6" />,
+      color: "text-blue-400",
+    },
+    {
+      name: "Medals",
+      icon: <Medal className="w-6 h-6" />,
+      color: "text-purple-400",
+    },
+  ];
+
+  return (
+    <div className="bg-gradient-to-r from-purple-700 via-blue-600 to-purple-700 py-16 px-4 text-center">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+          Master of <span className="text-yellow-400">Alphabet</span>
+        </h1>
+        <h2 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-8">
+          Challenges
+        </h2>
+        <p className="text-xl md:text-2xl text-white mb-4 font-medium">
+          Test Your Language Skills and Win Exciting Rewards!
+        </p>
+        <p className="text-lg text-blue-100 mb-12 max-w-4xl mx-auto">
+          Top performers receive special rewards. Weekly challenges with new
+          opportunities to win!
+        </p>
+        <div className="mb-12">
+          <h3 className="text-xl font-semibold text-white mb-6">
+            Challenge Modules
+          </h3>
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
+            {modules.map((module, index) => (
+              <div
+                key={module.name}
+                className="flex flex-col items-center group cursor-pointer"
+              >
+                <div
+                  className={`w-16 h-16 rounded-xl ${module.color} flex items-center justify-center text-white mb-2 group-hover:scale-110 transition-transform duration-300 shadow-lg`}
+                >
+                  {module.icon}
+                </div>
+                <span className="text-sm text-white font-medium group-hover:text-yellow-300 transition-colors">
+                  {module.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mb-8">
+          <h3 className="text-xl font-semibold text-white mb-6">
+            Earn Amazing Rewards
+          </h3>
+          <div className="flex justify-center gap-8 flex-wrap">
+            {rewards.map((reward, index) => (
+              <div
+                key={reward.name}
+                className="flex flex-col items-center group cursor-pointer"
+              >
+                <div
+                  className={`w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center mb-2 group-hover:bg-white/20 transition-all duration-300 ${reward.color}`}
+                >
+                  {reward.icon}
+                </div>
+                <span className="text-sm text-white font-medium">
+                  {reward.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <button className="bg-yellow-400 hover:bg-yellow-500 text-purple-800 px-10 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+          Start Challenge Now
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ChallengeCard({ challenge, handleTakeChallenge, onShare, user }) {
+  const categoryColor = CATEGORY_COLORS[challenge.category] || "#EC407A";
+  const skillColor = SKILL_COLORS[challenge.skillLevel] || "#4CAF50";
+  const skillIcon = SKILL_ICONS[challenge.skillLevel] || "🌟";
+
+  // Timer state
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  // Hover state for epic interactions
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const endTime = challenge.schedule?.end?.toDate
+        ? challenge.schedule.end.toDate()
+        : new Date(challenge.endTime?.seconds * 1000 || 0);
+
+      const now = new Date();
+      const diff = endTime - now;
+
+      if (diff > 0) {
+        setTimeLeft({
+          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((diff % (1000 * 60)) / 1000),
+        });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [challenge.schedule?.end, challenge.endTime]);
+
+  return (
+    <div
+      className="group relative bg-white rounded-3xl shadow-2xl hover:shadow-[0_40px_80px_rgba(0,0,0,0.25)] transition-all duration-700 overflow-hidden border border-gray-100 transform hover:scale-[1.02] hover:-translate-y-2"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* EPIC HEADER - The Crown Jewel */}
+      <div className="relative h-[320px] bg-gradient-to-br from-violet-900 via-purple-900 to-fuchsia-900 overflow-hidden">
+        {/* Dynamic Background Magic */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(168,85,247,0.4),transparent_70%)] animate-pulse"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(236,72,153,0.4),transparent_70%)] animate-pulse delay-1000"></div>
+
+        {/* Floating Orbs - Pure Eye Candy */}
+        <div
+          className={`absolute top-6 right-8 w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full blur-2xl opacity-40 transition-all duration-1000 ${
+            isHovered ? "scale-150 opacity-60" : ""
+          }`}
+        ></div>
+        <div
+          className={`absolute bottom-8 left-6 w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full blur-xl opacity-30 transition-all duration-1000 delay-300 ${
+            isHovered ? "scale-125 opacity-50" : ""
+          }`}
+        ></div>
+        <div
+          className={`absolute top-20 left-1/2 w-8 h-8 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full blur-lg opacity-25 transition-all duration-1000 delay-500 ${
+            isHovered ? "scale-110 opacity-40" : ""
+          }`}
+        ></div>
+
+        {/* Mesh Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-black/5 to-black/20"></div>
+
+        {/* Header Content */}
+        <div className="relative z-10 h-full flex flex-col justify-between p-6 pb-8 text-white">
+          {/* Top Section - Challenge Meta */}
+          <div className="flex items-start justify-between">
+            {/* Left: Class Group with Glow */}
+            <div className="flex items-center space-x-3">
+              <div className="relative">
+                <div className="absolute inset-0 bg-blue-400 rounded-full blur-md opacity-50 animate-pulse"></div>
+                <div className="relative w-4 h-4 bg-blue-400 rounded-full"></div>
+              </div>
+              <div className="bg-white/15 backdrop-blur-xl px-4 py-2 rounded-full border border-white/20 shadow-lg">
+                <span className="text-sm font-semibold text-white">
+                  {challenge.classGroup || "All Classes"}
+                </span>
+              </div>
+            </div>
+
+            {/* Right: Challenge Type Badge */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full blur-lg opacity-60"></div>
+              <div className="relative bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-4 py-2 rounded-full font-bold text-sm shadow-xl">
+                <span className="flex items-center space-x-1">
+                  <span className="animate-bounce">⚡</span>
+                  <span>{challenge.type || "Daily"} Challenge</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Center Section - The Hero Area */}
+          <div className="flex items-center justify-between">
+            {/* Left: Module Icon - 3D Masterpiece */}
+            <div className="relative group/icon">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent rounded-3xl blur-2xl scale-110 opacity-0 group-hover/icon:opacity-100 transition-all duration-500"></div>
+              <div
+                className="relative w-20 h-20 rounded-3xl flex items-center justify-center text-white font-black text-3xl shadow-2xl transform group-hover/icon:scale-110 group-hover/icon:rotate-12 transition-all duration-500"
+                style={{
+                  background: `linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)`,
+                  boxShadow: `0 20px 40px ${categoryColor}40, inset 0 2px 4px rgba(255,255,255,0.2)`,
+                }}
+              >
+                <div className="absolute inset-2 bg-white/20 rounded-2xl"></div>
+                <span className="relative z-10 drop-shadow-lg">
+                  {challenge.moduleName?.charAt(0) || "S"}
+                </span>
+              </div>
+            </div>
+
+            {/* Right: Module Info */}
+            <div className="flex-1 ml-6 text-right">
+              <h1 className="text-4xl font-black bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent mb-2 transform group-hover:scale-105 transition-transform duration-300">
+                {challenge.moduleName || "Language Challenge"}
+              </h1>
+
+              <div className="flex items-center justify-end space-x-3 mb-2">
+                <div
+                  className="w-3 h-3 rounded-full shadow-lg"
+                  style={{ backgroundColor: categoryColor }}
+                ></div>
+                <span className="text-lg text-purple-200 font-medium">
+                  {challenge.moduleCategory || challenge.category || "General"}
+                </span>
+              </div>
+
+              {/* Skill Level - Premium Badge */}
+              <div className="flex items-center justify-end space-x-2">
+                <span className="text-2xl animate-pulse">{skillIcon}</span>
+                <div
+                  className="px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wider shadow-lg border-2"
+                  style={{
+                    backgroundColor: `${skillColor}20`,
+                    color: skillColor,
+                    borderColor: `${skillColor}60`,
+                  }}
+                >
+                  {challenge.skillLevel}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Section - Timer Spectacle */}
+          <div className="mt-auto pt-4">
+            {" "}
+            {/* Added margin-top */}
+            <div className="bg-black/50 rounded-xl p-3">
+              {" "}
+              {/* Higher contrast background */}
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center space-x-2">
+                  <Clock className="w-4 h-4 text-yellow-300" />
+                  <span className="text-yellow-300 text-sm font-semibold">
+                    TIME REMAINING
+                  </span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span className="text-green-300 text-xs">ACTIVE</span>
+                </div>
+              </div>
+              {/* Timer Display - Fixed Layout */}
+              <div className="grid grid-cols-4 gap-2">
+                {[
+                  { value: timeLeft.days, label: "Days" },
+                  { value: timeLeft.hours, label: "Hours" },
+                  { value: timeLeft.minutes, label: "Min" },
+                  { value: timeLeft.seconds, label: "Sec" },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    className="bg-white/10 rounded-lg p-2 text-center"
+                  >
+                    <div className="text-xl font-bold text-white">
+                      {item.value.toString().padStart(2, "0")}
+                    </div>
+                    <div className="text-xs text-white/80 mt-1">
+                      {item.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content Section - Elegant Simplicity */}
+      <div className="p-6 bg-gradient-to-b from-white to-gray-50">
+        {/* Challenge Question */}
+        <div className="mb-6">
+          <h4 className="font-bold text-gray-800 mb-3 flex items-center text-lg">
+            <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mr-2">
+              <span className="text-white text-sm">?</span>
+            </div>
+            Challenge Question
+          </h4>
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 border-l-4 border-gradient-to-b from-blue-500 to-purple-500 shadow-inner">
+            <p className="text-gray-700 italic font-medium">
+              "
+              {challenge.questionText ||
+                "Challenge question will be revealed when you start."}
+              "
+            </p>
+          </div>
+        </div>
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 text-center border border-green-200 shadow-sm">
+            <div className="text-green-600 font-black text-2xl mb-1">
+              {challenge.correctAnswers?.length || 1}
+            </div>
+            <div className="text-green-700 text-sm font-semibold">
+              Correct Answers
+            </div>
+          </div>
+          <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-4 text-center border border-orange-200 shadow-sm">
+            <div className="text-orange-600 font-black text-2xl mb-1">
+              {challenge.totalOptions || 4}
+            </div>
+            <div className="text-orange-700 text-sm font-semibold">
+              Total Options
+            </div>
+          </div>
+        </div>
+        {/* Rewards Section */}
+        <div className="mb-6">
+          <h5 className="font-bold text-gray-800 mb-3 flex items-center text-lg">
+            <Gift className="w-6 h-6 mr-2 text-purple-600" />
+            Epic Rewards
+          </h5>
+          <div className="grid grid-cols-4 gap-3">
+            {[
+              {
+                icon: Trophy,
+                label: "1st Prize",
+                color: "from-yellow-400 to-orange-500",
+              },
+              {
+                icon: Medal,
+                label: "2nd Prize",
+                color: "from-gray-400 to-gray-600",
+              },
+              {
+                icon: Award,
+                label: "3rd Prize",
+                color: "from-orange-400 to-red-500",
+              },
+              {
+                icon: BadgeCheck,
+                label: "Certificate",
+                color: "from-blue-400 to-purple-500",
+              },
+            ].map((reward, index) => (
+              <div key={reward.label} className="group/reward relative">
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${reward.color} rounded-xl blur-lg opacity-30 group-hover/reward:opacity-50 transition-opacity duration-300`}
+                ></div>
+                <div className="relative bg-white rounded-xl p-3 text-center border border-gray-200 shadow-sm transform group-hover/reward:scale-105 transition-all duration-300">
+                  <div
+                    className={`w-8 h-8 bg-gradient-to-br ${reward.color} rounded-full flex items-center justify-center mx-auto mb-2`}
+                  >
+                    <reward.icon className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="text-xs text-gray-700 font-semibold">
+                    {reward.label}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Action Buttons - The Grand Finale */}
+
+        <div className="flex space-x-3">
+          <button
+            onClick={() => handleTakeChallenge(challenge)}
+            className="flex-1 relative group/btn overflow-hidden rounded-xl font-bold transition-all duration-500 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 text-white shadow-lg hover:shadow-2xl transform hover:scale-105"
+          >
+            <div className="relative flex items-center justify-center space-x-2 py-4 px-6">
+              <Play className="w-5 h-5" />
+              <span className="text-lg">Take Challenge</span>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onShare(challenge)}
+            className="relative group/share overflow-hidden flex items-center justify-center space-x-2 py-4 px-6 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl font-bold shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/share:translate-x-full transition-transform duration-1000"></div>
+            <div className="relative flex items-center space-x-2">
+              <Share2 className="w-5 h-5" />
+              <span>Share</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      {/* Footer - Subtle Elegance */}
+      <div className="bg-gradient-to-r from-gray-50 to-white px-6 py-4 border-t border-gray-100">
+        <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-1">
+              <Calendar className="w-4 h-4" />
+              <span>
+                Created:{" "}
+                {new Date(
+                  challenge.createdAt?.seconds * 1000
+                ).toLocaleDateString()}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span className="font-semibold">Active Challenge</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ChallengesPage() {
-  const [challenges, setChallenges] = useState({});
-  const [showFormFor, setShowFormFor] = useState(null);
+  const [challenges, setChallenges] = useState([]);
+
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const docRef = doc(firestore, "MoAChallenges", "DWMSChallenges");
-        const docSnap = await getDoc(docRef);
+  const [showOverlay, setShowOverlay] = useState(false);
 
+  useEffect(() => {
+    const fetchChallenges = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch challenges from /MoAChallenges/DWMSChallenges/Challenges
+        const challengesRef = collection(
+          firestore,
+          "MoAChallenges",
+          "DWMSChallenges",
+          "Challenges"
+        );
+        const challengesSnapshot = await getDocs(challengesRef);
+
+        const challengesData = [];
+        challengesSnapshot.forEach((doc) => {
+          const challengeData = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          challengesData.push(challengeData);
+        });
+
+        // Fetch stats if available
         const statsRef = collection(firestore, "ChallengeStats");
         const statsQuery = query(statsRef, where("active", "==", true));
         const statsSnapshot = await getDocs(statsQuery);
 
         const statsData = {};
-        statsSnapshot.forEach(doc => {
+        statsSnapshot.forEach((doc) => {
           statsData[doc.id] = doc.data();
         });
 
-        if (docSnap.exists()) {
-          const allQuestions = docSnap.data().questions || [];
-          const byClass = {};
-
-          CLASS_GROUPS.forEach(({ key }) => {
-            byClass[key] = allQuestions.find(
-              q => (q.classGroup === key || q.classGroup === key.replace("-", "/")) &&
-              q.difficultyLevel === "Rookie"
-            );
-          });
-
-          setChallenges(byClass);
-          setStats(statsData);
-        }
+        setChallenges(challengesData);
+        setStats(statsData);
+        console.log("Fetched challenges:", challengesData);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching challenges:", error);
+        setError("Failed to load challenges. Please try again.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchChallenges();
   }, []);
 
   useEffect(() => {
@@ -112,423 +617,243 @@ export default function ChallengesPage() {
     return () => unsubscribe();
   }, []);
 
-  const handleStudentRegistration = (classGroup, data) => {
-    const challengeType = "daily";
-    const studentData = { ...data, classGroup };
-    navigate(`/challenge/${challengeType}`, {
-      state: { student: studentData }
-    });
-  };
-
-  const handleTakeChallenge = (classGroup) => {
-    if (user) {
-      const studentData = {
-        name: user.displayName || user.email || "Anonymous",
-        studentId: user.uid,
-        classGroup,
-      };
-      handleStudentRegistration(classGroup, studentData);
-    } else {
-      setShowFormFor(classGroup);
-    }
-  };
-
-  const getWhatsAppShareUrl = (challengeTitle, classGroup) => {
-    const text = encodeURIComponent(
-      `Can you solve the "${challengeTitle}" challenge for ${classGroup}? Try it now on Master of Alphabet!`
-    );
-    return `https://wa.me/?text=${text}`;
-  };
-
-  const calculateTimeLeft = (endTime) => {
-    if (!endTime) return "Challenge ended";
+  const handleTakeChallenge = async (challenge) => {
     try {
-      const now = new Date();
-      const endDate = endTime.toDate ? endTime.toDate() : new Date(endTime);
-      const diff = endDate - now;
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      
-      if (days > 0) return `${days}d ${hours}h left`;
-      if (hours > 0) return `${hours}h left`;
-      return "Ending soon";
-    } catch (e) {
-      console.error("Error calculating time left:", e);
-      return "Time info unavailable";
+      // 1. Enhanced Authentication Check
+      await auth.currentUser?.reload();
+      const currentUser = auth.currentUser;
+
+      if (!currentUser || currentUser.isAnonymous) {
+        setShowOverlay(true);
+        return;
+      }
+
+      // 2. Validate challenge object
+      if (!challenge?.id) {
+        throw new Error("Invalid challenge data");
+      }
+
+      // 3. Safely generate URL segments with fallbacks
+    // Strict validation - throw error if any required field is missing
+    if (!challenge.type) throw new Error("Challenge type is required");
+    if (!challenge.moduleName) throw new Error("Module name is required");
+    if (!challenge.moduleCategory) throw new Error("Module Category is required");
+
+    // Generate URL segments - now guaranteed to have values
+    const type = challenge.type.toLowerCase().replace(/\s+/g, "-");
+    const module = challenge.moduleName.toLowerCase().replace(/\s+/g, "-");
+    const category = challenge.moduleCategory.toLowerCase().replace(/\s+/g, "-");
+
+      // 4. Get challenge document
+      const challengeDoc = await getDoc(
+        doc(firestore, "MoAChallenges/DWMSChallenges/Challenges", challenge.id)
+      );
+
+      if (!challengeDoc.exists()) {
+        throw new Error("Challenge not found");
+      }
+
+      // 5. Get question IDs with validation
+      const questionIds = challengeDoc.data().questions || [];
+      if (questionIds.length === 0) {
+        throw new Error("This challenge has no questions yet");
+      }
+
+      // 6. Fetch questions with error handling
+      const questionPromises = questionIds.map(async (questionId) => {
+        if (!questionId) return null;
+
+        try {
+          const questionDoc = await getDoc(
+            doc(firestore, "MoAChallenges/DWMSChallenges/Questions", questionId)
+          );
+          return questionDoc.exists() ? questionDoc.data() : null;
+        } catch (error) {
+          console.error(`Error fetching question ${questionId}:`, error);
+          return null;
+        }
+      });
+
+      const questionDocs = await Promise.all(questionPromises);
+      const validQuestions = questionDocs.filter((q) => q !== null);
+
+      if (validQuestions.length === 0) {
+        throw new Error("No valid questions found for this challenge");
+      }
+
+      // 7. Transform questions to expected format
+      const questions = validQuestions.map((doc, index) => ({
+        id: questionIds[index],
+        answerType: doc.answerType,
+        questionType: doc.questionType,
+        question: doc.questionText,
+        options: doc.options || [],
+        mediaUrl: doc.mediaUrl || null,
+        shuffleOptions: doc.shuffleOptions !== false, // default true
+      }));
+
+      console.log(questions);
+
+      // 8. Navigate with all required data
+      navigate(`/challenge-participation/${type}/${module}-${category}`, {
+        state: {
+          challengeData: {
+            studentId: currentUser.uid,
+            challengeId: challenge.id,
+            questions,
+            title: challenge.title,
+            type: challenge.type,
+            category: challenge.moduleCategory,
+            difficulty: challenge.difficultyLevel,
+            moduleName: challenge.moduleName,
+          },
+        },
+      });
+    } catch (error) {
+      console.error("Challenge Error:", {
+        error: error.message,
+        challengeId: challenge?.id,
+        user: auth.currentUser?.uid,
+      });
+
+      // User-friendly error message
+      const errorMessage = error.message.includes("not found")
+        ? "This challenge is no longer available"
+        : `Unable to start challenge: ${error.message}`;
+
+      alert(errorMessage);
+      navigate("/challenges", { replace: true });
     }
   };
+
+  const handleShareChallenge = (challenge) => {
+    const text = encodeURIComponent(
+      `Check out this ${challenge.category} challenge for ${challenge.classGroup}! "${challenge.questionText}" - Try it on Master of Alphabet!`
+    );
+    const whatsappUrl = `https://wa.me/?text=${text}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
+  const groupedChallenges = challenges.reduce((acc, challenge) => {
+    const group = challenge.classGroup || "Other";
+    if (!acc[group]) {
+      acc[group] = [];
+    }
+    acc[group].push(challenge);
+    return acc;
+  }, {});
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
-        <CircularProgress size={60} />
-      </Box>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <CircularProgress size={60} className="text-purple-600" />
+          <p className="mt-4 text-gray-600">Loading challenges...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            Error Loading Challenges
+          </h2>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
-      {/* Full-width welcome section */}
-      <Box sx={{ width: "100%", bgcolor: "#f0f4ff", py: 2 }}>
+    <div className="min-h-screen bg-gray-50">
+      {/* Welcome Section */}
+      <div className="bg-blue-50 py-4">
         <StudentWelcomeSection />
-      </Box>
+      </div>
 
       {/* Hero Section */}
-      <HeroSection>
-        <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
-          Master of Alphabet
-          <Box component="span" sx={{ 
-            display: 'block',
-            background: 'linear-gradient(to right, #FFD700, #FFA500)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            fontSize: '0.8em'
-          }}>
-            Challenges
-          </Box>
-        </Typography>
-        <Typography variant="h5" component="h2" gutterBottom>
-          Test Your Spelling Skills and Win Exciting Prizes!
-        </Typography>
-        <Typography variant="body1" sx={{ fontSize: '1.1rem', mt: 2 }}>
-          Top performers receive special rewards. Weekly challenges with new opportunities to win!
-        </Typography>
-      </HeroSection>
+      <LanguageChallengesHero />
 
-      {/* Challenge Cards Section */}
-      <Box sx={{ 
-        maxWidth: '1200px',
-        mx: 'auto',
-        px: { xs: 2, sm: 4, md: 6 },
-        py: 6
-      }}>
-        <Box sx={{ textAlign: 'center', mb: 6 }}>
-          <Typography variant="h4" component="h2" sx={{ fontWeight: 700, mb: 2 }}>
-            Choose Your Challenge Level
-          </Typography>
-          <Typography variant="body1" sx={{ color: 'text.secondary', maxWidth: '800px', mx: 'auto' }}>
-            Select the challenge that matches your grade level and start your spelling adventure!
-          </Typography>
-        </Box>
+      {/* Challenges Section */}
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-gray-800 mb-4">
+            Available Challenges
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Choose from our collection of exciting challenges designed to test
+            and improve your language skills
+          </p>
+        </div>
+        {challenges.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-gray-400 text-6xl mb-4">📚</div>
+            <h3 className="text-2xl font-bold text-gray-600 mb-2">
+              No Challenges Available
+            </h3>
+            <p className="text-gray-500">
+              Check back later for new challenges!
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-12">
+            {Object.entries(groupedChallenges).map(
+              ([classGroup, classGroupChallenges]) => (
+                <div key={classGroup}>
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                      {classGroup}
+                    </h3>
+                    <div className="h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full w-24"></div>
+                  </div>
 
-        <Box sx={{ display: 'grid', gap: 4 }}>
-          {CLASS_GROUPS.map(({ key, gradient, title, subtitle, icon }) => {
-            const challenge = challenges[key] || {};
-            const challengeStats = stats[key] || {};
-
-            return (
-              <Box
-                key={key}
-                sx={{
-                  position: 'relative',
-                  overflow: 'hidden',
-                  borderRadius: 4,
-                  backgroundColor: 'background.paper',
-                  boxShadow: 3,
-                  '&:hover': {
-                    boxShadow: 6,
-                    transform: 'translateY(-4px)'
-                  },
-                  transition: 'all 0.3s ease'
-                }}
-              >
-                {/* Background Gradient */}
-                <Box sx={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: `linear-gradient(135deg, ${gradient.from} 0%, ${gradient.to} 100%)`,
-                  opacity: 0.05,
-                  '&:hover': { opacity: 0.1 },
-                  transition: 'opacity 0.5s'
-                }} />
-
-                <Box sx={{ p: 4, position: 'relative' }}>
-                  <Box sx={{ 
-                    display: 'flex', 
-                    flexDirection: { xs: 'column', md: 'row' },
-                    alignItems: { md: 'center' },
-                    justifyContent: 'space-between',
-                    gap: 4
-                  }}>
-                    {/* Left Section - Challenge Info */}
-                    <Box sx={{ flex: 1 }}>
-                      {/* Header */}
-                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                        <Avatar sx={{ 
-                          width: 64, 
-                          height: 64,
-                          backgroundColor: gradient.from,
-                          backgroundImage: `linear-gradient(135deg, ${gradient.from} 0%, ${gradient.to} 100%)`,
-                          fontSize: '2rem'
-                        }}>
-                          {icon}
-                        </Avatar>
-                        <Box sx={{ ml: 3 }}>
-                          <Typography variant="h5" component="h3" sx={{ fontWeight: 700 }}>
-                            {title}
-                          </Typography>
-                          <Typography variant="subtitle1" color="text.secondary">
-                            {subtitle}
-                          </Typography>
-                        </Box>
-                      </Box>
-
-                      {/* Category Badge */}
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
-                        <Box sx={{
-                          px: 3,
-                          py: 1,
-                          borderRadius: '16px',
-                          backgroundColor: CATEGORY_COLORS[challenge?.category] || '#EC407A',
-                          color: 'white',
-                          fontWeight: 600,
-                          boxShadow: 1,
-                          fontSize: '0.875rem'
-                        }}>
-                          {challenge?.category || "Spelling"}
-                        </Box>
-                        <Box sx={{
-                          px: 3,
-                          py: 1,
-                          borderRadius: '16px',
-                          background: 'linear-gradient(to right, #FFD700, #FFA500)',
-                          color: 'white',
-                          fontWeight: 600,
-                          boxShadow: 1,
-                          fontSize: '0.875rem'
-                        }}>
-                          🏆 Weekly Challenge
-                        </Box>
-                      </Box>
-
-                      {/* Challenge Description */}
-                      {challenge?.questionText ? (
-                        <Box sx={{ mb: 3 }}>
-                          <Typography variant="body1" sx={{ 
-                            fontStyle: 'italic',
-                            mb: 2,
-                            backgroundColor: 'grey.50',
-                            p: 2,
-                            borderRadius: 2,
-                            borderLeft: '4px solid',
-                            borderColor: 'primary.main'
-                          }}>
-                            "{challenge.questionText}"
-                          </Typography>
-                        </Box>
-                      ) : (
-                        <Box sx={{ mb: 3 }}>
-                          <Typography variant="body1" sx={{ 
-                            color: 'text.disabled',
-                            backgroundColor: 'grey.50',
-                            p: 2,
-                            borderRadius: 2
-                          }}>
-                            Challenge coming soon...
-                          </Typography>
-                        </Box>
-                      )}
-
-                      {/* Stats */}
-                      <Box sx={{ 
-                        display: 'grid',
-                        gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' },
-                        gap: 2,
-                        mb: 3
-                      }}>
-                        <Box sx={{ 
-                          backgroundColor: 'rgba(66, 165, 245, 0.1)',
-                          p: 2,
-                          borderRadius: 2,
-                          textAlign: 'center'
-                        }}>
-                          <Typography variant="body2" sx={{ mb: 1 }}>⏰</Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 600, color: 'primary.dark' }}>
-                            {calculateTimeLeft(challengeStats.endTime)}
-                          </Typography>
-                        </Box>
-                        <Box sx={{ 
-                          backgroundColor: 'rgba(102, 187, 106, 0.1)',
-                          p: 2,
-                          borderRadius: 2,
-                          textAlign: 'center'
-                        }}>
-                          <Typography variant="body2" sx={{ mb: 1 }}>👥</Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 600, color: 'success.dark' }}>
-                            {challengeStats.submissions || 0} submissions
-                          </Typography>
-                        </Box>
-                        <Box sx={{ 
-                          backgroundColor: 'rgba(171, 71, 188, 0.1)',
-                          p: 2,
-                          borderRadius: 2,
-                          textAlign: 'center'
-                        }}>
-                          <Typography variant="body2" sx={{ mb: 1 }}>🎁</Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 600, color: 'secondary.dark' }}>
-                            {challengeStats.prizes || "5 prizes"}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Box>
-
-                    {/* Right Section - Actions */}
-                    <Box sx={{ 
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: { xs: 'center', md: 'flex-end' },
-                      gap: 2,
-                      minWidth: { md: '200px' }
-                    }}>
-                      {/* Main Action Button */}
-                      <Box
-                        component="button"
-                        onClick={() => handleTakeChallenge(key)}
-                        disabled={!user}
-                        sx={{
-                          px: 4,
-                          py: 2,
-                          borderRadius: '12px',
-                          fontWeight: 700,
-                          fontSize: '1rem',
-                          transition: 'all 0.3s',
-                          transform: 'translateY(0)',
-                          boxShadow: 2,
-                          background: user 
-                            ? `linear-gradient(135deg, ${gradient.from} 0%, ${gradient.to} 100%)`
-                            : 'grey.300',
-                          color: user ? 'white' : 'grey.500',
-                          border: 'none',
-                          cursor: user ? 'pointer' : 'not-allowed',
-                          position: 'relative',
-                          overflow: 'hidden',
-                          '&:hover': user ? {
-                            boxShadow: 4,
-                            '&::after': {
-                              opacity: 0.2
-                            }
-                          } : {},
-                          '&::after': {
-                            content: '""',
-                            position: 'absolute',
-                            inset: 0,
-                            background: 'rgba(255,255,255,0.2)',
-                            borderRadius: '12px',
-                            opacity: 0,
-                            transition: 'opacity 0.3s'
-                          }
-                        }}
-                      >
-                        {user ? "Take Challenge" : "Login to Take Challenge"}
-                      </Box>
-
-                      {/* Share Button */}
-                      <Box
-                        component="a"
-                        href={challenge?.questionText ? getWhatsAppShareUrl(challenge.questionText, challenge.classGroup) : "#"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 1,
-                          px: 3,
-                          py: 1.5,
-                          backgroundColor: '#25D366',
-                          color: 'white',
-                          borderRadius: '16px',
-                          fontWeight: 600,
-                          transition: 'all 0.3s',
-                          textDecoration: 'none',
-                          '&:hover': {
-                            backgroundColor: '#128C7E',
-                            transform: 'translateY(-2px)'
-                          }
-                        }}
-                      >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                        </svg>
-                        Share
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-            );
-          })}
-        </Box>
-
-        {/* Bottom CTA Section */}
-        <Box sx={{ 
-          textAlign: 'center', 
-          mt: 8,
-          background: 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)',
-          borderRadius: 4,
-          p: 4,
-          color: 'white'
-        }}>
-          <Typography variant="h5" component="h3" sx={{ fontWeight: 700, mb: 2 }}>
-           Ready to Jump In and Attempt the Challenges and Win Prizes/Rewards?
-          </Typography>
-          <Typography variant="body1" sx={{ mb: 3, opacity: 0.9 }}>
-           Compete with Students for Daily, Weekly, Monthly and Special Challenges at National Level!
-          </Typography>
-          <Box
-            component="button"
-            sx={{
-              px: 4,
-              py: 2,
-              backgroundColor: 'white',
-              color: 'primary.main',
-              borderRadius: '24px',
-              fontWeight: 700,
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'all 0.3s',
-              '&:hover': {
-                transform: 'scale(1.05)',
-                boxShadow: 2
-              }
-            }}
-          >
-            Buy a 1/3/12 Month(s) Premium Subscription Today
-          </Box>
-        </Box>
-      </Box>
-
-      {/* Registration Modal */}
-      <Modal
-        open={Boolean(showFormFor)}
-        onClose={() => setShowFormFor(null)}
-        aria-labelledby="registration-modal-title"
-      >
-        <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: { xs: '90%', sm: 500 },
-          backgroundColor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-          borderRadius: 2
-        }}>
-          <Typography id="registration-modal-title" variant="h6" component="h2" gutterBottom>
-            Register for {showFormFor ? CLASS_GROUPS.find(c => c.key === showFormFor)?.title : ''} Challenge
-          </Typography>
-          <StudentDataForm
-            showClassDropdown
-            allowedClasses={showFormFor}
-            onSubmit={(data) => {
-              handleStudentRegistration(showFormFor, data);
-              setShowFormFor(null);
-            }}
-            onCancel={() => setShowFormFor(null)}
-            requireParentMobile
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {classGroupChallenges.map((challenge) => (
+                      <ChallengeCard
+                        key={challenge.id}
+                        challenge={challenge}
+                        handleTakeChallenge={handleTakeChallenge}
+                        onShare={handleShareChallenge}
+                        user={user}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        )}
+        {console.log("Overlay state:", showOverlay)} {/* Debug log */}
+        {showOverlay && (
+          <SignInRequiredHeroOverlay
+            message="Please sign in to take this challenge!"
+            onClose={() => setShowOverlay(false)}
           />
-        </Box>
-      </Modal>
-    </Box>
+        )}
+        {/* Bottom CTA Section */}
+        <div className="mt-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 text-center text-white">
+          <h3 className="text-3xl font-bold mb-4">
+            Ready to Start Your Challenge Journey?
+          </h3>
+          <p className="text-lg mb-6 opacity-90">
+            Join thousands of students competing in daily, weekly, and monthly
+            challenges!
+          </p>
+          <button className="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg">
+            Get Premium Access
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

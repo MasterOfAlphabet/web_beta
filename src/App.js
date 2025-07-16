@@ -108,6 +108,9 @@ import ModulesIntro from "./pages/ModulesIntro";
 import DictationMaster from "./pages/DictationMaster";
 import DictationAssignmentApp from "./pages/DictationAssignmentApp";
 
+import ChallengesPublisher from "./pages/DWMSChallenges/ChallengesPublisher";
+import ChallengeParticipation from "./pages/ChallengeParticipation";
+
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
 
@@ -116,17 +119,6 @@ function App() {
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    // Step 1: Check localStorage
-    const storedUser = localStorage.getItem("studentUser");
-    if (storedUser) {
-      try {
-        const parsed = JSON.parse(storedUser);
-        setLoggedInUser(parsed);
-        setAuthLoading(false);
-      } catch (e) {
-        localStorage.removeItem("studentUser");
-      }
-    }
 
     // Step 2: Firebase session check (login/logout)
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -181,7 +173,7 @@ function App() {
         };
 
         setLoggedInUser(userInfo);
-        localStorage.setItem("studentUser", JSON.stringify(userInfo));
+
       } catch (err) {
         console.error("Failed to fetch student profile", err);
         setLoggedInUser(null);
@@ -399,8 +391,20 @@ function App() {
           <Route path="/modules-intro" element={<ModulesIntro />} />
 
           <Route path="/dictation-master" element={<DictationMaster />} />
-        <Route path="/audio-assignment" element={<DictationAssignmentApp />} />
-        
+          <Route
+            path="/audio-assignment"
+            element={<DictationAssignmentApp />}
+          />
+
+          <Route
+           path="/challenge-participation/:type/:moduleCategory" 
+            element={<ChallengeParticipation />}
+          />
+
+          <Route
+            path="/challenge-publishing-dashboard"
+            element={<ChallengesPublisher />}
+          />
         </Routes>
 
         <CookieConsentBanner />

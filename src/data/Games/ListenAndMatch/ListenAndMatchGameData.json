@@ -1,4 +1,5 @@
-export const ListenAndMatchGameData = {
+{
+"ListenAndMatchGameData":{
     "I-II": {
       "Rookie": {
         "Emotions": [
@@ -2869,8 +2870,8 @@ export const ListenAndMatchGameData = {
             "hint": "This is about action camera."
           }
         ]
-      },
-      },
+      }
+    },
     "III-V": {
       "Rookie": {
         "Emotions": [
@@ -8041,6 +8042,5 @@ export const ListenAndMatchGameData = {
         ]
       }
     }
-  
-
+  }
 }

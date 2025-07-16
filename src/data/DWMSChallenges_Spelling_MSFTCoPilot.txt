@@ -43,7 +43,7 @@
     "shuffleOptions": true,
     "correctAnswer": "CAT",
     "points": 5,
-    "category": "Find the Missing Letter",
+    "category": "Find the Missing Letter(s)",
     "difficultyLevel": "Rookie",
     "classGroup": "Class I-II"
   },
@@ -66,7 +66,7 @@
   {
     "id": "mcq-5",
     "questionType": "image",
-    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionText": "Type the name of the object in the image. (Spell the Picture)",
     "hint": "It shines in the sky at night.",
     "explanation": "The correct spelling is 'STAR'.",
     "mediaUrl": "star.jpg",
@@ -75,7 +75,7 @@
     "shuffleOptions": true,
     "correctAnswer": "STAR",
     "points": 5,
-    "category": "Spell the Pic",
+    "category": "Spell the Picture",
     "difficultyLevel": "Rookie",
     "classGroup": "Class I-II"
   },
@@ -123,7 +123,7 @@
     "shuffleOptions": true,
     "correctAnswer": "TONIGHT",
     "points": 10,
-    "category": "Find the Missing Letter",
+    "category": "Find the Missing Letter(s)",
     "difficultyLevel": "Racer",
     "classGroup": "Class III-V"
   },
@@ -189,7 +189,7 @@
     "shuffleOptions": true,
     "correctAnswer": "AIRPLANE",
     "points": 15,
-    "category": "Find the Missing Letter",
+    "category": "Find the Missing Letter(s)",
     "difficultyLevel": "Master",
     "classGroup": "Class III-V"
   },
@@ -212,7 +212,7 @@
   {
     "id": "mcq-14",
     "questionType": "image",
-    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionText": "Type the name of the object in the image. (Spell the Picture)",
     "hint": "A device used to tell time.",
     "explanation": "The correct spelling is 'CLOCK'.",
     "mediaUrl": "clock.jpg",
@@ -221,7 +221,7 @@
     "shuffleOptions": true,
     "correctAnswer": "CLOCK",
     "points": 15,
-    "category": "Spell the Pic",
+    "category": "Spell the Picture",
     "difficultyLevel": "Master",
     "classGroup": "Class III-V"
   },
@@ -269,7 +269,7 @@
     "shuffleOptions": true,
     "correctAnswer": "WELCOME",
     "points": 20,
-    "category": "Find the Missing Letter",
+    "category": "Find the Missing Letter(s)",
     "difficultyLevel": "Prodigy",
     "classGroup": "Class VI-X"
   },
@@ -292,7 +292,7 @@
   {
     "id": "mcq-19",
     "questionType": "image",
-    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionText": "Type the name of the object in the image. (Spell the Picture)",
     "hint": "A building where doctors work.",
     "explanation": "The correct spelling is 'HOSPITAL'.",
     "mediaUrl": "hospital.jpg",
@@ -301,7 +301,7 @@
     "shuffleOptions": true,
     "correctAnswer": "HOSPITAL",
     "points": 20,
-    "category": "Spell the Pic",
+    "category": "Spell the Picture",
     "difficultyLevel": "Prodigy",
     "classGroup": "Class VI-X"
   }
@@ -351,7 +351,7 @@
     "shuffleOptions": true,
     "correctAnswer": "MYSTERIOUS",
     "points": 25,
-    "category": "Find the Missing Letter",
+    "category": "Find the Missing Letter(s)",
     "difficultyLevel": "Wizard",
     "classGroup": "Class VI-X"
   },
@@ -374,7 +374,7 @@
   {
     "id": "mcq-24",
     "questionType": "image",
-    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionText": "Type the name of the object in the image. (Spell the Picture)",
     "hint": "A celestial body that revolves around a star.",
     "explanation": "The correct spelling is 'PLANET'.",
     "mediaUrl": "planet.jpg",
@@ -383,7 +383,7 @@
     "shuffleOptions": true,
     "correctAnswer": "PLANET",
     "points": 25,
-    "category": "Spell the Pic",
+    "category": "Spell the Picture",
     "difficultyLevel": "Wizard",
     "classGroup": "Class VI-X"
   },
@@ -431,7 +431,7 @@
     "shuffleOptions": true,
     "correctAnswer": "ENLIGHTENMENT",
     "points": 15,
-    "category": "Find the Missing Letter",
+    "category": "Find the Missing Letter(s)",
     "difficultyLevel": "Master",
     "classGroup": "Class III-V"
   },
@@ -454,7 +454,7 @@
   {
     "id": "mcq-29",
     "questionType": "image",
-    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionText": "Type the name of the object in the image. (Spell the Picture)",
     "hint": "A large body of water.",
     "explanation": "The correct spelling is 'OCEAN'.",
     "mediaUrl": "ocean.jpg",
@@ -463,7 +463,7 @@
     "shuffleOptions": true,
     "correctAnswer": "OCEAN",
     "points": 15,
-    "category": "Spell the Pic",
+    "category": "Spell the Picture",
     "difficultyLevel": "Master",
     "classGroup": "Class III-V"
   }
@@ -513,7 +513,7 @@
     "shuffleOptions": true,
     "correctAnswer": "TEMPLE",
     "points": 10,
-    "category": "Find the Missing Letter",
+    "category": "Find the Missing Letter(s)",
     "difficultyLevel": "Racer",
     "classGroup": "Class III-V"
   },
@@ -536,7 +536,7 @@
   {
     "id": "mcq-34",
     "questionType": "image",
-    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionText": "Type the name of the object in the image. (Spell the Picture)",
     "hint": "A large and important building in a city.",
     "explanation": "The correct spelling is 'TOWER'.",
     "mediaUrl": "tower.jpg",
@@ -545,7 +545,7 @@
     "shuffleOptions": true,
     "correctAnswer": "TOWER",
     "points": 10,
-    "category": "Spell the Pic",
+    "category": "Spell the Picture",
     "difficultyLevel": "Racer",
     "classGroup": "Class III-V"
   },
@@ -593,7 +593,7 @@
     "shuffleOptions": true,
     "correctAnswer": "COMPASS",
     "points": 15,
-    "category": "Find the Missing Letter",
+    "category": "Find the Missing Letter(s)",
     "difficultyLevel": "Master",
     "classGroup": "Class VI-X"
   },
@@ -616,7 +616,7 @@
   {
     "id": "mcq-39",
     "questionType": "image",
-    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionText": "Type the name of the object in the image. (Spell the Picture)",
     "hint": "An animal that lives in the ocean.",
     "explanation": "The correct spelling is 'DOLPHIN'.",
     "mediaUrl": "dolphin.jpg",
@@ -625,7 +625,7 @@
     "shuffleOptions": true,
     "correctAnswer": "DOLPHIN",
     "points": 15,
-    "category": "Spell the Pic",
+    "category": "Spell the Picture",
     "difficultyLevel": "Master",
     "classGroup": "Class VI-X"
   }
@@ -675,7 +675,7 @@
     "shuffleOptions": true,
     "correctAnswer": "COMPUTER",
     "points": 20,
-    "category": "Find the Missing Letter",
+    "category": "Find the Missing Letter(s)",
     "difficultyLevel": "Prodigy",
     "classGroup": "Class VI-X"
   },
@@ -698,7 +698,7 @@
   {
     "id": "mcq-44",
     "questionType": "image",
-    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionText": "Type the name of the object in the image. (Spell the Picture)",
     "hint": "A natural water body surrounded by land.",
     "explanation": "The correct spelling is 'LAKE'.",
     "mediaUrl": "lake.jpg",
@@ -707,7 +707,7 @@
     "shuffleOptions": true,
     "correctAnswer": "LAKE",
     "points": 20,
-    "category": "Spell the Pic",
+    "category": "Spell the Picture",
     "difficultyLevel": "Prodigy",
     "classGroup": "Class VI-X"
   },
@@ -755,7 +755,7 @@
     "shuffleOptions": true,
     "correctAnswer": "KNOWLEDGE",
     "points": 25,
-    "category": "Find the Missing Letter",
+    "category": "Find the Missing Letter(s)",
     "difficultyLevel": "Wizard",
     "classGroup": "Class VI-X"
   },
@@ -778,7 +778,7 @@
   {
     "id": "mcq-49",
     "questionType": "image",
-    "questionText": "Type the name of the object in the image. (Spell the Pic)",
+    "questionText": "Type the name of the object in the image. (Spell the Picture)",
     "hint": "A structure used for travel over water.",
     "explanation": "The correct spelling is 'BRIDGE'.",
     "mediaUrl": "bridge.jpg",
@@ -787,7 +787,7 @@
     "shuffleOptions": true,
     "correctAnswer": "BRIDGE",
     "points": 25,
-    "category": "Spell the Pic",
+    "category": "Spell the Picture",
     "difficultyLevel": "Wizard",
     "classGroup": "Class VI-X"
   }

@@ -1,8 +1,8 @@
 // firebase.js
 import { initializeApp } from 'firebase/app';
 import { getFirestore, serverTimestamp } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage'; // Optional for future file storage
+import { getAuth, setPersistence, browserSessionPersistence } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyByNAR8mWYEq9F9hrSqwlLuKSZLGae-R1k",
@@ -20,6 +20,8 @@ const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app); // Optional
+
+setPersistence(auth, browserSessionPersistence); // Only persist for current session
 
 // Export utilities and services
 export { firestore, auth, storage, serverTimestamp };

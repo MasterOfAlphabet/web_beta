@@ -1,136 +1,267 @@
 import React, { useState } from "react";
-import {
-  Box, Typography, Tabs, Tab, Paper, Button, Stack, Avatar, Chip, LinearProgress, Card
-} from "@mui/material";
-import QuizIcon from "@mui/icons-material/Quiz";
-import StarIcon from "@mui/icons-material/Star";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
-import { useNavigate } from "react-router-dom";
+import { BookOpen, Trophy, TrendingUp, Lightbulb, Star, Play, Brain } from "lucide-react";
 
 const classGroups = [
-  { label: "Class I-II", value: "I-II" },
-  { label: "Class III-V", value: "III-V" },
-  { label: "Class VI-X", value: "VI-X" },
+  { label: "Class I-II", value: "I-II", color: "from-pink-400 to-rose-400" },
+  { label: "Class III-V", value: "III-V", color: "from-purple-400 to-indigo-400" },
+  { label: "Class VI-X", value: "VI-X", color: "from-blue-400 to-cyan-400" },
 ];
 
 const vocabList = {
   "I-II": [
-    { word: "apple", meaning: "A red or green fruit.", image: "/images/apple.png" },
-    { word: "dog", meaning: "A pet animal.", image: "/images/dog.png" },
-    { word: "boat", meaning: "A vehicle that floats on water.", image: "/images/boat.png" },
+    { word: "apple", meaning: "A red or green fruit.", emoji: "🍎", difficulty: "Easy" },
+    { word: "dog", meaning: "A pet animal.", emoji: "🐕", difficulty: "Easy" },
+    { word: "boat", meaning: "A vehicle that floats on water.", emoji: "🚤", difficulty: "Easy" },
   ],
   "III-V": [
-    { word: "courage", meaning: "Being brave.", image: "/images/courage.png" },
-    { word: "explore", meaning: "To search or travel for discovery.", image: "/images/explore.png" },
-    { word: "observe", meaning: "To watch carefully.", image: "/images/observe.png" },
+    { word: "courage", meaning: "Being brave.", emoji: "🦸", difficulty: "Medium" },
+    { word: "explore", meaning: "To search or travel for discovery.", emoji: "🔍", difficulty: "Medium" },
+    { word: "observe", meaning: "To watch carefully.", emoji: "👀", difficulty: "Medium" },
   ],
   "VI-X": [
-    { word: "ambiguous", meaning: "Having more than one meaning.", image: "/images/ambiguous.png" },
-    { word: "benevolent", meaning: "Well-meaning and kindly.", image: "/images/benevolent.png" },
-    { word: "meticulous", meaning: "Showing attention to detail.", image: "/images/meticulous.png" },
+    { word: "ambiguous", meaning: "Having more than one meaning.", emoji: "🤔", difficulty: "Hard" },
+    { word: "benevolent", meaning: "Well-meaning and kindly.", emoji: "💝", difficulty: "Hard" },
+    { word: "meticulous", meaning: "Showing attention to detail.", emoji: "🔬", difficulty: "Hard" },
   ],
 };
 
 export default function VocabularyPage() {
   const [group, setGroup] = useState("I-II");
-  const navigate = useNavigate();
+  const [hoveredCard, setHoveredCard] = useState(null);
+
+  const getProgressValue = (group) => {
+    switch(group) {
+      case "I-II": return 22;
+      case "III-V": return 51;
+      case "VI-X": return 76;
+      default: return 0;
+    }
+  };
 
   return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "#f6fafd", py: 4 }}>
-      {/* Hero Section */}
-      <Paper elevation={4} sx={{
-        maxWidth: 900, mx: "auto", p: { xs: 2, md: 4 }, borderRadius: 6,
-        mb: 4, display: "flex", alignItems: "center", gap: 3, bgcolor: "#fce4ec"
-      }}>
-        <Avatar sx={{ bgcolor: "#d81b60", width: 80, height: 80 }}>
-          <QuizIcon sx={{ fontSize: 50 }} />
-        </Avatar>
-        <Box>
-          <Typography variant="h4" fontWeight={900} color="error.dark">Vocabulary Vault</Typography>
-          <Typography fontSize={19} color="text.secondary" mt={1}>
-            Expand your vocabulary with daily words, quizzes, and fun games!
-          </Typography>
-        </Box>
-      </Paper>
-      {/* Class Group Tabs */}
-      <Tabs
-        value={group}
-        variant="fullWidth"
-        onChange={(_, val) => setGroup(val)}
-        sx={{ maxWidth: 600, mx: "auto", mb: 3, bgcolor: "#fff", borderRadius: 3, boxShadow: 1 }}
-      >
-        {classGroups.map(cg => (
-          <Tab
-            key={cg.value}
-            value={cg.value}
-            label={cg.label}
-            sx={{ fontWeight: 700, fontSize: 18 }}
-          />
-        ))}
-      </Tabs>
-      {/* Progress Bar */}
-      <Box sx={{ maxWidth: 700, mx: "auto", mb: 3 }}>
-        <Paper sx={{ p: 3, borderRadius: 3, display: "flex", alignItems: "center", gap: 2 }}>
-          <LinearProgress variant="determinate" value={group === "I-II" ? 22 : group === "III-V" ? 51 : 76} sx={{ flex: 1, height: 12, borderRadius: 5 }} />
-          <Chip icon={<TrendingUpIcon />} label="Level Up!" color="error" sx={{ fontWeight: 700 }} />
-        </Paper>
-      </Box>
-      {/* Vocabulary Cards */}
-      <Box sx={{ maxWidth: 900, mx: "auto", mb: 4 }}>
-        <Typography variant="h6" fontWeight={800} mb={2} color="error.dark">
-          Today's Vocabulary
-        </Typography>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={3} justifyContent="center">
-          {vocabList[group].map((item, i) => (
-            <Card key={item.word} sx={{
-              minWidth: 220, px: 2, py: 3, boxShadow: 3, borderRadius: 4,
-              display: "flex", flexDirection: "column", alignItems: "center", bgcolor: "#fff",
-              transition: "transform 0.2s", "&:hover": { transform: "scale(1.04)" }
-            }}>
-              <Avatar src={item.image} sx={{ width: 70, height: 70, mb: 1, bgcolor: "#f8bbd0" }} />
-              <Typography fontWeight={700} fontSize={22} color="error.dark">{item.word}</Typography>
-              <Typography fontSize={15} color="text.secondary" align="center" mt={0.5}>{item.meaning}</Typography>
-              <Button variant="outlined" size="small" sx={{ mt: 2 }} onClick={() => navigate(`/vocabulary/practice?word=${item.word}`)}>
-                Practice
-              </Button>
-            </Card>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
+        <div className="absolute bottom-20 left-1/2 w-80 h-80 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-2000"></div>
+      </div>
+
+      <div className="relative z-10 p-6 max-w-7xl mx-auto">
+        {/* Hero Section */}
+        <div className="mb-8 backdrop-blur-xl bg-white/10 rounded-3xl border border-white/20 shadow-2xl p-8 transform perspective-1000 hover:scale-105 transition-all duration-500">
+          <div className="flex items-center gap-6">
+            <div className="relative">
+              <div className="w-20 h-20 bg-gradient-to-br from-pink-400 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl transform rotate-6 hover:rotate-12 transition-transform duration-300">
+                <BookOpen className="w-10 h-10 text-white" />
+              </div>
+              <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full animate-bounce"></div>
+            </div>
+            <div>
+              <h1 className="text-5xl font-black bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent mb-2 transform hover:scale-110 transition-transform duration-300">
+                Vocabulary Vault
+              </h1>
+              <p className="text-xl text-white/80 font-medium">
+                Expand your vocabulary with daily words, quizzes, and fun games! ✨
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Class Group Tabs */}
+        <div className="mb-8 flex justify-center">
+          <div className="backdrop-blur-xl bg-white/10 rounded-2xl border border-white/20 shadow-xl p-2 flex gap-2">
+            {classGroups.map((cg, index) => (
+              <button
+                key={cg.value}
+                onClick={() => setGroup(cg.value)}
+                className={`px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 ${
+                  group === cg.value
+                    ? `bg-gradient-to-r ${cg.color} text-white shadow-lg scale-105`
+                    : "text-white/70 hover:text-white hover:bg-white/10"
+                }`}
+                style={{
+                  transformStyle: "preserve-3d",
+                  transform: group === cg.value ? "translateZ(10px)" : "translateZ(0px)"
+                }}
+              >
+                {cg.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Progress Section */}
+        <div className="mb-8 max-w-4xl mx-auto">
+          <div className="backdrop-blur-xl bg-white/10 rounded-2xl border border-white/20 shadow-xl p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <Brain className="w-8 h-8 text-purple-400" />
+              <h3 className="text-xl font-bold text-white">Learning Progress</h3>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex-1 bg-white/20 rounded-full h-4 overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 rounded-full transition-all duration-1000 ease-out shadow-glow"
+                  style={{ width: `${getProgressValue(group)}%` }}
+                ></div>
+              </div>
+              <div className="backdrop-blur-sm bg-gradient-to-r from-pink-400 to-purple-400 rounded-full px-4 py-2 flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-white" />
+                <span className="text-white font-bold text-sm">Level Up!</span>
+              </div>
+            </div>
+            <div className="mt-2 text-right">
+              <span className="text-white/80 font-medium">{getProgressValue(group)}% Complete</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Today's Vocabulary Header */}
+        <div className="mb-6 text-center">
+          <h2 className="text-3xl font-black bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-2">
+            Today's Vocabulary
+          </h2>
+          <p className="text-white/70 text-lg">Master these words and level up your language skills!</p>
+        </div>
+
+        {/* Vocabulary Cards */}
+        <div className="mb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {vocabList[group].map((item, index) => (
+            <div
+              key={item.word}
+              onMouseEnter={() => setHoveredCard(index)}
+              onMouseLeave={() => setHoveredCard(null)}
+              className={`group backdrop-blur-xl bg-white/10 rounded-2xl border border-white/20 shadow-xl p-6 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer ${
+                hoveredCard === index ? "bg-white/20 border-white/30" : ""
+              }`}
+              style={{
+                transformStyle: "preserve-3d",
+                transform: hoveredCard === index ? "rotateY(5deg) rotateX(5deg)" : "rotateY(0deg) rotateX(0deg)"
+              }}
+            >
+              <div className="text-center">
+                <div className="text-6xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                  {item.emoji}
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-pink-300 transition-colors">
+                  {item.word}
+                </h3>
+                <p className="text-white/80 mb-4 leading-relaxed">
+                  {item.meaning}
+                </p>
+                <div className="flex justify-between items-center mb-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                    item.difficulty === "Easy" ? "bg-green-400/20 text-green-300" :
+                    item.difficulty === "Medium" ? "bg-yellow-400/20 text-yellow-300" :
+                    "bg-red-400/20 text-red-300"
+                  }`}>
+                    {item.difficulty}
+                  </span>
+                </div>
+                <button className="w-full bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold py-3 px-6 rounded-xl hover:from-pink-500 hover:to-purple-500 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
+                  <Play className="w-4 h-4" />
+                  Practice
+                </button>
+              </div>
+            </div>
           ))}
-        </Stack>
-      </Box>
-      {/* Quick Vocabulary Tip */}
-      <Box sx={{ maxWidth: 700, mx: "auto", mb: 4 }}>
-        <Paper sx={{ p: 3, borderRadius: 3, bgcolor: "#fffde7" }}>
-          <Stack direction="row" alignItems="center" spacing={2} mb={2}>
-            <EmojiObjectsIcon color="error" />
-            <Typography fontWeight={700} color="error.dark">Vocabulary Tip</Typography>
-          </Stack>
-          <Typography fontSize={16}>
-            <b>Tip:</b> Use new words in your own sentences to remember them!
-          </Typography>
-        </Paper>
-      </Box>
-      {/* Leaderboard */}
-      <Box sx={{ maxWidth: 700, mx: "auto", mb: 4 }}>
-        <Typography variant="h6" fontWeight={700} color="error.dark" mb={1}>Vocabulary Stars</Typography>
-        <Stack direction="row" spacing={2}>
-          <Chip avatar={<Avatar><StarIcon /></Avatar>} label="Aanya" color="success" />
-          <Chip avatar={<Avatar><StarIcon /></Avatar>} label="Veer" color="info" />
-          <Chip avatar={<Avatar><StarIcon /></Avatar>} label="Riya" color="secondary" />
-        </Stack>
-      </Box>
-      {/* Smart Recommendations */}
-      <Box sx={{ maxWidth: 700, mx: "auto" }}>
-        <Paper sx={{ p: 3, borderRadius: 3, bgcolor: "#fce4ec" }}>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <TrendingUpIcon color="error" />
-            <Typography fontWeight={700} color="error.dark">Recommended Next</Typography>
-          </Stack>
-          <Typography fontSize={15} mt={1}>
-            Try <b>Synonyms Quiz</b> or <b>Word Match Game</b>!
-          </Typography>
-        </Paper>
-      </Box>
-    </Box>
+        </div>
+
+        {/* Vocabulary Tip */}
+        <div className="mb-8 max-w-4xl mx-auto">
+          <div className="backdrop-blur-xl bg-gradient-to-r from-yellow-400/20 to-orange-400/20 rounded-2xl border border-yellow-400/30 shadow-xl p-6">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-yellow-400/20 rounded-xl">
+                <Lightbulb className="w-6 h-6 text-yellow-300" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-white mb-2">💡 Vocabulary Tip</h3>
+                <p className="text-white/90 text-lg">
+                  <span className="font-semibold">Pro Tip:</span> Use new words in your own sentences to remember them better! 
+                  Try creating a story with today's words. 📚
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
+          {/* Leaderboard */}
+          <div className="backdrop-blur-xl bg-white/10 rounded-2xl border border-white/20 shadow-xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Trophy className="w-6 h-6 text-yellow-400" />
+              <h3 className="text-xl font-bold text-white">Vocabulary Stars</h3>
+            </div>
+            <div className="space-y-3">
+              {["Aanya", "Veer", "Riya"].map((name, index) => (
+                <div key={name} className="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    index === 0 ? "bg-yellow-400" : index === 1 ? "bg-gray-400" : "bg-orange-400"
+                  }`}>
+                    <Star className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-white font-medium">{name}</span>
+                  <div className="ml-auto flex items-center gap-1">
+                    <span className="text-sm text-white/70">{100 - index * 15} pts</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Smart Recommendations */}
+          <div className="backdrop-blur-xl bg-gradient-to-r from-pink-400/20 to-purple-400/20 rounded-2xl border border-pink-400/30 shadow-xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <TrendingUp className="w-6 h-6 text-pink-400" />
+              <h3 className="text-xl font-bold text-white">Recommended Next</h3>
+            </div>
+            <div className="space-y-3">
+              <div className="p-4 rounded-xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer transform hover:scale-105">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-lg flex items-center justify-center">
+                    <span className="text-white font-bold">🧩</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white">Synonyms Quiz</h4>
+                    <p className="text-white/70 text-sm">Test your word knowledge</p>
+                  </div>
+                </div>
+              </div>
+              <div className="p-4 rounded-xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer transform hover:scale-105">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-teal-400 rounded-lg flex items-center justify-center">
+                    <span className="text-white font-bold">🎯</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white">Word Match Game</h4>
+                    <p className="text-white/70 text-sm">Fun matching challenge</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .shadow-glow {
+          box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
+        }
+        
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+        
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+      `}</style>
+    </div>
   );
 }

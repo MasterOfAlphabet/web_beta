@@ -144,7 +144,7 @@ const spellingSkillsAssessmentData_I_II = {
       ],
     },
     {
-      name: "Review Questions",
+      name: "All-In-One",
       description: "General spelling review for Class I-II.",
       questions: [
         {
@@ -412,7 +412,7 @@ const spellingSkillsAssessmentData_VI_X = {
       ],
     },
     {
-      name: "Review Questions",
+      name: "All-In-One",
       description: "General spelling review for Class VI-X.",
       questions: [
         {
@@ -1048,7 +1048,7 @@ const student = {
       case "Spell the Pic":
         qContent = renderPic(q);
         break;
-      case "Review Questions":
+      case "All-In-One":
         qContent = q.question
           ? renderMCQ(q)
           : q.word
@@ -1124,7 +1124,7 @@ const student = {
       case "Spell the Pic":
         catContent = cat.questions.map(renderPic);
         break;
-      case "Review Questions":
+      case "All-In-One":
         catContent = cat.questions.map(q =>
           q.question
             ? renderMCQ(q)
@@ -1199,7 +1199,7 @@ const student = {
             {cat.name === "Find the Missing Letter" && cat.questions.map(renderMissing)}
             {cat.name === "Unscramble" && cat.questions.map(renderUnscramble)}
             {cat.name === "Spell the Pic" && cat.questions.map(renderPic)}
-            {cat.name === "Review Questions" && cat.questions.map(q =>
+            {cat.name === "All-In-One" && cat.questions.map(q =>
               q.question
                 ? renderMCQ(q)
                 : q.word

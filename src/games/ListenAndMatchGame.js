@@ -9,6 +9,9 @@ import {
   Award,
 } from "lucide-react";
 
+import { ListenAndMatchGameData } from "../data/Games/ListenAndMatch/ListenAndMatchGameData";
+import { MoaCategories } from "../data/MoAWordCategories";
+
 const ListenMatchGame = () => {
   const [selectedCategory, setSelectedCategory] = useState("emotions");
   const [isPlaying, setIsPlaying] = useState(false);
@@ -23,69 +26,15 @@ const ListenMatchGame = () => {
   const [showCelebration, setShowCelebration] = useState(false);
   const audioRef = useRef(null);
 
-  const categories = [
-    {
-      id: "emotions",
-      name: "Emotions",
-      icon: "😊",
-      color: "bg-pink-100 border-pink-300",
-    },
-    {
-      id: "sounds",
-      name: "Sounds",
-      icon: "🔊",
-      color: "bg-blue-100 border-blue-300",
-    },
-    {
-      id: "actions",
-      name: "Actions",
-      icon: "🏃",
-      color: "bg-green-100 border-green-300",
-    },
-    {
-      id: "professions",
-      name: "Professions",
-      icon: "👩‍⚕️",
-      color: "bg-purple-100 border-purple-300",
-    },
-    {
-      id: "fruits",
-      name: "Fruits",
-      icon: "🍎",
-      color: "bg-red-100 border-red-300",
-    },
-    {
-      id: "colors",
-      name: "Colors",
-      icon: "🎨",
-      color: "bg-yellow-100 border-yellow-300",
-    },
-    {
-      id: "animals",
-      name: "Animals",
-      icon: "🦁",
-      color: "bg-orange-100 border-orange-300",
-    },
-    {
-      id: "vegetables",
-      name: "Vegetables",
-      icon: "🥕",
-      color: "bg-green-100 border-green-400",
-    },
-    {
-      id: "flowers",
-      name: "Flowers",
-      icon: "🌸",
-      color: "bg-pink-100 border-pink-400",
-    },
-    {
-      id: "tech",
-      name: "Tech & Gadgets",
-      icon: "📱",
-      color: "bg-indigo-100 border-indigo-300",
-    },
-  ];
+  // Add these state variables at the top of your component
+  const [selectedClassGroup, setSelectedClassGroup] = useState("I-II");
+  const [selectedDifficulty, setSelectedDifficulty] = useState("Rookie");
 
+  // Add these constants for the options
+  const classGroups = ["I-II", "III-V", "VI-X"];
+  const difficultyLevels = ["Rookie", "Racer", "Master", "Prodigy", "Wizard"];
+
+  /**
   const gameData = {
     emotions: [
       { id: 1, name: "Happy", emoji: "😊", audioText: "Happy" },
@@ -115,7 +64,23 @@ const ListenMatchGame = () => {
     ],
   };
 
-  const getCurrentItems = () => gameData[selectedCategory] || [];
+  */
+
+  //const getCurrentItems = () => gameData[selectedCategory] || [];
+  const getCurrentItems = () => {
+    // Get the category display name (from your MoaCategories array)
+    const categoryName = MoaCategories.find(
+      (cat) => cat.id === selectedCategory
+    )?.name;
+
+    // Safely navigate the new data structure
+    return (
+      ListenAndMatchGameData[selectedClassGroup]?.[selectedDifficulty]?.[
+        categoryName
+      ] || []
+    );
+  };
+
   const currentItems = getCurrentItems();
   const currentAudio = currentItems[currentAudioIndex];
 
@@ -124,7 +89,7 @@ const ListenMatchGame = () => {
     if (currentAudio) {
       // In a real app, this would play actual audio files
       // For now, we'll use speech synthesis as a demo
-      const utterance = new SpeechSynthesisUtterance(currentAudio.audioText);
+      const utterance = new SpeechSynthesisUtterance(currentAudio.audio);
       utterance.rate = 0.8;
       utterance.pitch = 1.2;
       speechSynthesis.speak(utterance);
@@ -287,14 +252,60 @@ const ListenMatchGame = () => {
           </div>
         ) : (
           <>
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-white mb-4 text-center">
+                Select Class Group & Difficulty:
+              </h2>
+              <div className="flex flex-col md:flex-row gap-4 justify-center mb-6">
+                <div className="flex-1">
+                  <label className="block text-white/80 mb-2">
+                    Class Group
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {classGroups.map((group) => (
+                      <button
+                        key={group}
+                        onClick={() => setSelectedClassGroup(group)}
+                        className={`${
+                          selectedClassGroup === group
+                            ? "bg-blue-500 text-white"
+                            : "bg-white/10 text-white/80 hover:bg-white/20"
+                        } py-2 px-4 rounded-lg transition-all`}
+                      >
+                        {group}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <label className="block text-white/80 mb-2">
+                    Difficulty Level
+                  </label>
+                  <div className="grid grid-cols-5 gap-2">
+                    {difficultyLevels.map((level) => (
+                      <button
+                        key={level}
+                        onClick={() => setSelectedDifficulty(level)}
+                        className={`${
+                          selectedDifficulty === level
+                            ? "bg-purple-500 text-white"
+                            : "bg-white/10 text-white/80 hover:bg-white/20"
+                        } py-2 px-2 text-sm rounded-lg transition-all`}
+                      >
+                        {level}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
             {/* Category Selector */}
-
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-white mb-4 text-center">
                 Choose a Category:
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                {categories.map((category) => (
+                {MoaCategories.map((category) => (
                   <button
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
@@ -312,7 +323,6 @@ const ListenMatchGame = () => {
                 ))}
               </div>
             </div>
-
             {/* Audio Player Section */}
             <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-3xl p-8 mb-8 shadow-2xl border border-white/20">
               <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
@@ -333,14 +343,8 @@ const ListenMatchGame = () => {
                     )}
                   </div>
                 </button>
-                <p className="text-white/80 text-lg">
-                  {currentAudio
-                    ? `Find: ${currentAudio.name}`
-                    : "Select a category to start"}
-                </p>
               </div>
             </div>
-
             {/* Image Grid */}
             <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20">
               <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
@@ -378,9 +382,6 @@ const ListenMatchGame = () => {
                     <div className="text-5xl mb-4 group-hover:animate-bounce">
                       {image.emoji}
                     </div>
-                    <div className="font-bold text-white text-lg">
-                      {image.name}
-                    </div>
 
                     {selectedImage === image.id && gameState === "correct" && (
                       <div className="absolute inset-0 bg-green-400/20 rounded-2xl animate-pulse" />
@@ -389,7 +390,6 @@ const ListenMatchGame = () => {
                 ))}
               </div>
             </div>
-
             {/* Instructions */}
             <div className="mt-8 text-center">
               <p className="text-white/80 text-lg bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-sm px-8 py-4 rounded-full inline-block border border-white/20">

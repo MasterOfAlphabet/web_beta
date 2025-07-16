@@ -3,20 +3,24 @@
   "answers": [
     {
       "questionId": "q1",
-      "selectedAnswer": "apple"
+      "attemptStatus": "Answered", /** Skipped */
+      "selectedAnswer": "apple",
+      "answerTimeInSeconds": 40
     },
     {
       "questionId": "q2",
-      "selectedAnswer": "pear"
+      "attemptStatus": "Skipped" /** Answered */
     }
   ],
+  "completionStatus" : "Submitted", /** Skipped */
   "score": 0,
   "timestamp": "<Firestore serverTimestamp>",
   "startTime": "2025-06-10T14:25:00Z",
   "endTime": "2025-06-10T14:30:00Z",
-  "timeSpent": 300,
+  "totalTimeForChallenge": 300,
   "rank": 0,
   "challengeRating": 0,
   "challengeReview": "",
+  "challengeFeedback": "",
   "submissionDevice": "web"
 }

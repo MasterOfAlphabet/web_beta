@@ -1,98 +1,138 @@
-import React, { useState } from 'react';
-import {
-  Container,
-  Typography,
-  TextField,
-  Button,
-  Grid,
-  Card,
-  CardContent,
-  Alert,
-  CircularProgress,
-  Box,
-  Link,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-  Divider,
-  Fade,
-  useTheme,
-  IconButton,
-  Tooltip,
-  useMediaQuery
-} from '@mui/material';
-import { LocationOn, Phone, Email } from '@mui/icons-material';
-import XIcon from '@mui/icons-material/X';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import React, { useState, useEffect } from 'react';
+import { 
+  MapPin, 
+  Phone, 
+  Mail, 
+  Send, 
+  Loader2, 
+  CheckCircle, 
+  X, 
+  Facebook, 
+  Instagram, 
+  Linkedin, 
+  Youtube, 
+  MessageCircle 
+} from 'lucide-react';
 
 const SOCIALS = [
   {
     href: 'https://x.com/MasterOfAlphabet',
     label: 'X',
-    icon: <XIcon sx={{ fontSize: 28, color: '#222' }} />,
-    color: '#222',
+    icon: X,
+    color: 'from-gray-700 to-gray-900',
+    hoverColor: 'hover:from-gray-800 hover:to-black'
   },
   {
     href: 'https://facebook.com/MasterOfAlphabet',
     label: 'Facebook',
-    icon: <FacebookIcon sx={{ fontSize: 28, color: '#1976d2' }} />,
-    color: '#1976d2',
+    icon: Facebook,
+    color: 'from-blue-500 to-blue-700',
+    hoverColor: 'hover:from-blue-600 hover:to-blue-800'
   },
   {
     href: 'https://instagram.com/MasterOfAlphabet',
     label: 'Instagram',
-    icon: <InstagramIcon sx={{ fontSize: 28, color: '#d6249f' }} />,
-    color: '#d6249f',
+    icon: Instagram,
+    color: 'from-pink-500 to-purple-600',
+    hoverColor: 'hover:from-pink-600 hover:to-purple-700'
   },
   {
     href: 'https://linkedin.com/company/MasterOfAlphabet',
     label: 'LinkedIn',
-    icon: <LinkedInIcon sx={{ fontSize: 28, color: '#0a66c2' }} />,
-    color: '#0a66c2',
+    icon: Linkedin,
+    color: 'from-blue-600 to-blue-800',
+    hoverColor: 'hover:from-blue-700 hover:to-blue-900'
   },
   {
     href: 'https://youtube.com/@MasterOfAlphabet',
     label: 'YouTube',
-    icon: <YouTubeIcon sx={{ fontSize: 30, color: '#f00' }} />,
-    color: '#f00',
+    icon: Youtube,
+    color: 'from-red-500 to-red-700',
+    hoverColor: 'hover:from-red-600 hover:to-red-800'
   },
   {
     href: 'https://wa.me/18005551234',
     label: 'WhatsApp',
-    icon: <WhatsAppIcon sx={{ fontSize: 28, color: '#25d366' }} />,
-    color: '#25d366',
-  },
+    icon: MessageCircle,
+    color: 'from-green-500 to-green-700',
+    hoverColor: 'hover:from-green-600 hover:to-green-800'
+  }
 ];
 
+const FloatingShape = ({ className, delay = 0 }) => (
+  <div 
+    className={`absolute rounded-full bg-gradient-to-r from-purple-400/20 to-pink-400/20 blur-xl animate-pulse ${className}`}
+    style={{ 
+      animationDelay: `${delay}s`,
+      animation: `float 6s ease-in-out infinite ${delay}s, pulse 4s ease-in-out infinite ${delay}s`
+    }}
+  />
+);
+
+const AnimatedBackground = () => (
+  <div className="fixed inset-0 overflow-hidden pointer-events-none">
+    {/* Animated gradient background */}
+    <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 opacity-80" />
+    
+    {/* Floating shapes */}
+    <FloatingShape className="w-72 h-72 top-10 left-10" delay={0} />
+    <FloatingShape className="w-96 h-96 top-1/4 right-20" delay={2} />
+    <FloatingShape className="w-80 h-80 bottom-20 left-1/4" delay={4} />
+    <FloatingShape className="w-64 h-64 bottom-10 right-10" delay={1} />
+    
+    {/* Animated mesh gradient */}
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
+    
+    {/* Grid pattern */}
+    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:100px_100px] opacity-20" />
+  </div>
+);
+
 export default function ContactPage() {
-  const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
-    message: '',
+    message: ''
   });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    
+    // Add floating animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        33% { transform: translateY(-20px) rotate(1deg); }
+        66% { transform: translateY(-10px) rotate(-1deg); }
+      }
+      
+      @keyframes glow {
+        0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+        50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => document.head.removeChild(style);
+  }, []);
 
   const subjectOptions = [
     { value: 'support', label: 'Support' },
     { value: 'feedback', label: 'Feedback' },
     { value: 'inquiry', label: 'General Inquiry' },
-    { value: 'partnership', label: 'Partnership' },
+    { value: 'partnership', label: 'Partnership' }
   ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: '' });
+    setFormData(prev => ({ ...prev, [name]: value }));
+    setErrors(prev => ({ ...prev, [name]: '' }));
     if (success) setSuccess(false);
   };
 
@@ -121,332 +161,276 @@ export default function ContactPage() {
     }, 1300);
   };
 
-  // For a more lively card background
-  const gradientCard =
-    "linear-gradient(120deg, #e1eaff 0%, #f6faff 100%)";
+  if (!mounted) return null;
 
   return (
-    <Box sx={{ position: 'relative', minHeight: '100vh', pb: 8, background: '#f6f8fc' }}>
-      {/* Animated background wave */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          zIndex: 0,
-          height: { xs: 150, sm: 180 },
-          overflow: 'hidden',
-        }}
-        aria-hidden="true"
-      >
-        <svg
-          viewBox="0 0 1600 200"
-          width="100%"
-          height="100%"
-          preserveAspectRatio="none"
-          style={{ display: 'block' }}
-        >
-          <defs>
-            <linearGradient id="wave-gradient" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor={theme.palette.primary.light} />
-              <stop offset="100%" stopColor="#e3f2fd" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M0,120 Q400,220 800,120 T1600,120 V220 H0Z"
-            fill="url(#wave-gradient)"
-            opacity="0.7"
-          />
-        </svg>
-      </Box>
-
-      <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 }, position: 'relative', zIndex: 1 }}>
-        <Box sx={{ mb: 7, textAlign: "center", position: 'relative' }}>
-          <Typography
-            variant={isSm ? "h3" : "h2"}
-            sx={{
-              fontWeight: 900,
-              background: `linear-gradient(90deg, ${theme.palette.primary.main}, #1976d2 90%)`,
-              backgroundClip: "text",
-              color: "transparent",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              mb: 2,
-              letterSpacing: -1.2,
-            }}
-          >
-            Get in Touch
-          </Typography>
-          <Typography
-            variant="h6"
-            color="text.secondary"
-            sx={{
-              mb: 2,
-              maxWidth: 660,
-              mx: "auto",
-              fontWeight: 400,
-              fontSize: { xs: 17, sm: 20 }
-            }}
-          >
-            Have a question, feedback, or partnership idea? We're always excited to connect with you. Reach out and let’s start a conversation!
-          </Typography>
-          {/* Social Media Links */}
-          <Box sx={{ mt: 3, mb: 1, display: 'flex', justifyContent: 'center', gap: 2 }}>
-            {SOCIALS.map(social => (
-              <Tooltip key={social.label} title={social.label}>
-                <IconButton
-                  component="a"
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{
-                    bgcolor: '#fff',
-                    border: `2px solid ${social.color}`,
-                    transition: 'background 0.2s, transform 0.18s',
-                    mx: 0.5,
-                    '&:hover': {
-                      bgcolor: social.color,
-                      color: '#fff',
-                      transform: 'translateY(-4px) scale(1.08)',
-                      '& svg': { color: '#fff' }
-                    }
-                  }}
-                  aria-label={social.label}
-                >
-                  {social.icon}
-                </IconButton>
-              </Tooltip>
-            ))}
-          </Box>
-        </Box>
-        <Grid container spacing={5}>
-          {/* Contact Info */}
-          <Grid item xs={12} md={5}>
-            <Fade in timeout={1250}>
-              <Card
-                sx={{
-                  height: "100%",
-                  p: 0,
-                  boxShadow: 8,
-                  borderRadius: 5,
-                  background: gradientCard,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center"
-                }}
-              >
-                <CardContent sx={{ px: { xs: 3, md: 5 }, py: { xs: 4, md: 6 } }}>
-                  <Typography variant="h4" sx={{ fontWeight: 800, mb: 2, color: "primary.main", letterSpacing: -1 }}>
-                    Contact Information
-                  </Typography>
-                  <Divider sx={{ mb: 3, borderColor: theme.palette.primary.light }} />
-                  <Box sx={{ display: "flex", alignItems: "flex-start", mb: 3 }}>
-                    <LocationOn color="primary" sx={{ mr: 2, mt: 0.5, fontSize: 30 }} />
-                    <Typography variant="body1" color="text.secondary" sx={{ fontSize: 18 }}>
-                      <b>Master of Alphabet HQ</b><br />
-                      123 Alphabet Avenue<br />
-                      Education City, EC 12345
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-                    <Phone color="primary" sx={{ mr: 2, fontSize: 26 }} />
-                    <Link
-                      href="tel:+18005551234"
-                      color="primary"
-                      underline="hover"
-                      variant="body1"
-                      sx={{
-                        fontSize: 18,
-                        fontWeight: 700,
-                        letterSpacing: 1,
-                        transition: "color 0.2s",
-                        "&:hover": { color: "secondary.main" }
-                      }}
-                    >
-                      +1 (800) 555-1234
-                    </Link>
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Email color="primary" sx={{ mr: 2, fontSize: 26 }} />
-                    <Link
-                      href="mailto:support@masterofalphabet.com"
-                      color="primary"
-                      underline="hover"
-                      variant="body1"
-                      sx={{
-                        fontSize: 18,
-                        fontWeight: 700,
-                        wordBreak: "break-all",
-                        transition: "color 0.2s",
-                        "&:hover": { color: "secondary.main" }
-                      }}
-                    >
-                      support@masterofalphabet.com
-                    </Link>
-                  </Box>
-                  <Divider sx={{ my: 4 }} />
-                  {/* Google Map Embed */}
-                  <Box
-                    sx={{
-                      borderRadius: 3,
-                      overflow: 'hidden',
-                      boxShadow: 2,
-                      mb: 2,
-                      border: '2px solid #e3eafc'
+    <div className="min-h-screen relative">
+      <AnimatedBackground />
+      
+      <div className="relative z-10 px-4 py-8 md:py-16">
+        <div className="max-w-7xl mx-auto">
+          {/* Header Section */}
+          <div className="text-center mb-16">
+            <div className="inline-block">
+              <h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent mb-6 leading-tight">
+                Get in Touch
+              </h1>
+              <div className="h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-8 transform scale-x-0 animate-pulse" 
+                   style={{ animation: 'scaleX 2s ease-out 0.5s forwards, pulse 2s ease-in-out infinite' }} />
+            </div>
+            
+            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12 leading-relaxed">
+              Have a question, feedback, or partnership idea? We're always excited to connect with you. 
+              <span className="block mt-2 text-purple-300 font-medium">Reach out and let's start a conversation!</span>
+            </p>
+            
+            {/* Social Media Links */}
+            <div className="flex justify-center gap-4 flex-wrap">
+              {SOCIALS.map((social, index) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group relative p-4 rounded-2xl bg-gradient-to-r ${social.color} 
+                               transform hover:scale-110 transition-all duration-300 ${social.hoverColor}
+                               shadow-lg hover:shadow-2xl border border-white/10 backdrop-blur-sm`}
+                    style={{ 
+                      animationDelay: `${index * 0.1}s`,
+                      animation: `fadeInUp 0.8s ease-out ${index * 0.1}s both`
                     }}
                   >
-                    <iframe
-                      title="Master of Alphabet HQ Location"
-                      width="100%"
-                      height="180"
-                      style={{ border: 0 }}
-                      loading="lazy"
-                      allowFullScreen
-                      referrerPolicy="no-referrer-when-downgrade"
-                      src="https://www.google.com/maps?q=123+Alphabet+Avenue+Education+City+EC+12345&output=embed"
-                    />
-                  </Box>
-                  <Typography variant="body2" color="text.secondary" sx={{ fontSize: 15, mt: 2 }}>
-                    <i>We usually respond within 1-2 business days.</i>
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Fade>
-          </Grid>
-          {/* Feedback Form */}
-          <Grid item xs={12} md={7}>
-            <Fade in timeout={900}>
-              <Card
-                sx={{
-                  boxShadow: 12,
-                  borderRadius: 5,
-                  px: { xs: 1, md: 2 },
-                  background: "#fff"
-                }}
-              >
-                <CardContent sx={{ p: { xs: 3, md: 5 } }}>
-                  <Typography variant="h4" gutterBottom sx={{ fontWeight: 800, color: "primary.main", mb: 1, letterSpacing: -1 }}>
-                    Send Us a Message
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-                    Fill out the form below and we’ll get back to you soon.
-                  </Typography>
-                  <Fade in={success} timeout={400}>
-                    <div>
-                      {success && (
-                        <Alert severity="success" sx={{ mb: 3 }}>
-                          Your message has been sent successfully!
-                        </Alert>
-                      )}
+                    <Icon size={24} className="text-white group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-3 py-1 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                      {social.label}
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
                     </div>
-                  </Fade>
-                  <form onSubmit={handleSubmit} autoComplete="off">
-                    <Grid container spacing={3}>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          fullWidth
-                          label="Full Name"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          error={!!errors.name}
-                          helperText={errors.name}
-                          variant="outlined"
-                          autoComplete="off"
-                          InputProps={{
-                            sx: { fontWeight: 500 }
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          fullWidth
-                          label="Email Address"
-                          name="email"
-                          type="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          error={!!errors.email}
-                          helperText={errors.email}
-                          variant="outlined"
-                          autoComplete="off"
-                          InputProps={{
-                            sx: { fontWeight: 500 }
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <FormControl fullWidth error={!!errors.subject}>
-                          <InputLabel id="subject-label">Subject</InputLabel>
-                          <Select
-                            labelId="subject-label"
-                            label="Subject"
-                            name="subject"
-                            value={formData.subject}
-                            onChange={handleChange}
-                            variant="outlined"
-                          >
-                            {subjectOptions.map((option) => (
-                              <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                          {errors.subject && (
-                            <Typography variant="caption" color="error" sx={{ mt: 1 }}>
-                              {errors.subject}
-                            </Typography>
-                          )}
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          fullWidth
-                          label="Your Message"
-                          name="message"
-                          multiline
-                          rows={6}
-                          value={formData.message}
-                          onChange={handleChange}
-                          error={!!errors.message}
-                          helperText={errors.message}
-                          variant="outlined"
-                          autoComplete="off"
-                          InputProps={{
-                            sx: { fontWeight: 500, fontSize: 16 }
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sx={{ textAlign: 'center', mt: 2 }}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          type="submit"
-                          disabled={submitting}
-                          startIcon={submitting ? <CircularProgress size={20} /> : null}
-                          sx={{
-                            px: 8,
-                            py: 2,
-                            fontWeight: 800,
-                            fontSize: 18,
-                            letterSpacing: 1,
-                            borderRadius: 3,
-                            boxShadow: "0 4px 20px 0 rgba(80,130,250,.13)",
-                            transition: "background 0.2s"
-                          }}
-                        >
-                          {submitting ? 'Sending...' : 'Send Message'}
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </form>
-                </CardContent>
-              </Card>
-            </Fade>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="grid lg:grid-cols-5 gap-8 max-w-6xl mx-auto">
+            {/* Contact Information */}
+            <div className="lg:col-span-2">
+              <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl h-full
+                             hover:bg-white/15 transition-all duration-500 transform hover:scale-105">
+                <div className="space-y-8">
+                  <div className="text-center">
+                    <h2 className="text-3xl font-bold text-white mb-2">Contact Information</h2>
+                    <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mx-auto" />
+                  </div>
+                  
+                  <div className="space-y-6">
+                    <div className="flex items-start space-x-4 group">
+                      <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                        <MapPin size={24} className="text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-white font-semibold text-lg mb-1">Master of Alphabet HQ</h3>
+                        <p className="text-gray-300 leading-relaxed">
+                          123 Alphabet Avenue<br />
+                          Education City, EC 12345
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-4 group">
+                      <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-3 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                        <Phone size={24} className="text-white" />
+                      </div>
+                      <div>
+                        <a href="tel:+18005551234" 
+                           className="text-white font-semibold text-lg hover:text-purple-300 transition-colors duration-300">
+                          +1 (800) 555-1234
+                        </a>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-4 group">
+                      <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-3 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                        <Mail size={24} className="text-white" />
+                      </div>
+                      <div>
+                        <a href="mailto:support@masterofalphabet.com" 
+                           className="text-white font-semibold text-lg hover:text-purple-300 transition-colors duration-300 break-all">
+                          support@masterofalphabet.com
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Interactive Map */}
+                  <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl p-4 border border-white/10">
+                    <div className="bg-gray-800 rounded-xl overflow-hidden shadow-inner">
+                      <iframe
+                        title="Master of Alphabet HQ Location"
+                        width="100%"
+                        height="200"
+                        style={{ border: 0 }}
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps?q=123+Alphabet+Avenue+Education+City+EC+12345&output=embed"
+                        className="rounded-xl"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="text-center">
+                    <p className="text-gray-300 italic">
+                      ✨ We usually respond within 1-2 business days
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <div className="lg:col-span-3">
+              <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl
+                             hover:bg-white/15 transition-all duration-500">
+                <div className="text-center mb-8">
+                  <h2 className="text-3xl font-bold text-white mb-2">Send Us a Message</h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mx-auto mb-4" />
+                  <p className="text-gray-300">Fill out the form below and we'll get back to you soon.</p>
+                </div>
+                
+                {success && (
+                  <div className="mb-6 p-4 bg-green-500/20 border border-green-500/30 rounded-2xl backdrop-blur-sm">
+                    <div className="flex items-center space-x-3">
+                      <CheckCircle size={24} className="text-green-400" />
+                      <span className="text-green-100 font-medium">Your message has been sent successfully!</span>
+                    </div>
+                  </div>
+                )}
+                
+                <div className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-white font-medium">Full Name</label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 
+                                 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm
+                                 transition-all duration-300 hover:bg-white/15"
+                        placeholder="Enter your full name"
+                      />
+                      {errors.name && <p className="text-red-400 text-sm">{errors.name}</p>}
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <label className="text-white font-medium">Email Address</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 
+                                 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm
+                                 transition-all duration-300 hover:bg-white/15"
+                        placeholder="Enter your email address"
+                      />
+                      {errors.email && <p className="text-red-400 text-sm">{errors.email}</p>}
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-white font-medium">Subject</label>
+                    <select
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white 
+                               focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm
+                               transition-all duration-300 hover:bg-white/15"
+                    >
+                      <option value="" className="bg-gray-800 text-white">Select a subject</option>
+                      {subjectOptions.map(option => (
+                        <option key={option.value} value={option.value} className="bg-gray-800 text-white">
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.subject && <p className="text-red-400 text-sm">{errors.subject}</p>}
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-white font-medium">Your Message</label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      rows={6}
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 
+                               focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm
+                               transition-all duration-300 hover:bg-white/15 resize-none"
+                      placeholder="Tell us how we can help you..."
+                    />
+                    {errors.message && <p className="text-red-400 text-sm">{errors.message}</p>}
+                  </div>
+                  
+                  <div className="text-center pt-4">
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className="group relative px-12 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl 
+                               text-white font-bold text-lg shadow-lg hover:shadow-2xl transform hover:scale-105 
+                               transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed
+                               hover:from-purple-700 hover:to-pink-700 border border-white/10"
+                    >
+                      <span className="flex items-center justify-center space-x-3">
+                        {submitting ? (
+                          <>
+                            <Loader2 size={20} className="animate-spin" />
+                            <span>Sending...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Send size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
+                            <span>Send Message</span>
+                          </>
+                        )}
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-30 group-hover:opacity-60 transition-opacity duration-300 -z-10" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Additional CSS for animations */}
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes scaleX {
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
+        }
+      `}</style>
+    </div>
   );
 }

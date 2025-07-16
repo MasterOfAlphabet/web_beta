@@ -1,53 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
+import { MoaCategories } from "../data/MoAWordCategories";
+
+import { BalloonPopGameWordData } from "../data/Games/BalloonPopGame/BalloonPopGameWordData";
 
 const BalloonPopGame = () => {
-  const wordsByDifficulty = {
-    easy: [
-      "CAT",
-      "DOG",
-      "SUN",
-      "CAR",
-      "BAT",
-      "HAT",
-      "BIG",
-      "RED",
-      "BLUE",
-      "FUN",
-    ],
-    medium: [
-      "APPLE",
-      "GRAPE",
-      "LEMON",
-      "PEACH",
-      "MANGO",
-      "TIGER",
-      "HORSE",
-      "EAGLE",
-      "OCEAN",
-      "PLANE",
-    ],
-    hard: [
-      "ELEPHANT",
-      "BUTTERFLY",
-      "KANGAROO",
-      "CROCODILE",
-      "RHINOCEROS",
-      "AEROPLANE",
-      "UNIVERSE",
-      "MOUNTAIN",
-      "HOSPITAL",
-      "BASKETBALL",
-    ],
-  };
-
   // Game state
   const [gameStage, setGameStage] = useState("setup");
   const [gameSettings, setGameSettings] = useState({
-    difficulty: "medium",
-    skillLevel: 2,
-    totalWords: 5,
+    classGroup: "I-II",
+    category: "emotions",
+    totalWords: 3,
+    skillLevel: 2, // Default to "Master"
   });
   const [gameResults, setGameResults] = useState(null);
+
+  const [selectedCategory, setSelectedCategory] = useState("emotions");
 
   // Active game state
   const [selectedWord, setSelectedWord] = useState("");
@@ -65,8 +32,6 @@ const BalloonPopGame = () => {
   const [startTime, setStartTime] = useState(null);
   const [wordTimeLeft, setWordTimeLeft] = useState(0);
   const [gameTimeLeft, setGameTimeLeft] = useState(0);
-
-  // Add these state variables
   const [wordStartTimes, setWordStartTimes] = useState([]);
   const [completedWords, setCompletedWords] = useState([]);
 
@@ -86,6 +51,8 @@ const BalloonPopGame = () => {
   const [animationPhase, setAnimationPhase] = useState(0);
   const [confettiActive, setConfettiActive] = useState(true);
 
+  const classGroups = ["I-II", "III-V", "VI-X"];
+
   const skillLevels = [
     { name: "Rookie", timeMultiplier: 1.5, scoreMultiplier: 1 },
     { name: "Racer", timeMultiplier: 1.3, scoreMultiplier: 1.2 },
@@ -94,11 +61,22 @@ const BalloonPopGame = () => {
     { name: "Wizard", timeMultiplier: 0.6, scoreMultiplier: 3 },
   ];
 
-  const difficultyLevels = [
-    { key: "easy", label: "Easy", icon: "🌱" },
-    { key: "medium", label: "Medium", icon: "⚡" },
-    { key: "hard", label: "Hard", icon: "🔥" },
-  ];
+  const getWordsByCategory = () => {
+    // Get the current skill level name (e.g., "Rookie", "Racer")
+    const currentSkillLevel = skillLevels[gameSettings.skillLevel].name;
+
+    // Get words for the selected class group and skill level
+    const classGroupData =
+      BalloonPopGameWordData[gameSettings.classGroup] || {};
+    const skillLevelData = classGroupData[currentSkillLevel] || {};
+
+    // Find matching category (case-insensitive)
+    const categoryKey = Object.keys(skillLevelData).find(
+      (key) => key.toLowerCase() === gameSettings.category.toLowerCase()
+    );
+
+    return categoryKey ? skillLevelData[categoryKey] : [];
+  };
 
   const scrambleLetters = (word) => {
     const letters = word.split("").map((letter, index) => ({
@@ -115,25 +93,41 @@ const BalloonPopGame = () => {
   };
 
   const handleStartGame = () => {
-    const difficultyWords = [...wordsByDifficulty[gameSettings.difficulty]];
+    const categoryWords = [...getWordsByCategory()];
+
+    console.log("Selected words:", {
+      classGroup: gameSettings.classGroup,
+      skillLevel: skillLevels[gameSettings.skillLevel].name,
+      category: gameSettings.category,
+      wordsFound: categoryWords,
+    });
+
+    if (categoryWords.length === 0) {
+      alert(`No words available for:
+      Class: ${gameSettings.classGroup}
+      Skill: ${skillLevels[gameSettings.skillLevel].name}
+      Category: ${gameSettings.category}
+    `);
+      return;
+    }
+
+    // Rest of your existing handleStartGame code remains the same...
     const selectedWords = [];
 
-    // Shuffle words
-    for (let i = difficultyWords.length - 1; i > 0; i--) {
+    // Shuffle and select words
+    for (let i = categoryWords.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [difficultyWords[i], difficultyWords[j]] = [
-        difficultyWords[j],
-        difficultyWords[i],
+      [categoryWords[i], categoryWords[j]] = [
+        categoryWords[j],
+        categoryWords[i],
       ];
     }
 
-    // Select words
-    for (
-      let i = 0;
-      i < Math.min(gameSettings.totalWords, difficultyWords.length);
-      i++
-    ) {
-      selectedWords.push(difficultyWords[i]);
+    const wordCount = Math.min(gameSettings.totalWords, 5);
+    for (let i = 0; i < wordCount; i++) {
+      if (categoryWords[i]) {
+        selectedWords.push(categoryWords[i].toUpperCase()); // Ensure uppercase
+      }
     }
 
     // Initialize game state
@@ -145,7 +139,7 @@ const BalloonPopGame = () => {
     setSelectedWord(selectedWords[0]);
     setWordStats([]);
     setCompletedWords([]);
-    setWordStartTimes([Date.now()]); // Track first word start time
+    setWordStartTimes([Date.now()]);
     setStartTime(Date.now());
 
     // Initialize timers
@@ -153,7 +147,7 @@ const BalloonPopGame = () => {
       60 * skillLevels[gameSettings.skillLevel].timeMultiplier
     );
     setWordTimeLeft(wordTime);
-    setGameTimeLeft(wordTime * gameSettings.totalWords);
+    setGameTimeLeft(wordTime * wordCount);
 
     scrambleLetters(selectedWords[0]);
     setGameStage("active");
@@ -210,9 +204,8 @@ const BalloonPopGame = () => {
       setShowCorrectPop(scrambledIndex);
       setTimeout(() => setShowCorrectPop(null), 1000);
 
-      // If word is completed, handle it
       if (newPoppedIndices.length === selectedWord.length) {
-        handleWordCompletion(); // No delay needed now
+        handleWordCompletion();
       }
     } else {
       const newLives = lives - 1;
@@ -220,9 +213,7 @@ const BalloonPopGame = () => {
       setShowWrongPop(scrambledIndex);
       setTimeout(() => setShowWrongPop(null), 1000);
 
-      // If this was the last life, end the game with current progress
       if (newLives <= 0) {
-        // If we just completed the word (last correct letter + wrong click)
         if (poppedIndices.length + 1 === selectedWord.length) {
           handleWordCompletion().then(() => endGame(false));
         } else {
@@ -231,8 +222,7 @@ const BalloonPopGame = () => {
       }
     }
   };
-  
-  // Timer effect
+
   useEffect(() => {
     if (gameStage !== "active") return;
 
@@ -270,11 +260,9 @@ const BalloonPopGame = () => {
     const now = Date.now();
     const totalTime = Math.floor((now - wordStartTimes[0]) / 1000);
 
-    // Use passed-in stats if available, else fall back to state
     const allWordStats = finalWordStats || [...wordStats];
     const finalScoreValue = finalScore || score;
 
-    // Check if the last word was completed but not recorded
     const lastWordCompleted = poppedIndices.length === selectedWord.length;
 
     if (lastWordCompleted && !completedWords.includes(selectedWord)) {
@@ -298,7 +286,6 @@ const BalloonPopGame = () => {
       setCompletedWords((prev) => [...prev, selectedWord]);
     }
 
-    // Include current word if incomplete
     if (!lastWordCompleted && allWordStats.length <= currentWordIndex) {
       const wordTime = Math.floor(
         (now - wordStartTimes[currentWordIndex]) / 1000
@@ -314,6 +301,7 @@ const BalloonPopGame = () => {
         attempts: poppedIndices.length,
       });
     }
+
     const perfectWords = allWordStats.filter(
       (stat) => stat.perfect || stat.attempts === stat.word.length
     ).length;
@@ -335,9 +323,10 @@ const BalloonPopGame = () => {
       finalScore: score + perfectWords * 100,
       totalTime,
       wordsCompleted: allWordStats.length,
-      totalWords: gameSettings.totalWords,
+      totalWords: Math.min(gameSettings.totalWords, 5),
       lives,
-      difficulty: gameSettings.difficulty,
+      classGroup: gameSettings.classGroup,
+      category: gameSettings.category,
       skillLevel: skillLevels[gameSettings.skillLevel].name,
       accuracy,
       averageTimePerWord:
@@ -372,7 +361,6 @@ const BalloonPopGame = () => {
       selectedWord.length *
       skillLevels[gameSettings.skillLevel].scoreMultiplier;
 
-    // Compute new state in memory first
     const newWordStat = {
       word: selectedWord,
       time: wordTime,
@@ -383,7 +371,6 @@ const BalloonPopGame = () => {
     const newWordStats = [...wordStats, newWordStat];
     const newScore = score + wordScore;
 
-    // Update state
     setWordStats(newWordStats);
     setScore(newScore);
     setCompletedWords((prev) => [...prev, selectedWord]);
@@ -399,7 +386,6 @@ const BalloonPopGame = () => {
         Math.floor(60 * skillLevels[gameSettings.skillLevel].timeMultiplier)
       );
     } else {
-      // Pass computed values directly to avoid state delay issues
       endGame(true, newWordStats, newScore);
     }
   };
@@ -409,7 +395,6 @@ const BalloonPopGame = () => {
   const handleMainMenu = () => setGameStage("setup");
   const handleSettings = () => setGameStage("setup");
 
-  // Results screen animations
   useEffect(() => {
     if (gameStage !== "results") return;
 
@@ -426,12 +411,14 @@ const BalloonPopGame = () => {
     };
   }, [gameStage]);
 
-  const currentProgress = () => selectedWord.slice(0, poppedIndices.length);
+  //const currentProgress = () => selectedWord.slice(0, poppedIndices.length);
+  const currentProgress = () =>
+    selectedWord ? selectedWord.slice(0, poppedIndices.length) : "";
 
   const progressPercentage = () => {
     const currentWordProgress = poppedIndices.length / selectedWord.length;
     const totalProgress = currentWordIndex + currentWordProgress;
-    return (totalProgress / gameSettings.totalWords) * 100;
+    return (totalProgress / Math.min(gameSettings.totalWords, 5)) * 100;
   };
 
   const letterProgressPercentage = () =>
@@ -455,18 +442,15 @@ const BalloonPopGame = () => {
     return { grade: "D", color: "from-gray-400 to-gray-500" };
   };
 
-  // Render Setup Screen
   if (gameStage === "setup") {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden">
-        {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -left-40 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-purple-500/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
           <div className="absolute top-1/2 left-1/2 w-60 h-60 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-2000"></div>
         </div>
 
-        {/* Floating particles */}
         <div className="absolute inset-0 pointer-events-none">
           {[...Array(20)].map((_, i) => (
             <div
@@ -483,7 +467,6 @@ const BalloonPopGame = () => {
         </div>
 
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen py-8 px-4">
-          {/* Header */}
           <div className="text-center mb-12 animate-fade-in">
             <div className="mb-6">
               <div className="text-8xl animate-bounce mb-4">🎈</div>
@@ -503,49 +486,74 @@ const BalloonPopGame = () => {
             </p>
           </div>
 
-          {/* Main Settings Card */}
           <div className="w-full max-w-2xl">
             <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl border border-white/20 p-8 hover:bg-white/15 transition-all duration-500 hover:shadow-3xl hover:scale-[1.02]">
-              {/* Difficulty Selection */}
+              {/* Class Group Selection */}
               <div className="mb-10">
                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                  <span className="text-3xl">🎯</span>
-                  Difficulty Level
+                  <span className="text-3xl">🏫</span>
+                  Class Group
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {difficultyLevels.map((level) => (
+                <div className="grid grid-cols-3 gap-4">
+                  {classGroups.map((group) => (
                     <button
-                      key={level.key}
+                      key={group}
                       onClick={() =>
-                        setGameSettings({
-                          ...gameSettings,
-                          difficulty: level.key,
-                        })
+                        setGameSettings({ ...gameSettings, classGroup: group })
                       }
                       className={`group relative p-6 rounded-2xl border-2 transition-all duration-300 hover:scale-105 ${
-                        gameSettings.difficulty === level.key
+                        gameSettings.classGroup === group
                           ? "border-white/80 bg-white/30 shadow-lg ring-4 ring-white/20"
                           : "border-white/20 bg-white/5 hover:border-white/40 hover:bg-white/10"
                       }`}
                     >
                       <div className="text-center">
                         <div className="text-4xl mb-3 group-hover:animate-bounce">
-                          {level.icon}
+                          {group === "I-II"
+                            ? "👦"
+                            : group === "III-V"
+                            ? "🧒"
+                            : "👨"}
                         </div>
-                        <div
-                          className={`text-lg font-bold mb-2 ${
-                            gameSettings.difficulty === level.key
-                              ? "text-white"
-                              : "text-white/80"
-                          }`}
-                        >
-                          {level.label}
-                        </div>
-                        <div className="text-sm text-white/60">
-                          {level.key === "easy" && "3-4 letters"}
-                          {level.key === "medium" && "5-6 letters"}
-                          {level.key === "hard" && "7+ letters"}
-                        </div>
+                        <div className="text-lg font-bold mb-2">{group}</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Category Selector */}
+              <div className="mb-8">
+                <h2 className="text-2xl font-bold text-white mb-4 text-center">
+                  Choose a Category:
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  {MoaCategories.map((category) => (
+                    <button
+                      key={category.id}
+                      // In your category selector JSX, update the onClick handler:
+                      // In your category selector, update the onClick handler:
+                      onClick={() => {
+                        const selectedCat = MoaCategories.find(
+                          (c) => c.id === category.id
+                        );
+                        if (selectedCat) {
+                          setSelectedCategory(selectedCat.id);
+                          setGameSettings({
+                            ...gameSettings,
+                            category: selectedCat.name,
+                          });
+                        }
+                      }}
+                      className={`${category.color} ${
+                        selectedCategory === category.id
+                          ? "ring-4 ring-white ring-opacity-60 scale-105"
+                          : "hover:scale-105"
+                      } rounded-xl p-4 border-2 transition-all duration-200 shadow-lg`}
+                    >
+                      <div className="text-3xl mb-2">{category.icon}</div>
+                      <div className="font-bold text-gray-700 text-sm">
+                        {category.name}
                       </div>
                     </button>
                   ))}
@@ -634,8 +642,8 @@ const BalloonPopGame = () => {
                   <div className="relative">
                     <input
                       type="range"
-                      min="3"
-                      max="10"
+                      min="1"
+                      max="5"
                       value={gameSettings.totalWords}
                       onChange={(e) =>
                         setGameSettings({
@@ -648,19 +656,20 @@ const BalloonPopGame = () => {
                         background: `linear-gradient(to right, 
                           rgb(59 130 246) 0%, 
                           rgb(59 130 246) ${
-                            ((gameSettings.totalWords - 3) / 7) * 100
+                            ((gameSettings.totalWords - 1) / 4) * 100
                           }%, 
                           rgba(255,255,255,0.2) ${
-                            ((gameSettings.totalWords - 3) / 7) * 100
+                            ((gameSettings.totalWords - 1) / 4) * 100
                           }%, 
                           rgba(255,255,255,0.2) 100%)`,
                       }}
                     />
                     <div className="flex justify-between text-xs text-white/60 mt-3 px-1">
-                      <span>3 (Quick)</span>
-                      <span>5 (Normal)</span>
-                      <span>7 (Long)</span>
-                      <span>10 (Marathon)</span>
+                      <span>1</span>
+                      <span>2</span>
+                      <span>3</span>
+                      <span>4</span>
+                      <span>5</span>
                     </div>
                   </div>
                 </div>
@@ -688,9 +697,8 @@ const BalloonPopGame = () => {
                 <div className="backdrop-blur-lg bg-white/5 rounded-xl p-4 border border-white/10">
                   <div className="text-white/60 text-sm mb-2">Game Preview</div>
                   <div className="text-white/80 font-medium">
-                    {gameSettings.difficulty.charAt(0).toUpperCase() +
-                      gameSettings.difficulty.slice(1)}{" "}
-                    • {skillLevels[gameSettings.skillLevel].name} •{" "}
+                    {gameSettings.classGroup} •{" "}
+                    {gameSettings.category.replace(/-/g, " ")} •{" "}
                     {gameSettings.totalWords} words
                   </div>
                   <div className="text-white/60 text-xs mt-1">
@@ -708,7 +716,6 @@ const BalloonPopGame = () => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="mt-12 text-center">
             <p className="text-white/50 text-sm">
               🎈 Click balloons in the correct order to spell words • Test your
@@ -763,18 +770,15 @@ const BalloonPopGame = () => {
     );
   }
 
-  // Render Active Game Screen
   if (gameStage === "active") {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden">
-        {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-20 left-20 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl animate-pulse"></div>
           <div className="absolute bottom-20 right-20 w-40 h-40 bg-purple-500/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
           <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-pink-500/20 rounded-full blur-2xl animate-pulse delay-2000"></div>
         </div>
 
-        {/* Floating sparkles */}
         <div className="absolute inset-0 pointer-events-none">
           {[...Array(15)].map((_, i) => (
             <div
@@ -793,12 +797,12 @@ const BalloonPopGame = () => {
         </div>
 
         <div className="relative z-10 py-6 px-4">
-          {/* Top Progress Bar */}
           <div className="mb-6 flex items-center w-full max-w-6xl mx-auto">
             <div className="w-3/4 pr-4">
               <div className="flex justify-between mb-2">
                 <span className="text-sm font-medium text-white/80">
-                  Word {currentWordIndex + 1} of {gameSettings.totalWords}
+                  Word {currentWordIndex + 1} of{" "}
+                  {Math.min(gameSettings.totalWords, 5)}
                 </span>
                 <span className="text-sm font-medium text-white/80">
                   {Math.round(progressPercentage())}%
@@ -824,9 +828,7 @@ const BalloonPopGame = () => {
             </div>
           </div>
 
-          {/* Game Stats */}
           <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {/* Score */}
             <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-4 border border-white/20 hover:bg-white/15 transition-all duration-300 group">
               <div className="text-center">
                 <div className="text-2xl mb-2 group-hover:animate-bounce">
@@ -839,7 +841,6 @@ const BalloonPopGame = () => {
               </div>
             </div>
 
-            {/* Lives */}
             <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-4 border border-white/20 hover:bg-white/15 transition-all duration-300 group">
               <div className="text-center">
                 <div className="text-2xl mb-2 group-hover:animate-bounce">
@@ -863,7 +864,6 @@ const BalloonPopGame = () => {
               </div>
             </div>
 
-            {/* Timer */}
             <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-4 border border-white/20 hover:bg-white/15 transition-all duration-300 group">
               <div className="text-center">
                 <div className="text-2xl mb-2 group-hover:animate-bounce">
@@ -885,7 +885,6 @@ const BalloonPopGame = () => {
               </div>
             </div>
 
-            {/* Progress */}
             <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-4 border border-white/20 hover:bg-white/15 transition-all duration-300 group">
               <div className="text-center">
                 <div className="text-2xl mb-2 group-hover:animate-bounce">
@@ -899,7 +898,6 @@ const BalloonPopGame = () => {
             </div>
           </div>
 
-          {/* Word Display */}
           <div className="max-w-4xl mx-auto mb-8">
             <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
               <div className="text-center">
@@ -919,7 +917,6 @@ const BalloonPopGame = () => {
                   {selectedWord}
                 </div>
 
-                {/* Letter Progress Bar */}
                 <div className="w-full bg-white/20 rounded-full h-2 backdrop-blur-sm border border-white/30">
                   <div
                     className="bg-gradient-to-r from-green-400 to-emerald-500 h-2 rounded-full transition-all duration-500 shadow-lg"
@@ -936,7 +933,6 @@ const BalloonPopGame = () => {
             </div>
           </div>
 
-          {/* Balloons Grid */}
           <div
             ref={gameContainerRef}
             className="max-w-6xl mx-auto flex flex-wrap justify-center gap-6 md:gap-8 min-h-[400px] items-center relative"
@@ -957,29 +953,20 @@ const BalloonPopGame = () => {
                       showCorrectPop === scrambledIndex ? "animate-bounce" : ""
                     }`}
                   >
-                    {/* Balloon */}
                     <div
                       className={`w-20 h-24 md:w-24 md:h-28 rounded-full bg-gradient-to-br ${
                         balloonColors[scrambledIndex % balloonColors.length]
                       } shadow-2xl flex items-center justify-center text-white font-bold text-2xl md:text-3xl border-2 border-white/30 backdrop-blur-sm relative overflow-hidden group`}
                     >
-                      {/* Balloon highlight */}
                       <div className="absolute top-2 left-2 w-4 h-4 bg-white/40 rounded-full blur-sm"></div>
-
-                      {/* Letter */}
                       <span className="relative z-10 drop-shadow-lg">
                         {letter}
                       </span>
-
-                      {/* Balloon shine effect */}
                       <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent group-hover:from-white/30 transition-all duration-300"></div>
                     </div>
-
-                    {/* Balloon string */}
                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 h-8 md:h-10 bg-white/60 -mb-6 md:-mb-8 rounded-full shadow-sm"></div>
                   </button>
 
-                  {/* Pop effects */}
                   {showCorrectPop === scrambledIndex && (
                     <div className="absolute inset-0 pointer-events-none">
                       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl animate-ping">
@@ -1006,7 +993,6 @@ const BalloonPopGame = () => {
             )}
           </div>
 
-          {/* Time Warning */}
           {wordTimeLeft <= 10 && (
             <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
               <div className="backdrop-blur-xl bg-red-500/20 rounded-3xl p-8 border border-red-500/30 animate-pulse">
@@ -1019,7 +1005,6 @@ const BalloonPopGame = () => {
             </div>
           )}
 
-          {/* Instructions */}
           <div className="max-w-4xl mx-auto mt-8 text-center">
             <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10">
               <p className="text-white/70 text-lg">
@@ -1069,13 +1054,11 @@ const BalloonPopGame = () => {
     );
   }
 
-  // Render Results Screen
   if (gameStage === "results" && gameResults) {
     const scoreGrade = getScoreGrade(gameResults.finalScore);
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden">
-        {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-20 left-20 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-20 right-20 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -1083,7 +1066,6 @@ const BalloonPopGame = () => {
           <div className="absolute top-1/4 right-1/3 w-36 h-36 bg-cyan-500/20 rounded-full blur-3xl animate-pulse delay-3000"></div>
         </div>
 
-        {/* Confetti Animation */}
         {confettiActive && (
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             {[...Array(30)].map((_, i) => (
@@ -1114,7 +1096,6 @@ const BalloonPopGame = () => {
         )}
 
         <div className="relative z-10 py-8 px-4">
-          {/* Main Results Header */}
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
               animationPhase >= 1
@@ -1137,7 +1118,6 @@ const BalloonPopGame = () => {
             </div>
           </div>
 
-          {/* Score Display */}
           <div
             className={`max-w-4xl mx-auto mb-8 transition-all duration-1000 delay-500 ${
               animationPhase >= 2
@@ -1195,7 +1175,6 @@ const BalloonPopGame = () => {
             </div>
           </div>
 
-          {/* Detailed Statistics */}
           {showStats && (
             <div className="max-w-6xl mx-auto mb-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -1241,43 +1220,31 @@ const BalloonPopGame = () => {
                   </div>
                 </div>
 
-                <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-6 border border-white/20">
-                  <h3 className="text-2xl font-bold text-white mb-6">
-                    Performance Summary
-                  </h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white/5 rounded-xl p-4">
-                      <div className="text-sm text-white/60">Total Time</div>
-                      <div className="text-2xl font-bold">
-                        {formatTime(gameResults.totalTime)}
-                      </div>
-                    </div>
-                    <div className="bg-white/5 rounded-xl p-4">
-                      <div className="text-sm text-white/60">
-                        Words Completed
-                      </div>
-                      <div className="text-2xl font-bold">
-                        {gameResults.wordsCompleted}/{gameResults.totalWords}
-                      </div>
-                    </div>
-                    <div className="bg-white/5 rounded-xl p-4">
-                      <div className="text-sm text-white/60">Average Time</div>
-                      <div className="text-2xl font-bold">
-                        {gameResults.averageTimePerWord}s
-                      </div>
-                    </div>
-                    <div className="bg-white/5 rounded-xl p-4">
-                      <div className="text-sm text-white/60">Accuracy</div>
-                      <div className="text-2xl font-bold">
-                        {gameResults.accuracy}%
-                      </div>
-                    </div>
-                  </div>
+                <div>
+          <h2 className="text-2xl font-bold text-white mb-4">Game Settings</h2>
+          <div className="bg-white/5 rounded-xl p-4">
+            <div className="grid grid-cols-1 gap-3">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-white/60">Class Group:</span>
+                <span className="text-lg font-bold">{gameResults.classGroup}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-white/60">Category:</span>
+                <span className="text-lg font-bold capitalize">
+                  {gameResults.category.toLowerCase()}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-white/60">Skill Level:</span>
+                <span className="text-lg font-bold">{gameResults.skillLevel}</span>
+              </div>
+            </div>
+          </div>
                 </div>
               </div>
             </div>
           )}
-          {/* Action Buttons */}
+
           <div
             className={`max-w-2xl mx-auto transition-all duration-1000 delay-1000 ${
               showStats
@@ -1320,7 +1287,6 @@ const BalloonPopGame = () => {
             </div>
           </div>
 
-          {/* Footer Message */}
           <div
             className={`mt-12 text-center transition-all duration-1000 delay-1500 ${
               showStats ? "opacity-100" : "opacity-0"
