@@ -97,6 +97,8 @@ import GrammarGlobalStarGame from "./games/GrammarGlobalStarGame";
 import TenseTimeTravelGame from "./games/TenseTimeTravelGame";
 import VocabularyVarietyStarGame from "./games/VocabularyVarietyStar";
 
+import SpellingGame from "./games/SpellingGame";
+
 import Battles from "./components/Battles.js";
 import BattleJoinPage from "./components/Battles/BattleJoinPage";
 import SpectatorScreen from "./components/Battles/SpectatorScreen";
@@ -405,6 +407,9 @@ function App() {
             path="/challenge-publishing-dashboard"
             element={<ChallengesPublisher />}
           />
+
+          <Route path="/english-skills-building-games/spelling-game" element={<SpellingGame />} />
+
         </Routes>
 
         <CookieConsentBanner />

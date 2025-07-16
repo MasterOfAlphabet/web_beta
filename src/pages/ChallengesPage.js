@@ -218,10 +218,35 @@ function LanguageChallengesHero() {
   );
 }
 
+const isChallengeUpcoming = (challenge) => {
+  const startTime = challenge.schedule?.start?.toDate
+    ? challenge.schedule.start.toDate()
+    : new Date(challenge.startTime?.seconds * 1000 || 0);
+  return startTime > new Date();
+};
+
+const getTimeUntilStart = (challenge) => {
+  const startTime = challenge.schedule?.start?.toDate
+    ? challenge.schedule.start.toDate()
+    : new Date(challenge.startTime?.seconds * 1000 || 0);
+  const now = new Date();
+  const diff = startTime - now;
+
+  return {
+    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+    minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+    seconds: Math.floor((diff % (1000 * 60)) / 1000),
+  };
+};
+
 function ChallengeCard({ challenge, handleTakeChallenge, onShare, user }) {
   const categoryColor = CATEGORY_COLORS[challenge.category] || "#EC407A";
   const skillColor = SKILL_COLORS[challenge.skillLevel] || "#4CAF50";
   const skillIcon = SKILL_ICONS[challenge.skillLevel] || "🌟";
+
+  const isUpcoming = isChallengeUpcoming(challenge);
+  const timeUntilStart = isUpcoming ? getTimeUntilStart(challenge) : null;
 
   // Timer state
   const [timeLeft, setTimeLeft] = useState({
@@ -373,30 +398,51 @@ function ChallengeCard({ challenge, handleTakeChallenge, onShare, user }) {
 
           {/* Bottom Section - Timer Spectacle */}
           <div className="mt-auto pt-4">
-            {" "}
-            {/* Added margin-top */}
             <div className="bg-black/50 rounded-xl p-3">
-              {" "}
-              {/* Higher contrast background */}
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center space-x-2">
                   <Clock className="w-4 h-4 text-yellow-300" />
                   <span className="text-yellow-300 text-sm font-semibold">
-                    TIME REMAINING
+                    {isUpcoming ? "CHALLENGE STARTS IN" : "TIME REMAINING"}
                   </span>
                 </div>
                 <div className="flex items-center space-x-1">
-                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <span className="text-green-300 text-xs">ACTIVE</span>
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      isUpcoming ? "bg-blue-400" : "bg-green-400"
+                    }`}
+                  ></div>
+                  <span
+                    className={`text-xs ${
+                      isUpcoming ? "text-blue-300" : "text-green-300"
+                    }`}
+                  >
+                    {isUpcoming ? "UPCOMING" : "ACTIVE"}
+                  </span>
                 </div>
               </div>
-              {/* Timer Display - Fixed Layout */}
               <div className="grid grid-cols-4 gap-2">
                 {[
-                  { value: timeLeft.days, label: "Days" },
-                  { value: timeLeft.hours, label: "Hours" },
-                  { value: timeLeft.minutes, label: "Min" },
-                  { value: timeLeft.seconds, label: "Sec" },
+                  {
+                    value: isUpcoming ? timeUntilStart.days : timeLeft.days,
+                    label: "Days",
+                  },
+                  {
+                    value: isUpcoming ? timeUntilStart.hours : timeLeft.hours,
+                    label: "Hours",
+                  },
+                  {
+                    value: isUpcoming
+                      ? timeUntilStart.minutes
+                      : timeLeft.minutes,
+                    label: "Min",
+                  },
+                  {
+                    value: isUpcoming
+                      ? timeUntilStart.seconds
+                      : timeLeft.seconds,
+                    label: "Sec",
+                  },
                 ].map((item) => (
                   <div
                     key={item.label}
@@ -501,19 +547,26 @@ function ChallengeCard({ challenge, handleTakeChallenge, onShare, user }) {
             ))}
           </div>
         </div>
-        {/* Action Buttons - The Grand Finale */}
 
         <div className="flex space-x-3">
           <button
-            onClick={() => handleTakeChallenge(challenge)}
-            className="flex-1 relative group/btn overflow-hidden rounded-xl font-bold transition-all duration-500 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 text-white shadow-lg hover:shadow-2xl transform hover:scale-105"
+            onClick={() => !isUpcoming && handleTakeChallenge(challenge)}
+            className={`flex-1 relative group/btn overflow-hidden rounded-xl font-bold transition-all duration-500 ${
+              isUpcoming
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 hover:shadow-2xl transform hover:scale-105"
+            } text-white shadow-lg`}
+            disabled={isUpcoming}
           >
             <div className="relative flex items-center justify-center space-x-2 py-4 px-6">
               <Play className="w-5 h-5" />
-              <span className="text-lg">Take Challenge</span>
+              <span className="text-lg">
+                {isUpcoming ? "Coming Soon - Stay Tuned!" : "Take Challenge"}
+              </span>
             </div>
           </button>
 
+          {/* Keep share button as is */}
           <button
             onClick={() => onShare(challenge)}
             className="relative group/share overflow-hidden flex items-center justify-center space-x-2 py-4 px-6 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl font-bold shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105"
@@ -542,8 +595,14 @@ function ChallengeCard({ challenge, handleTakeChallenge, onShare, user }) {
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span className="font-semibold">Active Challenge</span>
+            <div
+              className={`w-2 h-2 rounded-full ${
+                isUpcoming ? "bg-blue-400 animate-pulse" : "bg-green-400"
+              }`}
+            ></div>
+            <span className="font-semibold">
+              {isUpcoming ? "Upcoming Challenge" : "Active Challenge"}
+            </span>
           </div>
         </div>
       </div>
@@ -617,6 +676,14 @@ export default function ChallengesPage() {
     return () => unsubscribe();
   }, []);
 
+  // Add this utility function at the top of your ChallengesPage.js file
+  const isChallengeExpired = (challenge) => {
+    const endTime = challenge.schedule?.end?.toDate
+      ? challenge.schedule.end.toDate()
+      : new Date(challenge.endTime?.seconds * 1000 || 0);
+    return endTime < new Date();
+  };
+
   const handleTakeChallenge = async (challenge) => {
     try {
       // 1. Enhanced Authentication Check
@@ -634,15 +701,18 @@ export default function ChallengesPage() {
       }
 
       // 3. Safely generate URL segments with fallbacks
-    // Strict validation - throw error if any required field is missing
-    if (!challenge.type) throw new Error("Challenge type is required");
-    if (!challenge.moduleName) throw new Error("Module name is required");
-    if (!challenge.moduleCategory) throw new Error("Module Category is required");
+      // Strict validation - throw error if any required field is missing
+      if (!challenge.type) throw new Error("Challenge type is required");
+      if (!challenge.moduleName) throw new Error("Module name is required");
+      if (!challenge.moduleCategory)
+        throw new Error("Module Category is required");
 
-    // Generate URL segments - now guaranteed to have values
-    const type = challenge.type.toLowerCase().replace(/\s+/g, "-");
-    const module = challenge.moduleName.toLowerCase().replace(/\s+/g, "-");
-    const category = challenge.moduleCategory.toLowerCase().replace(/\s+/g, "-");
+      // Generate URL segments - now guaranteed to have values
+      const type = challenge.type.toLowerCase().replace(/\s+/g, "-");
+      const module = challenge.moduleName.toLowerCase().replace(/\s+/g, "-");
+      const category = challenge.moduleCategory
+        .toLowerCase()
+        .replace(/\s+/g, "-");
 
       // 4. Get challenge document
       const challengeDoc = await getDoc(
@@ -734,7 +804,10 @@ export default function ChallengesPage() {
     window.open(whatsappUrl, "_blank");
   };
 
+  // Then modify the groupedChallenges calculation to filter out expired challenges
   const groupedChallenges = challenges.reduce((acc, challenge) => {
+    if (isChallengeExpired(challenge)) return acc; // Skip expired challenges
+
     const group = challenge.classGroup || "Other";
     if (!acc[group]) {
       acc[group] = [];
@@ -786,27 +859,31 @@ export default function ChallengesPage() {
 
       {/* Challenges Section */}
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">
-            Available Challenges
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Choose from our collection of exciting challenges designed to test
-            and improve your language skills
-          </p>
-        </div>
-        {challenges.length === 0 ? (
+        {Object.keys(groupedChallenges).length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-400 text-6xl mb-4">📚</div>
             <h3 className="text-2xl font-bold text-gray-600 mb-2">
-              No Challenges Available
+              {challenges.length > 0
+                ? "No Active Challenges Available"
+                : "No Challenges Available"}
             </h3>
             <p className="text-gray-500">
-              Check back later for new challenges!
+              {challenges.length > 0
+                ? "All current challenges have expired. Check back soon for new challenges!"
+                : "Check back later for new challenges!"}
             </p>
           </div>
         ) : (
           <div className="space-y-12">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-800 mb-4">
+                Available Challenges
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Choose from our collection of exciting challenges designed to
+                test and improve your language skills
+              </p>
+            </div>
             {Object.entries(groupedChallenges).map(
               ([classGroup, classGroupChallenges]) => (
                 <div key={classGroup}>

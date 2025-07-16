@@ -1,0 +1,83 @@
+{
+  "Class I–II": {
+    "Rookie": [
+      "cat", "dog", "sun", "bat", "hat", "bag", "pen", "red", "big", "hot",
+      "run", "fun", "cup", "map", "toy", "tree", "book", "car", "bird", "egg",
+      "hand", "ball", "door", "box", "bed", "bus", "moon", "fish", "ant", "leg"
+    ],
+    "Racer": [
+      "fish", "frog", "milk", "cake", "ring", "star", "duck", "rose", "ship", "ball",
+      "bell", "kite", "nest", "leaf", "rain", "snow", "toy", "key", "fork", "spoon",
+      "apple", "happy", "table", "chair", "green", "blue", "yellow", "window", "jump", "lamp"
+    ],
+    "Master": [
+      "sheep", "cloud", "train", "house", "plant", "shirt", "grape", "chair", "shoes", "grass",
+      "snake", "river", "smile", "apple", "clock", "brush", "queen", "tiger", "zebra", "candy",
+      "school", "friend", "garden", "bottle", "rabbit", "flower", "letter", "little", "middle", "water"
+    ],
+    "Prodigy": [
+      "pencil", "pocket", "basket", "flower", "yellow", "orange", "purple", "silver", "market", "window",
+      "rabbit", "guitar", "jacket", "ladder", "monkey", "parrot", "rocket", "turtle", "violin", "wizard",
+      "elephant", "giraffe", "butterfly", "rainbow", "sandwich", "triangle", "bicycle", "telephone", "chocolate", "building"
+    ],
+    "Wizard": [
+      "blanket", "picture", "button", "number", "garden", "station", "kitchen", "napkin", "bottle", "pillow",
+      "diamond", "mirror", "pajamas", "whistle", "backpack", "camera", "dolphin", "octopus", "treasure", "unicorn",
+      "adventure", "birthday", "crocodile", "helicopter", "jellyfish", "kangaroo", "lightning", "marvelous", "neighbor", "important"
+    ]
+  },
+  "Class III–V": {
+    "Rookie": [
+      "apple", "bread", "drink", "water", "mouse", "table", "light", "clock", "shelf", "shirt",
+      "pencil", "paper", "crayon", "glue", "scissors", "ruler", "eraser", "sharpener", "notebook", "backpack",
+      "house", "night", "right", "laugh", "cough", "rough", "thought", "eight", "fight", "sight"
+    ],
+    "Racer": [
+      "summer", "winter", "rainbow", "school", "laptop", "market", "castle", "planet", "rocket", "forest",
+      "garden", "library", "village", "bicycle", "dinosaur", "volcano", "piano", "guitar", "dragon", "pirate",
+      "picture", "nature", "future", "culture", "treasure", "weather", "feather", "brother", "leather", "pleasure"
+    ],
+    "Master": [
+      "diamond", "blanket", "mirror", "puzzle", "bicycle", "lantern", "mountain", "feather", "compass", "dolphin",
+      "telescope", "whisper", "harvest", "journey", "lighthouse", "painting", "sapphire", "sunrise", "waterfall", "xylophone",
+      "beautiful", "wonderful", "colorful", "peaceful", "helpful", "careful", "grateful", "successful", "thoughtful", "cheerful"
+    ],
+    "Prodigy": [
+      "calendar", "battery", "whistle", "backpack", "sandwich", "necklace", "triangle", "chocolate", "umbrella", "volcano",
+      "binoculars", "kangaroo", "microscope", "parachute", "scarecrow", "trampoline", "wheelbarrow", "xylophone", "yacht", "zeppelin",
+      "mysterious", "adventurous", "dangerous", "marvelous", "generous", "serious", "famous", "various", "curious", "nervous"
+    ],
+    "Wizard": [
+      "adventure", "explorer", "treasure", "laboratory", "mystery", "machine", "galaxy", "universe", "recycle", "electric",
+      "astronaut", "kaleidoscope", "permission", "quarantine", "symphony", "thermometer", "wonderful", "yesterday", "magnificent", "phenomenal",
+      "extraordinary", "spectacular", "incredible", "remarkable", "exceptional", "fascinating", "unforgettable", "revolutionary", "breathtaking", "overwhelming"
+    ]
+  },
+  "Class VI–X": {
+    "Rookie": [
+      "planet", "energy", "oxygen", "motion", "safety", "system", "lesson", "culture", "method", "object",
+      "carbon", "design", "element", "fossil", "gravity", "harmony", "impact", "jungle", "kinetic", "logical",
+      "analyze", "organize", "realize", "recognize", "memorize", "apologize", "criticize", "emphasize", "exercise", "surprise"
+    ],
+    "Racer": [
+      "physics", "biology", "grammar", "equation", "battery", "fiction", "journal", "network", "diagram", "formula",
+      "analysis", "creative", "dynamic", "evidence", "fraction", "geometry", "hypnosis", "infinite", "judicial", "knowledge",
+      "environment", "government", "development", "agreement", "treatment", "movement", "experiment", "apartment", "department", "management"
+    ],
+    "Master": [
+      "strategy", "solution", "argument", "chemical", "magnetism", "division", "paragraph", "heritage", "structure", "telescope",
+      "astronomy", "brilliant", "cognitive", "discovery", "evolution", "framework", "geography", "hydraulic", "invention", "judiciary",
+      "responsibility", "opportunity", "possibility", "personality", "nationality", "creativity", "curiosity", "generosity", "authority", "security"
+    ],
+    "Prodigy": [
+      "algorithm", "hypothesis", "phenomenon", "inference", "metaphor", "simulation", "prototype", "innovation", "conclusion", "synthesis",
+      "asymptote", "biography", "cryptography", "derivative", "equilibrium", "fluorescence", "gravitation", "hexadecimal", "iridescent", "juxtapose",
+      "philosophical", "psychological", "technological", "archaeological", "geographical", "mathematical", "theoretical", "practical", "critical", "logical"
+    ],
+    "Wizard": [
+      "photosynthesis", "biodiversity", "transformation", "acceleration", "configuration", "revolution", "sustainability", "nanotechnology", "artificial", "cyberspace",
+      "anthropology", "biotechnology", "crystallography", "electrodynamics", "fractalgeometry", "hydroelectric", "interdisciplinary", "jurisprudence", "kaleidoscopic", "lexicography",
+      "incomprehensible", "indispensable", "irresponsible", "uncontrollable", "uncomfortable", "unforgettable", "unimaginable", "unreasonable", "unacceptable", "unbelievable"
+    ]
+  }
+}
