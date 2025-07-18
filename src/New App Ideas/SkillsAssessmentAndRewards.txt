@@ -1,0 +1,58 @@
+Let's brainstrom an idea for an app titled 'Skills Assessment', for now let's take the target audience as Students of Class 11 & 12 i.e Intermediate Students in India i.e nothing but +1 and +2 ..
+
+The app will have the following Skill Assessment Modules :
+
+1. NEET Naturals
+2. JEE Jaguars
+3. EAPCET Experts
+4. CBSE Champions
+5. ICSE Icons
+6. IITJEE Innovators
+7. Olympiad Olympians
+8. NTSE Navigators
+9. Class 11 & 12 Board Exams
+10. Competitive Exams
+
+Out of them our higest priority is the top three ....
+
+Our platform / app will have options for Skills Assessment as :
+
+    Learn / Practice / Tests
+    Quiz
+    Battles
+    Challenges
+    Competitions
+
+    We should be selling the packs or tokens the students can buy to participate in them based on their interest.
+    or we can offer an unlimited one time purchase like Rs. 9, 999.
+    We can also offer a free trial for 7 days or 1 month.
+
+    Packs / Tokens :
+    Quiz    10 / 25 / 50 / 100              Rs. 1000 / 2000 / 3000 / 5000
+    Battles  25 / 50 / 100 / 200 / 500      Rs. 2000 / 4000 / 6000 / 10000 / 20000
+    Challenges  50 / 100 / 200 / 500        Rs. 3000 / 6000 / 10000 / 20000
+    Competitions  5 / 10 / 25               Rs. 5000 / 10000 / 20000
+
+    or shall we just say 
+        Quiz Pack   unlimited   Rs. 1999
+        Battles Pack unlimited   Rs. 2999
+        Challenges Pack unlimited   Rs. 3999
+        Competitions    unlimited   Rs. 4999
+    
+        All-In-one      unlimited    Rs. 9999
+           
+        Let's discuss and finalize the pricing strategy for the Skills Assessment app. We have several options to consider
+
+    Let's talk about last four ...
+        We need to award points or I want to call them as TalentiCoins (or if you can come up with a better name that will be great) 
+            participation points
+            Completion points
+            Per Correct Answer points
+            Winning points
+                Like top 3, top 10, top 100, top 1000
+
+        We should let them know how much they are worth. We can also have a leaderboard to show the top 10/100/1000 students 
+We can also have a reward system where students can redeem their points for rewards like gift cards,
+vouchers, or even cashback.
+
+Shall we put a max cap a student can earn so that others also will get their fair share to earn?

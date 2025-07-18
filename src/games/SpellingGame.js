@@ -330,10 +330,30 @@ const SpellingGame = () => {
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
 
-  // Initialize speech synthesis
+  const [selectedVoice, setSelectedVoice] = useState(null);
+
   useEffect(() => {
     if ("speechSynthesis" in window) {
       synthRef.current = window.speechSynthesis;
+
+      const loadVoices = () => {
+        const voices = synthRef.current
+          .getVoices()
+          .filter((v) => v.lang.startsWith("en"));
+        if (voices.length) {
+          // Find a good English voice (preferably US English)
+          const usVoice = voices.find((v) => v.lang === "en-US") || voices[0];
+          setSelectedVoice(usVoice);
+        }
+      };
+
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+
+      // Cleanup
+      return () => {
+        window.speechSynthesis.onvoiceschanged = null;
+      };
     }
   }, []);
 
@@ -384,6 +404,12 @@ const SpellingGame = () => {
       utterance.rate = 0.8;
       utterance.pitch = 1;
       utterance.volume = 1;
+
+      // Use the selected voice if available
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+      }
+
       synthRef.current.speak(utterance);
     }
   };
@@ -459,16 +485,112 @@ const SpellingGame = () => {
 
   // Start/stop listening
   const toggleListening = () => {
-    if (!recognitionRef.current) {
-      initSpeechRecognition();
-    }
-
     if (isListening) {
       recognitionRef.current?.stop();
       setIsListening(false);
-    } else {
-      recognitionRef.current?.start();
+      return;
+    }
+
+    if (
+      !("webkitSpeechRecognition" in window) &&
+      !("SpeechRecognition" in window)
+    ) {
+      setFeedbackMessage("Speech recognition not supported in this browser");
+      setShowFeedback(true);
+      return;
+    }
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    // Create fresh instance for mobile reliability
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false; // Simpler for spelling
+    recognition.interimResults = false; // Only final results
+    recognition.lang = "en-US";
+
+    recognition.onstart = () => {
       setIsListening(true);
+      setFeedbackMessage("");
+      setShowFeedback(false);
+    };
+
+    recognition.onspeechend = () => {
+      recognition.stop();
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Recognition error:", event);
+      if (event.error === "not-allowed") {
+        setFeedbackMessage(
+          "Microphone access denied. Please allow microphone access and try again."
+        );
+      } else {
+        setFeedbackMessage(`Speech recognition error: ${event.error}`);
+      }
+      setShowFeedback(true);
+      setIsListening(false);
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript.trim().toLowerCase();
+
+      // Check if user said the actual word (keep your sophisticated feedback)
+      if (transcript === currentWord.toLowerCase()) {
+        setFeedbackMessage(
+          `❌ Don't say the word "${currentWord}"! Please spell it letter by letter like: ${currentWord
+            .toUpperCase()
+            .split("")
+            .join(" ")}`
+        );
+        setShowFeedback(true);
+        setTimeout(() => setShowFeedback(false), 4000);
+        return;
+      }
+
+      // Process spelling - extract individual letters
+      const letters = transcript
+        .toUpperCase()
+        .replace(/[^A-Z\s]/g, "")
+        .split(/\s+/)
+        .filter((word) => word.length === 1)
+        .join("");
+
+      if (letters.length > 0) {
+        setUserSpelling(letters);
+        setShowFeedback(false);
+      } else {
+        setFeedbackMessage(
+          `🔤 Please spell the word letter by letter. Say each letter separately like: ${currentWord
+            .toUpperCase()
+            .split("")
+            .join(" ")}`
+        );
+        setShowFeedback(true);
+        setTimeout(() => setShowFeedback(false), 4000);
+      }
+    };
+
+    recognitionRef.current = recognition;
+
+    try {
+      recognition.start();
+
+      // Auto-stop after 10 seconds as safety net
+      setTimeout(() => {
+        if (recognitionRef.current) {
+          recognition.stop();
+        }
+      }, 10000);
+    } catch (err) {
+      console.error("Recognition start failed:", err);
+      setFeedbackMessage("Voice input failed. Please try again.");
+      setShowFeedback(true);
+      setIsListening(false);
     }
   };
 
@@ -528,6 +650,9 @@ const SpellingGame = () => {
       setTotalTime(Date.now() - gameStartTime);
       setGameState("results");
     }
+
+    setShowFeedback(false);
+    setFeedbackMessage("");
   };
 
   // Calculate performance
@@ -750,14 +875,6 @@ const SpellingGame = () => {
               {/* Comparison */}
               {userSpelling && (
                 <div className="mb-6 grid md:grid-cols-2 gap-4">
-                  <div className="bg-green-500/20 border border-green-400/30 rounded-xl p-4">
-                    <p className="text-green-300 font-semibold mb-2">
-                      ✅ Correct Spelling:
-                    </p>
-                    <p className="text-white text-xl font-mono tracking-widest">
-                      {currentWord.toUpperCase()}
-                    </p>
-                  </div>
                   <div className="bg-blue-500/20 border border-blue-400/30 rounded-xl p-4">
                     <p className="text-blue-300 font-semibold mb-2">
                       🛑 Your Spelling:

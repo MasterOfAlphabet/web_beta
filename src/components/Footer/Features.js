@@ -5,9 +5,33 @@ export default function Features() {
   const navigate = useNavigate();
 
   const features = [
+
+    { icon: BookOpen, text: "Word Of The Day Series", path: "/word-of-the-day" },
+
     { icon: BookOpen, text: "Challenges", path: "/challenges" },
     { icon: Users, text: "Modules Intro", path: "/modules-intro" },
     { icon: Award, text: "Gamification Levels", path: "/gamification-levels" },
+
+    { icon: Award, text: "Test Listening Skills", path: "/test-listening-skills" },
+    { icon: Award, text: "Test Spelling Skills", path: "/test-spelling-skills" },
+    { icon: Award, text: "Test Reading Skills", path: "/test-reading-skills" },
+
+    { icon: Award, text: "Dictation Master", path: "/dictation-master" },
+    { icon: Award, text: "Audio Assignment", path: "/audio-assignment" },
+
+    { icon: Award, text: "Tense Time Travel", path: "/english-skills-building-games/tense-time-travel" },
+
+    { icon: Award, text: "Master Of Alphabetr", path: "/english-skills-building-games/master-of-alphabet" },   
+
+        { icon: Award, text: "Reading Rock Star", path: "/english-skills-building-games/reading-rockstar" },        
+        { icon: Award, text: "Pronunciation Power Star", path: "/english-skills-building-games/pronunciation-powerstar" },      
+        { icon: Award, text: "Grammar Global Star", path: "/english-skills-building-games/grammar-globalstar" },
+        { icon: Award, text: "Vocabulary Variety Star", path: "/english-skills-building-games/vocabulary-varietystar" },
+        { icon: Award, text: "SHARP Stylish Starr", path: "/english-skills-building-games/sharp-stylishstar" },
+
+    { icon: Award, text: "Tongue Twister Showdow", path: "/english-skills-building-games/tongue-twister-showdown" },
+    { icon: Award, text: "Shadow Reading Race", path: "/english-skills-building-games/shadow-reading-race" },
+
   ];
 
   return (

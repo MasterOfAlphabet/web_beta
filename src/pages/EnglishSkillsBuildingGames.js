@@ -122,17 +122,17 @@ const games = [
   },
   {
     id: 6,
-    name: "Spelling Duel",
+    name: "Spelling Mastery",
     module: "Spelling",
-    category: "Competitive Arena",
+    category: "Art of Spelling",
     description:
-      "Challenge opponents in fast-paced spelling battles and climb the leaderboard",
+      "Spell the letters to master the art of spelling",
     color: "bg-gradient-to-br from-yellow-500 to-orange-500",
     difficulty: "Medium",
     duration: "10-15 min",
     players: "Multiplayer",
     rating: 4.8,
-    path: "/english-skills-building-games/spelling-duel",
+    path: "/english-skills-building-games/spelling-game",
   },
   {
     id: 7,
