@@ -31,6 +31,10 @@ const ReadingRockStar = () => {
   const [canProceed, setCanProceed] = useState(false);
   const recognitionRef = useRef(null);
 
+  // Add to your state declarations
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [wordStatus, setWordStatus] = useState([]);
+
   // Game content (unchanged from original)
   const gameContent = {
     words: {
@@ -210,6 +214,42 @@ const ReadingRockStar = () => {
     },
   };
 
+  useEffect(() => {
+    if (
+      currentChallenge &&
+      currentWordIndex === currentChallenge.text.split(/\s+/).length
+    ) {
+      setFeedback("Perfect! All words pronounced correctly. 🎉");
+      setCanProceed(true);
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 3000);
+
+      // Update progress and award stars
+      setUserProgress((prevProgress) => {
+        const newProgress = { ...prevProgress };
+        newProgress[selectedCategory][selectedDifficulty] += 1;
+        return newProgress;
+      });
+
+      setStars(
+        (prev) =>
+          prev +
+          {
+            rookie: 1,
+            racer: 2,
+            master: 3,
+            prodigy: 4,
+            wizard: 5,
+          }[selectedDifficulty]
+      );
+    }
+  }, [
+    currentWordIndex,
+    currentChallenge,
+    selectedCategory,
+    selectedDifficulty,
+  ]);
+
   // Speech recognition setup
   useEffect(() => {
     if ("webkitSpeechRecognition" in window) {
@@ -231,16 +271,52 @@ const ReadingRockStar = () => {
       };
 
       recognitionRef.current.onresult = (event) => {
-        const transcript = Array.from(event.results)
-          .map((result) => result[0])
-          .map((result) => result.transcript)
-          .join(" ");
+        const results = Array.from(event.results);
+        const latestResult = results[results.length - 1];
+        const transcript = latestResult[0].transcript.toLowerCase();
 
-        const spokenWordsArray = transcript.toLowerCase().split(/\s+/);
-        setSpokenWords(spokenWordsArray);
+        // Split into words and clean them
+        const spokenWords = transcript
+          .split(/\s+/)
+          .map((word) => word.replace(/[.,!?]/g, ""));
 
-        // Check pronunciation in real-time
-        checkPronunciation(transcript, true);
+        // Get the expected word at current position
+        const challengeWords = currentChallenge.text
+          .toLowerCase()
+          .split(/\s+/)
+          .map((word) => word.replace(/[.,!?]/g, ""));
+
+        const expectedWord = challengeWords[currentWordIndex];
+
+        // Check if any of the spoken words match the expected word
+        const matchedIndex = spokenWords.findIndex(
+          (word) => word === expectedWord
+        );
+
+        if (matchedIndex !== -1) {
+          // Mark current word as correct and move to next
+          setWordStatus((prev) => {
+            const newStatus = [...prev];
+            newStatus[currentWordIndex] = "correct";
+            return newStatus;
+          });
+          setCurrentWordIndex((prev) => prev + 1);
+
+          // Clear the spoken words after processing
+          recognitionRef.current.abort();
+          setTimeout(() => {
+            if (recognitionRef.current) {
+              recognitionRef.current.start();
+            }
+          }, 100);
+        } else if (spokenWords.length > 0 && !latestResult.isFinal) {
+          // Mark as incorrect if we have words but no match (only for interim results)
+          setWordStatus((prev) => {
+            const newStatus = [...prev];
+            newStatus[currentWordIndex] = "incorrect";
+            return newStatus;
+          });
+        }
       };
 
       recognitionRef.current.onerror = (event) => {
@@ -320,26 +396,19 @@ const ReadingRockStar = () => {
     if (!text) return null;
 
     const words = text.split(/\s+/);
-    const currentPosition = spokenWords.length - 1;
 
     return (
       <div className="text-2xl md:text-3xl font-medium text-gray-800 mb-6 leading-relaxed">
         {words.map((word, index) => {
-          const normalizedWord = word.toLowerCase().replace(/[.,!?]/g, "");
-          const isCorrect = correctWords.includes(normalizedWord);
-          const isIncorrect = incorrectWords.includes(normalizedWord);
-          const isCurrent = index === currentPosition && isListening;
-          const isSpoken = index < spokenWords.length;
-
           let className = "";
-          if (isCurrent) {
+
+          if (index < currentWordIndex) {
+            className =
+              wordStatus[index] === "correct"
+                ? "bg-green-200 text-gray-900"
+                : "bg-red-200 text-gray-900";
+          } else if (index === currentWordIndex) {
             className = "border-b-4 border-blue-500";
-          } else if (isCorrect) {
-            className = "bg-green-200 text-gray-900";
-          } else if (isIncorrect) {
-            className = "bg-red-200 text-gray-900";
-          } else if (isSpoken) {
-            className = "bg-yellow-200 text-gray-900";
           }
 
           return (
@@ -373,9 +442,8 @@ const ReadingRockStar = () => {
   };
 
   const startChallenge = () => {
-    setSpokenWords([]);
-    setCorrectWords([]);
-    setIncorrectWords([]);
+    setCurrentWordIndex(0);
+    setWordStatus(Array(currentChallenge.text.split(/\s+/).length).fill(null));
     setCanProceed(false);
     setFeedback("");
     setCurrentView("challenge");
