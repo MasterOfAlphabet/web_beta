@@ -8,6 +8,10 @@ import {
   FaChartLine,
 } from "react-icons/fa";
 
+// Helper: Normalize words for comparison
+const normalizeWord = (word) =>
+  word.replace(/[.,!?]/g, "").toLowerCase().trim();
+
 const ReadingRockStar = () => {
   // State declarations (unchanged from original)
   const [currentView, setCurrentView] = useState("home");
@@ -34,6 +38,9 @@ const ReadingRockStar = () => {
   // Add to your state declarations
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [wordStatus, setWordStatus] = useState([]);
+  const [micActive, setMicActive] = useState(false);
+  const [highlightedWords, setHighlightedWords] = useState([]); // NEW for sentence/paragraph highlighting
+  const [lastTranscript, setLastTranscript] = useState(""); // for displaying last transcript
 
   // Game content (unchanged from original)
   const gameContent = {
@@ -214,19 +221,139 @@ const ReadingRockStar = () => {
     },
   };
 
+  // --- Speech recognition for sentences/paragraphs highlighting ---
   useEffect(() => {
     if (
-      currentChallenge &&
-      currentWordIndex === currentChallenge.text.split(/\s+/).length
+      selectedCategory === "sentences" ||
+      selectedCategory === "paragraphs"
+    ) {
+      if ("webkitSpeechRecognition" in window) {
+        recognitionRef.current = new window.webkitSpeechRecognition();
+        recognitionRef.current.continuous = true;
+        recognitionRef.current.interimResults = false; // We want only final results
+        recognitionRef.current.maxAlternatives = 1;
+
+        recognitionRef.current.onstart = () => {
+          setIsListening(true);
+          setMicActive(true);
+          setHighlightedWords(
+            currentChallenge?.text
+              ? currentChallenge.text
+                  .split(/\s+/)
+                  .map((w) => ({ word: w, status: "pending" }))
+              : []
+          );
+          setLastTranscript("");
+          setCurrentWordIndex(0);
+        };
+
+        recognitionRef.current.onend = () => {
+          setIsListening(false);
+          setMicActive(false);
+        };
+
+        recognitionRef.current.onresult = (event) => {
+          if (!currentChallenge?.text) return;
+
+          const transcript = event.results[event.results.length - 1][0].transcript;
+          setLastTranscript(transcript);
+
+          const challengeWords = currentChallenge.text.split(/\s+/);
+          const transcriptWords = transcript.split(/\s+/);
+
+          let newHighlighted = [...highlightedWords];
+          let currentIndex = currentWordIndex;
+
+          // Compare each word one-by-one from currentIndex
+          while (
+            currentIndex < challengeWords.length &&
+            transcriptWords.length > 0
+          ) {
+            const spokenWord = normalizeWord(transcriptWords[0]);
+            const expectedWord = normalizeWord(challengeWords[currentIndex]);
+
+            if (spokenWord === expectedWord) {
+              newHighlighted[currentIndex] = {
+                word: challengeWords[currentIndex],
+                status: "correct",
+              };
+              transcriptWords.shift();
+              currentIndex += 1;
+            } else {
+              // If mismatch, mark as incorrect and break (do not advance)
+              newHighlighted[currentIndex] = {
+                word: challengeWords[currentIndex],
+                status: "incorrect",
+              };
+              break;
+            }
+          }
+          setHighlightedWords(newHighlighted);
+          setCurrentWordIndex(currentIndex);
+
+          // If all words spoken correctly
+          if (
+            currentChallenge?.text &&
+            newHighlighted.every((w) => w.status === "correct")
+          ) {
+            setFeedback("Perfect! All words pronounced correctly. 🎉");
+            setCanProceed(true);
+            setShowConfetti(true);
+            setTimeout(() => setShowConfetti(false), 3000);
+            setMicActive(false);
+
+            setUserProgress((prev) => {
+              const newProgress = { ...prev };
+              newProgress[selectedCategory][selectedDifficulty] += 1;
+              return newProgress;
+            });
+
+            setStars(
+              (prev) =>
+                prev +
+                {
+                  rookie: 1,
+                  racer: 2,
+                  master: 3,
+                  prodigy: 4,
+                  wizard: 5,
+                }[selectedDifficulty]
+            );
+            if (recognitionRef.current) {
+              recognitionRef.current.stop();
+            }
+          }
+        };
+
+        recognitionRef.current.onerror = (event) => {
+          setFeedback(`Error: ${event.error}`);
+          setIsListening(false);
+          setMicActive(false);
+        };
+      }
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, [currentChallenge, selectedCategory]);
+
+  useEffect(() => {
+    if (
+      currentChallenge?.text &&
+      currentWordIndex === currentChallenge.text.split(/\s+/).length &&
+      (selectedCategory === "sentences" || selectedCategory === "paragraphs")
     ) {
       setFeedback("Perfect! All words pronounced correctly. 🎉");
       setCanProceed(true);
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
+      setMicActive(false);
 
-      // Update progress and award stars
-      setUserProgress((prevProgress) => {
-        const newProgress = { ...prevProgress };
+      setUserProgress((prev) => {
+        const newProgress = { ...prev };
         newProgress[selectedCategory][selectedDifficulty] += 1;
         return newProgress;
       });
@@ -242,6 +369,9 @@ const ReadingRockStar = () => {
             wizard: 5,
           }[selectedDifficulty]
       );
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
     }
   }, [
     currentWordIndex,
@@ -250,150 +380,142 @@ const ReadingRockStar = () => {
     selectedDifficulty,
   ]);
 
-  // Speech recognition setup
+  // Speech recognition setup for "words" mode (unchanged)
   useEffect(() => {
-    if ("webkitSpeechRecognition" in window) {
-      recognitionRef.current = new window.webkitSpeechRecognition();
-      recognitionRef.current.continuous = true; // Changed from false to true
-      recognitionRef.current.interimResults = true; // Changed from false to true
-      recognitionRef.current.maxAlternatives = 1;
+    if (
+      selectedCategory !== "sentences" &&
+      selectedCategory !== "paragraphs"
+    ) {
+      if ("webkitSpeechRecognition" in window) {
+        recognitionRef.current = new window.webkitSpeechRecognition();
+        recognitionRef.current.continuous = true;
+        recognitionRef.current.interimResults = true;
+        recognitionRef.current.maxAlternatives = 1;
 
-      recognitionRef.current.onstart = () => {
-        setIsListening(true);
-        setSpokenWords([]);
-        setCorrectWords([]);
-        setIncorrectWords([]);
-        setCanProceed(false);
-      };
+        recognitionRef.current.onstart = () => {
+          setIsListening(true);
+          setSpokenWords([]);
+          setCorrectWords([]);
+          setIncorrectWords([]);
+          setCanProceed(false);
+        };
 
-      recognitionRef.current.onend = () => {
-        setIsListening(false);
-      };
+        recognitionRef.current.onend = () => {
+          setIsListening(false);
+        };
 
-      recognitionRef.current.onresult = (event) => {
-        const results = Array.from(event.results);
-        const latestResult = results[results.length - 1];
-        const transcript = latestResult[0].transcript.toLowerCase();
+        recognitionRef.current.onresult = (event) => {
+          if (!currentChallenge?.text) return;
 
-        // Split into words and clean them
-        const spokenWords = transcript
-          .split(/\s+/)
-          .map((word) => word.replace(/[.,!?]/g, ""));
+          const results = Array.from(event.results);
+          const latestResult = results[results.length - 1];
+          const transcript = latestResult[0].transcript.toLowerCase();
 
-        // Get the expected word at current position
-        const challengeWords = currentChallenge.text
-          .toLowerCase()
-          .split(/\s+/)
-          .map((word) => word.replace(/[.,!?]/g, ""));
+          // Split into words and clean them
+          const spokenWords = transcript
+            .split(/\s+/)
+            .map((word) => word.replace(/[.,!?]/g, ""));
 
-        const expectedWord = challengeWords[currentWordIndex];
+          // Get the expected word at current position
+          const challengeWords = currentChallenge.text
+            .toLowerCase()
+            .split(/\s+/)
+            .map((word) => word.replace(/[.,!?]/g, ""));
 
-        // Check if any of the spoken words match the expected word
-        const matchedIndex = spokenWords.findIndex(
-          (word) => word === expectedWord
-        );
+          // Only proceed if we have words to compare
+          if (currentWordIndex < challengeWords.length) {
+            const expectedWord = challengeWords[currentWordIndex];
+            const matchedIndex = spokenWords.findIndex(
+              (word) => word === expectedWord
+            );
 
-        if (matchedIndex !== -1) {
-          // Mark current word as correct and move to next
-          setWordStatus((prev) => {
-            const newStatus = [...prev];
-            newStatus[currentWordIndex] = "correct";
-            return newStatus;
-          });
-          setCurrentWordIndex((prev) => prev + 1);
+            if (matchedIndex !== -1) {
+              // Mark current word as correct and move to next
+              setWordStatus((prev) => {
+                const newStatus = [...prev];
+                newStatus[currentWordIndex] = "correct";
+                return newStatus;
+              });
+              setCurrentWordIndex((prev) => prev + 1);
 
-          // Clear the spoken words after processing
-          recognitionRef.current.abort();
-          setTimeout(() => {
-            if (recognitionRef.current) {
-              recognitionRef.current.start();
+              // Clear the spoken words after processing
+              recognitionRef.current.abort();
+              setTimeout(() => {
+                if (recognitionRef.current) {
+                  recognitionRef.current.start();
+                }
+              }, 100);
+            } else if (spokenWords.length > 0 && !latestResult.isFinal) {
+              // Mark as incorrect if we have words but no match
+              setWordStatus((prev) => {
+                const newStatus = [...prev];
+                newStatus[currentWordIndex] = "incorrect";
+                return newStatus;
+              });
             }
-          }, 100);
-        } else if (spokenWords.length > 0 && !latestResult.isFinal) {
-          // Mark as incorrect if we have words but no match (only for interim results)
-          setWordStatus((prev) => {
-            const newStatus = [...prev];
-            newStatus[currentWordIndex] = "incorrect";
-            return newStatus;
-          });
+          }
+        };
+
+        recognitionRef.current.onerror = (event) => {
+          setFeedback(`Error: ${event.error}`);
+          setIsListening(false);
+        };
+      }
+
+      return () => {
+        if (recognitionRef.current) {
+          recognitionRef.current.stop();
         }
       };
-
-      recognitionRef.current.onerror = (event) => {
-        setFeedback(`Error: ${event.error}`);
-        setIsListening(false);
-      };
     }
+  }, [currentChallenge, selectedCategory]);
 
-    return () => {
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-      }
-    };
-  }, [currentChallenge]);
+  // Highlighted text component for sentences/paragraphs
+  const HighlightedTextWithMic = ({ text, highlightedWords }) => {
+    if (!text)
+      return (
+        <div className="text-gray-500">
+          No text available for this challenge
+        </div>
+      );
 
-  // Pronunciation checking logic
-  const checkPronunciation = (userInput, isRealTime = false) => {
-    if (!currentChallenge || !currentChallenge.text) {
-      setFeedback("Challenge not properly loaded. Please try again.");
-      return;
-    }
+    const words = text.split(/\s+/);
 
-    const challengeWords = currentChallenge.text.toLowerCase().split(/\s+/);
-    const userWords = userInput.toLowerCase().split(/\s+/);
+    return (
+      <div className="text-2xl md:text-3xl font-medium text-gray-800 mb-6 leading-relaxed flex flex-wrap gap-2">
+        {words.map((word, index) => {
+          const status =
+            highlightedWords && highlightedWords[index]
+              ? highlightedWords[index].status
+              : null;
+          let className = "px-2 py-1 rounded transition-all duration-200";
 
-    const correct = [];
-    const incorrect = [];
+          if (status === "correct") {
+            className += " bg-green-200 text-gray-900";
+          } else if (status === "incorrect") {
+            className += " bg-red-200 text-gray-900";
+          } else if (index === highlightedWords?.findIndex(w => w.status === "pending")) {
+            className += " border-b-4 border-blue-500";
+          }
 
-    challengeWords.forEach((word, index) => {
-      const normalizedWord = word.replace(/[.,!?]/g, "");
-      const userWord = userWords[index] || "";
-
-      if (userWord === normalizedWord) {
-        correct.push(normalizedWord);
-      } else if (userWord && index < userWords.length) {
-        incorrect.push(normalizedWord);
-      }
-    });
-
-    setCorrectWords(correct);
-    setIncorrectWords(incorrect);
-
-    // Only show feedback and confetti when not in real-time mode
-    if (!isRealTime) {
-      if (incorrect.length > 0) {
-        setFeedback(
-          `Some words were not pronounced correctly. Please try again.`
-        );
-        setCanProceed(false);
-      } else {
-        setFeedback("Perfect! All words pronounced correctly. 🎉");
-        setCanProceed(true);
-        setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 3000);
-
-        // Update progress
-        const newProgress = { ...userProgress };
-        newProgress[selectedCategory][selectedDifficulty] += 1;
-        setUserProgress(newProgress);
-
-        // Award stars
-        const starAward = {
-          rookie: 1,
-          racer: 2,
-          master: 3,
-          prodigy: 4,
-          wizard: 5,
-        }[selectedDifficulty];
-
-        setStars((prev) => prev + starAward);
-      }
-    }
+          return (
+            <span key={index} className={className}>
+              {word}
+            </span>
+          );
+        })}
+      </div>
+    );
   };
 
-  // Highlighted text component
+  // Highlighted text for original (words typing test, unchanged)
   const HighlightedText = ({ text }) => {
-    if (!text) return null;
+    if (!text)
+      return (
+        <div className="text-gray-500">
+          No text available for this challenge
+        </div>
+      );
 
     const words = text.split(/\s+/);
 
@@ -426,6 +548,7 @@ const ReadingRockStar = () => {
 
   // Navigation functions
   const startListening = () => {
+    setMicActive(true);
     if (recognitionRef.current) {
       recognitionRef.current.start();
     }
@@ -442,13 +565,20 @@ const ReadingRockStar = () => {
   };
 
   const startChallenge = () => {
-    setCurrentWordIndex(0);
-    setWordStatus(Array(currentChallenge.text.split(/\s+/).length).fill(null));
+    // Reset states
+    setSpokenWords([]);
+    setCorrectWords([]);
+    setIncorrectWords([]);
     setCanProceed(false);
     setFeedback("");
+    setCurrentWordIndex(0);
     setCurrentView("challenge");
+    setMicActive(false);
 
+    // Validate game content exists
     if (
+      !selectedCategory ||
+      !selectedDifficulty ||
       !gameContent[selectedCategory] ||
       !gameContent[selectedCategory][selectedDifficulty]
     ) {
@@ -469,19 +599,28 @@ const ReadingRockStar = () => {
       return;
     }
 
+    // Select random challenge
     const randomIndex = Math.floor(Math.random() * challenges.length);
+    let challenge;
 
     if (
       selectedCategory === "stories" ||
       selectedCategory === "comprehension"
     ) {
-      setCurrentChallenge(challenges[randomIndex]);
+      challenge = challenges[randomIndex];
     } else {
-      setCurrentChallenge({
+      challenge = {
         text: challenges[randomIndex],
         questions: [],
-      });
+      };
     }
+
+    // Initialize word status array
+    const words = challenge.text ? challenge.text.split(/\s+/) : [];
+    setWordStatus(Array(words.length).fill(null));
+    setHighlightedWords(words.map((w) => ({ word: w, status: "pending" })));
+
+    setCurrentChallenge(challenge);
   };
 
   // Comprehension answer checking
@@ -728,8 +867,60 @@ const ReadingRockStar = () => {
           </div>
         )}
 
+        {(selectedCategory === "sentences" ||
+          selectedCategory === "paragraphs") && (
+          <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
+            <div className="text-center">
+              <HighlightedTextWithMic
+                text={currentChallenge.text}
+                highlightedWords={highlightedWords}
+              />
+
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={startListening}
+                  disabled={isListening || micActive}
+                  className={`flex items-center justify-center gap-2 py-3 px-6 rounded-full text-white font-semibold ${
+                    isListening || micActive
+                      ? "bg-gray-400"
+                      : "bg-purple-600 hover:bg-purple-700"
+                  } transition-colors`}
+                >
+                  <FaMicrophone />
+                  {micActive ? "Listening..." : "Read Aloud"}
+                </button>
+                {(isListening || micActive) && (
+                  <button
+                    onClick={() => {
+                      if (recognitionRef.current) {
+                        recognitionRef.current.stop();
+                        setMicActive(false);
+                        setIsListening(false);
+                      }
+                    }}
+                    className="flex items-center justify-center gap-2 py-3 px-6 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition-colors"
+                  >
+                    Stop & Check
+                  </button>
+                )}
+              </div>
+
+              <p className="mt-3 text-sm text-gray-500">
+                Read the text above aloud when prompted
+              </p>
+              {lastTranscript && (
+                <div className="mt-2 text-gray-600 text-sm">
+                  <strong>Last spoken:</strong> {lastTranscript}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {selectedCategory !== "stories" &&
-          selectedCategory !== "comprehension" && (
+          selectedCategory !== "comprehension" &&
+          selectedCategory !== "sentences" &&
+          selectedCategory !== "paragraphs" && (
             <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
               <div className="text-center">
                 {selectedCategory === "words" ? (
