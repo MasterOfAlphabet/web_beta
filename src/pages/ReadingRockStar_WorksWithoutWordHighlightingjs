@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { FaMicrophone, FaStar, FaTrophy, FaHome, FaBook, FaChartLine } from 'react-icons/fa';
 
 const ReadingRockStar = () => {
-  // State declarations (unchanged from original)
   const [currentView, setCurrentView] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedDifficulty, setSelectedDifficulty] = useState(null);
@@ -19,12 +18,8 @@ const ReadingRockStar = () => {
   const [feedback, setFeedback] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
   const [spokenWords, setSpokenWords] = useState([]);
-  const [correctWords, setCorrectWords] = useState([]);
-  const [incorrectWords, setIncorrectWords] = useState([]);
-  const [canProceed, setCanProceed] = useState(false);
   const recognitionRef = useRef(null);
 
-  // Game content (unchanged from original)
   const gameContent = {
     words: {
       rookie: ['cat', 'dog', 'sun', 'hat', 'run', 'fun', 'big', 'red', 'yes'],
@@ -109,7 +104,6 @@ const ReadingRockStar = () => {
     }
   };
 
-  // Speech recognition setup
   useEffect(() => {
     if ('webkitSpeechRecognition' in window) {
       recognitionRef.current = new window.webkitSpeechRecognition();
@@ -119,9 +113,6 @@ const ReadingRockStar = () => {
       recognitionRef.current.onstart = () => {
         setIsListening(true);
         setSpokenWords([]);
-        setCorrectWords([]);
-        setIncorrectWords([]);
-        setCanProceed(false);
       };
       
       recognitionRef.current.onend = () => {
@@ -132,7 +123,7 @@ const ReadingRockStar = () => {
         const transcript = event.results[0][0].transcript;
         const spokenWordsArray = transcript.toLowerCase().split(/\s+/);
         setSpokenWords(spokenWordsArray);
-        checkPronunciation(transcript);
+        checkAnswer(transcript);
       };
       
       recognitionRef.current.onerror = (event) => {
@@ -148,62 +139,7 @@ const ReadingRockStar = () => {
     };
   }, [currentChallenge]);
 
-  // Pronunciation checking logic
-  const checkPronunciation = (userInput) => {
-    if (!currentChallenge || !currentChallenge.text) {
-      setFeedback('Challenge not properly loaded. Please try again.');
-      return;
-    }
-
-    const challengeWords = currentChallenge.text.toLowerCase().split(/\s+/);
-    const userWords = userInput.toLowerCase().split(/\s+/);
-    
-    const correct = [];
-    const incorrect = [];
-    
-    challengeWords.forEach((word, index) => {
-      const normalizedWord = word.replace(/[.,!?]/g, '');
-      const userWord = userWords[index] || '';
-      
-      if (userWord === normalizedWord) {
-        correct.push(normalizedWord);
-      } else {
-        incorrect.push(normalizedWord);
-      }
-    });
-    
-    setCorrectWords(correct);
-    setIncorrectWords(incorrect);
-    
-    if (incorrect.length > 0) {
-      setFeedback(`Some words were not pronounced correctly. Please try again.`);
-      setCanProceed(false);
-    } else {
-      setFeedback('Perfect! All words pronounced correctly. 🎉');
-      setCanProceed(true);
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 3000);
-      
-      // Update progress
-      const newProgress = {...userProgress};
-      newProgress[selectedCategory][selectedDifficulty] += 1;
-      setUserProgress(newProgress);
-      
-      // Award stars
-      const starAward = {
-        rookie: 1,
-        racer: 2,
-        master: 3,
-        prodigy: 4,
-        wizard: 5
-      }[selectedDifficulty];
-      
-      setStars(prev => prev + starAward);
-    }
-  };
-
-  // Highlighted text component
-  const HighlightedText = ({ text }) => {
+  const HighlightedText = ({ text, spokenWords }) => {
     if (!text) return null;
 
     const words = text.split(/\s+/);
@@ -212,23 +148,12 @@ const ReadingRockStar = () => {
       <div className="text-2xl md:text-3xl font-medium text-gray-800 mb-6 leading-relaxed">
         {words.map((word, index) => {
           const normalizedWord = word.toLowerCase().replace(/[.,!?]/g, '');
-          const isCorrect = correctWords.includes(normalizedWord);
-          const isIncorrect = incorrectWords.includes(normalizedWord);
           const isSpoken = spokenWords.includes(normalizedWord);
-          
-          let className = '';
-          if (isCorrect) {
-            className = 'bg-green-200 text-gray-900';
-          } else if (isIncorrect) {
-            className = 'bg-red-200 text-gray-900';
-          } else if (isSpoken) {
-            className = 'bg-yellow-200 text-gray-900';
-          }
           
           return (
             <span 
               key={index} 
-              className={`transition-colors duration-300 ${className}`}
+              className={`transition-colors duration-300 ${isSpoken ? 'bg-yellow-200 text-gray-900' : ''}`}
             >
               {word}{' '}
             </span>
@@ -238,7 +163,6 @@ const ReadingRockStar = () => {
     );
   };
 
-  // Navigation functions
   const startListening = () => {
     if (recognitionRef.current) {
       recognitionRef.current.start();
@@ -257,10 +181,6 @@ const ReadingRockStar = () => {
 
   const startChallenge = () => {
     setSpokenWords([]);
-    setCorrectWords([]);
-    setIncorrectWords([]);
-    setCanProceed(false);
-    setFeedback('');
     setCurrentView('challenge');
     
     if (!gameContent[selectedCategory] || !gameContent[selectedCategory][selectedDifficulty]) {
@@ -289,7 +209,87 @@ const ReadingRockStar = () => {
     }
   };
 
-  // Comprehension answer checking
+  const checkAnswer = (userAnswer) => {
+    if (!currentChallenge || !currentChallenge.text) {
+      setFeedback('Challenge not properly loaded. Please try again.');
+      return;
+    }
+
+    let isCorrect = false;
+    
+    if (selectedCategory === 'comprehension') {
+      return;
+    }
+    
+    const normalizedUserAnswer = userAnswer.trim().toLowerCase();
+    const normalizedCorrectAnswer = currentChallenge.text.trim().toLowerCase();
+    
+    if (!normalizedUserAnswer || !normalizedCorrectAnswer) {
+      setFeedback('Please try reading again.');
+      return;
+    }
+
+    if (normalizedUserAnswer === normalizedCorrectAnswer) {
+      isCorrect = true;
+    } else {
+      const similarity = calculateSimilarity(normalizedUserAnswer, normalizedCorrectAnswer);
+      isCorrect = similarity > 0.85;
+    }
+    
+    if (isCorrect) {
+      const newProgress = {...userProgress};
+      newProgress[selectedCategory][selectedDifficulty] += 1;
+      setUserProgress(newProgress);
+      
+      const starAward = {
+        rookie: 1,
+        racer: 2,
+        master: 3,
+        prodigy: 4,
+        wizard: 5
+      }[selectedDifficulty];
+      
+      setStars(prev => prev + starAward);
+      setFeedback('Correct! Great job! 🎉');
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 3000);
+    } else {
+      setFeedback('Almost! Try again. The correct answer was: ' + currentChallenge.text);
+    }
+  };
+
+  const calculateSimilarity = (str1, str2) => {
+    const longer = str1.length > str2.length ? str1 : str2;
+    const shorter = str1.length <= str2.length ? str1 : str2;
+    const longerLength = longer.length;
+    
+    if (longerLength === 0) return 1.0;
+    
+    const distance = levenshteinDistance(longer, shorter);
+    return (longerLength - distance) / parseFloat(longerLength);
+  };
+
+  const levenshteinDistance = (s, t) => {
+    if (!s.length) return t.length;
+    if (!t.length) return s.length;
+    
+    const arr = [];
+    for (let i = 0; i <= t.length; i++) {
+      arr[i] = [i];
+      for (let j = 1; j <= s.length; j++) {
+        arr[i][j] =
+          i === 0
+            ? j
+            : Math.min(
+                arr[i - 1][j] + 1,
+                arr[i][j - 1] + 1,
+                arr[i - 1][j - 1] + (s[j - 1] === t[i - 1] ? 0 : 1)
+              );
+      }
+    }
+    return arr[t.length][s.length];
+  };
+
   const checkComprehensionAnswer = (questionIndex, selectedOption) => {
     const correctAnswer = currentChallenge.questions[questionIndex].answer;
     if (selectedOption === correctAnswer) {
@@ -298,14 +298,11 @@ const ReadingRockStar = () => {
       newProgress[selectedCategory][selectedDifficulty] += 1;
       setUserProgress(newProgress);
       setStars(prev => prev + 3);
-      setCanProceed(true);
     } else {
-      setFeedback('Not quite right. Try again!');
-      setCanProceed(false);
+      setFeedback('Not quite right. Try another question!');
     }
   };
 
-  // View rendering functions
   const renderHome = () => (
     <div className="text-center animate-fade-in">
       <h1 className="text-5xl font-bold text-purple-600 mb-6">Reading Rock Star</h1>
@@ -514,7 +511,8 @@ const ReadingRockStar = () => {
                 </p>
               ) : (
                 <HighlightedText 
-                  text={currentChallenge.text}
+                  text={currentChallenge.text} 
+                  spokenWords={spokenWords} 
                 />
               )}
               
@@ -535,7 +533,7 @@ const ReadingRockStar = () => {
         )}
         
         {feedback && (
-          <div className={`p-4 rounded-lg mb-6 ${feedback.includes('Perfect') || feedback.includes('Correct') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+          <div className={`p-4 rounded-lg mb-6 ${feedback.includes('Correct') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
             {feedback}
           </div>
         )}
@@ -556,8 +554,7 @@ const ReadingRockStar = () => {
               startChallenge();
               setFeedback('');
             }}
-            className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors ${!canProceed ? 'opacity-50 cursor-not-allowed' : ''}`}
-            disabled={!canProceed}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
           >
             Next Challenge →
           </button>
@@ -650,7 +647,6 @@ const ReadingRockStar = () => {
     </div>
   );
 
-  // Main component return
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
@@ -683,7 +679,6 @@ const ReadingRockStar = () => {
   );
 };
 
-// Helper components
 const CategoryCard = ({ title, description, icon, color, onClick }) => (
   <div 
     onClick={onClick}

@@ -63,7 +63,9 @@ import SkillsImprovementPage from "./pages/SkillsImprovementPage";
 //import EnhancedAssessmentComponent from "./components/QuestionDisplayCard";
 
 import TestListeningSkills from "./pages/TestListeningSkills";
-import ReadingRockStarGame from "./pages/ReadingRockStar";
+
+import ReadingRockStarGame_DeepSeek from "./pages/ReadingRockStar";
+import ReadingRockStarGame_Claude from "./pages/ReadingRockStar_ClaudeAI";
 
 import BattlesHub from "./components/BattlesHub";
 import BattlePage from "./components/BattlePage";
@@ -121,7 +123,6 @@ function App() {
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-
     // Step 2: Firebase session check (login/logout)
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
@@ -175,7 +176,6 @@ function App() {
         };
 
         setLoggedInUser(userInfo);
-
       } catch (err) {
         console.error("Failed to fetch student profile", err);
         setLoggedInUser(null);
@@ -312,8 +312,14 @@ function App() {
           />
           <Route
             path="/test-reading-skills"
-            element={<ReadingRockStarGame />}
+            element={<ReadingRockStarGame_DeepSeek />}
           />
+
+          <Route
+            path="/test-reading-skills2"
+            element={<ReadingRockStarGame_Claude />}
+          />
+
           <Route path="/startbattles" element={<Battles />} />
 
           <Route path="/battles-hub" element={<BattlesHub />} />
@@ -399,7 +405,7 @@ function App() {
           />
 
           <Route
-           path="/challenge-participation/:type/:moduleCategory" 
+            path="/challenge-participation/:type/:moduleCategory"
             element={<ChallengeParticipation />}
           />
 
@@ -408,8 +414,10 @@ function App() {
             element={<ChallengesPublisher />}
           />
 
-          <Route path="/english-skills-building-games/spelling-game" element={<SpellingGame />} />
-
+          <Route
+            path="/english-skills-building-games/spelling-game"
+            element={<SpellingGame />}
+          />
         </Routes>
 
         <CookieConsentBanner />
