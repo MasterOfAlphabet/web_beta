@@ -799,9 +799,7 @@ function tokenize(text) {
 
 const StoryScrambleGame = () => {
   const [selectedClassGroup, setSelectedClassGroup] = useState(null);
-  const [selectedStoryId, setSelectedStoryId] = useState(null);
-  const [selectedStoryMode, setSelectedStoryMode] = useState(null); // "story" or "timed"
-  const [gameMode, setGameMode] = useState(null); // "story" or "timed"
+
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
   const [shuffledWords, setShuffledWords] = useState([]);
   const [assembledSentence, setAssembledSentence] = useState([]);
@@ -818,6 +816,10 @@ const StoryScrambleGame = () => {
   const utteranceRef = useRef(null);
   const timeLeftRef = useRef(null);
 
+  const [gameMode, setGameMode] = useState(null); // Move this before story selection logic
+  const [selectedStoryId, setSelectedStoryId] = useState(null);
+  const [selectedStoryMode, setSelectedStoryMode] = useState(null); // Remove this - not needed
+
   // Get stories for mode
   const getStoriesForMode = (mode) => {
     if (!selectedClassGroup) return [];
@@ -827,7 +829,8 @@ const StoryScrambleGame = () => {
     }));
   };
   const getSelectedStoryObject = () => {
-    if (!selectedClassGroup || !selectedStoryMode || !selectedStoryId) return null;
+    if (!selectedClassGroup || !selectedStoryMode || !selectedStoryId)
+      return null;
     const stories = storyData[selectedClassGroup]?.[selectedStoryMode] || [];
     return stories.find((s) => s.id === selectedStoryId) || null;
   };
@@ -859,17 +862,50 @@ const StoryScrambleGame = () => {
 
   // Story selection: track both id and its mode
   const handleStorySelect = (storyId, mode) => {
-    setSelectedStoryId(storyId);
-    setSelectedStoryMode(mode);
-    setGameMode(null);
-    setCurrentSentenceIndex(0);
-    setScore(0);
-    setStoryProgress([]);
-    setAchievements([]);
-    setFeedback(null);
-    setHasStarted(false);
-    setHighlightedWord(null);
-    clearInterval(timeLeftRef.current);
+    if (storyId) {
+      setSelectedStoryId(storyId);
+      setSelectedStoryMode(mode); // Make sure to set the mode
+      setCurrentSentenceIndex(0);
+      setScore(0);
+      setStoryProgress([]);
+      setAchievements([]);
+      setFeedback(null);
+      setHasStarted(true);
+      setHighlightedWord(null);
+      clearInterval(timeLeftRef.current);
+
+      // Get the selected story
+      const story = storyData[selectedClassGroup]?.[mode]?.find(
+        (s) => s.id === storyId
+      );
+      if (
+        story &&
+        Array.isArray(story.sentences) &&
+        story.sentences.length > 0
+      ) {
+        const firstSentence = story.sentences[0];
+        if (firstSentence?.parts) {
+          const wordsWithOriginalIndex = firstSentence.parts.map(
+            (word, idx) => ({
+              word,
+              originalIndex: idx,
+              id: `${firstSentence.id}-${idx}`,
+            })
+          );
+          setShuffledWords(shuffleArray([...wordsWithOriginalIndex]));
+          setAssembledSentence([]);
+        }
+      }
+
+      if (mode === "timed") {
+        setTimeLeft(60);
+        startTimedMode();
+      }
+    } else {
+      setSelectedStoryId(null);
+      setHasStarted(false);
+      setFeedback(null);
+    }
   };
 
   // Mode selection: Only allow for right mode!
@@ -891,12 +927,19 @@ const StoryScrambleGame = () => {
 
     // Initialize first sentence
     const story = getSelectedStoryObject();
-    if (story && Array.isArray(story.sentences) && story.sentences.length > 0 && story.sentences[0]?.parts) {
-      const wordsWithOriginalIndex = story.sentences[0].parts.map((word, idx) => ({
-        word,
-        originalIndex: idx,
-        id: `${story.sentences[0].id}-${idx}`,
-      }));
+    if (
+      story &&
+      Array.isArray(story.sentences) &&
+      story.sentences.length > 0 &&
+      story.sentences[0]?.parts
+    ) {
+      const wordsWithOriginalIndex = story.sentences[0].parts.map(
+        (word, idx) => ({
+          word,
+          originalIndex: idx,
+          id: `${story.sentences[0].id}-${idx}`,
+        })
+      );
       setShuffledWords(shuffleArray([...wordsWithOriginalIndex]));
       setAssembledSentence([]);
     }
@@ -918,7 +961,13 @@ const StoryScrambleGame = () => {
       }
     }
     // eslint-disable-next-line
-  }, [gameMode, currentSentenceIndex, selectedClassGroup, selectedStoryId, selectedStoryMode]);
+  }, [
+    gameMode,
+    currentSentenceIndex,
+    selectedClassGroup,
+    selectedStoryId,
+    selectedStoryMode,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -988,16 +1037,24 @@ const StoryScrambleGame = () => {
   };
 
   const checkSentence = () => {
-    if (!currentSentence?.parts || assembledSentence.length !== currentSentence.parts.length) {
+    if (
+      !currentSentence?.parts ||
+      assembledSentence.length !== currentSentence.parts.length
+    ) {
       setFeedback("incorrect");
       return;
     }
-    const isCorrect = assembledSentence.every((w, idx) => w.originalIndex === idx);
+    const isCorrect = assembledSentence.every(
+      (w, idx) => w.originalIndex === idx
+    );
     if (isCorrect) {
       const pointsEarned = calculatePoints();
       setScore((prev) => prev + pointsEarned);
       setFeedback("correct");
-      if (currentSentence?.storySegment && !storyProgress.includes(currentSentence.storySegment)) {
+      if (
+        currentSentence?.storySegment &&
+        !storyProgress.includes(currentSentence.storySegment)
+      ) {
         setStoryProgress((prev) => [...prev, currentSentence.storySegment]);
       }
       checkAchievements(pointsEarned);
@@ -1133,109 +1190,76 @@ const StoryScrambleGame = () => {
 
   // Story selection UI
   const StorySelection = () => {
-    if (!selectedClassGroup) return null;
-    const storyStories = getStoriesForMode("story");
-    const timedStories = getStoriesForMode("timed");
+    if (!selectedClassGroup || !gameMode) return null;
+
+    const stories = getStoriesForMode(gameMode);
+
     return (
       <div className="mb-6 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
         <h3 className="text-lg font-semibold mb-3 text-center text-gray-700">
-          Choose a Story
+          Choose a {gameMode === "story" ? "Story" : "Timed Challenge"}
         </h3>
         <div className="max-w-md mx-auto">
-          <label className="block font-bold mt-2 mb-1">Story Mode</label>
           <select
-            value={selectedStoryMode === "story" ? selectedStoryId || "" : ""}
-            onChange={e => handleStorySelect(e.target.value, "story")}
-            className="w-full p-3 border border-gray-300 rounded-lg font-medium mb-3"
-            disabled={hasStarted}
-          >
-            <option value="">Select a story...</option>
-            {storyStories.map((story) => (
-              <option key={story.id} value={story.id}>
-                {story.title}
-              </option>
-            ))}
-          </select>
-          <label className="block font-bold mt-2 mb-1">Timed Challenge</label>
-          <select
-            value={selectedStoryMode === "timed" ? selectedStoryId || "" : ""}
-            onChange={e => handleStorySelect(e.target.value, "timed")}
+            value={selectedStoryId || ""}
+            onChange={(e) => handleStorySelect(e.target.value, gameMode)}
             className="w-full p-3 border border-gray-300 rounded-lg font-medium"
             disabled={hasStarted}
           >
-            <option value="">Select a timed story...</option>
-            {timedStories.map((story) => (
+            <option value="">
+              Select a {gameMode === "story" ? "story" : "timed challenge"}...
+            </option>
+            {stories.map((story) => (
               <option key={story.id} value={story.id}>
                 {story.title}
               </option>
             ))}
           </select>
-          {hasStarted && (
-            <p className="text-center text-sm text-gray-500 mt-2">
-              Complete the current story to select a different one
-            </p>
-          )}
         </div>
       </div>
     );
   };
 
   // Mode selection UI
-  const GameModes = () => (
-    <div className="mb-6 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-      <h3 className="text-lg font-semibold mb-3 text-center text-gray-700">
-        {gameMode
-          ? hasStarted
-            ? "Current Mode"
-            : "Change Mode"
-          : "Select Game Mode"}
-      </h3>
-      <div className="flex flex-col sm:flex-row justify-center gap-3">
-        <button
-          onClick={() => handleSelectMode("story")}
-          disabled={hasStarted || selectedStoryMode !== "story"}
-          className={`px-6 py-2 rounded-full font-medium transition-all flex flex-col items-center ${
-            hasStarted || selectedStoryMode !== "story"
-              ? "cursor-not-allowed opacity-70"
-              : "cursor-pointer"
-          } ${
-            gameMode === "story"
-              ? "bg-purple-600 text-white shadow-md"
-              : "bg-gray-100 hover:bg-gray-200"
-          }`}
-        >
-          <span>Story Mode</span>
-        </button>
-        <button
-          onClick={() => handleSelectMode("timed")}
-          disabled={hasStarted || selectedStoryMode !== "timed"}
-          className={`px-6 py-2 rounded-full font-medium transition-all flex flex-col items-center ${
-            hasStarted || selectedStoryMode !== "timed"
-              ? "cursor-not-allowed opacity-70"
-              : "cursor-pointer"
-          } ${
-            gameMode === "timed"
-              ? "bg-purple-600 text-white shadow-md"
-              : "bg-gray-100 hover:bg-gray-200"
-          }`}
-        >
-          <span>Timed Challenge</span>
-        </button>
-      </div>
-      {hasStarted && (
-        <p className="text-center text-sm text-gray-500 mt-2">
-          {gameMode === "story"
-            ? "Complete the story to switch modes"
-            : "Finish the timed challenge to switch modes"}
-        </p>
-      )}
-      {feedback === "Please select a story from this mode." && (
-        <div className="text-red-600 font-bold text-center mt-2">
-          Please select a story from this mode.
+  const GameModes = () => {
+    if (!selectedClassGroup) return null;
+
+    return (
+      <div className="mb-6 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+        <h3 className="text-lg font-semibold mb-3 text-center text-gray-700">
+          Select Game Mode
+        </h3>
+        <div className="flex flex-col sm:flex-row justify-center gap-3">
+          <button
+            onClick={() => setGameMode("story")}
+            disabled={hasStarted}
+            className={`px-6 py-2 rounded-full font-medium transition-all ${
+              hasStarted ? "cursor-not-allowed opacity-70" : "cursor-pointer"
+            } ${
+              gameMode === "story"
+                ? "bg-purple-600 text-white shadow-md"
+                : "bg-gray-100 hover:bg-gray-200"
+            }`}
+          >
+            Story Mode
+          </button>
+          <button
+            onClick={() => setGameMode("timed")}
+            disabled={hasStarted}
+            className={`px-6 py-2 rounded-full font-medium transition-all ${
+              hasStarted ? "cursor-not-allowed opacity-70" : "cursor-pointer"
+            } ${
+              gameMode === "timed"
+                ? "bg-purple-600 text-white shadow-md"
+                : "bg-gray-100 hover:bg-gray-200"
+            }`}
+          >
+            Timed Challenge
+          </button>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  };
 
   // Sentence Construction
   const SentenceConstructionArea = () => (
@@ -1311,7 +1335,8 @@ const StoryScrambleGame = () => {
         }
         className={`px-5 py-2.5 font-bold rounded-full shadow-md transition-all flex-1 sm:flex-none
           ${
-            assembledSentence.length !== (currentSentence?.parts?.length || 0) ||
+            assembledSentence.length !==
+              (currentSentence?.parts?.length || 0) ||
             feedback === "correct" ||
             isSpeaking
               ? "bg-gray-300 text-gray-600 cursor-not-allowed"
@@ -1554,20 +1579,61 @@ const StoryScrambleGame = () => {
           </div>
         </div>
       </div>
-      <button
-        onClick={() =>
-          handleSelectMode(gameMode === "story" ? "timed" : "story")
-        }
-        className="px-6 md:px-8 py-2.5 md:py-3 bg-purple-600 text-white font-bold rounded-full shadow-lg hover:bg-purple-700 transition-colors mb-4"
-      >
-        Try {gameMode === "story" ? "Timed Challenge" : "Story Mode"}
-      </button>
-      <button
-        onClick={() => handleSelectMode(gameMode)}
-        className="px-6 md:px-8 py-2.5 md:py-3 bg-white text-purple-600 font-bold rounded-full shadow-lg hover:bg-gray-100 transition-colors border border-purple-300"
-      >
-        Play Again
-      </button>
+      <div className="flex flex-col sm:flex-row justify-center gap-4">
+        <button
+          onClick={() => {
+            // Reset to game selection screen
+            setSelectedStoryId(null);
+            setGameMode(null);
+            setCurrentSentenceIndex(0);
+            setScore(0);
+            setStoryProgress([]);
+            setAchievements([]);
+            setFeedback(null);
+            setHasStarted(false);
+            setHighlightedWord(null);
+            clearInterval(timeLeftRef.current);
+          }}
+          className="px-6 md:px-8 py-2.5 md:py-3 bg-white text-purple-600 font-bold rounded-full shadow-lg hover:bg-gray-100 transition-colors border border-purple-300"
+        >
+          Home
+        </button>
+        <button
+          onClick={() => {
+            // Reset current game
+            setCurrentSentenceIndex(0);
+            setScore(0);
+            setStoryProgress([]);
+            setAchievements([]);
+            setFeedback(null);
+            setHasStarted(false);
+            setHighlightedWord(null);
+            clearInterval(timeLeftRef.current);
+
+            // Reinitialize first sentence
+            const story = getSelectedStoryObject();
+            if (story?.sentences?.[0]?.parts) {
+              const wordsWithOriginalIndex = story.sentences[0].parts.map(
+                (word, idx) => ({
+                  word,
+                  originalIndex: idx,
+                  id: `${story.sentences[0].id}-${idx}`,
+                })
+              );
+              setShuffledWords(shuffleArray([...wordsWithOriginalIndex]));
+              setAssembledSentence([]);
+            }
+
+            if (gameMode === "timed") {
+              setTimeLeft(60);
+              startTimedMode();
+            }
+          }}
+          className="px-6 md:px-8 py-2.5 md:py-3 bg-purple-600 text-white font-bold rounded-full shadow-lg hover:bg-purple-700 transition-colors"
+        >
+          New Game
+        </button>
+      </div>
     </div>
   );
 
@@ -1655,29 +1721,33 @@ const StoryScrambleGame = () => {
               </ul>
             </div>
           </div>
-        ) : !selectedStoryId ? (
+        ) : !gameMode ? (
           <div className="text-center py-8">
             <h2 className="text-2xl font-bold text-purple-700 mb-6">
               Class {selectedClassGroup} Selected!
             </h2>
             <ClassGroupSelection />
-            <StorySelection />
+            <GameModes />
           </div>
-        ) : !gameMode ? (
+        ) : !selectedStoryId ? (
           <div className="text-center py-8">
             <h2 className="text-2xl font-bold text-purple-700 mb-6">
-              Story Selected:{" "}
-              {getSelectedStoryObject()?.title}
+              {gameMode === "story" ? "Story Mode" : "Timed Challenge"}{" "}
+              Selected!
             </h2>
             <ClassGroupSelection />
-            <StorySelection />
             <GameModes />
+            <StorySelection />
           </div>
         ) : (
           <>
-            <ClassGroupSelection />
-            <StorySelection />
-            <GameModes />
+            {/* Only show minimal info during game */}
+            <div className="mb-4 text-center">
+              <p className="text-sm text-gray-600">
+                Class {selectedClassGroup} •{" "}
+                {gameMode === "story" ? "Story Mode" : "Timed Challenge"}
+              </p>
+            </div>
             {showAchievements && <AchievementsModal />}
             {feedback === "game-complete" || feedback === "time-up" ? (
               <GameCompleteScreen />
