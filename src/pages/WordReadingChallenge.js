@@ -33,68 +33,15 @@ const createInitialState = () => ({
   isCompleted: false,
 });
 
-// Speech recognition state
-const createSpeechState = {
-  isSupported: true,
-  isRecording: false,
-  isListening: false,
-  error: null,
-};
-
 // Word collections
 const WORD_COLLECTIONS = {
   "I-II": {
     words: [
-      "cat",
-      "dog",
-      "run",
-      "jump",
-      "big",
-      "red",
-      "sun",
-      "moon",
-      "car",
-      "book",
-      "play",
-      "happy",
-      "blue",
-      "bird",
-      "fish",
-      "tree",
-      "ball",
-      "cake",
-      "milk",
-      "home",
-      "love",
-      "kind",
-      "warm",
-      "soft",
-      "fast",
-      "slow",
-      "up",
-      "down",
-      "yes",
-      "fun",
-      "new",
-      "old",
-      "hot",
-      "cold",
-      "good",
-      "nice",
-      "bear",
-      "duck",
-      "frog",
-      "star",
-      "door",
-      "window",
-      "chair",
-      "table",
-      "green",
-      "yellow",
-      "pink",
-      "black",
-      "white",
-      "small",
+      "cat", "dog", "run", "jump", "big", "red", "sun", "moon", "car", "book",
+      "play", "happy", "blue", "bird", "fish", "tree", "ball", "cake", "milk", "home",
+      "love", "kind", "warm", "soft", "fast", "slow", "up", "down", "yes", "fun",
+      "new", "old", "hot", "cold", "good", "nice", "bear", "duck", "frog", "star",
+      "door", "window", "chair", "table", "green", "yellow", "pink", "black", "white", "small"
     ],
     theme: "Simple everyday words",
     emoji: "🌟",
@@ -102,46 +49,10 @@ const WORD_COLLECTIONS = {
   },
   "III-V": {
     words: [
-      "adventure",
-      "butterfly",
-      "chocolate",
-      "elephant",
-      "fantastic",
-      "gigantic",
-      "happiness",
-      "important",
-      "jellyfish",
-      "kangaroo",
-      "lightning",
-      "mountain",
-      "beautiful",
-      "wonderful",
-      "dangerous",
-      "excellent",
-      "incredible",
-      "mysterious",
-      "playground",
-      "rainbow",
-      "sandwich",
-      "telephone",
-      "umbrella",
-      "vacation",
-      "waterfall",
-      "basketball",
-      "computer",
-      "dinosaur",
-      "friendly",
-      "hospital",
-      "bicycle",
-      "magazine",
-      "submarine",
-      "telescope",
-      "helicopter",
-      "strawberry",
-      "neighborhood",
-      "celebration",
-      "comfortable",
-      "delicious",
+      "adventure", "butterfly", "chocolate", "elephant", "fantastic", "gigantic", "happiness", "important", "jellyfish", "kangaroo",
+      "lightning", "mountain", "beautiful", "wonderful", "dangerous", "excellent", "incredible", "mysterious", "playground", "rainbow",
+      "sandwich", "telephone", "umbrella", "vacation", "waterfall", "basketball", "computer", "dinosaur", "friendly", "hospital",
+      "bicycle", "magazine", "submarine", "telescope", "helicopter", "strawberry", "neighborhood", "celebration", "comfortable", "delicious"
     ],
     theme: "Intermediate vocabulary",
     emoji: "🚀",
@@ -149,46 +60,10 @@ const WORD_COLLECTIONS = {
   },
   "VI-X": {
     words: [
-      "extraordinary",
-      "magnificent",
-      "revolutionary",
-      "sophisticated",
-      "unprecedented",
-      "comprehension",
-      "investigation",
-      "responsibility",
-      "achievement",
-      "environment",
-      "pronunciation",
-      "encyclopedia",
-      "mathematics",
-      "psychology",
-      "archaeology",
-      "constellation",
-      "photosynthesis",
-      "biodiversity",
-      "architecture",
-      "philosophy",
-      "technological",
-      "entrepreneurship",
-      "humanitarian",
-      "controversial",
-      "simultaneous",
-      "Mediterranean",
-      "catastrophic",
-      "infrastructure",
-      "bureaucratic",
-      "metamorphosis",
-      "autobiography",
-      "civilization",
-      "phenomenon",
-      "observatory",
-      "geographical",
-      "pharmaceutical",
-      "astronomical",
-      "constitutional",
-      "atmospheric",
-      "archaeological",
+      "extraordinary", "magnificent", "revolutionary", "sophisticated", "unprecedented", "comprehension", "investigation", "responsibility", "achievement", "environment",
+      "pronunciation", "encyclopedia", "mathematics", "psychology", "archaeology", "constellation", "photosynthesis", "biodiversity", "architecture", "philosophy",
+      "technological", "entrepreneurship", "humanitarian", "controversial", "simultaneous", "Mediterranean", "catastrophic", "infrastructure", "bureaucratic", "metamorphosis",
+      "autobiography", "civilization", "phenomenon", "observatory", "geographical", "pharmaceutical", "astronomical", "constitutional", "atmospheric", "archaeological"
     ],
     theme: "Advanced vocabulary",
     emoji: "🧠",
@@ -198,7 +73,13 @@ const WORD_COLLECTIONS = {
 
 // Custom hook for speech recognition
 const useSpeechRecognition = (isEnabled, onResult, onError) => {
-  const [speechState, setSpeechState] = useState(createSpeechState);
+  const [speechState, setSpeechState] = useState({
+    isSupported: true,
+    isRecording: false,
+    isListening: false,
+    error: null
+  });
+
   const recognitionRef = useRef(null);
   const isMountedRef = useRef(true);
   const restartTimeoutRef = useRef(null);
@@ -227,28 +108,16 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
     if (!recognitionRef.current) {
       const recognition = new SpeechRecognition();
-      recognition.continuous = true; // Keep listening continuously
+      recognition.continuous = true;
       recognition.interimResults = false;
       recognition.lang = "en-US";
-      recognition.maxAlternatives = 3; // Increase alternatives for better matching
-
-      recognition.onresult = (event) => {
-        if (!isMountedRef.current) return;
-        const results = event.results[event.results.length - 1];
-        const transcript = results[0].transcript.toLowerCase().trim();
-        console.log("Raw transcript:", transcript);
-
-        if (results.isFinal && transcript && onResult) {
-          onResult(transcript);
-        }
-      };
+      recognition.maxAlternatives = 3;
 
       recognition.onresult = (event) => {
         if (!isMountedRef.current) return;
         const transcript = event.results[event.results.length - 1][0].transcript
           .toLowerCase()
           .trim();
-        console.log("Transcript received:", transcript);
         if (transcript && onResult) {
           onResult(transcript);
         }
@@ -256,8 +125,6 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
       recognition.onerror = (event) => {
         if (!isMountedRef.current) return;
-        console.log("Speech recognition error:", event.error);
-
         if (restartTimeoutRef.current) {
           clearTimeout(restartTimeoutRef.current);
         }
@@ -272,7 +139,6 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
         if (onError) onError(errorMessage);
 
-        // Only auto-restart on safe, recoverable errors
         if (
           isEnabled &&
           ["no-speech", "audio-capture", "aborted"].includes(event.error)
@@ -287,7 +153,6 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
       recognition.onend = () => {
         if (!isMountedRef.current) return;
-        console.log("Speech recognition ended");
         setSpeechState((prev) => ({
           ...prev,
           isListening: false,
@@ -321,51 +186,40 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   }, [onResult, onError, isEnabled]);
 
   const startRecognition = useCallback(() => {
-    console.log("Attempting to start recognition...");
-
-    if (!recognitionRef.current) {
-      console.log("No recognition ref available");
-      return;
+    if (!recognitionRef.current || speechState.isRecording) return;
+    
+    try {
+      recognitionRef.current.stop(); // Stop first if needed
+      recognitionRef.current.start();
+      setSpeechState(prev => ({
+        ...prev,
+        isRecording: true,
+        isListening: true,
+        error: null
+      }));
+    } catch (error) {
+      console.error("Failed to start recognition:", error);
+      setSpeechState(prev => ({
+        ...prev,
+        error: error.message,
+        isRecording: false,
+        isListening: false
+      }));
     }
-
-    if (restartTimeoutRef.current) {
-      clearTimeout(restartTimeoutRef.current);
-    }
-
-    if (speechState.isRecording) {
-      try {
-        recognitionRef.current.stop();
-      } catch (e) {
-        console.warn("Error stopping recognition:", e);
-      }
-    }
-
-    restartTimeoutRef.current = setTimeout(() => {
-      if (!isMountedRef.current) return;
-
-      try {
-        console.log("Starting speech recognition...");
-        recognitionRef.current.start();
-      } catch (error) {
-        console.error("Failed to start recognition:", error);
-        setSpeechState((prev) => ({
-          ...prev,
-          error: error.message,
-          isRecording: false,
-          isListening: false,
-        }));
-      }
-    }, 300); // Safe debounce
   }, [speechState.isRecording]);
 
   const stopRecognition = useCallback(() => {
-    console.log("Stopping recognition...");
     if (restartTimeoutRef.current) {
       clearTimeout(restartTimeoutRef.current);
     }
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
+        setSpeechState((prev) => ({
+          ...prev,
+          isRecording: false,
+          isListening: false,
+        }));
       } catch (e) {
         console.warn("Error stopping recognition:", e);
       }
@@ -373,7 +227,6 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   }, []);
 
   const toggleRecognition = useCallback(() => {
-    console.log("Toggle recognition - current state:", speechState.isRecording);
     if (speechState.isRecording) {
       stopRecognition();
     } else {
@@ -447,11 +300,7 @@ const ClassSelector = ({ classGroup, onClassChange }) => (
           aria-pressed={classGroup === key}
         >
           <div className="flex items-center gap-4">
-            <span
-              className="text-3xl"
-              role="img"
-              aria-label={`${data.theme} emoji`}
-            >
+            <span className="text-3xl" role="img" aria-label={`${data.theme} emoji`}>
               {data.emoji}
             </span>
             <div className="text-left">
@@ -566,72 +415,78 @@ const ChallengeSetup = ({
 );
 
 // Component for game controls
-// Update the GameControls component props to use the speech state directly
 const GameControls = ({
   isPaused,
-  speechState, // Add this prop
+  speechState,
   onPause,
   onReset,
   onToggleRecording,
   stats,
-}) => (
-  <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20">
-    <div className="flex items-center justify-between flex-wrap gap-4">
-      <div className="flex items-center gap-3">
-        <button
-          onClick={onPause}
-          className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-3 rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg"
-          aria-label={isPaused ? "Resume challenge" : "Pause challenge"}
-        >
-          {isPaused ? <Play size={24} /> : <Pause size={24} />}
-        </button>
-        <button
-          onClick={onReset}
-          className="bg-gradient-to-r from-gray-500 to-gray-600 text-white p-3 rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all shadow-lg"
-          aria-label="Reset challenge"
-        >
-          <RotateCcw size={24} />
-        </button>
-        <button
-          onClick={onToggleRecording}
-          className={`p-3 rounded-xl transition-all shadow-lg ${
-            speechState.isRecording
-              ? "bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse"
-              : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600"
-          }`}
-          aria-label={
-            speechState.isRecording ? "Stop recording" : "Start recording"
-          }
-        >
-          {speechState.isRecording ? <MicOff size={24} /> : <Mic size={24} />}
-        </button>
-        {speechState.error && (
-          <div className="flex items-center gap-2 text-red-400 text-sm">
-            <AlertCircle size={16} />
-            <span>Mic error</span>
-          </div>
-        )}
-      </div>
+}) => {
+  return (
+    <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20">
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onPause}
+            className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-3 rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg"
+            aria-label={isPaused ? "Resume challenge" : "Pause challenge"}
+          >
+            {isPaused ? <Play size={24} /> : <Pause size={24} />}
+          </button>
+          <button
+            onClick={onReset}
+            className="bg-gradient-to-r from-gray-500 to-gray-600 text-white p-3 rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all shadow-lg"
+            aria-label="Reset challenge"
+          >
+            <RotateCcw size={24} />
+          </button>
+          <button
+            onClick={onToggleRecording}
+            className={`p-3 rounded-xl transition-all shadow-lg ${
+              speechState.isRecording
+                ? "bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse"
+                : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600"
+            }`}
+            aria-label={speechState.isRecording ? "Stop recording" : "Start recording"}
+          >
+            {speechState.isRecording ? <MicOff size={24} /> : <Mic size={24} />}
+          </button>
 
-      <div className="flex items-center gap-6 text-white">
-        <div className="flex items-center gap-2">
-          <BookOpen size={20} className="text-blue-400" />
-          <span className="font-bold">{stats.progress}</span>
+          {speechState.error && (
+            <div className="flex items-center gap-2 text-red-400 text-sm">
+              <AlertCircle size={16} />
+              <span>{speechState.error}</span>
+            </div>
+          )}
+          {!speechState.isSupported && (
+            <div className="flex items-center gap-2 text-yellow-400 text-sm">
+              <AlertCircle size={16} />
+              <span>Mic not supported</span>
+            </div>
+          )}
         </div>
-        <div className="flex items-center gap-2">
-          <Clock size={20} className="text-green-400" />
-          <span className="font-bold">{stats.time}</span>
-        </div>
-        {speechState.isRecording && (
+
+        <div className="flex items-center gap-6 text-white">
           <div className="flex items-center gap-2">
-            <Volume2 size={20} className="text-red-400" />
-            <span className="font-bold">{stats.recognized} recognized</span>
+            <BookOpen size={20} className="text-blue-400" />
+            <span className="font-bold">{stats.progress}</span>
           </div>
-        )}
+          <div className="flex items-center gap-2">
+            <Clock size={20} className="text-green-400" />
+            <span className="font-bold">{stats.time}</span>
+          </div>
+          {speechState.isRecording && (
+            <div className="flex items-center gap-2">
+              <Volume2 size={20} className="text-red-400" />
+              <span className="font-bold">{stats.recognized} recognized</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Main component
 const WordReadingChallenge = () => {
@@ -639,39 +494,24 @@ const WordReadingChallenge = () => {
   const [recognizedWords, setRecognizedWords] = useState([]);
   const [lastRecognized, setLastRecognized] = useState(null);
 
-  const speechRef = useRef(null);
-
-  // Get current word data
-  const currentCollection =
-    WORD_COLLECTIONS[gameState.classGroup] || WORD_COLLECTIONS["III-V"];
+  const currentCollection = WORD_COLLECTIONS[gameState.classGroup] || WORD_COLLECTIONS["III-V"];
   const currentWords = useMemo(
     () => currentCollection.words.slice(0, gameState.wordCount),
     [currentCollection.words, gameState.wordCount]
   );
 
-  // Game action handlers
   const handleComplete = useCallback(() => {
     setGameState((prev) => ({ ...prev, phase: "results", isCompleted: true }));
-    speech.stopRecognition();
   }, []);
 
-  // Speech recognition handlers
   const handleSpeechResult = useCallback(
     (transcript) => {
-      console.log("Processing transcript:", transcript);
       const spokenWord = transcript.toLowerCase().trim();
-      const currentWord =
-        currentWords[gameState.currentWordIndex]?.toLowerCase();
+      const currentWord = currentWords[gameState.currentWordIndex]?.toLowerCase();
 
-      if (gameState.phase !== "challenge" || gameState.isPaused) {
-        console.log("Not processing - game paused or not in challenge phase");
-        return;
-      }
-
-      console.log(`Comparing: "${spokenWord}" with "${currentWord}"`);
+      if (gameState.phase !== "challenge" || gameState.isPaused) return;
 
       if (spokenWord === currentWord) {
-        console.log("Word matched!");
         setLastRecognized({
           word: currentWord,
           position: gameState.currentWordIndex,
@@ -680,9 +520,7 @@ const WordReadingChallenge = () => {
 
         setRecognizedWords((prev) => {
           const newWords = [...prev];
-          if (
-            !newWords.some((w) => w.position === gameState.currentWordIndex)
-          ) {
+          if (!newWords.some((w) => w.position === gameState.currentWordIndex)) {
             newWords.push({
               word: currentWord,
               position: gameState.currentWordIndex,
@@ -693,7 +531,6 @@ const WordReadingChallenge = () => {
           return newWords;
         });
 
-        // Auto-advance to next word after short delay
         setTimeout(() => {
           if (gameState.currentWordIndex < currentWords.length - 1) {
             setGameState((prev) => ({
@@ -704,89 +541,46 @@ const WordReadingChallenge = () => {
             handleComplete();
           }
         }, 500);
-      } else {
-        console.log("Word didn't match");
       }
     },
-    [
-      currentWords,
-      gameState.currentWordIndex,
-      gameState.phase,
-      gameState.isPaused,
-      handleComplete,
-    ]
+    [currentWords, gameState.currentWordIndex, gameState.phase, gameState.isPaused, handleComplete]
   );
 
   const handleSpeechError = useCallback((error) => {
     console.error("Speech recognition error:", error);
   }, []);
 
-  // Speech recognition hook
   const speech = useSpeechRecognition(
     gameState.phase === "challenge" && !gameState.isPaused,
     handleSpeechResult,
     handleSpeechError
   );
 
-  // Add this useEffect to track speech state changes
-  useEffect(() => {
-    console.log("Speech state changed:", {
-      isRecording: speech.isRecording,
-      isListening: speech.isListening,
-      error: speech.error,
-    });
-  }, [speech.isRecording, speech.isListening, speech.error]);
-
-  // Timer handlers
-  const handleTimerTick = useCallback((elapsed) => {
-    setGameState((prev) => ({ ...prev, timeElapsed: elapsed }));
-  }, []);
-
   const timer = useGameTimer(
-    gameState.phase === "challenge" &&
-      !gameState.isPaused &&
-      !gameState.isCompleted,
-    handleTimerTick
+    gameState.phase === "challenge" && !gameState.isPaused && !gameState.isCompleted,
+    useCallback((elapsed) => {
+      setGameState((prev) => ({ ...prev, timeElapsed: elapsed }));
+    }, [])
   );
 
-  // Auto-advance for grid mode
-  // Effect 1: Manage speech recognition state
-  useEffect(() => {
-    if (gameState.phase === "challenge" && !gameState.isPaused) {
-      if (!speech.isRecording) {
-        speech.startRecognition();
-      }
-    } else {
-      if (speech.isRecording) {
-        speech.stopRecognition();
-      }
+  const handleToggleRecording = useCallback(() => {
+    if (!speech.isSupported) return;
+    speech.toggleRecognition();
+  }, [speech]);
+
+  const handlePause = useCallback(() => {
+    setGameState((prev) => ({ ...prev, isPaused: !prev.isPaused }));
+    if (speech.isRecording) {
+      speech.stopRecognition();
     }
-  }, [gameState.phase, gameState.isPaused, speech]);
+  }, [speech]);
 
-  // Effect 2: Handle word advancement
-  useEffect(() => {
-    if (gameState.phase !== "challenge" || gameState.isPaused) {
-      return;
-    }
-
-    const wordRecognized = recognizedWords.some(
-      (rw) => rw.position === gameState.currentWordIndex && rw.isCorrect
-    );
-
-    if (
-      wordRecognized &&
-      gameState.currentWordIndex < currentWords.length - 1
-    ) {
-      const timeout = setTimeout(() => {
-        setGameState((prev) => ({
-          ...prev,
-          currentWordIndex: prev.currentWordIndex + 1,
-        }));
-      }, 500);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [gameState, recognizedWords, currentWords.length]);
+  const handleReset = useCallback(() => {
+    setGameState(createInitialState());
+    setRecognizedWords([]);
+    speech.stopRecognition();
+    timer.resetTimer();
+  }, [speech, timer]);
 
   // Clear animation after it plays
   useEffect(() => {
@@ -810,12 +604,7 @@ const WordReadingChallenge = () => {
         setGameState((prev) => ({ ...prev, phase: "results" }));
       }, 1000);
     }
-  }, [
-    gameState.currentWordIndex,
-    currentWords.length,
-    gameState.phase,
-    speech,
-  ]);
+  }, [gameState.currentWordIndex, currentWords.length, gameState.phase, speech]);
 
   // Game action handlers
   const handleStart = useCallback(() => {
@@ -830,24 +619,6 @@ const WordReadingChallenge = () => {
     setRecognizedWords([]);
     timer.resetTimer();
   }, [timer]);
-
-  const handlePause = useCallback(() => {
-    setGameState((prev) => ({ ...prev, isPaused: !prev.isPaused }));
-    if (speech.isRecording) {
-      if (gameState.isPaused) {
-        speech.startRecognition();
-      } else {
-        speech.stopRecognition();
-      }
-    }
-  }, [gameState.isPaused, speech]);
-
-  const handleReset = useCallback(() => {
-    setGameState(createInitialState());
-    setRecognizedWords([]);
-    speech.stopRecognition();
-    timer.resetTimer();
-  }, [speech, timer]);
 
   const handleNext = useCallback(() => {
     if (gameState.currentWordIndex < currentWords.length - 1) {
@@ -884,16 +655,9 @@ const WordReadingChallenge = () => {
         ? Math.round(
             (recognizedWords.filter(
               (rw) => rw.position < gameState.currentWordIndex && rw.isCorrect
-            ).length /
-              gameState.currentWordIndex) *
-              100
+            ).length / gameState.currentWordIndex) * 100
           )
         : 100;
-    const completionRate = Math.round(
-      (Math.min(gameState.currentWordIndex, currentWords.length) /
-        currentWords.length) *
-        100
-    );
 
     return {
       progress,
@@ -901,7 +665,6 @@ const WordReadingChallenge = () => {
       recognized: recognizedCount,
       wpm,
       accuracy,
-      completionRate,
     };
   }, [gameState, currentWords, recognizedWords]);
 
@@ -1032,11 +795,7 @@ const WordReadingChallenge = () => {
             speechState={speech}
             onPause={handlePause}
             onReset={handleReset}
-            onToggleRecording={() => {
-              speech.toggleRecognition();
-              // Force a state update
-              setGameState((prev) => ({ ...prev }));
-            }}
+            onToggleRecording={handleToggleRecording}
             stats={stats}
           />
         </div>
@@ -1047,20 +806,10 @@ const WordReadingChallenge = () => {
             <div
               className="bg-gradient-to-r from-pink-500 to-violet-500 h-full transition-all duration-500 ease-out shadow-lg"
               style={{
-                width: `${
-                  (Math.min(
-                    gameState.currentWordIndex + 1,
-                    currentWords.length
-                  ) /
-                    currentWords.length) *
-                  100
-                }%`,
+               width: `${(Math.min(gameState.currentWordIndex + 1, currentWords.length) / currentWords.length) * 100}%`,
               }}
               role="progressbar"
-              aria-valuenow={Math.min(
-                gameState.currentWordIndex + 1,
-                currentWords.length
-              )}
+              aria-valuenow={Math.min(gameState.currentWordIndex + 1, currentWords.length)}
               aria-valuemax={currentWords.length}
             />
           </div>
@@ -1090,9 +839,7 @@ const WordReadingChallenge = () => {
                 </button>
                 <button
                   onClick={handleNext}
-                  disabled={
-                    gameState.currentWordIndex >= currentWords.length - 1
-                  }
+                  disabled={gameState.currentWordIndex >= currentWords.length - 1}
                   className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
                 >
                   Next
@@ -1108,6 +855,7 @@ const WordReadingChallenge = () => {
               </div>
             </div>
           )}
+
           {gameState.displayMode === "pages" && (
             <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/20 p-12 min-h-[600px]">
               <div className="flex items-center justify-center min-h-[400px]">
@@ -1130,9 +878,7 @@ const WordReadingChallenge = () => {
                 </button>
                 <button
                   onClick={handleNext}
-                  disabled={
-                    gameState.currentWordIndex >= currentWords.length - 1
-                  }
+                  disabled={gameState.currentWordIndex >= currentWords.length - 1}
                   className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
                 >
                   Next
@@ -1153,38 +899,21 @@ const WordReadingChallenge = () => {
             <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/20 p-8">
               <style jsx>{`
                 @keyframes pulse {
-                  0%,
-                  100% {
-                    opacity: 0.4;
-                    transform: scale(0.8);
-                  }
-                  50% {
-                    opacity: 1;
-                    transform: scale(1.1);
-                  }
+                  0%, 100% { opacity: 0.4; transform: scale(0.8); }
+                  50% { opacity: 1; transform: scale(1.1); }
                 }
-                .animate-pulse {
-                  animation: pulse 1.5s infinite ease-in-out;
-                }
+                .animate-pulse { animation: pulse 1.5s infinite ease-in-out; }
                 .current-word-focus {
                   transform: scale(1.05);
                   box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
                   transition: all 0.3s ease;
                 }
                 @keyframes pulse {
-                  0% {
-                    transform: scale(1);
-                  }
-                  50% {
-                    transform: scale(1.1);
-                  }
-                  100% {
-                    transform: scale(1);
-                  }
+                  0% { transform: scale(1); }
+                  50% { transform: scale(1.1); }
+                  100% { transform: scale(1); }
                 }
-                .recognized-animation {
-                  animation: pulse 0.5s ease;
-                }
+                .recognized-animation { animation: pulse 0.5s ease; }
                 .word-item {
                   transition: all 0.3s ease;
                   position: relative;
@@ -1201,9 +930,7 @@ const WordReadingChallenge = () => {
                   opacity: 0;
                   transition: opacity 0.3s ease;
                 }
-                .word-item.recognized::after {
-                  opacity: 1;
-                }
+                .word-item.recognized::after { opacity: 1; }
                 .word-item.current-row {
                   box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.5);
                 }
@@ -1260,9 +987,7 @@ const WordReadingChallenge = () => {
                 </button>
                 <button
                   onClick={handleNext}
-                  disabled={
-                    gameState.currentWordIndex >= currentWords.length - 1
-                  }
+                  disabled={gameState.currentWordIndex >= currentWords.length - 1}
                   className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
                 >
                   Next
@@ -1319,9 +1044,7 @@ const WordReadingChallenge = () => {
           ? Math.round(
               (recognizedWords.filter((word) =>
                 currentWords.map((w) => w.toLowerCase()).includes(word.word)
-              ).length /
-                recognizedWords.length) *
-                100
+              ).length / recognizedWords.length) * 100
             )
           : 0,
     };
@@ -1452,12 +1175,11 @@ const WordReadingChallenge = () => {
             </div>
           </div>
           {/* Action Buttons */}
-
           <div className="flex gap-4 justify-center">
             <button
               onClick={() => {
-                handleStart(); // Restarts the same challenge
-                setRecognizedWords([]); // Clear previous results
+                handleStart();
+                setRecognizedWords([]);
               }}
               className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg flex items-center gap-3"
             >
@@ -1466,8 +1188,8 @@ const WordReadingChallenge = () => {
             </button>
             <button
               onClick={() => {
-                setGameState(createInitialState()); // Reset to setup phase
-                setRecognizedWords([]); // Clear previous results
+                setGameState(createInitialState());
+                setRecognizedWords([]);
               }}
               className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-purple-600 hover:to-pink-600 transition-all shadow-lg flex items-center gap-3"
             >
