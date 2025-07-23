@@ -37,7 +37,6 @@ const createInitialState = () => ({
   timeElapsed: 0,
   isPaused: false,
   isCompleted: false,
-  recognizedWords: [],
 });
 
 // Speech recognition state
@@ -49,7 +48,7 @@ const createSpeechState = () => ({
   isSupported: false,
 });
 
-// Word collections (moved to separate object for better organization)
+// Word collections
 const WORD_COLLECTIONS = {
   "I-II": {
     words: [
@@ -106,7 +105,7 @@ const WORD_COLLECTIONS = {
     ],
     theme: "Simple everyday words",
     emoji: "🌟",
-    timePerWord: 4,
+    timePerWord: 5, // Increased time for beginners
   },
   "III-V": {
     words: [
@@ -226,13 +225,12 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
     const recognition = new SpeechRecognition();
     recognition.continuous = true;
-    recognition.interimResults = true;
+    recognition.interimResults = false; // Only final results
     recognition.lang = "en-US";
+    recognition.maxAlternatives = 1; // Only the best match
 
     recognition.onresult = (event) => {
-      const transcript = Array.from(event.results)
-        .map((result) => result[0].transcript)
-        .join(" ")
+      const transcript = event.results[event.results.length - 1][0].transcript
         .toLowerCase()
         .trim();
 
@@ -253,6 +251,9 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     };
 
     recognition.onend = () => {
+      if (isEnabled) {
+        recognition.start(); // Restart recognition if still enabled
+      }
       setSpeechState((prev) => ({ ...prev, isListening: false }));
     };
 
@@ -267,7 +268,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         recognition.abort();
       }
     };
-  }, [onResult, onError]);
+  }, [onResult, onError, isEnabled]);
 
   const startRecognition = useCallback(() => {
     if (!speechState.isSupported || !recognitionRef.current || !isEnabled)
@@ -557,13 +558,31 @@ const GameControls = ({
 const WordReadingChallenge = () => {
   const [gameState, setGameState] = useState(createInitialState);
   const [recognizedWords, setRecognizedWords] = useState([]);
+  const [lastRecognized, setLastRecognized] = useState(null);
 
   // Get current word data
-  const currentCollection = WORD_COLLECTIONS[gameState.classGroup];
+  const currentCollection =
+    WORD_COLLECTIONS[gameState.classGroup] || WORD_COLLECTIONS["III-V"];
   const currentWords = useMemo(
     () => currentCollection.words.slice(0, gameState.wordCount),
     [currentCollection.words, gameState.wordCount]
   );
+
+  // Level settings
+  const getLevelSettings = useCallback(() => {
+    const settings = {
+      "I-II": { timePerWord: 5, autoAdvanceDelay: 1000 },
+      "III-V": { timePerWord: 2.5, autoAdvanceDelay: 500 },
+      "VI-X": { timePerWord: 1.8, autoAdvanceDelay: 300 },
+    };
+    return settings[gameState.classGroup] || settings["III-V"];
+  }, [gameState.classGroup]);
+
+  // Game action handlers
+  const handleComplete = useCallback(() => {
+    setGameState((prev) => ({ ...prev, phase: "results", isCompleted: true }));
+    speech.stopRecognition();
+  }, []);
 
   // Speech recognition handlers
   const handleSpeechResult = useCallback(
@@ -572,30 +591,49 @@ const WordReadingChallenge = () => {
       const currentWord =
         currentWords[gameState.currentWordIndex]?.toLowerCase();
 
-      if (spokenWord === currentWord) {
-        setRecognizedWords((prev) => [
-          ...prev,
-          {
-            word: currentWord,
-            position: gameState.currentWordIndex,
-            isCorrect: true,
-            timestamp: Date.now(),
-          },
-        ]);
+      if (gameState.phase !== "challenge" || gameState.isPaused) return;
 
-        // Auto-advance to next word
-        setTimeout(() => {
-          setGameState((prev) => ({
-            ...prev,
-            currentWordIndex: Math.min(
-              prev.currentWordIndex + 1,
-              currentWords.length - 1
-            ),
-          }));
-        }, 500);
+      if (spokenWord === currentWord) {
+        setLastRecognized({
+          word: currentWord,
+          position: gameState.currentWordIndex,
+          timestamp: Date.now(),
+        });
+
+        setRecognizedWords((prev) => {
+          const newWords = [...prev];
+          if (
+            !newWords.some((w) => w.position === gameState.currentWordIndex)
+          ) {
+            newWords.push({
+              word: currentWord,
+              position: gameState.currentWordIndex,
+              isCorrect: true,
+              timestamp: Date.now(),
+            });
+          }
+          return newWords;
+        });
+
+        if (gameState.currentWordIndex >= currentWords.length - 1) {
+          setTimeout(handleComplete, 500);
+        } else {
+          setTimeout(() => {
+            setGameState((prev) => ({
+              ...prev,
+              currentWordIndex: prev.currentWordIndex + 1,
+            }));
+          }, 500);
+        }
       }
     },
-    [currentWords, gameState.currentWordIndex]
+    [
+      currentWords,
+      gameState.currentWordIndex,
+      gameState.phase,
+      gameState.isPaused,
+      handleComplete,
+    ]
   );
 
   const handleSpeechError = useCallback((error) => {
@@ -621,42 +659,54 @@ const WordReadingChallenge = () => {
     handleTimerTick
   );
 
-  // Auto-advance for flow mode
-  // Modified auto-advance for flow mode - should pause if word is recognized
+  // Auto-advance for grid mode
   useEffect(() => {
     if (
-      gameState.phase === "challenge" &&
-      !gameState.isPaused &&
-      gameState.displayMode === "flow" &&
-      gameState.currentWordIndex < currentWords.length &&
-      !gameState.isCompleted
+      gameState.phase !== "challenge" ||
+      gameState.isPaused ||
+      gameState.displayMode !== "grid" ||
+      gameState.currentWordIndex >= currentWords.length
     ) {
-      // Check if current word is already recognized
-      const currentWordRecognized = recognizedWords.some(
-        (rw) => rw.position === gameState.currentWordIndex && rw.isCorrect
+      return;
+    }
+
+    const settings = getLevelSettings();
+    const timeout = setTimeout(() => {
+      const wordRecognized = recognizedWords.some(
+        (rw) => rw.position === gameState.currentWordIndex
       );
 
-      if (!currentWordRecognized) {
-        const timeout = setTimeout(() => {
-          setGameState((prev) => ({
-            ...prev,
-            currentWordIndex: prev.currentWordIndex + 1,
-          }));
-        }, currentCollection.timePerWord * 1000);
-
-        return () => clearTimeout(timeout);
+      if (!wordRecognized) {
+        setGameState((prev) => ({
+          ...prev,
+          currentWordIndex: Math.min(
+            prev.currentWordIndex + 1,
+            currentWords.length - 1
+          ),
+        }));
       }
-    }
+    }, settings.timePerWord * 1000);
+
+    return () => clearTimeout(timeout);
   }, [
     gameState.phase,
     gameState.isPaused,
-    gameState.currentWordIndex,
     gameState.displayMode,
-    gameState.isCompleted,
+    gameState.currentWordIndex,
     currentWords.length,
-    currentCollection.timePerWord,
-    recognizedWords, // Add this dependency
+    recognizedWords,
+    getLevelSettings,
   ]);
+
+  // Clear animation after it plays
+  useEffect(() => {
+    if (lastRecognized) {
+      const timer = setTimeout(() => {
+        setLastRecognized(null);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [lastRecognized]);
 
   // Check for completion
   useEffect(() => {
@@ -709,12 +759,6 @@ const WordReadingChallenge = () => {
     timer.resetTimer();
   }, [speech, timer]);
 
-  const handleComplete = useCallback(() => {
-    setGameState((prev) => ({ ...prev, phase: "results", isCompleted: true }));
-    speech.stopRecognition();
-  }, [speech]);
-
-  // Navigation handlers for manual mode
   const handleNext = useCallback(() => {
     if (gameState.currentWordIndex < currentWords.length - 1) {
       setGameState((prev) => ({
@@ -734,9 +778,6 @@ const WordReadingChallenge = () => {
   }, [gameState.currentWordIndex]);
 
   // Stats calculations
-  // Update the initial recognition state to include position tracking
-
-  // And update stats calculation to use position-based checking
   const stats = useMemo(() => {
     const progress = `${Math.min(
       gameState.currentWordIndex + 1,
@@ -991,27 +1032,70 @@ const WordReadingChallenge = () => {
 
           {gameState.displayMode === "grid" && (
             <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/20 p-8">
+              <style jsx>{`
+                .current-word-focus {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
+                  transition: all 0.3s ease;
+                }
+                @keyframes pulse {
+                  0% {
+                    transform: scale(1);
+                  }
+                  50% {
+                    transform: scale(1.1);
+                  }
+                  100% {
+                    transform: scale(1);
+                  }
+                }
+                .recognized-animation {
+                  animation: pulse 0.5s ease;
+                }
+                .word-item {
+                  transition: all 0.3s ease;
+                  position: relative;
+                  overflow: hidden;
+                }
+                .word-item::after {
+                  content: "";
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  right: 0;
+                  bottom: 0;
+                  background: rgba(16, 185, 129, 0.2);
+                  opacity: 0;
+                  transition: opacity 0.3s ease;
+                }
+                .word-item.recognized::after {
+                  opacity: 1;
+                }
+              `}</style>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {currentWords.map((word, index) => {
                   const isRecognized = recognizedWords.some(
                     (rw) => rw.position === index && rw.isCorrect
                   );
                   const isCurrent = index === gameState.currentWordIndex;
+                  const wasJustRecognized = lastRecognized?.position === index;
 
                   return (
                     <div
                       key={index}
-                      className={`p-4 rounded-xl text-center font-bold transition-all duration-300 ${
+                      className={`word-item p-4 rounded-xl text-center font-bold ${
                         isRecognized
-                          ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg"
+                          ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg recognized"
                           : isCurrent
-                          ? "bg-gradient-to-r from-pink-500 to-violet-500 text-white scale-105 shadow-lg ring-4 ring-white/50"
+                          ? "current-word-focus bg-gradient-to-r from-pink-500 to-violet-500 text-white shadow-lg"
                           : "bg-white/10 text-white hover:bg-white/20"
-                      }`}
+                      } ${wasJustRecognized ? "recognized-animation" : ""}`}
                     >
-                      <div className="text-lg md:text-xl">{word}</div>
+                      <div className="text-lg md:text-xl relative z-10">
+                        {word}
+                      </div>
                       {isRecognized && (
-                        <div className="text-xs mt-1 text-emerald-200">
+                        <div className="text-xs mt-1 text-emerald-200 relative z-10">
                           ✓ Recognized
                         </div>
                       )}
@@ -1041,6 +1125,7 @@ const WordReadingChallenge = () => {
               <p className="text-xl text-gray-300 mb-8">
                 Press play to continue your challenge
               </p>
+
               <button
                 onClick={handlePause}
                 className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg flex items-center gap-3 mx-auto"
@@ -1224,12 +1309,6 @@ const WordReadingChallenge = () => {
             </button>
           </div>
         </div>
-        <style jsx>{`
-          .current-word-focus {
-            transform: scale(1.05);
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
-          }
-        `}</style>
       </div>
     );
   }
