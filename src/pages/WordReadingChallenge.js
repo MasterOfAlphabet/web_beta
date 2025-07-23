@@ -227,20 +227,20 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
     if (!recognitionRef.current) {
       const recognition = new SpeechRecognition();
-      recognition.continuous = true;
+      recognition.continuous = true; // Keep listening continuously
       recognition.interimResults = false;
       recognition.lang = "en-US";
-      recognition.maxAlternatives = 1;
+      recognition.maxAlternatives = 3; // Increase alternatives for better matching
 
-      recognition.onstart = () => {
+      recognition.onresult = (event) => {
         if (!isMountedRef.current) return;
-        console.log("Speech recognition started");
-        setSpeechState((prev) => ({
-          ...prev,
-          isRecording: true,
-          isListening: true,
-          error: null,
-        }));
+        const results = event.results[event.results.length - 1];
+        const transcript = results[0].transcript.toLowerCase().trim();
+        console.log("Raw transcript:", transcript);
+
+        if (results.isFinal && transcript && onResult) {
+          onResult(transcript);
+        }
       };
 
       recognition.onresult = (event) => {
@@ -658,15 +658,20 @@ const WordReadingChallenge = () => {
   // Speech recognition handlers
   const handleSpeechResult = useCallback(
     (transcript) => {
-      console.log("Word spoken:", transcript);
-
+      console.log("Processing transcript:", transcript);
       const spokenWord = transcript.toLowerCase().trim();
       const currentWord =
         currentWords[gameState.currentWordIndex]?.toLowerCase();
 
-      if (gameState.phase !== "challenge" || gameState.isPaused) return;
+      if (gameState.phase !== "challenge" || gameState.isPaused) {
+        console.log("Not processing - game paused or not in challenge phase");
+        return;
+      }
+
+      console.log(`Comparing: "${spokenWord}" with "${currentWord}"`);
 
       if (spokenWord === currentWord) {
+        console.log("Word matched!");
         setLastRecognized({
           word: currentWord,
           position: gameState.currentWordIndex,
@@ -688,16 +693,19 @@ const WordReadingChallenge = () => {
           return newWords;
         });
 
-        if (gameState.currentWordIndex >= currentWords.length - 1) {
-          setTimeout(handleComplete, 500);
-        } else {
-          setTimeout(() => {
+        // Auto-advance to next word after short delay
+        setTimeout(() => {
+          if (gameState.currentWordIndex < currentWords.length - 1) {
             setGameState((prev) => ({
               ...prev,
               currentWordIndex: prev.currentWordIndex + 1,
             }));
-          }, 500);
-        }
+          } else {
+            handleComplete();
+          }
+        }, 500);
+      } else {
+        console.log("Word didn't match");
       }
     },
     [
@@ -742,6 +750,20 @@ const WordReadingChallenge = () => {
   );
 
   // Auto-advance for grid mode
+  // Effect 1: Manage speech recognition state
+  useEffect(() => {
+    if (gameState.phase === "challenge" && !gameState.isPaused) {
+      if (!speech.isRecording) {
+        speech.startRecognition();
+      }
+    } else {
+      if (speech.isRecording) {
+        speech.stopRecognition();
+      }
+    }
+  }, [gameState.phase, gameState.isPaused, speech]);
+
+  // Effect 2: Handle word advancement
   useEffect(() => {
     if (gameState.phase !== "challenge" || gameState.isPaused) {
       return;
@@ -1130,6 +1152,20 @@ const WordReadingChallenge = () => {
           {gameState.displayMode === "grid" && (
             <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/20 p-8">
               <style jsx>{`
+                @keyframes pulse {
+                  0%,
+                  100% {
+                    opacity: 0.4;
+                    transform: scale(0.8);
+                  }
+                  50% {
+                    opacity: 1;
+                    transform: scale(1.1);
+                  }
+                }
+                .animate-pulse {
+                  animation: pulse 1.5s infinite ease-in-out;
+                }
                 .current-word-focus {
                   transform: scale(1.05);
                   box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
@@ -1178,30 +1214,35 @@ const WordReadingChallenge = () => {
                     (rw) => rw.position === index && rw.isCorrect
                   );
                   const isCurrent = index === gameState.currentWordIndex;
-                  const wasJustRecognized = lastRecognized?.position === index;
-                  const isInCurrentRow =
-                    Math.floor(index / 5) ===
-                    Math.floor(gameState.currentWordIndex / 5);
 
                   return (
                     <div
                       key={index}
-                      className={`word-item p-4 rounded-xl text-center font-bold ${
+                      className={`word-item p-4 rounded-xl text-center font-bold transition-all ${
                         isRecognized
-                          ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg recognized"
+                          ? "bg-green-500/20 border-2 border-green-400"
                           : isCurrent
-                          ? "current-word-focus bg-gradient-to-r from-pink-500 to-violet-500 text-white shadow-lg"
-                          : isInCurrentRow
-                          ? "current-row bg-white/15"
-                          : "bg-white/10 text-white hover:bg-white/20"
-                      } ${wasJustRecognized ? "recognized-animation" : ""}`}
+                          ? "bg-blue-500/20 border-2 border-blue-400"
+                          : "bg-white/10"
+                      }`}
                     >
-                      <div className="text-lg md:text-xl relative z-10">
+                      <div className="text-lg md:text-xl">
                         {word}
+                        {isRecognized && (
+                          <div className="text-xs text-green-400 mt-1">
+                            ✓ Recognized
+                          </div>
+                        )}
                       </div>
-                      {isRecognized && (
-                        <div className="text-xs mt-1 text-emerald-200 relative z-10">
-                          ✓ Recognized
+                      {isCurrent && speech.isRecording && (
+                        <div className="flex justify-center mt-2 space-x-1">
+                          {[0, 1, 2].map((i) => (
+                            <div
+                              key={i}
+                              className="h-2 w-2 bg-blue-400 rounded-full animate-pulse"
+                              style={{ animationDelay: `${i * 0.1}s` }}
+                            />
+                          ))}
                         </div>
                       )}
                     </div>
