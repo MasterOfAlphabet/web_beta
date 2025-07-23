@@ -105,7 +105,7 @@ const WORD_COLLECTIONS = {
     ],
     theme: "Simple everyday words",
     emoji: "🌟",
-    timePerWord: 5, // Increased time for beginners
+    timePerWord: 5,
   },
   "III-V": {
     words: [
@@ -207,7 +207,19 @@ const WORD_COLLECTIONS = {
 const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const [speechState, setSpeechState] = useState(createSpeechState);
   const recognitionRef = useRef(null);
+  const isMountedRef = useRef(true);
+  const restartTimeoutRef = useRef(null);
 
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+      if (restartTimeoutRef.current) {
+        clearTimeout(restartTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Initialize speech recognition
   useEffect(() => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -221,83 +233,174 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       return;
     }
 
-    setSpeechState((prev) => ({ ...prev, isSupported: true }));
+    if (!recognitionRef.current) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = false;
+      recognition.lang = "en-US";
+      recognition.maxAlternatives = 1;
 
-    const recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = false; // Only final results
-    recognition.lang = "en-US";
-    recognition.maxAlternatives = 1; // Only the best match
+      // In useSpeechRecognition hook, make sure these state updates are present:
+      recognition.onstart = () => {
+        if (!isMountedRef.current) return;
+        console.log("Speech recognition started");
+        setSpeechState((prev) => ({
+          ...prev,
+          isRecording: true,
+          isListening: true,
+          error: null,
+        }));
+      };
 
-    recognition.onresult = (event) => {
-      const transcript = event.results[event.results.length - 1][0].transcript
-        .toLowerCase()
-        .trim();
+      recognition.onresult = (event) => {
+        if (!isMountedRef.current) return;
+        const transcript = event.results[event.results.length - 1][0].transcript
+          .toLowerCase()
+          .trim();
+        console.log("Transcript received:", transcript);
+        if (transcript && onResult) {
+          onResult(transcript);
+        }
+      };
 
-      if (transcript && onResult) {
-        onResult(transcript);
-      }
-    };
+      recognition.onerror = (event) => {
+        if (!isMountedRef.current) return;
+        console.log("Speech recognition error:", event.error);
 
-    recognition.onerror = (event) => {
-      const errorMessage = `Speech recognition error: ${event.error}`;
-      setSpeechState((prev) => ({
-        ...prev,
-        error: errorMessage,
-        isListening: false,
-        isRecording: false,
-      }));
-      if (onError) onError(errorMessage);
-    };
+        if (restartTimeoutRef.current) {
+          clearTimeout(restartTimeoutRef.current);
+        }
 
-    recognition.onend = () => {
-      if (isEnabled) {
-        recognition.start(); // Restart recognition if still enabled
-      }
-      setSpeechState((prev) => ({ ...prev, isListening: false }));
-    };
+        const errorMessage = `Speech recognition error: ${event.error}`;
+        setSpeechState((prev) => ({
+          ...prev,
+          error: errorMessage,
+          isListening: false,
+          isRecording: false,
+        }));
 
-    recognition.onstart = () => {
-      setSpeechState((prev) => ({ ...prev, isListening: true, error: null }));
-    };
+        if (onError) onError(errorMessage);
 
-    recognitionRef.current = recognition;
+        if (
+          isEnabled &&
+          (event.error === "no-speech" || event.error === "audio-capture")
+        ) {
+          restartTimeoutRef.current = setTimeout(() => {
+            if (isMountedRef.current && isEnabled) {
+              startRecognition();
+            }
+          }, 1000);
+        }
+      };
+
+      // In the useSpeechRecognition hook, update the onend handler:
+      recognition.onend = () => {
+        if (!isMountedRef.current) return;
+        console.log("Speech recognition ended");
+
+        // Only update state if we're not in the middle of a restart
+        if (!isEnabled) {
+          setSpeechState((prev) => ({
+            ...prev,
+            isListening: false,
+            isRecording: false,
+          }));
+        }
+
+        // Auto-restart if enabled and no error
+        if (isEnabled) {
+          restartTimeoutRef.current = setTimeout(() => {
+            if (isMountedRef.current && isEnabled) {
+              startRecognition();
+            }
+          }, 100);
+        }
+      };
+      recognitionRef.current = recognition;
+    }
 
     return () => {
-      if (recognition) {
-        recognition.abort();
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          console.warn("Error stopping recognition:", e);
+        }
+      }
+      if (restartTimeoutRef.current) {
+        clearTimeout(restartTimeoutRef.current);
       }
     };
   }, [onResult, onError, isEnabled]);
 
   const startRecognition = useCallback(() => {
-    if (!speechState.isSupported || !recognitionRef.current || !isEnabled)
+    console.log("Attempting to start recognition...");
+
+    if (!recognitionRef.current) {
+      console.log("No recognition ref available");
       return;
+    }
+
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+    }
 
     try {
-      recognitionRef.current.start();
-      setSpeechState((prev) => ({ ...prev, isRecording: true, error: null }));
-    } catch (error) {
-      setSpeechState((prev) => ({ ...prev, error: error.message }));
+      recognitionRef.current.stop();
+    } catch (e) {
+      // Ignore errors when stopping
     }
-  }, [speechState.isSupported, isEnabled]);
+
+    setTimeout(() => {
+      if (!isMountedRef.current) return;
+
+      try {
+        console.log("Starting speech recognition...");
+        recognitionRef.current.start();
+      } catch (error) {
+        console.error("Failed to start recognition:", error);
+        setSpeechState((prev) => ({
+          ...prev,
+          error: error.message,
+          isRecording: false,
+          isListening: false,
+        }));
+      }
+    }, 100);
+  }, []);
 
   const stopRecognition = useCallback(() => {
+    console.log("Stopping recognition...");
+
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+    }
+
     if (recognitionRef.current) {
-      recognitionRef.current.stop();
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {
+        console.warn("Error stopping recognition:", e);
+      }
+    }
+  }, []);
+
+  const toggleRecognition = useCallback(() => {
+    console.log("Toggle recognition - current state:", speechState.isRecording);
+    if (speechState.isRecording) {
+      stopRecognition();
       setSpeechState((prev) => ({
         ...prev,
         isRecording: false,
         isListening: false,
       }));
-    }
-  }, []);
-
-  const toggleRecognition = useCallback(() => {
-    if (speechState.isRecording) {
-      stopRecognition();
     } else {
       startRecognition();
+      setSpeechState((prev) => ({
+        ...prev,
+        isRecording: true,
+        isListening: true,
+      }));
     }
   }, [speechState.isRecording, startRecognition, stopRecognition]);
 
@@ -348,7 +451,6 @@ const useGameTimer = (isActive, onTick) => {
 };
 
 // Component for class selection
-// In the ClassSelector component, remove the time per word display
 const ClassSelector = ({ classGroup, onClassChange }) => (
   <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
     <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
@@ -487,10 +589,10 @@ const ChallengeSetup = ({
 );
 
 // Component for game controls
+// Update the GameControls component props to use the speech state directly
 const GameControls = ({
   isPaused,
-  isRecording,
-  speechError,
+  speechState, // Add this prop
   onPause,
   onReset,
   onToggleRecording,
@@ -516,15 +618,17 @@ const GameControls = ({
         <button
           onClick={onToggleRecording}
           className={`p-3 rounded-xl transition-all shadow-lg ${
-            isRecording
+            speechState.isRecording
               ? "bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse"
               : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600"
           }`}
-          aria-label={isRecording ? "Stop recording" : "Start recording"}
+          aria-label={
+            speechState.isRecording ? "Stop recording" : "Start recording"
+          }
         >
-          {isRecording ? <MicOff size={24} /> : <Mic size={24} />}
+          {speechState.isRecording ? <MicOff size={24} /> : <Mic size={24} />}
         </button>
-        {speechError && (
+        {speechState.error && (
           <div className="flex items-center gap-2 text-red-400 text-sm">
             <AlertCircle size={16} />
             <span>Mic error</span>
@@ -541,7 +645,7 @@ const GameControls = ({
           <Clock size={20} className="text-green-400" />
           <span className="font-bold">{stats.time}</span>
         </div>
-        {isRecording && (
+        {speechState.isRecording && (
           <div className="flex items-center gap-2">
             <Volume2 size={20} className="text-red-400" />
             <span className="font-bold">{stats.recognized} recognized</span>
@@ -558,6 +662,8 @@ const WordReadingChallenge = () => {
   const [recognizedWords, setRecognizedWords] = useState([]);
   const [lastRecognized, setLastRecognized] = useState(null);
 
+  const speechRef = useRef(null);
+
   // Get current word data
   const currentCollection =
     WORD_COLLECTIONS[gameState.classGroup] || WORD_COLLECTIONS["III-V"];
@@ -565,16 +671,6 @@ const WordReadingChallenge = () => {
     () => currentCollection.words.slice(0, gameState.wordCount),
     [currentCollection.words, gameState.wordCount]
   );
-
-  // Level settings
-  const getLevelSettings = useCallback(() => {
-    const settings = {
-      "I-II": { timePerWord: 5, autoAdvanceDelay: 1000 },
-      "III-V": { timePerWord: 2.5, autoAdvanceDelay: 500 },
-      "VI-X": { timePerWord: 1.8, autoAdvanceDelay: 300 },
-    };
-    return settings[gameState.classGroup] || settings["III-V"];
-  }, [gameState.classGroup]);
 
   // Game action handlers
   const handleComplete = useCallback(() => {
@@ -585,6 +681,8 @@ const WordReadingChallenge = () => {
   // Speech recognition handlers
   const handleSpeechResult = useCallback(
     (transcript) => {
+      console.log("Word spoken:", transcript);
+
       const spokenWord = transcript.toLowerCase().trim();
       const currentWord =
         currentWords[gameState.currentWordIndex]?.toLowerCase();
@@ -645,6 +743,15 @@ const WordReadingChallenge = () => {
     handleSpeechError
   );
 
+  // Add this useEffect to track speech state changes
+  useEffect(() => {
+    console.log("Speech state changed:", {
+      isRecording: speech.isRecording,
+      isListening: speech.isListening,
+      error: speech.error,
+    });
+  }, [speech.isRecording, speech.isListening, speech.error]);
+
   // Timer handlers
   const handleTimerTick = useCallback((elapsed) => {
     setGameState((prev) => ({ ...prev, timeElapsed: elapsed }));
@@ -658,8 +765,6 @@ const WordReadingChallenge = () => {
   );
 
   // Auto-advance for grid mode
-
-  // Update the auto-advance logic in the useEffect
   useEffect(() => {
     if (gameState.phase !== "challenge" || gameState.isPaused) {
       return;
@@ -925,11 +1030,14 @@ const WordReadingChallenge = () => {
         <div className="max-w-7xl mx-auto mb-6">
           <GameControls
             isPaused={gameState.isPaused}
-            isRecording={speech.isRecording}
-            speechError={speech.error}
+            speechState={speech}
             onPause={handlePause}
             onReset={handleReset}
-            onToggleRecording={speech.toggleRecognition}
+            onToggleRecording={() => {
+              speech.toggleRecognition();
+              // Force a state update
+              setGameState((prev) => ({ ...prev }));
+            }}
             stats={stats}
           />
         </div>
