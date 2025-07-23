@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import {
   Play,
   Pause,
@@ -40,13 +34,12 @@ const createInitialState = () => ({
 });
 
 // Speech recognition state
-const createSpeechState = () => ({
+const createSpeechState = {
+  isSupported: true,
   isRecording: false,
   isListening: false,
-  recognizedWords: [],
   error: null,
-  isSupported: false,
-});
+};
 
 // Word collections
 const WORD_COLLECTIONS = {
@@ -219,7 +212,6 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     };
   }, []);
 
-  // Initialize speech recognition
   useEffect(() => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -240,7 +232,6 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       recognition.lang = "en-US";
       recognition.maxAlternatives = 1;
 
-      // In useSpeechRecognition hook, make sure these state updates are present:
       recognition.onstart = () => {
         if (!isMountedRef.current) return;
         console.log("Speech recognition started");
@@ -281,9 +272,10 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
         if (onError) onError(errorMessage);
 
+        // Only auto-restart on safe, recoverable errors
         if (
           isEnabled &&
-          (event.error === "no-speech" || event.error === "audio-capture")
+          ["no-speech", "audio-capture", "aborted"].includes(event.error)
         ) {
           restartTimeoutRef.current = setTimeout(() => {
             if (isMountedRef.current && isEnabled) {
@@ -293,29 +285,24 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         }
       };
 
-      // In the useSpeechRecognition hook, update the onend handler:
       recognition.onend = () => {
         if (!isMountedRef.current) return;
         console.log("Speech recognition ended");
+        setSpeechState((prev) => ({
+          ...prev,
+          isListening: false,
+          isRecording: false,
+        }));
 
-        // Only update state if we're not in the middle of a restart
-        if (!isEnabled) {
-          setSpeechState((prev) => ({
-            ...prev,
-            isListening: false,
-            isRecording: false,
-          }));
-        }
-
-        // Auto-restart if enabled and no error
         if (isEnabled) {
           restartTimeoutRef.current = setTimeout(() => {
             if (isMountedRef.current && isEnabled) {
               startRecognition();
             }
-          }, 100);
+          }, 300);
         }
       };
+
       recognitionRef.current = recognition;
     }
 
@@ -345,13 +332,15 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       clearTimeout(restartTimeoutRef.current);
     }
 
-    try {
-      recognitionRef.current.stop();
-    } catch (e) {
-      // Ignore errors when stopping
+    if (speechState.isRecording) {
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {
+        console.warn("Error stopping recognition:", e);
+      }
     }
 
-    setTimeout(() => {
+    restartTimeoutRef.current = setTimeout(() => {
       if (!isMountedRef.current) return;
 
       try {
@@ -366,16 +355,14 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
           isListening: false,
         }));
       }
-    }, 100);
-  }, []);
+    }, 300); // Safe debounce
+  }, [speechState.isRecording]);
 
   const stopRecognition = useCallback(() => {
     console.log("Stopping recognition...");
-
     if (restartTimeoutRef.current) {
       clearTimeout(restartTimeoutRef.current);
     }
-
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
@@ -389,18 +376,8 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     console.log("Toggle recognition - current state:", speechState.isRecording);
     if (speechState.isRecording) {
       stopRecognition();
-      setSpeechState((prev) => ({
-        ...prev,
-        isRecording: false,
-        isListening: false,
-      }));
     } else {
       startRecognition();
-      setSpeechState((prev) => ({
-        ...prev,
-        isRecording: true,
-        isListening: true,
-      }));
     }
   }, [speechState.isRecording, startRecognition, stopRecognition]);
 
