@@ -348,6 +348,7 @@ const useGameTimer = (isActive, onTick) => {
 };
 
 // Component for class selection
+// In the ClassSelector component, remove the time per word display
 const ClassSelector = ({ classGroup, onClassChange }) => (
   <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
     <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
@@ -377,9 +378,6 @@ const ClassSelector = ({ classGroup, onClassChange }) => (
             <div className="text-left">
               <div className="text-xl font-bold text-white">Class {key}</div>
               <div className="text-sm text-gray-300">{data.theme}</div>
-              <div className="text-xs text-pink-300">
-                {data.timePerWord}s per word
-              </div>
             </div>
           </div>
         </button>
@@ -660,43 +658,31 @@ const WordReadingChallenge = () => {
   );
 
   // Auto-advance for grid mode
+
+  // Update the auto-advance logic in the useEffect
   useEffect(() => {
-    if (
-      gameState.phase !== "challenge" ||
-      gameState.isPaused ||
-      gameState.displayMode !== "grid" ||
-      gameState.currentWordIndex >= currentWords.length
-    ) {
+    if (gameState.phase !== "challenge" || gameState.isPaused) {
       return;
     }
 
-    const settings = getLevelSettings();
-    const timeout = setTimeout(() => {
-      const wordRecognized = recognizedWords.some(
-        (rw) => rw.position === gameState.currentWordIndex
-      );
+    const wordRecognized = recognizedWords.some(
+      (rw) => rw.position === gameState.currentWordIndex && rw.isCorrect
+    );
 
-      if (!wordRecognized) {
+    if (
+      wordRecognized &&
+      gameState.currentWordIndex < currentWords.length - 1
+    ) {
+      const timeout = setTimeout(() => {
         setGameState((prev) => ({
           ...prev,
-          currentWordIndex: Math.min(
-            prev.currentWordIndex + 1,
-            currentWords.length - 1
-          ),
+          currentWordIndex: prev.currentWordIndex + 1,
         }));
-      }
-    }, settings.timePerWord * 1000);
+      }, 500);
 
-    return () => clearTimeout(timeout);
-  }, [
-    gameState.phase,
-    gameState.isPaused,
-    gameState.displayMode,
-    gameState.currentWordIndex,
-    currentWords.length,
-    recognizedWords,
-    getLevelSettings,
-  ]);
+      return () => clearTimeout(timeout);
+    }
+  }, [gameState, recognizedWords, currentWords.length]);
 
   // Clear animation after it plays
   useEffect(() => {
@@ -976,19 +962,45 @@ const WordReadingChallenge = () => {
         {/* Word Display */}
         <div className="max-w-7xl mx-auto">
           {gameState.displayMode === "flow" && (
-            <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/20 p-12 min-h-[600px] flex items-center justify-center">
+            <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/20 p-12 min-h-[600px] flex flex-col items-center justify-center">
               {gameState.currentWordIndex < currentWords.length && (
                 <div
-                  className={`${getFontClass()} font-black text-center transition-all duration-300`}
+                  className={`${getFontClass()} font-black text-center transition-all duration-300 mb-12`}
                 >
                   <div className="bg-gradient-to-r from-pink-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent animate-pulse">
                     {currentWords[gameState.currentWordIndex]}
                   </div>
                 </div>
               )}
+              <div className="flex items-center justify-center gap-4 w-full">
+                <button
+                  onClick={handlePrevious}
+                  disabled={gameState.currentWordIndex === 0}
+                  className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
+                >
+                  <ChevronLeft size={20} />
+                  Previous
+                </button>
+                <button
+                  onClick={handleNext}
+                  disabled={
+                    gameState.currentWordIndex >= currentWords.length - 1
+                  }
+                  className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
+                >
+                  Next
+                  <ChevronRight size={20} />
+                </button>
+                <button
+                  onClick={handleComplete}
+                  className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all flex items-center gap-2"
+                >
+                  <Trophy size={20} />
+                  Complete
+                </button>
+              </div>
             </div>
           )}
-
           {gameState.displayMode === "pages" && (
             <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/20 p-12 min-h-[600px]">
               <div className="flex items-center justify-center min-h-[400px]">
@@ -1071,6 +1083,9 @@ const WordReadingChallenge = () => {
                 .word-item.recognized::after {
                   opacity: 1;
                 }
+                .word-item.current-row {
+                  box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.5);
+                }
               `}</style>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {currentWords.map((word, index) => {
@@ -1079,6 +1094,9 @@ const WordReadingChallenge = () => {
                   );
                   const isCurrent = index === gameState.currentWordIndex;
                   const wasJustRecognized = lastRecognized?.position === index;
+                  const isInCurrentRow =
+                    Math.floor(index / 5) ===
+                    Math.floor(gameState.currentWordIndex / 5);
 
                   return (
                     <div
@@ -1088,6 +1106,8 @@ const WordReadingChallenge = () => {
                           ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg recognized"
                           : isCurrent
                           ? "current-word-focus bg-gradient-to-r from-pink-500 to-violet-500 text-white shadow-lg"
+                          : isInCurrentRow
+                          ? "current-row bg-white/15"
                           : "bg-white/10 text-white hover:bg-white/20"
                       } ${wasJustRecognized ? "recognized-animation" : ""}`}
                     >
@@ -1103,13 +1123,31 @@ const WordReadingChallenge = () => {
                   );
                 })}
               </div>
-              <div className="mt-8 text-center">
+              <div className="mt-8 flex items-center justify-center gap-4">
+                <button
+                  onClick={handlePrevious}
+                  disabled={gameState.currentWordIndex === 0}
+                  className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
+                >
+                  <ChevronLeft size={20} />
+                  Previous
+                </button>
+                <button
+                  onClick={handleNext}
+                  disabled={
+                    gameState.currentWordIndex >= currentWords.length - 1
+                  }
+                  className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
+                >
+                  Next
+                  <ChevronRight size={20} />
+                </button>
                 <button
                   onClick={handleComplete}
-                  className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all font-bold text-lg flex items-center gap-3 mx-auto"
+                  className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all flex items-center gap-2"
                 >
-                  <Trophy size={24} />
-                  Complete Challenge
+                  <Trophy size={20} />
+                  Complete
                 </button>
               </div>
             </div>
@@ -1125,7 +1163,6 @@ const WordReadingChallenge = () => {
               <p className="text-xl text-gray-300 mb-8">
                 Press play to continue your challenge
               </p>
-
               <button
                 onClick={handlePause}
                 className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg flex items-center gap-3 mx-auto"
@@ -1177,7 +1214,6 @@ const WordReadingChallenge = () => {
               Excellent work on your reading challenge
             </p>
           </div>
-
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {/* Performance Metrics */}
             <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
@@ -1244,7 +1280,6 @@ const WordReadingChallenge = () => {
               </div>
             </div>
           </div>
-
           {/* Performance Level */}
           <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 mb-8">
             <h3 className="text-2xl font-bold text-white mb-6 text-center">
@@ -1290,18 +1325,24 @@ const WordReadingChallenge = () => {
               </p>
             </div>
           </div>
-
           {/* Action Buttons */}
+
           <div className="flex gap-4 justify-center">
             <button
-              onClick={handleReset}
+              onClick={() => {
+                handleStart(); // Restarts the same challenge
+                setRecognizedWords([]); // Clear previous results
+              }}
               className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg flex items-center gap-3"
             >
               <RotateCcw size={24} />
               Try Again
             </button>
             <button
-              onClick={() => setGameState(createInitialState())}
+              onClick={() => {
+                setGameState(createInitialState()); // Reset to setup phase
+                setRecognizedWords([]); // Clear previous results
+              }}
               className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-purple-600 hover:to-pink-600 transition-all shadow-lg flex items-center gap-3"
             >
               <Target size={24} />
