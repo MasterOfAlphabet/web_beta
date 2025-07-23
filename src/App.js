@@ -115,6 +115,14 @@ import DictationAssignmentApp from "./pages/DictationAssignmentApp";
 import ChallengesPublisher from "./pages/DWMSChallenges/ChallengesPublisher";
 import ChallengeParticipation from "./pages/ChallengeParticipation";
 
+import AudioSpellingChallenger from "./pages/AudioSpellingChallenger";
+import VisualVocabularyBuilder from "./pages/VisualVocabularyBuilder";
+import GrammarPatternDetective from "./pages/GrammarPatternDetective";
+
+import ReadingPassage from "./pages/FlashCards/Reading/ReadingPassage";
+import ReadingWordsEmojis from "./pages/FlashCards/Reading/ReadingWordsEmojis";
+import WordReadingChallenge from "./pages/WordReadingChallenge";
+
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
 
@@ -418,6 +426,25 @@ function App() {
             path="/english-skills-building-games/spelling-game"
             element={<SpellingGame />}
           />
+
+          <Route
+            path="/vocabulary-builder"
+            element={<VisualVocabularyBuilder />}
+          />
+          <Route path="/audio-spelling" element={<AudioSpellingChallenger />} />
+          <Route
+            path="/grammar-pattern-detective"
+            element={<GrammarPatternDetective />}
+          />
+
+          <Route path="/reading-passage" element={<ReadingPassage />} />
+          <Route
+            path="/reading-words-emojis"
+            element={<ReadingWordsEmojis />}
+          />
+
+          <Route path="/word-reading-challenge" element={< WordReadingChallenge />}/>
+
         </Routes>
 
         <CookieConsentBanner />

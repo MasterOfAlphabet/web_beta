@@ -1,5 +1,9 @@
-import React, { useState } from "react";
-import { BookOpen, Trophy, Star, TrendingUp, Lightbulb, Zap, Target, Award, Users, ChevronRight, PlayCircle, Brain, Sparkles } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  BookOpen, Trophy, Star, TrendingUp, Lightbulb, Zap, Target, Award, Users,
+  ChevronRight, PlayCircle, Brain, Sparkles, Volume2, Pause, RotateCcw, Eye,
+  Turtle
+} from "lucide-react";
 
 const classGroups = [
   { label: "Class I-II", value: "I-II", color: "from-pink-400 to-purple-500" },
@@ -9,83 +13,59 @@ const classGroups = [
 
 const passages = {
   "I-II": [
-    { 
-      title: "The Cat", 
-      passage: "The cat sat on the mat.", 
+    {
+      title: "The Cat",
+      passage: "The cat sat on the mat. It was a fluffy orange cat. The cat liked to sleep in the sun.",
       difficulty: "Easy",
       readTime: "1 min",
       icon: "🐱",
-      gradient: "from-pink-500 to-rose-400"
+      gradient: "from-pink-500 to-rose-400",
+      questions: [
+        { question: "Where did the cat sit?", answer: "on the mat", options: ["on the mat", "on the chair", "on the bed"] },
+        { question: "What color was the cat?", answer: "orange", options: ["orange", "black", "white"] }
+      ]
     },
-    { 
-      title: "A Sunny Day", 
-      passage: "The sun is bright and yellow.", 
+    {
+      title: "A Sunny Day",
+      passage: "The sun is bright and yellow. Birds fly in the blue sky. Children play outside happily.",
       difficulty: "Easy",
       readTime: "1 min",
       icon: "☀️",
-      gradient: "from-yellow-400 to-orange-400"
-    },
-    { 
-      title: "My Ball", 
-      passage: "I like to play with my ball.", 
-      difficulty: "Easy",
-      readTime: "1 min",
-      icon: "⚽",
-      gradient: "from-blue-400 to-purple-400"
-    },
+      gradient: "from-yellow-400 to-orange-400",
+      questions: [
+        { question: "What color is the sun?", answer: "yellow", options: ["yellow", "red", "blue"] },
+        { question: "Where do birds fly?", answer: "in the sky", options: ["in the sky", "on the ground", "in the water"] }
+      ]
+    }
   ],
   "III-V": [
-    { 
-      title: "The Jungle", 
-      passage: "Animals live in the jungle. They hunt and play among the trees.", 
+    {
+      title: "The Jungle",
+      passage: "Animals live in the jungle. They hunt and play among the trees. Monkeys swing from branch to branch while colorful birds sing beautiful songs.",
       difficulty: "Medium",
       readTime: "2 min",
       icon: "🌳",
-      gradient: "from-green-500 to-emerald-400"
-    },
-    { 
-      title: "Science Fair", 
-      passage: "The science fair was fun. We made a volcano that erupted!", 
-      difficulty: "Medium",
-      readTime: "2 min",
-      icon: "🌋",
-      gradient: "from-red-500 to-orange-400"
-    },
-    { 
-      title: "The Library", 
-      passage: "I visit the library every week to find new books to read.", 
-      difficulty: "Medium",
-      readTime: "2 min",
-      icon: "📚",
-      gradient: "from-indigo-500 to-purple-400"
-    },
+      gradient: "from-green-500 to-emerald-400",
+      questions: [
+        { question: "Where do animals live?", answer: "in the jungle", options: ["in the jungle", "in the city", "in the ocean"] },
+        { question: "How do monkeys move?", answer: "swing from branch to branch", options: ["swing from branch to branch", "run on the ground", "swim in water"] }
+      ]
+    }
   ],
   "VI-X": [
-    { 
-      title: "The Solar System", 
-      passage: "Our solar system consists of the sun and eight planets. Each planet is unique.", 
+    {
+      title: "The Solar System",
+      passage: "Our solar system consists of the sun and eight planets. Each planet is unique with different characteristics, temperatures, and atmospheric conditions that make them fascinating to study.",
       difficulty: "Hard",
       readTime: "3 min",
       icon: "🌌",
-      gradient: "from-purple-600 to-blue-500"
-    },
-    { 
-      title: "Ancient Civilizations", 
-      passage: "Civilizations like Egypt and Mesopotamia made great advances in writing and science.", 
-      difficulty: "Hard",
-      readTime: "4 min",
-      icon: "🏛️",
-      gradient: "from-amber-500 to-yellow-400"
-    },
-    { 
-      title: "Environmental Change", 
-      passage: "Climate change affects life on Earth. We must act to protect our environment.", 
-      difficulty: "Hard",
-      readTime: "3 min",
-      icon: "🌍",
-      gradient: "from-teal-500 to-green-400"
-    },
-  ],
+      gradient: "from-purple-600 to-blue-500",
+      questions: [
+        { question: "How many planets are in our solar system?", answer: "eight", options: ["eight", "nine", "seven"] },
+        { question: "What makes planets fascinating to study?", answer: "different characteristics", options: ["different characteristics", "same size", "same color"] }
+      ]
+    }
+  ]
 };
 
 const leaderboardData = [
@@ -97,20 +77,430 @@ const leaderboardData = [
 export default function ReadingPage() {
   const [group, setGroup] = useState("I-II");
   const [hoveredCard, setHoveredCard] = useState(null);
-  const [showAnswer, setShowAnswer] = useState(false);
+  const [selectedPassage, setSelectedPassage] = useState(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [highlightedWord, setHighlightedWord] = useState(null);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [quizComplete, setQuizComplete] = useState(false);
+  const [score, setScore] = useState(0);
+  const [slowMode, setSlowMode] = useState(false);
+  
+  const wordTimers = useRef([]);
+  const synthRef = useRef(null);
 
-  const progressValue = group === "I-II" ? 35 : group === "III-V" ? 55 : 80;
+  function tokenize(text) {
+    return text.match(/\b[\w'-]+\b|[.,!?;]|\s+/g) || [];
+  }
 
-  return (
+  const tokens = selectedPassage ? tokenize(selectedPassage.passage) : [];
+  const words = tokens.filter(token => /\w/.test(token));
+  const progressPercent = highlightedWord === null ? 0 : Math.round(((highlightedWord + 1) / words.length) * 100);
+
+ function getWordDelay(word, base = 1000, perChar = 70) {
+  // Adjust base and perChar to taste.
+  let delay = base + word.length * perChar * word.length;
+  if (/[.,!?;:]$/.test(word)) {
+    delay += 200; // extra pause for punctuation
+  }
+  return delay;
+}
+
+const readSlowly = () => {
+  if (!selectedPassage) return;
+  setIsSpeaking(true);
+  setHighlightedWord(-1);
+  window.speechSynthesis.cancel();
+
+  wordTimers.current.forEach(timer => clearTimeout(timer));
+  wordTimers.current = [];
+
+  let totalDelay = 0;
+  words.forEach((word, index) => {
+    let wordDelay = getWordDelay(word);
+    if (index === 0) {
+      wordDelay = wordDelay*2;
+    }
+    const timer = setTimeout(() => {
+      setHighlightedWord(index);
+
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.rate = 0.8;
+      utterance.onend = () => {
+        if (index === words.length - 1) {
+          setIsSpeaking(false);
+        }
+      };
+      window.speechSynthesis.speak(utterance);
+    }, totalDelay);
+    wordTimers.current.push(timer);
+    totalDelay += wordDelay;
+  });
+};
+
+  const readPassage = () => {
+    if (slowMode) {
+      readSlowly();
+      return;
+    }
+    
+    if (!selectedPassage || isSpeaking) return;
+    window.speechSynthesis.cancel();
+    setIsSpeaking(true);
+    setHighlightedWord(-1);
+
+    const utter = new SpeechSynthesisUtterance(selectedPassage.passage);
+    utter.rate = 0.9;
+    utter.lang = "en-US";
+    
+    let charIndex = 0;
+    const wordIndices = tokens.reduce((acc, token) => {
+      if (/\w/.test(token)) {
+        acc.push(charIndex);
+      }
+      charIndex += token.length;
+      return acc;
+    }, []);
+
+    utter.onboundary = (event) => {
+      if (event.name === "word") {
+        const wordIndex = wordIndices.findIndex(start => start >= event.charIndex);
+        if (wordIndex >= 0) {
+          setHighlightedWord(wordIndex);
+        }
+      }
+    };
+
+    utter.onend = () => {
+      setIsSpeaking(false);
+      setHighlightedWord(wordIndices.length - 1);
+    };
+
+    synthRef.current = utter;
+    window.speechSynthesis.speak(utter);
+  };
+
+  const handlePauseReading = () => {
+    setIsSpeaking(false);
+    window.speechSynthesis.cancel();
+    wordTimers.current.forEach(timer => clearTimeout(timer));
+    wordTimers.current = [];
+  };
+
+  const handleResetReading = () => {
+    handlePauseReading();
+    setHighlightedWord(null);
+  };
+
+  useEffect(() => {
+    return () => {
+      handlePauseReading();
+    };
+  }, []);
+
+  const handlePassageSelect = (passage) => {
+    setSelectedPassage(passage);
+    setShowQuiz(false);
+    setQuizComplete(false);
+    setCurrentQuestion(0);
+    setUserAnswers([]);
+    setScore(0);
+    setHighlightedWord(null);
+    setIsSpeaking(false);
+    window.speechSynthesis.cancel();
+  };
+
+  const handleStartQuiz = () => {
+    if (!selectedPassage || !selectedPassage.questions) return;
+    setShowQuiz(true);
+    setCurrentQuestion(0);
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+    setHighlightedWord(null);
+  };
+
+  const handleAnswerSelect = (answer) => {
+    const newAnswers = [...userAnswers];
+    newAnswers[currentQuestion] = answer;
+    setUserAnswers(newAnswers);
+
+    if (currentQuestion < selectedPassage.questions.length - 1) {
+      setCurrentQuestion(prev => prev + 1);
+    } else {
+      const correctAnswers = selectedPassage.questions.filter((q, index) =>
+        q.answer === newAnswers[index]
+      ).length;
+      const finalScore = Math.round((correctAnswers / selectedPassage.questions.length) * 100);
+      setScore(finalScore);
+      setQuizComplete(true);
+    }
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+    setHighlightedWord(null);
+  };
+
+  const renderHighlightedText = () => (
+  <div className="flex flex-wrap justify-center gap-1">
+    {tokens.map((token, index) => {
+      const isWord = /\w/.test(token);
+      const wordIndex = tokens.slice(0, index).filter(t => /\w/.test(t)).length - 1;
+      const isHighlighted = isWord && highlightedWord === wordIndex;
+      
+      return (
+        <span
+          key={index}
+          className={`inline-block mx-1 py-2 px-3 rounded-lg transition-all duration-300 text-lg font-medium ${
+            isHighlighted
+              ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-white scale-110 shadow-lg"
+              : "text-white/80"
+          }`}
+        >
+          {token}
+        </span>
+      );
+    })}
+  </div>
+);
+
+  const renderReadingControls = () => (
+    <div className="flex items-center gap-4 flex-wrap">
+      <button
+        onClick={readPassage}
+        disabled={isSpeaking}
+        className="relative overflow-hidden bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 group"
+      >
+        <div className="relative flex items-center gap-2">
+          <PlayCircle className="w-5 h-5" />
+          <span>{isSpeaking ? "Reading..." : "Start Reading"}</span>
+        </div>
+      </button>
+      <button
+        onClick={handlePauseReading}
+        disabled={!isSpeaking}
+        className="relative overflow-hidden bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-300 group"
+      >
+        <div className="relative flex items-center gap-2">
+          <Pause className="w-5 h-5" />
+          <span>Pause</span>
+        </div>
+      </button>
+      <button
+        onClick={handleResetReading}
+        className="relative overflow-hidden bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-300 group"
+      >
+        <div className="relative flex items-center gap-2">
+          <RotateCcw className="w-5 h-5" />
+          <span>Reset</span>
+        </div>
+      </button>
+      <button
+        onClick={() => setSlowMode(!slowMode)}
+        className={`relative overflow-hidden ${
+          slowMode 
+            ? "bg-gradient-to-r from-purple-500 to-pink-500" 
+            : "bg-gradient-to-r from-gray-500 to-gray-600"
+        } text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-300 group`}
+      >
+        <div className="relative flex items-center gap-2">
+          <Turtle className="w-5 h-5" />
+          <span>Slow Mode: {slowMode ? "ON" : "OFF"}</span>
+        </div>
+      </button>
+    </div>
+  );
+
+  if (selectedPassage) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-blue-400/30 to-purple-400/30 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-pink-400/20 to-red-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute bottom-20 left-1/2 w-80 h-80 bg-gradient-to-r from-green-400/25 to-teal-400/25 rounded-full blur-3xl animate-pulse delay-2000"></div>
+        </div>
+        <div className="relative z-10 py-8 px-4">
+          {!showQuiz ? (
+            <>
+              <div className="max-w-6xl mx-auto mb-8">
+                <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-6 shadow-2xl">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <button
+                        onClick={() => setSelectedPassage(null)}
+                        className="bg-gradient-to-r from-gray-500 to-gray-600 text-white font-bold py-2 px-4 rounded-xl hover:scale-105 transition-transform duration-300"
+                      >
+                        ← Back
+                      </button>
+                      <div className={`relative bg-gradient-to-r ${selectedPassage.gradient} rounded-2xl p-4`}>
+                        <div className="text-4xl">{selectedPassage.icon}</div>
+                      </div>
+                      <div>
+                        <h1 className="text-3xl font-bold text-white">{selectedPassage.title}</h1>
+                        <div className="flex items-center gap-4 mt-2">
+                          <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                            selectedPassage.difficulty === 'Easy' ? 'bg-green-500/20 text-green-300' :
+                            selectedPassage.difficulty === 'Medium' ? 'bg-yellow-500/20 text-yellow-300' :
+                            'bg-red-500/20 text-red-300'
+                          }`}>
+                            {selectedPassage.difficulty}
+                          </span>
+                          <span className="text-white/70">{selectedPassage.readTime}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-white/80 font-bold text-xl">
+                      {words.length} words
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="max-w-6xl mx-auto mb-8">
+                <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl">
+                  {renderReadingControls()}
+                  
+                  <div className="mt-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Eye className="text-blue-400 w-5 h-5" />
+                      <span className="text-white/80 font-medium">Reading Progress</span>
+                    </div>
+                    <div className="relative">
+                      <div className="h-4 bg-white/10 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-300 ease-out relative"
+                          style={{ width: `${progressPercent}%` }}
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent animate-pulse"></div>
+                        </div>
+                      </div>
+                      <div className="absolute right-0 top-0 transform translate-y-6">
+                        <span className="text-sm font-bold text-white bg-gradient-to-r from-blue-500 to-purple-500 px-3 py-1 rounded-full">
+                          {progressPercent}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="max-w-6xl mx-auto mb-8">
+                <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-8 shadow-2xl">
+                  <div className="text-center leading-relaxed">
+                    {renderHighlightedText()}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center">
+                  <button
+                    onClick={handleStartQuiz}
+                    className="relative overflow-hidden bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 px-8 rounded-2xl transform hover:scale-105 transition-all duration-300 group"
+                  >
+                    <div className="relative flex items-center gap-3">
+                      <Brain className="w-6 h-6" />
+                      <span className="text-xl">Take Comprehension Quiz</span>
+                      <ChevronRight className="w-6 h-6" />
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="max-w-4xl mx-auto">
+              {!quizComplete ? (
+                <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-8 shadow-2xl">
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h2 className="text-2xl font-bold text-white">Comprehension Quiz</h2>
+                      <span className="text-white/80">
+                        Question {currentQuestion + 1} of {selectedPassage.questions.length}
+                      </span>
+                    </div>
+                    <div className="h-2 bg-white/10 rounded-full">
+                      <div
+                        className="h-full bg-gradient-to-r from-green-500 to-blue-500 rounded-full transition-all duration-300"
+                        style={{ width: `${((currentQuestion + 1) / selectedPassage.questions.length) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="mb-8">
+                    <h3 className="text-xl font-bold text-white mb-6">
+                      {selectedPassage.questions[currentQuestion].question}
+                    </h3>
+                    <div className="space-y-3">
+                      {selectedPassage.questions[currentQuestion].options.map((option, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleAnswerSelect(option)}
+                          className="w-full text-left bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl p-4 text-white font-medium transition-all duration-300 hover:scale-105"
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-8 shadow-2xl text-center">
+                  <div className="mb-6">
+                    <div className="text-6xl mb-4">
+                      {score >= 80 ? '🏆' : score >= 60 ? '⭐' : '📚'}
+                    </div>
+                    <h2 className="text-3xl font-bold text-white mb-2">Quiz Complete!</h2>
+                    <div className="text-5xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+                      {score}%
+                    </div>
+                  </div>
+                  <div className="space-y-4 mb-8">
+                    {selectedPassage.questions.map((question, index) => (
+                      <div key={index} className="bg-white/10 border border-white/20 rounded-xl p-4 text-left">
+                        <p className="text-white font-medium mb-2">{question.question}</p>
+                        <div className="flex gap-4">
+                          <span className="text-green-300">✓ Correct: {question.answer}</span>
+                          {userAnswers[index] !== question.answer && (
+                            <span className="text-red-300">✗ Your answer: {userAnswers[index]}</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex gap-4 justify-center">
+                    <button
+                      onClick={() => setSelectedPassage(null)}
+                      className="bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition-transform duration-300"
+                    >
+                      Choose Another Passage
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowQuiz(false);
+                        setQuizComplete(false);
+                        setCurrentQuestion(0);
+                        setUserAnswers([]);
+                      }}
+                      className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition-transform duration-300"
+                    >
+                      Read Again
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Landing page UI remains the same as in your original code
+   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden">
-      {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-blue-400/30 to-purple-400/30 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-pink-400/20 to-red-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute bottom-20 left-1/2 w-80 h-80 bg-gradient-to-r from-green-400/25 to-teal-400/25 rounded-full blur-3xl animate-pulse delay-2000"></div>
       </div>
-
-      {/* Floating Particles */}
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(20)].map((_, i) => (
           <div
@@ -125,9 +515,7 @@ export default function ReadingPage() {
           />
         ))}
       </div>
-
       <div className="relative z-10 py-8 px-4">
-        {/* Hero Section */}
         <div className="max-w-6xl mx-auto mb-8">
           <div className="relative group">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-purple-500/30 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
@@ -141,10 +529,10 @@ export default function ReadingPage() {
                 </div>
                 <div className="flex-1">
                   <h1 className="text-5xl font-black bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-3">
-                    Reading Room
+                    Interactive Reading Room
                   </h1>
                   <p className="text-xl text-white/80 leading-relaxed">
-                    Dive into stories and passages. Improve your reading skills with fun quizzes and comprehension practice!
+                    Natural word-by-word highlighting and narration. Follow along as each word lights up and is spoken aloud.
                   </p>
                 </div>
                 <div className="hidden lg:block">
@@ -159,8 +547,6 @@ export default function ReadingPage() {
             </div>
           </div>
         </div>
-
-        {/* Class Group Tabs */}
         <div className="max-w-4xl mx-auto mb-8">
           <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-2 shadow-2xl">
             <div className="flex gap-2">
@@ -169,9 +555,9 @@ export default function ReadingPage() {
                   key={cg.value}
                   onClick={() => setGroup(cg.value)}
                   className={`flex-1 py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 relative overflow-hidden group ${
-                    group === cg.value 
-                      ? `bg-gradient-to-r ${cg.color} text-white shadow-lg scale-105` 
-                      : 'text-white/70 hover:text-white hover:bg-white/5'
+                    group === cg.value
+                      ? `bg-gradient-to-r ${cg.color} text-white shadow-lg scale-105`
+                      : "text-white/70 hover:text-white hover:bg-white/5"
                   }`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-white/0 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -181,8 +567,6 @@ export default function ReadingPage() {
             </div>
           </div>
         </div>
-
-        {/* Progress & Actions */}
         <div className="max-w-4xl mx-auto mb-8">
           <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl">
             <div className="flex items-center gap-6">
@@ -190,234 +574,192 @@ export default function ReadingPage() {
                 <div className="flex items-center gap-3 mb-2">
                   <TrendingUp className="text-blue-400 w-5 h-5" />
                   <span className="text-white/80 font-medium">Reading Progress</span>
+                  <span className="text-white font-bold">{progressPercent}%</span>
                 </div>
                 <div className="relative">
                   <div className="h-4 bg-white/10 rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-1000 ease-out relative"
-                      style={{ width: `${progressValue}%` }}
+                      style={{ width: `${progressPercent}%` }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent animate-pulse"></div>
                     </div>
                   </div>
-                  <div className="absolute right-0 top-0 transform translate-y-6">
-                    <span className="text-sm font-bold text-white bg-gradient-to-r from-blue-500 to-purple-500 px-3 py-1 rounded-full">
-                      {progressValue}%
-                    </span>
-                  </div>
                 </div>
               </div>
-              <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl blur-lg opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl px-6 py-3 transform hover:scale-105 transition-transform duration-300">
-                  <div className="flex items-center gap-2">
-                    <Zap className="text-white w-5 h-5" />
-                    <span className="text-white font-bold">Level Up!</span>
-                  </div>
-                </div>
+              <div className="flex gap-3">
+                <button className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2 group">
+                  <Target className="w-5 h-5" />
+                  <span>Goals</span>
+                </button>
+                <button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2 group">
+                  <Award className="w-5 h-5" />
+                  <span>Achievements</span>
+                </button>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Featured Passages */}
-        <div className="max-w-6xl mx-auto mb-8">
-          <div className="flex items-center gap-3 mb-6">
-            <Target className="text-amber-400 w-6 h-6" />
-            <h2 className="text-2xl font-bold text-white">Today's Passages</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {passages[group].map((passage, index) => (
-              <div 
-                key={passage.title}
-                className="relative group"
-                onMouseEnter={() => setHoveredCard(index)}
-                onMouseLeave={() => setHoveredCard(null)}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-                <div className={`relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl transform transition-all duration-300 ${
-                  hoveredCard === index ? 'scale-105 -translate-y-2' : 'hover:scale-102'
-                }`}>
-                  <div className="relative">
-                    <div className={`absolute inset-0 bg-gradient-to-r ${passage.gradient} rounded-2xl blur-lg opacity-50 animate-pulse`}></div>
-                    <div className={`relative bg-gradient-to-r ${passage.gradient} rounded-2xl p-4 mb-4`}>
-                      <div className="text-4xl text-center">{passage.icon}</div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-xl font-bold text-white">{passage.title}</h3>
-                      <div className="flex gap-2">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          passage.difficulty === 'Easy' ? 'bg-green-500/20 text-green-300' :
-                          passage.difficulty === 'Medium' ? 'bg-yellow-500/20 text-yellow-300' :
-                          'bg-red-500/20 text-red-300'
-                        }`}>
-                          {passage.difficulty}
-                        </span>
-                      </div>
-                    </div>
-                    
-                    <p className="text-white/80 text-sm leading-relaxed">{passage.passage}</p>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-white/60 text-sm">
-                        <Brain className="w-4 h-4" />
-                        <span>{passage.readTime}</span>
-                      </div>
-                      <button className="group/btn relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-2 px-4 rounded-xl transform hover:scale-105 transition-all duration-300">
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
-                        <div className="relative flex items-center gap-2">
-                          <PlayCircle className="w-4 h-4" />
-                          <span>Take Quiz</span>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl p-3">
+                  <BookOpen className="text-white w-6 h-6" />
                 </div>
+                <h2 className="text-2xl font-bold text-white">
+                  Choose a Passage
+                </h2>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Quick Comprehension */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <div className="relative group">
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/30 to-yellow-500/30 rounded-2xl blur-xl opacity-75"></div>
-            <div className="relative backdrop-blur-xl bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-300/30 rounded-2xl p-6 shadow-2xl">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-400 rounded-lg blur-lg opacity-75 animate-pulse"></div>
-                  <div className="relative bg-gradient-to-r from-amber-400 to-yellow-400 rounded-lg p-2">
-                    <Lightbulb className="text-white w-6 h-6" />
+              <div className="grid gap-4">
+                {passages[group].map((passage, index) => (
+                  <div
+                    key={index}
+                    onMouseEnter={() => setHoveredCard(index)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    onClick={() => handlePassageSelect(passage)}
+                    className="group relative overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                    <div
+                      className={`relative bg-gradient-to-r ${passage.gradient} rounded-xl p-1`}
+                    >
+                      <div className="bg-black/30 backdrop-blur-sm rounded-lg p-5">
+                        <div className="flex items-center gap-4">
+                          <div className="text-4xl">{passage.icon}</div>
+                          <div className="flex-1">
+                            <h3 className="text-xl font-bold text-white mb-2">
+                              {passage.title}
+                            </h3>
+                            <p className="text-white/80 mb-3 line-clamp-2">
+                              {passage.passage}
+                            </p>
+                            <div className="flex items-center gap-3">
+                              <span
+                                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                                  passage.difficulty === "Easy"
+                                    ? "bg-green-500/20 text-green-300"
+                                    : passage.difficulty === "Medium"
+                                    ? "bg-yellow-500/20 text-yellow-300"
+                                    : "bg-red-500/20 text-red-300"
+                                }`}
+                              >
+                                {passage.difficulty}
+                              </span>
+                              <span className="text-white/70 text-sm">
+                                {passage.readTime}
+                              </span>
+                            </div>
+                          </div>
+                          <ChevronRight
+                            className={`w-6 h-6 text-white transition-transform duration-300 ${
+                              hoveredCard === index ? "translate-x-2" : ""
+                            }`}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="space-y-6">
+            <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl p-3">
+                  <Trophy className="text-white w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-white">Quick Comprehension</h3>
+                <h2 className="text-xl font-bold text-white">Leaderboard</h2>
+              </div>
+              <div className="space-y-3">
+                {leaderboardData.map((user, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300"
+                  >
+                    <div className="text-2xl">{user.avatar}</div>
+                    <div className="flex-1">
+                      <p className="font-bold text-white">{user.name}</p>
+                      <p className="text-white/70 text-sm">Rank #{user.rank}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-white">{user.score}</p>
+                      <p className="text-white/70 text-sm">points</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="bg-gradient-to-r from-green-500 to-teal-500 rounded-xl p-3">
+                  <Star className="text-white w-6 h-6" />
+                </div>
+                <h2 className="text-xl font-bold text-white">Your Stats</h2>
               </div>
               <div className="space-y-4">
-                <p className="text-white/90 text-lg">
-                  <span className="font-bold">Question:</span> What color is the sun?
+                <div className="flex justify-between items-center">
+                  <span className="text-white/80">Stories Read</span>
+                  <span className="font-bold text-white">12</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-white/80">Reading Speed</span>
+                  <span className="font-bold text-green-400">150 WPM</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-white/80">Accuracy</span>
+                  <span className="font-bold text-blue-400">95%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-white/80">Streak</span>
+                  <span className="font-bold text-orange-400">7 days</span>
+                </div>
+              </div>
+            </div>
+            <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl p-3">
+                  <Lightbulb className="text-white w-6 h-6" />
+                </div>
+                <h2 className="text-xl font-bold text-white">Reading Tip</h2>
+              </div>
+              <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-300/20 rounded-xl p-4">
+                <p className="text-white/90 text-sm leading-relaxed">
+                  💡 <strong>Focus Mode:</strong> Try following the highlighted word with your eyes without looking ahead. This helps improve concentration and reading flow!
                 </p>
-                <button 
-                  onClick={() => setShowAnswer(!showAnswer)}
-                  className="relative overflow-hidden bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-300 group/reveal"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover/reveal:opacity-100 transition-opacity duration-300"></div>
-                  <span className="relative flex items-center gap-2">
-                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${showAnswer ? 'rotate-90' : ''}`} />
-                    {showAnswer ? 'Hide Answer' : 'Reveal Answer'}
-                  </span>
-                </button>
-                {showAnswer && (
-                  <div className="bg-white/10 border border-white/20 rounded-xl p-4 animate-fade-in">
-                    <p className="text-white/90 font-medium">The sun is bright and yellow! ☀️</p>
-                  </div>
-                )}
               </div>
             </div>
           </div>
         </div>
-
-        {/* Leaderboard */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Trophy className="text-yellow-400 w-6 h-6" />
-            <h3 className="text-2xl font-bold text-white">Top Readers</h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {leaderboardData.map((reader, index) => (
-              <div key={reader.name} className="relative group">
-                <div className={`absolute inset-0 ${
-                  index === 0 ? 'bg-gradient-to-r from-yellow-400/30 to-amber-500/30' :
-                  index === 1 ? 'bg-gradient-to-r from-gray-400/30 to-slate-500/30' :
-                  'bg-gradient-to-r from-amber-600/30 to-orange-600/30'
-                } rounded-2xl blur-xl opacity-75 group-hover:opacity-100 transition-opacity duration-300`}></div>
-                <div className="relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-2xl transform hover:scale-105 transition-transform duration-300">
-                  <div className="flex items-center gap-3">
-                    <div className="text-2xl">{reader.avatar}</div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-white">{reader.name}</span>
-                        <span className={`px-2 py-1 rounded-full text-xs font-bold ${
-                          index === 0 ? 'bg-yellow-500/20 text-yellow-300' :
-                          index === 1 ? 'bg-gray-500/20 text-gray-300' :
-                          'bg-orange-500/20 text-orange-300'
-                        }`}>
-                          #{reader.rank}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Star className="text-yellow-400 w-4 h-4 fill-current" />
-                        <span className="text-white/80 font-medium">{reader.score}%</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <div className="max-w-6xl mx-auto mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl text-center group hover:scale-105 transition-transform duration-300">
+              <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full p-4 w-16 h-16 mx-auto mb-4 group-hover:animate-bounce">
+                <Volume2 className="text-white w-8 h-8" />
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Smart Recommendations */}
-        <div className="max-w-4xl mx-auto">
-          <div className="relative group">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 rounded-2xl blur-xl opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="relative backdrop-blur-xl bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-300/30 rounded-2xl p-6 shadow-2xl">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-lg blur-lg opacity-75 animate-pulse"></div>
-                  <div className="relative bg-gradient-to-r from-blue-400 to-cyan-400 rounded-lg p-2">
-                    <TrendingUp className="text-white w-6 h-6" />
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold text-white">Recommended Next</h3>
+              <h3 className="text-xl font-bold text-white mb-2">Audio Active</h3>
+              <p className="text-white/70 text-sm">
+                Voice narration is enabled - words will be spoken as they highlight!
+              </p>
+            </div>
+            <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl text-center group hover:scale-105 transition-transform duration-300">
+              <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-full p-4 w-16 h-16 mx-auto mb-4 group-hover:animate-bounce delay-100">
+                <Zap className="text-white w-8 h-8" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-white/10 border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-colors duration-300 cursor-pointer group/card">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg p-2">
-                      <Target className="text-white w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-white group-hover/card:text-purple-300 transition-colors">Passage Challenge</h4>
-                      <p className="text-white/70 text-sm">Test your skills!</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white/10 border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-colors duration-300 cursor-pointer group/card">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-gradient-to-r from-green-500 to-teal-500 rounded-lg p-2">
-                      <BookOpen className="text-white w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-white group-hover/card:text-green-300 transition-colors">Story of the Week</h4>
-                      <p className="text-white/70 text-sm">Discover new tales!</p>
-                    </div>
-                  </div>
-                </div>
+              <h3 className="text-xl font-bold text-white mb-2">Speed Training</h3>
+              <p className="text-white/70 text-sm">Gradually increase your reading speed with adjustable pacing</p>
+            </div>
+            <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-2xl text-center group hover:scale-105 transition-transform duration-300">
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-full p-4 w-16 h-16 mx-auto mb-4 group-hover:animate-bounce delay-200">
+                <Users className="text-white w-8 h-8" />
               </div>
+              <h3 className="text-xl font-bold text-white mb-2">Compete & Share</h3>
+              <p className="text-white/70 text-sm">Challenge friends and share your reading achievements</p>
             </div>
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.3s ease-out;
-        }
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 8s linear infinite;
-        }
-      `}</style>
     </div>
   );
 }
