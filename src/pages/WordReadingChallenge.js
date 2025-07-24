@@ -195,7 +195,6 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     isSupported: true,
     isRecording: false,
     error: null,
-    isProcessing: false,
   });
 
   const recognitionRef = useRef(null);
@@ -203,68 +202,53 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const isStartingRef = useRef(false);
   const isStoppingRef = useRef(false);
 
-  const stopRecognition = useCallback(() => {
+  const stopRecognition = useCallback(async () => {
     if (!recognitionRef.current || !state.isRecording || isStoppingRef.current)
       return;
 
     isStoppingRef.current = true;
-    setState((prev) => ({ ...prev, isProcessing: true }));
 
     return new Promise((resolve) => {
       try {
         recognitionRef.current.stop();
-
-        const timeout = setTimeout(() => {
-          setState((prev) => ({
-            ...prev,
-            isRecording: false,
-            isProcessing: false,
-          }));
+        // Fallback: if onend doesn’t fire, clear manually
+        setTimeout(() => {
+          setState((prev) => ({ ...prev, isRecording: false }));
           isStoppingRef.current = false;
           resolve();
-        }, 500);
+        }, 800);
       } catch (e) {
         console.warn("Error stopping recognition:", e);
-        setState((prev) => ({
-          ...prev,
-          isRecording: false,
-          isProcessing: false,
-        }));
+        setState((prev) => ({ ...prev, isRecording: false }));
         isStoppingRef.current = false;
         resolve();
       }
     });
   }, [state.isRecording]);
 
-  const startRecognition = useCallback(() => {
-    if (!recognitionRef.current) return;
-
-    if (state.isRecording) {
-      console.log("Already recording — skip start.");
+  const startRecognition = useCallback(async () => {
+    if (!recognitionRef.current || state.isRecording || isStartingRef.current)
       return;
-    }
-
-    if (isStartingRef.current) {
-      console.log("Already starting — skip start.");
-      return;
-    }
 
     isStartingRef.current = true;
-    setState((prev) => ({ ...prev, isProcessing: true }));
 
-    try {
-      recognitionRef.current.start();
-      // onstart event will handle setting isRecording true
-    } catch (error) {
-      console.error("Failed to start recognition:", error);
-      setState((prev) => ({
-        ...prev,
-        error: error.message,
-        isRecording: false,
-        isProcessing: false,
-      }));
-      isStartingRef.current = false;
-    }
+    return new Promise((resolve, reject) => {
+      try {
+        recognitionRef.current.start();
+        isStartingRef.current = false;
+        setState((prev) => ({ ...prev, isRecording: true, error: null }));
+        resolve();
+      } catch (error) {
+        console.error("Failed to start recognition:", error);
+        setState((prev) => ({
+          ...prev,
+          isRecording: false,
+          error: error.message,
+        }));
+        isStartingRef.current = false;
+        reject(error);
+      }
+    });
   }, [state.isRecording]);
 
   useEffect(() => {
@@ -282,17 +266,20 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
     if (!recognitionRef.current) {
       const recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = false;
+      recognition.continuous = false; // ✅ One-shot per word!
+      recognition.interimResults = false; // ✅ No partials
       recognition.lang = "en-US";
       recognition.maxAlternatives = 1;
 
       recognition.onresult = (event) => {
+        console.log("[HOOK] onresult fired");
         if (!isMountedRef.current) return;
+
         const result = event.results[event.results.length - 1];
         if (result.isFinal) {
           const transcript = result[0].transcript.toLowerCase().trim();
-          console.log("Speech result:", transcript);
+          console.log("[HOOK] Final transcript:", transcript);
+
           if (transcript && onResult) {
             onResult(transcript);
           }
@@ -300,66 +287,38 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       };
 
       recognition.onerror = (event) => {
-        if (!isMountedRef.current) return;
         console.error("Recognition error:", event.error);
-
-        if (event.error !== "aborted") {
-          setState((prev) => ({
-            ...prev,
-            error: `Error: ${event.error}`,
-          }));
-          if (onError) onError(event.error);
-        }
+        setState((prev) => ({
+          ...prev,
+          isRecording: false,
+          error: event.error,
+        }));
+        if (onError) onError(event.error);
       };
 
       recognition.onstart = () => {
-        if (!isMountedRef.current) return;
-        console.log("Recognition started");
-        setState((prev) => ({
-          ...prev,
-          isRecording: true,
-          isProcessing: false,
-          error: null,
-        }));
+        console.log("[HOOK] Recognition started");
+        setState((prev) => ({ ...prev, isRecording: true, error: null }));
         isStartingRef.current = false;
       };
 
       recognition.onend = () => {
-        if (!isMountedRef.current) return;
-        console.log("Recognition ended");
-
+        console.log("[HOOK] Recognition ended");
         isStoppingRef.current = false;
-
-        setState((prev) => {
-          const wasRecording = prev.isRecording;
-
-          const newState = {
-            ...prev,
-            isRecording: false,
-            isProcessing: false,
-          };
-
-          if (wasRecording && isEnabled && !isStoppingRef.current) {
-            console.log("Restarting recognition from onend");
-            setTimeout(() => {
-              if (isMountedRef.current && isEnabled && !isStoppingRef.current) {
-                startRecognition();
-              }
-            }, 300);
-          } else {
-            console.log(
-              `onend skip restart: wasRecording=${wasRecording} isEnabled=${isEnabled}`
-            );
-          }
-
-          return newState;
-        });
+        setState((prev) => ({ ...prev, isRecording: false }));
+        if (isEnabled && !isStoppingRef.current) {
+          setTimeout(() => {
+            if (isMountedRef.current && isEnabled) {
+              startRecognition();
+            }
+          }, 400);
+        }
       };
 
       recognitionRef.current = recognition;
     }
 
-    if (isEnabled && !state.isRecording && !isStartingRef.current) {
+    if (isEnabled && !state.isRecording) {
       startRecognition();
     } else if (!isEnabled && state.isRecording) {
       stopRecognition();
@@ -375,14 +334,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         }
       }
     };
-  }, [
-    isEnabled,
-    onResult,
-    onError,
-    startRecognition,
-    stopRecognition,
-    state.isRecording,
-  ]);
+  }, [isEnabled, onResult, onError, startRecognition, stopRecognition]);
 
   return {
     ...state,
@@ -669,23 +621,13 @@ const GameControls = ({
             className={`p-3 rounded-xl transition-all duration-300 shadow-lg cursor-default ${
               speechState.isRecording
                 ? "bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse ring-4 ring-red-300"
-                : speechState.isProcessing
-                ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white"
                 : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white"
             }`}
             aria-label={
-              speechState.isProcessing
-                ? "Processing..."
-                : speechState.isRecording
-                ? "Listening..."
-                : "Not listening"
+              speechState.isRecording ? "Listening..." : "Not listening"
             }
           >
-            {speechState.isProcessing ? (
-              <div className="animate-spin">
-                <Mic size={24} />
-              </div>
-            ) : speechState.isRecording ? (
+            {speechState.isRecording ? (
               <div className="flex items-center gap-2">
                 <span className="relative flex h-3 w-3">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -1217,7 +1159,6 @@ const WordReadingChallenge = () => {
                   <Trophy size={20} />
                   Complete
                 </button>
-
               </div>
             </div>
           )}
@@ -1259,7 +1200,6 @@ const WordReadingChallenge = () => {
                   <Trophy size={20} />
                   Complete
                 </button>
-
               </div>
             </div>
           )}
@@ -1312,7 +1252,6 @@ const WordReadingChallenge = () => {
                   <Trophy size={20} />
                   Complete
                 </button>
-
               </div>
             </div>
           )}
