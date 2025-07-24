@@ -347,6 +347,8 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         if (!isMountedRef.current) return;
         console.log("Recognition ended");
 
+        const wasRecording = state.isRecording;
+
         setState((prev) => ({
           ...prev,
           isRecording: false,
@@ -354,8 +356,8 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         }));
         isStoppingRef.current = false;
 
-        // Only restart if we're supposed to be recording and not manually stopped
-        if (isEnabled && !isStoppingRef.current) {
+        // 🗝️ Only restart if it was truly recording and ended naturally
+        if (wasRecording && isEnabled && !isStoppingRef.current) {
           setTimeout(() => {
             if (isMountedRef.current && isEnabled && !isStoppingRef.current) {
               startRecognition();
@@ -651,13 +653,13 @@ const GameControls = ({
   onReset,
   onToggleRecording,
   stats,
-  isMicActive
+  isMicActive,
 }) => {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handleMicClick = useCallback(async () => {
     if (speechState.isProcessing) return;
-    
+
     setIsAnimating(true);
     try {
       await onToggleRecording();
@@ -686,40 +688,39 @@ const GameControls = ({
           >
             <RotateCcw size={24} />
           </button>
-<button
-  disabled
-  className={`p-3 rounded-xl transition-all duration-300 shadow-lg cursor-default ${
-    speechState.isRecording
-      ? "bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse ring-4 ring-red-300"
-      : speechState.isProcessing
-      ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white"
-      : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white"
-  }`}
-  aria-label={
-    speechState.isProcessing
-      ? "Processing..."
-      : speechState.isRecording
-      ? "Listening..."
-      : "Not listening"
-  }
->
-  {speechState.isProcessing ? (
-    <div className="animate-spin">
-      <Mic size={24} />
-    </div>
-  ) : speechState.isRecording ? (
-    <div className="flex items-center gap-2">
-      <span className="relative flex h-3 w-3">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-        <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-      </span>
-      <Mic size={24} />
-    </div>
-  ) : (
-    <MicOff size={24} />
-  )}
-</button>
-
+          <button
+            disabled
+            className={`p-3 rounded-xl transition-all duration-300 shadow-lg cursor-default ${
+              speechState.isRecording
+                ? "bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse ring-4 ring-red-300"
+                : speechState.isProcessing
+                ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white"
+                : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white"
+            }`}
+            aria-label={
+              speechState.isProcessing
+                ? "Processing..."
+                : speechState.isRecording
+                ? "Listening..."
+                : "Not listening"
+            }
+          >
+            {speechState.isProcessing ? (
+              <div className="animate-spin">
+                <Mic size={24} />
+              </div>
+            ) : speechState.isRecording ? (
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                </span>
+                <Mic size={24} />
+              </div>
+            ) : (
+              <MicOff size={24} />
+            )}
+          </button>
 
           {speechState.error && (
             <div className="flex items-center gap-2 text-red-400 text-sm">
@@ -783,95 +784,113 @@ const WordReadingChallenge = () => {
   }, []);
 
   const handleSpeechResult = useCallback(
-  (transcript) => {
-    console.log("🎤 Received transcript:", transcript);
+    (transcript) => {
+      console.log("🎤 Received transcript:", transcript);
 
-    if (gameState.phase !== "challenge" || gameState.isPaused) {
-      console.log("❌ Game not in challenge phase or paused");
-      return;
-    }
-
-    if (gameState.currentWordIndex >= currentWords.length) {
-      console.log("✅ All words completed");
-      handleComplete();
-      return;
-    }
-
-    // Get ONLY the current word that should be matched (the highlighted one)
-    const currentWord = currentWords[gameState.currentWordIndex]?.toLowerCase();
-    const spokenWords = transcript.toLowerCase().trim().split(/\s+/);
-
-    console.log("🎯 Current word to match (index " + gameState.currentWordIndex + "):", currentWord);
-    console.log("🗣️ Spoken words:", spokenWords);
-
-    // EXACT MATCH ONLY - check if any spoken word exactly matches the current word
-    const hasExactMatch = spokenWords.some((spokenWord) => {
-      const cleanSpoken = spokenWord.replace(/[^\w]/g, ""); // Remove punctuation
-      const cleanCurrent = currentWord.replace(/[^\w]/g, "");
-      
-      const isMatch = cleanSpoken === cleanCurrent;
-      if (isMatch) {
-        console.log("✅ EXACT MATCH found:", cleanSpoken, "===", cleanCurrent);
+      if (gameState.phase !== "challenge" || gameState.isPaused) {
+        console.log("❌ Game not in challenge phase or paused");
+        return;
       }
-      return isMatch;
-    });
 
-    if (hasExactMatch) {
-      console.log("🎉 MATCH CONFIRMED! Advancing from word", gameState.currentWordIndex, "to", gameState.currentWordIndex + 1);
+      if (gameState.currentWordIndex >= currentWords.length) {
+        console.log("✅ All words completed");
+        handleComplete();
+        return;
+      }
 
-      // Record the recognition for this specific word position
-      setLastRecognized({
-        word: currentWord,
-        position: gameState.currentWordIndex,
-        timestamp: Date.now(),
-      });
+      // Get ONLY the current word that should be matched (the highlighted one)
+      const currentWord =
+        currentWords[gameState.currentWordIndex]?.toLowerCase();
+      const spokenWords = transcript.toLowerCase().trim().split(/\s+/);
 
-      setRecognizedWords((prev) => {
-        const newWords = [...prev];
-        // Only add if this position hasn't been recognized yet
-        if (!newWords.some((w) => w.position === gameState.currentWordIndex)) {
-          newWords.push({
-            word: currentWord,
-            position: gameState.currentWordIndex,
-            isCorrect: true,
-            timestamp: Date.now(),
-          });
+      console.log(
+        "🎯 Current word to match (index " + gameState.currentWordIndex + "):",
+        currentWord
+      );
+      console.log("🗣️ Spoken words:", spokenWords);
+
+      // EXACT MATCH ONLY - check if any spoken word exactly matches the current word
+      const hasExactMatch = spokenWords.some((spokenWord) => {
+        const cleanSpoken = spokenWord.replace(/[^\w]/g, ""); // Remove punctuation
+        const cleanCurrent = currentWord.replace(/[^\w]/g, "");
+
+        const isMatch = cleanSpoken === cleanCurrent;
+        if (isMatch) {
+          console.log(
+            "✅ EXACT MATCH found:",
+            cleanSpoken,
+            "===",
+            cleanCurrent
+          );
         }
-        return newWords;
+        return isMatch;
       });
 
-      // Auto-advance to next word after a short delay
-      setTimeout(() => {
-        setGameState((prev) => {
-          if (prev.currentWordIndex < currentWords.length - 1) {
-            console.log("➡️ Advancing to next word index:", prev.currentWordIndex + 1);
-            return {
-              ...prev,
-              currentWordIndex: prev.currentWordIndex + 1,
-            };
-          } else {
-            console.log("🏁 All words completed!");
-            return {
-              ...prev,
-              isCompleted: true,
-            };
-          }
+      if (hasExactMatch) {
+        console.log(
+          "🎉 MATCH CONFIRMED! Advancing from word",
+          gameState.currentWordIndex,
+          "to",
+          gameState.currentWordIndex + 1
+        );
+
+        // Record the recognition for this specific word position
+        setLastRecognized({
+          word: currentWord,
+          position: gameState.currentWordIndex,
+          timestamp: Date.now(),
         });
-      }, 300); // Quick feedback
-    } else {
-      console.log("❌ No EXACT match found for current word:", currentWord);
-      console.log("   Available spoken words:", spokenWords);
-    }
-  },
-  [currentWords, gameState, handleComplete]
-);
 
-const testExactWordMatch = (spokenWord, targetWord) => {
-  const spoken = spokenWord.toLowerCase().replace(/[^\w]/g, "");
-  const target = targetWord.toLowerCase().replace(/[^\w]/g, "");
-  return spoken === target;
-};
+        setRecognizedWords((prev) => {
+          const newWords = [...prev];
+          // Only add if this position hasn't been recognized yet
+          if (
+            !newWords.some((w) => w.position === gameState.currentWordIndex)
+          ) {
+            newWords.push({
+              word: currentWord,
+              position: gameState.currentWordIndex,
+              isCorrect: true,
+              timestamp: Date.now(),
+            });
+          }
+          return newWords;
+        });
 
+        // Auto-advance to next word after a short delay
+        setTimeout(() => {
+          setGameState((prev) => {
+            if (prev.currentWordIndex < currentWords.length - 1) {
+              console.log(
+                "➡️ Advancing to next word index:",
+                prev.currentWordIndex + 1
+              );
+              return {
+                ...prev,
+                currentWordIndex: prev.currentWordIndex + 1,
+              };
+            } else {
+              console.log("🏁 All words completed!");
+              return {
+                ...prev,
+                isCompleted: true,
+              };
+            }
+          });
+        }, 300); // Quick feedback
+      } else {
+        console.log("❌ No EXACT match found for current word:", currentWord);
+        console.log("   Available spoken words:", spokenWords);
+      }
+    },
+    [currentWords, gameState, handleComplete]
+  );
+
+  const testExactWordMatch = (spokenWord, targetWord) => {
+    const spoken = spokenWord.toLowerCase().replace(/[^\w]/g, "");
+    const target = targetWord.toLowerCase().replace(/[^\w]/g, "");
+    return spoken === target;
+  };
 
   const handleSpeechError = useCallback((error) => {
     console.error("Speech recognition error:", error);
@@ -879,12 +898,11 @@ const testExactWordMatch = (spokenWord, targetWord) => {
 
   // 7. Update the speech recognition enabled condition
 
-const speech = useSpeechRecognition(
-  gameState.phase === "challenge" && !gameState.isPaused,
-  handleSpeechResult,
-  handleSpeechError
-);
-
+  const speech = useSpeechRecognition(
+    gameState.phase === "challenge" && !gameState.isPaused,
+    handleSpeechResult,
+    handleSpeechError
+  );
 
   const timer = useGameTimer(
     gameState.phase === "challenge" &&
@@ -902,11 +920,11 @@ const speech = useSpeechRecognition(
     // Don't toggle mic when pausing, let the useEffect handle it based on the enabled condition
   }, []);
 
-const handleReset = useCallback(() => {
-  setGameState(createInitialState());
-  setRecognizedWords([]);
-  timer.resetTimer();
-}, [timer]);
+  const handleReset = useCallback(() => {
+    setGameState(createInitialState());
+    setRecognizedWords([]);
+    timer.resetTimer();
+  }, [timer]);
 
   // Clear animation after it plays
   useEffect(() => {
@@ -1011,37 +1029,41 @@ const handleReset = useCallback(() => {
     return sizes[gameState.classGroup];
   }, [gameState.classGroup]);
 
-  const DebugInfo = ({ gameState, currentWords, speechState, }) => {
-  if (process.env.NODE_ENV !== 'development') return null;
-  
-  return (
-    <div className="fixed bottom-4 left-4 bg-black/80 text-white p-4 rounded-lg text-sm max-w-md">
-      <div>Phase: {gameState.phase}</div>
-      <div>Paused: {gameState.isPaused.toString()}</div>
-      <div>Current Word Index: {gameState.currentWordIndex}</div>
-      <div>Current Word: {currentWords[gameState.currentWordIndex] || 'N/A'}</div>
+  const DebugInfo = ({ gameState, currentWords, speechState }) => {
+    if (process.env.NODE_ENV !== "development") return null;
 
-      <div>Speech Recording: {speechState.isRecording.toString()}</div>
-      <div>Speech Supported: {speechState.isSupported.toString()}</div>
-      {speechState.error && <div className="text-red-400">Error: {speechState.error}</div>}
-    </div>
-  );
-};
+    return (
+      <div className="fixed bottom-4 left-4 bg-black/80 text-white p-4 rounded-lg text-sm max-w-md">
+        <div>Phase: {gameState.phase}</div>
+        <div>Paused: {gameState.isPaused.toString()}</div>
+        <div>Current Word Index: {gameState.currentWordIndex}</div>
+        <div>
+          Current Word: {currentWords[gameState.currentWordIndex] || "N/A"}
+        </div>
 
-window.testWordMatch = (spokenWord, targetWord) => {
-  const spoken = spokenWord.toLowerCase().replace(/[^\w]/g, "");
-  const target = targetWord.toLowerCase().replace(/[^\w]/g, "");
-  
-  console.log(`Testing: "${spoken}" vs "${target}"`);
-  
-  if (spoken === target) {
-    console.log("✅ EXACT MATCH");
-    return true;
-  } else {
-    console.log("❌ NO MATCH");
-    return false;
-  }
-};
+        <div>Speech Recording: {speechState.isRecording.toString()}</div>
+        <div>Speech Supported: {speechState.isSupported.toString()}</div>
+        {speechState.error && (
+          <div className="text-red-400">Error: {speechState.error}</div>
+        )}
+      </div>
+    );
+  };
+
+  window.testWordMatch = (spokenWord, targetWord) => {
+    const spoken = spokenWord.toLowerCase().replace(/[^\w]/g, "");
+    const target = targetWord.toLowerCase().replace(/[^\w]/g, "");
+
+    console.log(`Testing: "${spoken}" vs "${target}"`);
+
+    if (spoken === target) {
+      console.log("✅ EXACT MATCH");
+      return true;
+    } else {
+      console.log("❌ NO MATCH");
+      return false;
+    }
+  };
 
   // SETUP PHASE
   if (gameState.phase === "setup") {
@@ -1155,22 +1177,20 @@ window.testWordMatch = (spokenWord, targetWord) => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 p-4">
         <div className="max-w-7xl mx-auto mb-6">
-<GameControls
-  isPaused={gameState.isPaused}
-  speechState={speech}
-  onPause={handlePause}
-  onReset={handleReset}
-  stats={stats}
-/>
+          <GameControls
+            isPaused={gameState.isPaused}
+            speechState={speech}
+            onPause={handlePause}
+            onReset={handleReset}
+            stats={stats}
+          />
 
-     {/* Debug info for development */}
-    <DebugInfo 
-      gameState={gameState}
-      currentWords={currentWords}
-      speechState={speech}
-
-    />
-
+          {/* Debug info for development */}
+          <DebugInfo
+            gameState={gameState}
+            currentWords={currentWords}
+            speechState={speech}
+          />
         </div>
 
         {/* Progress Bar */}
