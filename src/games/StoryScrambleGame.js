@@ -820,6 +820,32 @@ const StoryScrambleGame = () => {
   const [selectedStoryId, setSelectedStoryId] = useState(null);
   const [selectedStoryMode, setSelectedStoryMode] = useState(null); // Remove this - not needed
 
+  const handleEndGame = () => {
+    // Stop any ongoing speech
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+    setHighlightedWord(null);
+
+    // Clear timer
+    clearInterval(timeLeftRef.current);
+
+    // Reset all game states to go back to main page
+    setSelectedClassGroup(null);
+    setSelectedStoryId(null);
+    setSelectedStoryMode(null);
+    setGameMode(null);
+    setCurrentSentenceIndex(0);
+    setScore(0);
+    setStoryProgress([]);
+    setAchievements([]);
+    setFeedback(null);
+    setHasStarted(false);
+    setShuffledWords([]);
+    setAssembledSentence([]);
+    setShowHint(false);
+    setTimeLeft(60);
+  };
+
   // Get stories for mode
   const getStoriesForMode = (mode) => {
     if (!selectedClassGroup) return [];
@@ -1154,36 +1180,95 @@ const StoryScrambleGame = () => {
   // ------------------------
 
   const ClassGroupSelection = () => (
-    <div className="mb-6 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-      <h3 className="text-lg font-semibold mb-3 text-center text-gray-700">
-        Select Your Class Group
-      </h3>
-      <div className="flex flex-col sm:flex-row justify-center gap-3">
-        {Object.keys(storyData).map((classGroup) => (
-          <button
-            key={classGroup}
-            onClick={() => handleClassGroupSelect(classGroup)}
-            disabled={hasStarted && selectedClassGroup !== classGroup}
-            className={`px-6 py-3 rounded-full font-medium transition-all flex flex-col items-center ${
-              hasStarted && selectedClassGroup !== classGroup
-                ? "cursor-not-allowed opacity-70"
-                : "cursor-pointer"
-            } ${
-              selectedClassGroup === classGroup
-                ? "bg-blue-600 text-white shadow-md"
-                : "bg-gray-100 hover:bg-gray-200"
-            }`}
-          >
-            <span>Class {classGroup}</span>
-            <span className="text-xs mt-1">
-              {classGroup === "I-II"
-                ? "Beginner"
-                : classGroup === "III-V"
-                ? "Intermediate"
-                : "Advanced"}
-            </span>
-          </button>
-        ))}
+    <div className="mb-8">
+      <div className="text-center mb-6">
+        <h3 className="text-2xl font-bold text-gray-800 mb-2">
+          Choose Your Adventure Level
+        </h3>
+        <p className="text-gray-600">
+          Select the class group that matches your reading level
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        {Object.keys(storyData).map((classGroup, index) => {
+          const levelInfo = {
+            "I-II": {
+              title: "Beginner Explorer",
+              description: "Perfect for starting readers",
+              icon: "🌱",
+              color: "from-green-400 to-green-600",
+              stories:
+                storyData[classGroup].story.length +
+                storyData[classGroup].timed.length,
+            },
+            "III-V": {
+              title: "Adventure Seeker",
+              description: "For confident readers",
+              icon: "🚀",
+              color: "from-blue-400 to-blue-600",
+              stories:
+                storyData[classGroup].story.length +
+                storyData[classGroup].timed.length,
+            },
+            "VI-X": {
+              title: "Master Explorer",
+              description: "For advanced readers",
+              icon: "🏆",
+              color: "from-purple-400 to-purple-600",
+              stories:
+                storyData[classGroup].story.length +
+                storyData[classGroup].timed.length,
+            },
+          };
+
+          return (
+            <div
+              key={classGroup}
+              className={`relative overflow-hidden rounded-2xl shadow-lg transform transition-all duration-300 hover:scale-105 cursor-pointer ${
+                selectedClassGroup === classGroup
+                  ? "ring-4 ring-purple-400 shadow-2xl"
+                  : "hover:shadow-xl"
+              } ${
+                hasStarted && selectedClassGroup !== classGroup
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              onClick={() =>
+                !hasStarted || selectedClassGroup === classGroup
+                  ? handleClassGroupSelect(classGroup)
+                  : null
+              }
+            >
+              <div
+                className={`bg-gradient-to-br ${levelInfo[classGroup].color} p-6 text-white`}
+              >
+                <div className="text-center">
+                  <div className="text-4xl mb-3">
+                    {levelInfo[classGroup].icon}
+                  </div>
+                  <h4 className="text-xl font-bold mb-2">Class {classGroup}</h4>
+                  <h5 className="text-lg font-semibold mb-2">
+                    {levelInfo[classGroup].title}
+                  </h5>
+                  <p className="text-sm opacity-90 mb-4">
+                    {levelInfo[classGroup].description}
+                  </p>
+                  <div className="bg-white bg-opacity-20 rounded-full px-3 py-1 text-sm font-medium">
+                    {levelInfo[classGroup].stories} Adventures Available
+                  </div>
+                </div>
+              </div>
+              {selectedClassGroup === classGroup && (
+                <div className="absolute top-2 right-2">
+                  <div className="bg-white rounded-full p-1">
+                    <CheckCircle className="w-6 h-6 text-purple-600" />
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -1221,41 +1306,77 @@ const StoryScrambleGame = () => {
   };
 
   // Mode selection UI
+  // Mode selection UI
   const GameModes = () => {
     if (!selectedClassGroup) return null;
 
+    const modeInfo = {
+      story: {
+        title: "Story Mode",
+        description: "Build complete stories at your own pace",
+        icon: "📚",
+        features: [
+          "No time pressure",
+          "Complete story building",
+          "Perfect for learning",
+        ],
+        color: "from-emerald-400 to-emerald-600",
+      },
+      timed: {
+        title: "Timed Challenge",
+        description: "Race against time for bonus points",
+        icon: "⏰",
+        features: ["60-second challenges", "Time bonuses", "Extra excitement"],
+        color: "from-orange-400 to-orange-600",
+      },
+    };
+
     return (
-      <div className="mb-6 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-        <h3 className="text-lg font-semibold mb-3 text-center text-gray-700">
-          Select Game Mode
-        </h3>
-        <div className="flex flex-col sm:flex-row justify-center gap-3">
-          <button
-            onClick={() => setGameMode("story")}
-            disabled={hasStarted}
-            className={`px-6 py-2 rounded-full font-medium transition-all ${
-              hasStarted ? "cursor-not-allowed opacity-70" : "cursor-pointer"
-            } ${
-              gameMode === "story"
-                ? "bg-purple-600 text-white shadow-md"
-                : "bg-gray-100 hover:bg-gray-200"
-            }`}
-          >
-            Story Mode
-          </button>
-          <button
-            onClick={() => setGameMode("timed")}
-            disabled={hasStarted}
-            className={`px-6 py-2 rounded-full font-medium transition-all ${
-              hasStarted ? "cursor-not-allowed opacity-70" : "cursor-pointer"
-            } ${
-              gameMode === "timed"
-                ? "bg-purple-600 text-white shadow-md"
-                : "bg-gray-100 hover:bg-gray-200"
-            }`}
-          >
-            Timed Challenge
-          </button>
+      <div className="mb-8">
+        <div className="text-center mb-6">
+          <h3 className="text-2xl font-bold text-gray-800 mb-2">
+            Choose Your Game Mode
+          </h3>
+          <p className="text-gray-600">How would you like to play today?</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          {Object.entries(modeInfo).map(([mode, info]) => (
+            <div
+              key={mode}
+              className={`relative overflow-hidden rounded-2xl shadow-lg transform transition-all duration-300 hover:scale-105 cursor-pointer ${
+                gameMode === mode
+                  ? "ring-4 ring-purple-400 shadow-2xl"
+                  : "hover:shadow-xl"
+              } ${hasStarted ? "opacity-50 cursor-not-allowed" : ""}`}
+              onClick={() => (!hasStarted ? setGameMode(mode) : null)}
+            >
+              <div className={`bg-gradient-to-br ${info.color} p-6 text-white`}>
+                <div className="text-center mb-4">
+                  <div className="text-4xl mb-3">{info.icon}</div>
+                  <h4 className="text-xl font-bold mb-2">{info.title}</h4>
+                  <p className="text-sm opacity-90 mb-4">{info.description}</p>
+                </div>
+
+                <div className="space-y-2">
+                  {info.features.map((feature, idx) => (
+                    <div key={idx} className="flex items-center text-sm">
+                      <CheckCircle className="w-4 h-4 mr-2 opacity-80" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {gameMode === mode && (
+                <div className="absolute top-2 right-2">
+                  <div className="bg-white rounded-full p-1">
+                    <CheckCircle className="w-6 h-6 text-purple-600" />
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -1324,8 +1445,11 @@ const StoryScrambleGame = () => {
   );
 
   // Controls
-  const GameControls = () => (
-    <div className="flex flex-col sm:flex-row justify-center items-center gap-3 mb-6">
+  // Controls with better spacing
+const GameControls = () => (
+  <div className="space-y-4 mb-6">
+    {/* Main action buttons */}
+    <div className="flex flex-col sm:flex-row justify-center items-center gap-3">
       <button
         onClick={checkSentence}
         disabled={
@@ -1373,7 +1497,23 @@ const StoryScrambleGame = () => {
         {isSpeaking ? "Speaking..." : "Hear It"}
       </button>
     </div>
-  );
+    
+    {/* Separator line */}
+    <div className="flex justify-center">
+      <div className="w-24 h-px bg-gray-300"></div>
+    </div>
+    
+    {/* End Game button - well separated */}
+    <div className="flex justify-center">
+      <button
+        onClick={handleEndGame}
+        className="px-6 py-2.5 bg-red-500 text-white font-semibold rounded-full shadow-md hover:bg-red-600 transition-all text-sm border-2 border-red-600"
+      >
+        End Game & Go Home
+      </button>
+    </div>
+  </div>
+);
 
   // Feedback Area
   const FeedbackArea = () => (
@@ -1692,51 +1832,169 @@ const StoryScrambleGame = () => {
       <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl md:shadow-2xl p-6 md:p-8 max-w-4xl mx-auto border border-purple-200">
         <GameHeader />
         {!selectedClassGroup ? (
-          <div className="text-center py-8">
-            <h2 className="text-2xl font-bold text-purple-700 mb-6">
-              Welcome to Story Scramble!
-            </h2>
+          <div className="text-center">
+            {/* Hero Section */}
+            <div className="mb-8">
+              <div className="text-6xl mb-4">📚✨</div>
+              <h2 className="text-4xl font-bold text-purple-700 mb-4">
+                Welcome to Story Scramble!
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+                Unscramble words to build amazing stories and boost your reading
+                skills. Choose your level and start your adventure!
+              </p>
+            </div>
+
             <ClassGroupSelection />
-            <div className="mt-8 bg-blue-50 p-4 rounded-lg border border-blue-200 max-w-md mx-auto">
-              <h3 className="text-lg font-semibold text-blue-800 mb-2">
-                How to Play
+
+            {/* How to Play Section */}
+            <div className="mt-12 bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-2xl border border-blue-200 max-w-4xl mx-auto">
+              <h3 className="text-2xl font-bold text-blue-800 mb-6 flex items-center justify-center">
+                <Lightbulb className="mr-3" /> How to Play
               </h3>
-              <ul className="text-left text-gray-700 space-y-2">
-                <li className="flex items-start">
-                  <ChevronRight className="w-4 h-4 text-blue-600 mr-2 mt-1 flex-shrink-0" />
-                  <span>First select your class group</span>
-                </li>
-                <li className="flex items-start">
-                  <ChevronRight className="w-4 h-4 text-blue-600 mr-2 mt-1 flex-shrink-0" />
-                  <span>Choose a story from the dropdown</span>
-                </li>
-                <li className="flex items-start">
-                  <ChevronRight className="w-4 h-4 text-blue-600 mr-2 mt-1 flex-shrink-0" />
-                  <span>Select Story Mode or Timed Challenge</span>
-                </li>
-                <li className="flex items-start">
-                  <ChevronRight className="w-4 h-4 text-blue-600 mr-2 mt-1 flex-shrink-0" />
-                  <span>Arrange words to complete sentences</span>
-                </li>
-              </ul>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <span className="text-2xl">1️⃣</span>
+                  </div>
+                  <h4 className="font-semibold text-blue-800 mb-2">
+                    Choose Level
+                  </h4>
+                  <p className="text-sm text-gray-700">
+                    Select your class group
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <span className="text-2xl">2️⃣</span>
+                  </div>
+                  <h4 className="font-semibold text-blue-800 mb-2">
+                    Pick Mode
+                  </h4>
+                  <p className="text-sm text-gray-700">
+                    Story or Timed Challenge
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <span className="text-2xl">3️⃣</span>
+                  </div>
+                  <h4 className="font-semibold text-blue-800 mb-2">
+                    Choose Story
+                  </h4>
+                  <p className="text-sm text-gray-700">Select your adventure</p>
+                </div>
+
+                <div className="text-center">
+                  <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <span className="text-2xl">4️⃣</span>
+                  </div>
+                  <h4 className="font-semibold text-blue-800 mb-2">
+                    Build Stories
+                  </h4>
+                  <p className="text-sm text-gray-700">
+                    Arrange words correctly
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8 flex justify-center">
+                <div className="bg-white p-4 rounded-xl shadow-md">
+                  <p className="text-gray-700 font-medium">
+                    🏆 Earn points, unlock achievements, and build amazing
+                    stories!
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         ) : !gameMode ? (
-          <div className="text-center py-8">
-            <h2 className="text-2xl font-bold text-purple-700 mb-6">
-              Class {selectedClassGroup} Selected!
-            </h2>
-            <ClassGroupSelection />
+          <div className="text-center">
+            {/* Progress indicator */}
+            <div className="flex justify-center items-center mb-8">
+              <div className="flex items-center space-x-2">
+                <div className="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                  ✓
+                </div>
+                <div className="w-8 h-1 bg-green-500 rounded"></div>
+                <div className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                  2
+                </div>
+                <div className="w-8 h-1 bg-gray-300 rounded"></div>
+                <div className="bg-gray-300 text-gray-600 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                  3
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-3xl font-bold text-purple-700 mb-2">
+                Great Choice! 🎉
+              </h2>
+              <p className="text-lg text-gray-600 mb-8">
+                Class {selectedClassGroup} selected. Now choose your game mode!
+              </p>
+            </div>
+
+            <div className="mb-8">
+              <button
+                onClick={() => handleClassGroupSelect(null)}
+                className="text-blue-600 hover:text-blue-800 font-medium text-sm underline"
+              >
+                ← Change Class Group
+              </button>
+            </div>
+
             <GameModes />
           </div>
         ) : !selectedStoryId ? (
-          <div className="text-center py-8">
-            <h2 className="text-2xl font-bold text-purple-700 mb-6">
-              {gameMode === "story" ? "Story Mode" : "Timed Challenge"}{" "}
-              Selected!
-            </h2>
-            <ClassGroupSelection />
-            <GameModes />
+          <div className="text-center">
+            {/* Progress indicator */}
+            <div className="flex justify-center items-center mb-8">
+              <div className="flex items-center space-x-2">
+                <div className="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                  ✓
+                </div>
+                <div className="w-8 h-1 bg-green-500 rounded"></div>
+                <div className="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                  ✓
+                </div>
+                <div className="w-8 h-1 bg-green-500 rounded"></div>
+                <div className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                  3
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-3xl font-bold text-purple-700 mb-2">
+                Almost Ready! 🚀
+              </h2>
+              <p className="text-lg text-gray-600 mb-8">
+                {gameMode === "story"
+                  ? "Choose your story adventure"
+                  : "Pick your timed challenge"}
+              </p>
+            </div>
+
+            <div className="mb-8 space-y-2">
+              <button
+                onClick={() => setGameMode(null)}
+                className="text-blue-600 hover:text-blue-800 font-medium text-sm underline block mx-auto"
+              >
+                ← Change Game Mode
+              </button>
+              <button
+                onClick={() => handleClassGroupSelect(null)}
+                className="text-blue-600 hover:text-blue-800 font-medium text-sm underline block mx-auto"
+              >
+                ← Change Class Group
+              </button>
+            </div>
+
             <StorySelection />
           </div>
         ) : (
