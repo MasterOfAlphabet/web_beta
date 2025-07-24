@@ -347,23 +347,33 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         if (!isMountedRef.current) return;
         console.log("Recognition ended");
 
-        const wasRecording = state.isRecording;
-
-        setState((prev) => ({
-          ...prev,
-          isRecording: false,
-          isProcessing: false,
-        }));
         isStoppingRef.current = false;
 
-        // 🗝️ Only restart if it was truly recording and ended naturally
-        if (wasRecording && isEnabled && !isStoppingRef.current) {
-          setTimeout(() => {
-            if (isMountedRef.current && isEnabled && !isStoppingRef.current) {
-              startRecognition();
-            }
-          }, 500);
-        }
+        setState((prev) => {
+          const wasRecording = prev.isRecording;
+
+          const newState = {
+            ...prev,
+            isRecording: false,
+            isProcessing: false,
+          };
+
+          // ✅ Only restart if we were actually recording before onend fired!
+          if (wasRecording && isEnabled && !isStoppingRef.current) {
+            console.log("Restarting recognition from onend");
+            setTimeout(() => {
+              if (isMountedRef.current && isEnabled && !isStoppingRef.current) {
+                startRecognition();
+              }
+            }, 500);
+          } else {
+            console.log(
+              `onend skip restart: wasRecording=${wasRecording} isEnabled=${isEnabled}`
+            );
+          }
+
+          return newState;
+        });
       };
 
       recognitionRef.current = recognition;
