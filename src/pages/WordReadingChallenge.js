@@ -686,41 +686,40 @@ const GameControls = ({
           >
             <RotateCcw size={24} />
           </button>
+<button
+  disabled
+  className={`p-3 rounded-xl transition-all duration-300 shadow-lg cursor-default ${
+    speechState.isRecording
+      ? "bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse ring-4 ring-red-300"
+      : speechState.isProcessing
+      ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white"
+      : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white"
+  }`}
+  aria-label={
+    speechState.isProcessing
+      ? "Processing..."
+      : speechState.isRecording
+      ? "Listening..."
+      : "Not listening"
+  }
+>
+  {speechState.isProcessing ? (
+    <div className="animate-spin">
+      <Mic size={24} />
+    </div>
+  ) : speechState.isRecording ? (
+    <div className="flex items-center gap-2">
+      <span className="relative flex h-3 w-3">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+      </span>
+      <Mic size={24} />
+    </div>
+  ) : (
+    <MicOff size={24} />
+  )}
+</button>
 
-          <button
-            onClick={handleMicClick}
-            disabled={speechState.isProcessing}
-            className={`p-3 rounded-xl transition-all duration-300 shadow-lg ${
-              speechState.isRecording && isMicActive
-                ? "bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse ring-4 ring-red-300"
-                : speechState.isProcessing
-                ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white cursor-not-allowed"
-                : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600"
-            } ${isAnimating ? "scale-95 opacity-90" : ""}`}
-            aria-label={
-              speechState.isProcessing
-                ? "Processing..."
-                : speechState.isRecording && isMicActive
-                ? "Stop listening - Click to stop voice recognition"
-                : "Start listening - Click to begin voice recognition"
-            }
-          >
-            {speechState.isProcessing ? (
-              <div className="animate-spin">
-                <Mic size={24} />
-              </div>
-            ) : speechState.isRecording && isMicActive ? (
-              <div className="flex items-center gap-2">
-                <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                </span>
-                <MicOff size={24} />
-              </div>
-            ) : (
-              <Mic size={24} />
-            )}
-          </button>
 
           {speechState.error && (
             <div className="flex items-center gap-2 text-red-400 text-sm">
@@ -771,8 +770,6 @@ const WordReadingChallenge = () => {
   const [gameState, setGameState] = useState(createInitialState);
   const [recognizedWords, setRecognizedWords] = useState([]);
   const [lastRecognized, setLastRecognized] = useState(null);
-
- const [isMicActive, setIsMicActive] = useState(false);
 
   const currentCollection =
     WORD_COLLECTIONS[gameState.classGroup] || WORD_COLLECTIONS["III-V"];
@@ -888,24 +885,6 @@ const speech = useSpeechRecognition(
   handleSpeechError
 );
 
-  // 1. Fix the handleToggleRecording function in the main component
-  const handleToggleRecording = useCallback(async () => {
-  console.log("🎤 Toggling microphone, current state:", isMicActive);
-  
-  try {
-    if (isMicActive) {
-      console.log("🔇 Stopping microphone");
-      await speech.stopRecognition();
-      setIsMicActive(false);
-    } else {
-      console.log("🔊 Starting microphone");
-      await speech.startRecognition();
-      setIsMicActive(true);
-    }
-  } catch (error) {
-    console.error("❌ Error toggling recording:", error);
-  }
-}, [isMicActive, speech]);
 
   const timer = useGameTimer(
     gameState.phase === "challenge" &&
@@ -1033,7 +1012,7 @@ const speech = useSpeechRecognition(
     return sizes[gameState.classGroup];
   }, [gameState.classGroup]);
 
-  const DebugInfo = ({ gameState, currentWords, speechState, isMicActive }) => {
+  const DebugInfo = ({ gameState, currentWords, speechState, }) => {
   if (process.env.NODE_ENV !== 'development') return null;
   
   return (
@@ -1042,7 +1021,7 @@ const speech = useSpeechRecognition(
       <div>Paused: {gameState.isPaused.toString()}</div>
       <div>Current Word Index: {gameState.currentWordIndex}</div>
       <div>Current Word: {currentWords[gameState.currentWordIndex] || 'N/A'}</div>
-      <div>Mic Active: {isMicActive.toString()}</div>
+
       <div>Speech Recording: {speechState.isRecording.toString()}</div>
       <div>Speech Supported: {speechState.isSupported.toString()}</div>
       {speechState.error && <div className="text-red-400">Error: {speechState.error}</div>}
@@ -1182,9 +1161,8 @@ window.testWordMatch = (spokenWord, targetWord) => {
       speechState={speech}
       onPause={handlePause}
       onReset={handleReset}
-      onToggleRecording={handleToggleRecording}
       stats={stats}
-      isMicActive={isMicActive} // Pass the mic state
+   
     />
 
      {/* Debug info for development */}
@@ -1192,7 +1170,7 @@ window.testWordMatch = (spokenWord, targetWord) => {
       gameState={gameState}
       currentWords={currentWords}
       speechState={speech}
-      isMicActive={isMicActive}
+
     />
 
         </div>
