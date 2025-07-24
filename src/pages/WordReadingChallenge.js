@@ -881,18 +881,12 @@ const testExactWordMatch = (spokenWord, targetWord) => {
   }, []);
 
   // 7. Update the speech recognition enabled condition
+
 const speech = useSpeechRecognition(
-  isMicActive && gameState.phase === "challenge" && !gameState.isPaused,
+  gameState.phase === "challenge" && !gameState.isPaused,
   handleSpeechResult,
   handleSpeechError
 );
-
-  useEffect(() => {
-    // Sync isMicActive with actual speech recording state
-    if (speech.isRecording !== isMicActive) {
-      setIsMicActive(speech.isRecording);
-    }
-  }, [speech.isRecording, isMicActive]);
 
   // 1. Fix the handleToggleRecording function in the main component
   const handleToggleRecording = useCallback(async () => {
@@ -945,14 +939,6 @@ const speech = useSpeechRecognition(
       return () => clearTimeout(timer);
     }
   }, [lastRecognized]);
-
-  useEffect(() => {
-  // Auto-disable mic when game is not in challenge phase or is paused
-  if ((gameState.phase !== "challenge" || gameState.isPaused) && isMicActive) {
-    console.log("🔇 Auto-disabling mic due to game state");
-    setIsMicActive(false);
-  }
-}, [gameState.phase, gameState.isPaused, isMicActive]);
 
   // Check for completion
   useEffect(() => {
