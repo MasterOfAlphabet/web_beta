@@ -1217,6 +1217,16 @@ const WordReadingChallenge = () => {
                   <Trophy size={20} />
                   Complete
                 </button>
+
+                <button
+                  onClick={() => {
+                    const testWord = currentWords[gameState.currentWordIndex];
+                    console.log("Testing speech with word:", testWord);
+                    handleSpeechResult(testWord); // Simulate perfect speech input
+                  }}
+                >
+                  Test Speech Match
+                </button>
               </div>
             </div>
           )}
@@ -1257,6 +1267,15 @@ const WordReadingChallenge = () => {
                 >
                   <Trophy size={20} />
                   Complete
+                </button>
+                <button
+                  onClick={() => {
+                    const testWord = currentWords[gameState.currentWordIndex];
+                    console.log("Testing speech with word:", testWord);
+                    handleSpeechResult(testWord); // Simulate perfect speech input
+                  }}
+                >
+                  Test Speech Match
                 </button>
               </div>
             </div>
@@ -1309,6 +1328,15 @@ const WordReadingChallenge = () => {
                 >
                   <Trophy size={20} />
                   Complete
+                </button>
+                <button
+                  onClick={() => {
+                    const testWord = currentWords[gameState.currentWordIndex];
+                    console.log("Testing speech with word:", testWord);
+                    handleSpeechResult(testWord); // Simulate perfect speech input
+                  }}
+                >
+                  Test Speech Match
                 </button>
               </div>
             </div>
