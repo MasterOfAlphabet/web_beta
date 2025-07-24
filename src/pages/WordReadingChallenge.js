@@ -1,77 +1,56 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import {
-  Play,
-  Pause,
-  RotateCcw,
-  Mic,
-  MicOff,
-  Eye,
-  Scroll,
-  Grid3X3,
-  Clock,
-  Award,
-  Target,
-  Zap,
-  BookOpen,
-  Volume2,
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { 
+  Mic, 
+  MicOff, 
+  Play, 
+  Pause, 
+  RotateCcw, 
+  CheckCircle, 
+  Clock, 
+  Target, 
+  BookOpen, 
+  Volume2, 
   AlertCircle,
-  ChevronLeft,
-  ChevronRight,
   Trophy,
-  BarChart3,
-} from "lucide-react";
+  Zap,
+  Star
+} from 'lucide-react';
 
-// Consolidated game state
-const createInitialState = () => ({
-  phase: "setup",
-  classGroup: "III-V", // Default to intermediate level
-  wordCount: 25, // Default word count
-  displayMode: "grid", // Default to grid mode
-  currentWordIndex: 0,
-  timeElapsed: 0,
-  isPaused: false,
-  isCompleted: false,
-});
-
-// Word collections
+// Word collections for different class levels
 const WORD_COLLECTIONS = {
-  "I-II": {
-    words: [
-      "cat", "dog", "run", "jump", "big", "red", "sun", "moon", "car", "book",
-      "play", "happy", "blue", "bird", "fish", "tree", "ball", "cake", "milk", "home",
-      "love", "kind", "warm", "soft", "fast", "slow", "up", "down", "yes", "fun",
-      "new", "old", "hot", "cold", "good", "nice", "bear", "duck", "frog", "star",
-      "door", "window", "chair", "table", "green", "yellow", "pink", "black", "white", "small"
-    ],
-    theme: "Simple everyday words",
-    emoji: "🌟",
-    timePerWord: 5,
-  },
   "III-V": {
+    theme: "Elementary",
+    emoji: "🌟",
     words: [
-      "adventure", "butterfly", "chocolate", "elephant", "fantastic", "gigantic", "happiness", "important", "jellyfish", "kangaroo",
-      "lightning", "mountain", "beautiful", "wonderful", "dangerous", "excellent", "incredible", "mysterious", "playground", "rainbow",
-      "sandwich", "telephone", "umbrella", "vacation", "waterfall", "basketball", "computer", "dinosaur", "friendly", "hospital",
-      "bicycle", "magazine", "submarine", "telescope", "helicopter", "strawberry", "neighborhood", "celebration", "comfortable", "delicious"
-    ],
-    theme: "Intermediate vocabulary",
+      "cat", "dog", "sun", "run", "fun", "big", "red", "yes", "can", "see",
+      "the", "and", "you", "are", "for", "not", "with", "his", "they", "have",
+      "this", "will", "your", "from", "they", "know", "want", "been", "good", "much"
+    ]
+  },
+  "VI-VIII": {
+    theme: "Intermediate",
     emoji: "🚀",
-    timePerWord: 2.5,
-  },
-  "VI-X": {
     words: [
-      "extraordinary", "magnificent", "revolutionary", "sophisticated", "unprecedented", "comprehension", "investigation", "responsibility", "achievement", "environment",
-      "pronunciation", "encyclopedia", "mathematics", "psychology", "archaeology", "constellation", "photosynthesis", "biodiversity", "architecture", "philosophy",
-      "technological", "entrepreneurship", "humanitarian", "controversial", "simultaneous", "Mediterranean", "catastrophic", "infrastructure", "bureaucratic", "metamorphosis",
-      "autobiography", "civilization", "phenomenon", "observatory", "geographical", "pharmaceutical", "astronomical", "constitutional", "atmospheric", "archaeological"
-    ],
-    theme: "Advanced vocabulary",
-    emoji: "🧠",
-    timePerWord: 1.8,
+      "adventure", "beautiful", "challenge", "different", "education", "fantastic", "government", "important",
+      "knowledge", "language", "mountain", "necessary", "opportunity", "powerful", "question", "remember",
+      "scientist", "technology", "understand", "wonderful", "yesterday", "together", "through", "thought",
+      "something", "children", "between", "another", "because", "without"
+    ]
   },
+  "IX-XII": {
+    theme: "Advanced",
+    emoji: "🎓",
+    words: [
+      "extraordinary", "responsibility", "contemporary", "philosophical", "architectural", "psychological",
+      "environmental", "international", "revolutionary", "technological", "independence", "achievement",
+      "communication", "demonstration", "establishment", "investigation", "organization", "transformation",
+      "understanding", "characteristic", "administration", "recommendation", "interpretation", "representation",
+      "identification", "concentration", "determination", "appreciation", "configuration", "pronunciation"
+    ]
+  }
 };
 
-// Custom hook for speech recognition
+// Custom hook for speech recognition with continuous listening
 const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const [speechState, setSpeechState] = useState({
     isSupported: true,
@@ -106,25 +85,71 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       return;
     }
 
+    // Check microphone permissions first
+    const checkMicPermissions = async () => {
+      try {
+        // Request microphone access first
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+        console.log('Microphone permission granted');
+      } catch (error) {
+        console.error('Microphone permission error:', error);
+        setSpeechState((prev) => ({
+          ...prev,
+          isSupported: false,
+          error: `Microphone access denied: ${error.message}. Please allow microphone access and refresh the page.`,
+        }));
+        return;
+      }
+    };
+
+    checkMicPermissions();
+
     if (!recognitionRef.current) {
       const recognition = new SpeechRecognition();
       recognition.continuous = true;
       recognition.interimResults = false;
       recognition.lang = "en-US";
-      recognition.maxAlternatives = 3;
+      recognition.maxAlternatives = 1;
 
       recognition.onresult = (event) => {
         if (!isMountedRef.current) return;
-        const transcript = event.results[event.results.length - 1][0].transcript
-          .toLowerCase()
-          .trim();
-        if (transcript && onResult) {
-          onResult(transcript);
+        
+        if (event.results.length > 0) {
+          const lastResult = event.results[event.results.length - 1];
+          
+          if (lastResult.isFinal) {
+            const transcript = lastResult[0].transcript.toLowerCase().trim();
+            
+            if (transcript && onResult) {
+              onResult(transcript);
+            }
+          }
         }
       };
 
       recognition.onerror = (event) => {
         if (!isMountedRef.current) return;
+        console.error('Speech recognition error:', event.error);
+
+        // Handle specific error types
+        if (event.error === 'not-allowed') {
+          setSpeechState((prev) => ({
+            ...prev,
+            error: "Microphone access denied. Please allow microphone access in your browser settings and refresh the page.",
+            isListening: false,
+            isRecording: false,
+            isSupported: false
+          }));
+          if (onError) onError("Microphone access denied");
+          return;
+        }
+
+        // Don't stop for minor errors in continuous mode
+        if (['no-speech', 'audio-capture'].includes(event.error)) {
+          console.log('Minor error, continuing...');
+          return;
+        }
+
         if (restartTimeoutRef.current) {
           clearTimeout(restartTimeoutRef.current);
         }
@@ -139,33 +164,43 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
         if (onError) onError(errorMessage);
 
-        if (
-          isEnabled &&
-          ["no-speech", "audio-capture", "aborted"].includes(event.error)
-        ) {
+        // Quick restart for recoverable errors
+        if (isEnabled && ['aborted', 'network'].includes(event.error)) {
           restartTimeoutRef.current = setTimeout(() => {
             if (isMountedRef.current && isEnabled) {
               startRecognition();
             }
-          }, 1000);
+          }, 500);
         }
       };
 
       recognition.onend = () => {
         if (!isMountedRef.current) return;
+        
         setSpeechState((prev) => ({
           ...prev,
           isListening: false,
           isRecording: false,
         }));
 
+        // Immediately restart if still enabled
         if (isEnabled) {
           restartTimeoutRef.current = setTimeout(() => {
             if (isMountedRef.current && isEnabled) {
               startRecognition();
             }
-          }, 300);
+          }, 100);
         }
+      };
+
+      recognition.onstart = () => {
+        if (!isMountedRef.current) return;
+        setSpeechState(prev => ({
+          ...prev,
+          isRecording: true,
+          isListening: true,
+          error: null
+        }));
       };
 
       recognitionRef.current = recognition;
@@ -183,20 +218,34 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         clearTimeout(restartTimeoutRef.current);
       }
     };
-  }, [onResult, onError, isEnabled]);
+  }, [onResult, onError]);
 
   const startRecognition = useCallback(() => {
-    if (!recognitionRef.current || speechState.isRecording) return;
+    if (!recognitionRef.current || speechState.isRecording || !speechState.isSupported) return;
     
     try {
-      recognitionRef.current.stop(); // Stop first if needed
-      recognitionRef.current.start();
-      setSpeechState(prev => ({
-        ...prev,
-        isRecording: true,
-        isListening: true,
-        error: null
-      }));
+      // Double-check microphone permissions before starting
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(() => {
+          if (recognitionRef.current && isMountedRef.current) {
+            recognitionRef.current.stop();
+            setTimeout(() => {
+              if (recognitionRef.current && isMountedRef.current) {
+                recognitionRef.current.start();
+              }
+            }, 100);
+          }
+        })
+        .catch((error) => {
+          console.error('Microphone access error during start:', error);
+          setSpeechState(prev => ({
+            ...prev,
+            error: `Microphone access denied: ${error.message}. Please allow microphone access and try again.`,
+            isRecording: false,
+            isListening: false,
+            isSupported: false
+          }));
+        });
     } catch (error) {
       console.error("Failed to start recognition:", error);
       setSpeechState(prev => ({
@@ -206,7 +255,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         isListening: false
       }));
     }
-  }, [speechState.isRecording]);
+  }, [speechState.isRecording, speechState.isSupported]);
 
   const stopRecognition = useCallback(() => {
     if (restartTimeoutRef.current) {
@@ -280,31 +329,211 @@ const useGameTimer = (isActive, onTick) => {
   return { resetTimer };
 };
 
-// Component for class selection
+// Helper functions
+const formatTime = (seconds) => {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+};
+
+const getWordStatus = (wordIndex, currentWordIndex, recognizedWords) => {
+  if (recognizedWords.some(w => w.position === wordIndex)) {
+    return 'recognized';
+  } else if (wordIndex === currentWordIndex) {
+    return 'current';
+  } else if (wordIndex < currentWordIndex) {
+    return 'skipped';
+  } else {
+    return 'pending';
+  }
+};
+
+// Word Display Component
+const WordDisplay = ({ word, index, status, isLastRecognized }) => {
+  const getWordClasses = () => {
+    const baseClasses = "p-3 rounded-xl font-bold text-sm transition-all duration-300 border-2 flex items-center justify-center min-h-[60px] relative";
+    
+    switch (status) {
+      case 'current':
+        return `${baseClasses} bg-gradient-to-br from-blue-500 to-blue-600 text-white border-blue-300 ring-2 ring-blue-300 shadow-lg transform scale-105`;
+      case 'recognized':
+        return `${baseClasses} bg-gradient-to-br from-green-500 to-green-600 text-white border-green-400 shadow-lg`;
+      case 'skipped':
+        return `${baseClasses} bg-gradient-to-br from-gray-400 to-gray-500 text-gray-100 border-gray-500`;
+      default:
+        return `${baseClasses} bg-white/10 text-gray-300 border-white/20 hover:bg-white/20`;
+    }
+  };
+
+  return (
+    <div className={`${getWordClasses()} ${isLastRecognized ? 'animate-bounce' : ''}`}>
+      <div className="text-center relative">
+        {word}
+        {status === 'current' && (
+          <div className="absolute -top-1 -right-1">
+            <Mic className="text-white animate-pulse" size={12} />
+          </div>
+        )}
+        {status === 'recognized' && (
+          <div className="absolute -top-1 -right-1">
+            <CheckCircle className="text-white" size={12} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Game Controls Component
+const GameControls = ({ gameState, speechState, onPause, onReset, onToggleRecording, stats }) => {
+  return (
+    <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20 mb-6">
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onPause}
+            className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-3 rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg"
+            aria-label={gameState.isPaused ? "Resume challenge" : "Pause challenge"}
+          >
+            {gameState.isPaused ? <Play size={20} /> : <Pause size={20} />}
+          </button>
+          <button
+            onClick={onReset}
+            className="bg-gradient-to-r from-gray-500 to-gray-600 text-white p-3 rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all shadow-lg"
+            aria-label="Reset challenge"
+          >
+            <RotateCcw size={20} />
+          </button>
+          <button
+            onClick={onToggleRecording}
+            className={`p-3 rounded-xl transition-all shadow-lg ${
+              speechState.isRecording
+                ? "bg-gradient-to-r from-red-500 to-pink-500 text-white"
+                : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600"
+            }`}
+            aria-label={speechState.isRecording ? "Stop recording" : "Start recording"}
+          >
+            {speechState.isRecording ? <MicOff size={20} /> : <Mic size={20} />}
+          </button>
+
+          {speechState.error && (
+            <div className="flex items-center gap-2 text-red-400 text-sm max-w-md">
+              <AlertCircle size={16} />
+              <span className="break-words">{speechState.error}</span>
+            </div>
+          )}
+          {!speechState.isSupported && (
+            <div className="flex items-center gap-2 text-yellow-400 text-sm">
+              <AlertCircle size={16} />
+              <span>Speech recognition not available</span>
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-6 text-white flex-wrap">
+          <div className="flex items-center gap-2">
+            <BookOpen size={18} className="text-blue-400" />
+            <span className="font-bold">{stats.progress}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Clock size={18} className="text-green-400" />
+            <span className="font-bold">{stats.time}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle size={18} className="text-purple-400" />
+            <span className="font-bold">{stats.recognized}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Target size={18} className="text-orange-400" />
+            <span className="font-bold">{stats.accuracy}%</span>
+          </div>
+          {speechState.isRecording && (
+            <div className="flex items-center gap-2">
+              <Volume2 size={18} className="text-red-400 animate-pulse" />
+              <span className="font-bold text-sm">Listening...</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Permission Setup Component
+const PermissionSetup = ({ onPermissionGranted, error }) => {
+  const [isRequesting, setIsRequesting] = useState(false);
+
+  const requestPermission = async () => {
+    setIsRequesting(true);
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      console.log('Permission granted successfully');
+      onPermissionGranted();
+    } catch (error) {
+      console.error('Permission request failed:', error);
+    } finally {
+      setIsRequesting(false);
+    }
+  };
+
+  return (
+    <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 text-center">
+      <AlertCircle className="text-red-400 mx-auto mb-4" size={48} />
+      <h2 className="text-2xl font-bold text-white mb-4">Microphone Access Required</h2>
+      <p className="text-gray-300 mb-6 max-w-md mx-auto">
+        This game needs microphone access to recognize your speech. Please allow microphone access when prompted.
+      </p>
+      
+      {error && (
+        <div className="bg-red-500/20 border border-red-500/30 rounded-xl p-4 mb-6 max-w-md mx-auto">
+          <p className="text-red-300 text-sm">{error}</p>
+        </div>
+      )}
+
+      <button
+        onClick={requestPermission}
+        disabled={isRequesting}
+        className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-3 rounded-xl font-bold hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {isRequesting ? 'Requesting...' : 'Allow Microphone Access'}
+      </button>
+
+      <div className="mt-6 text-sm text-gray-400">
+        <p className="mb-2">If you're still having issues:</p>
+        <ul className="text-left max-w-md mx-auto space-y-1">
+          <li>• Check your browser's microphone settings</li>
+          <li>• Make sure no other app is using your microphone</li>
+          <li>• Try refreshing the page</li>
+          <li>• Ensure you're using HTTPS (not HTTP)</li>
+        </ul>
+      </div>
+    </div>
+  );
+};
 const ClassSelector = ({ classGroup, onClassChange }) => (
-  <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
-    <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-      <Target className="text-pink-400" size={28} />
-      Class Level
+  <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20 mb-6">
+    <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+      <Target className="text-pink-400" size={24} />
+      Select Class Level
     </h3>
-    <div className="space-y-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
       {Object.entries(WORD_COLLECTIONS).map(([key, data]) => (
         <button
           key={key}
           onClick={() => onClassChange(key)}
-          className={`w-full p-6 rounded-2xl border-2 transition-all duration-300 ${
+          className={`p-4 rounded-2xl border-2 transition-all duration-300 ${
             classGroup === key
               ? "border-pink-400 bg-pink-400/20 shadow-lg shadow-pink-400/25"
               : "border-white/20 bg-white/5 hover:border-pink-300 hover:bg-white/10"
           }`}
           aria-pressed={classGroup === key}
         >
-          <div className="flex items-center gap-4">
-            <span className="text-3xl" role="img" aria-label={`${data.theme} emoji`}>
+          <div className="flex items-center gap-3">
+            <span className="text-2xl" role="img" aria-label={`${data.theme} emoji`}>
               {data.emoji}
             </span>
             <div className="text-left">
-              <div className="text-xl font-bold text-white">Class {key}</div>
+              <div className="text-lg font-bold text-white">Class {key}</div>
               <div className="text-sm text-gray-300">{data.theme}</div>
             </div>
           </div>
@@ -314,273 +543,199 @@ const ClassSelector = ({ classGroup, onClassChange }) => (
   </div>
 );
 
-// Component for challenge setup
-const ChallengeSetup = ({
-  wordCount,
-  displayMode,
-  onWordCountChange,
-  onDisplayModeChange,
-}) => (
-  <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
-    <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-      <Zap className="text-violet-400" size={28} />
-      Challenge Setup
-    </h3>
+// Game Summary Component
+const GameSummary = ({ stats, gameState, onReset, recognizedWords, totalWords }) => {
+  const getPerformanceLevel = (accuracy) => {
+    if (accuracy >= 90) return { level: 'Excellent', color: 'text-green-400', icon: Trophy };
+    if (accuracy >= 75) return { level: 'Great', color: 'text-blue-400', icon: Star };
+    if (accuracy >= 60) return { level: 'Good', color: 'text-yellow-400', icon: Zap };
+    return { level: 'Keep Trying', color: 'text-orange-400', icon: Target };
+  };
 
-    <div className="mb-8">
-      <label className="block text-lg font-semibold text-white mb-4">
-        Word Count
-      </label>
-      <div className="grid grid-cols-3 gap-3">
-        {[5, 10, 25].map((count) => (
-          <button
-            key={count}
-            onClick={() => onWordCountChange(count)}
-            className={`p-4 rounded-xl font-bold transition-all ${
-              wordCount === count
-                ? "bg-violet-500 text-white shadow-lg"
-                : "bg-white/10 text-gray-300 hover:bg-white/20"
-            }`}
-            aria-pressed={wordCount === count}
-          >
-            {count}
-          </button>
-        ))}
-      </div>
-      <div className="grid grid-cols-2 gap-3 mt-3">
-        {[50, 100].map((count) => (
-          <button
-            key={count}
-            onClick={() => onWordCountChange(count)}
-            className={`p-4 rounded-xl font-bold transition-all ${
-              wordCount === count
-                ? "bg-violet-500 text-white shadow-lg"
-                : "bg-white/10 text-gray-300 hover:bg-white/20"
-            }`}
-            aria-pressed={wordCount === count}
-          >
-            {count}
-          </button>
-        ))}
-      </div>
-    </div>
+  const performance = getPerformanceLevel(stats.accuracy);
+  const PerformanceIcon = performance.icon;
 
-    <div>
-      <label className="block text-lg font-semibold text-white mb-4">
-        Display Mode
-      </label>
-      <div className="space-y-3">
-        {[
-          {
-            key: "flow",
-            icon: Scroll,
-            label: "Auto Flow",
-            desc: "Words advance automatically",
-          },
-          {
-            key: "pages",
-            icon: Eye,
-            label: "Manual Pages",
-            desc: "Control your own pace",
-          },
-          {
-            key: "grid",
-            icon: Grid3X3,
-            label: "All Words",
-            desc: "See everything at once",
-          },
-        ].map(({ key, icon: Icon, label, desc }) => (
-          <button
-            key={key}
-            onClick={() => onDisplayModeChange(key)}
-            className={`w-full p-4 rounded-xl border-2 transition-all ${
-              displayMode === key
-                ? "border-violet-400 bg-violet-400/20"
-                : "border-white/20 bg-white/5 hover:border-violet-300"
-            }`}
-            aria-pressed={displayMode === key}
-          >
-            <div className="flex items-center gap-3">
-              <Icon className="text-violet-400" size={24} />
-              <div className="text-left">
-                <div className="font-bold text-white">{label}</div>
-                <div className="text-sm text-gray-300">{desc}</div>
-              </div>
-            </div>
-          </button>
-        ))}
-      </div>
-    </div>
-  </div>
-);
-
-// Component for game controls
-const GameControls = ({
-  isPaused,
-  speechState,
-  onPause,
-  onReset,
-  onToggleRecording,
-  stats,
-}) => {
   return (
-    <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20">
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={onPause}
-            className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-3 rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg"
-            aria-label={isPaused ? "Resume challenge" : "Pause challenge"}
-          >
-            {isPaused ? <Play size={24} /> : <Pause size={24} />}
-          </button>
-          <button
-            onClick={onReset}
-            className="bg-gradient-to-r from-gray-500 to-gray-600 text-white p-3 rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all shadow-lg"
-            aria-label="Reset challenge"
-          >
-            <RotateCcw size={24} />
-          </button>
-          <button
-            onClick={onToggleRecording}
-            className={`p-3 rounded-xl transition-all shadow-lg ${
-              speechState.isRecording
-                ? "bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse"
-                : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600"
-            }`}
-            aria-label={speechState.isRecording ? "Stop recording" : "Start recording"}
-          >
-            {speechState.isRecording ? <MicOff size={24} /> : <Mic size={24} />}
-          </button>
+    <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 text-center">
+      <div className="mb-6">
+        <PerformanceIcon className={`${performance.color} mx-auto mb-3`} size={48} />
+        <h2 className="text-3xl font-bold text-white mb-2">Challenge Complete!</h2>
+        <p className={`text-xl font-semibold ${performance.color}`}>{performance.level}</p>
+      </div>
 
-          {speechState.error && (
-            <div className="flex items-center gap-2 text-red-400 text-sm">
-              <AlertCircle size={16} />
-              <span>{speechState.error}</span>
-            </div>
-          )}
-          {!speechState.isSupported && (
-            <div className="flex items-center gap-2 text-yellow-400 text-sm">
-              <AlertCircle size={16} />
-              <span>Mic not supported</span>
-            </div>
-          )}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+        <div className="bg-white/5 rounded-2xl p-4">
+          <div className="text-2xl font-bold text-blue-400">{stats.recognized}</div>
+          <div className="text-sm text-gray-300">Words Recognized</div>
         </div>
-
-        <div className="flex items-center gap-6 text-white">
-          <div className="flex items-center gap-2">
-            <BookOpen size={20} className="text-blue-400" />
-            <span className="font-bold">{stats.progress}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Clock size={20} className="text-green-400" />
-            <span className="font-bold">{stats.time}</span>
-          </div>
-          {speechState.isRecording && (
-            <div className="flex items-center gap-2">
-              <Volume2 size={20} className="text-red-400" />
-              <span className="font-bold">{stats.recognized} recognized</span>
-            </div>
-          )}
+        <div className="bg-white/5 rounded-2xl p-4">
+          <div className="text-2xl font-bold text-green-400">{stats.time}</div>
+          <div className="text-sm text-gray-300">Total Time</div>
+        </div>
+        <div className="bg-white/5 rounded-2xl p-4">
+          <div className="text-2xl font-bold text-purple-400">{stats.accuracy}%</div>
+          <div className="text-sm text-gray-300">Accuracy</div>
+        </div>
+        <div className="bg-white/5 rounded-2xl p-4">
+          <div className="text-2xl font-bold text-orange-400">{Math.round(stats.recognized / (gameState.timeElapsed / 60))}</div>
+          <div className="text-sm text-gray-300">Words/Min</div>
         </div>
       </div>
+
+      <button
+        onClick={onReset}
+        className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:from-purple-600 hover:to-pink-600 transition-all shadow-lg"
+      >
+        Play Again
+      </button>
     </div>
   );
 };
 
-// Main component
-const WordReadingChallenge = () => {
-  const [gameState, setGameState] = useState(createInitialState);
+// Main Game Component
+const WordRecognitionGame = () => {
+  const [gameState, setGameState] = useState({
+    phase: 'setup', // setup, playing, completed, permission
+    classGroup: 'III-V',
+    currentWordIndex: 0,
+    timeElapsed: 0,
+    isPaused: false,
+    isCompleted: false,
+  });
+
   const [recognizedWords, setRecognizedWords] = useState([]);
-  const [lastRecognized, setLastRecognized] = useState(null);
+  const [lastRecognized, setLastRecognized] = useState([]);
+  const [permissionError, setPermissionError] = useState(null);
 
-  const currentCollection = WORD_COLLECTIONS[gameState.classGroup] || WORD_COLLECTIONS["III-V"];
-  const currentWords = useMemo(
-    () => currentCollection.words.slice(0, gameState.wordCount),
-    [currentCollection.words, gameState.wordCount]
-  );
+  const currentCollection = WORD_COLLECTIONS[gameState.classGroup];
+  const currentWords = currentCollection.words.slice(0, 25); // Show 25 words for grid
 
-  const handleComplete = useCallback(() => {
-    setGameState((prev) => ({ ...prev, phase: "results", isCompleted: true }));
-  }, []);
+  const handleSpeechResult = useCallback((transcript) => {
+    if (gameState.phase !== 'playing' || gameState.isPaused) return;
 
-  const handleSpeechResult = useCallback(
-    (transcript) => {
-      const spokenWord = transcript.toLowerCase().trim();
-      const currentWord = currentWords[gameState.currentWordIndex]?.toLowerCase();
+    const spokenWords = transcript.toLowerCase().trim().split(/\s+/);
+    const currentWord = currentWords[gameState.currentWordIndex]?.toLowerCase();
 
-      if (gameState.phase !== "challenge" || gameState.isPaused) return;
+    if (!currentWord) return;
 
-      if (spokenWord === currentWord) {
-        setLastRecognized({
-          word: currentWord,
-          position: gameState.currentWordIndex,
-          timestamp: Date.now(),
-        });
+    const hasMatch = spokenWords.some(word => {
+      const cleanWord = word.replace(/[^\w]/g, '');
+      return cleanWord === currentWord || 
+             (cleanWord.length > 2 && currentWord.includes(cleanWord)) ||
+             (currentWord.length > 2 && cleanWord.includes(currentWord));
+    });
 
-        setRecognizedWords((prev) => {
-          const newWords = [...prev];
-          if (!newWords.some((w) => w.position === gameState.currentWordIndex)) {
-            newWords.push({
-              word: currentWord,
-              position: gameState.currentWordIndex,
-              isCorrect: true,
-              timestamp: Date.now(),
-            });
-          }
-          return newWords;
-        });
+    if (hasMatch) {
+      setLastRecognized({
+        word: currentWord,
+        position: gameState.currentWordIndex,
+        timestamp: Date.now(),
+      });
 
-        setTimeout(() => {
-          if (gameState.currentWordIndex < currentWords.length - 1) {
-            setGameState((prev) => ({
+      setRecognizedWords((prev) => {
+        const newWords = [...prev];
+        if (!newWords.some((w) => w.position === gameState.currentWordIndex)) {
+          newWords.push({
+            word: currentWord,
+            position: gameState.currentWordIndex,
+            isCorrect: true,
+            timestamp: Date.now(),
+          });
+        }
+        return newWords;
+      });
+
+      setTimeout(() => {
+        setGameState((prev) => {
+          if (prev.currentWordIndex < currentWords.length - 1) {
+            return {
               ...prev,
               currentWordIndex: prev.currentWordIndex + 1,
-            }));
+            };
           } else {
-            handleComplete();
+            return {
+              ...prev,
+              phase: 'completed',
+              isCompleted: true,
+            };
           }
-        }, 500);
-      }
-    },
-    [currentWords, gameState.currentWordIndex, gameState.phase, gameState.isPaused, handleComplete]
-  );
+        });
+      }, 300);
+    }
+  }, [gameState, currentWords]);
 
   const handleSpeechError = useCallback((error) => {
     console.error("Speech recognition error:", error);
+    if (error.includes('denied') || error.includes('not-allowed')) {
+      setGameState(prev => ({ ...prev, phase: 'permission' }));
+      setPermissionError(error);
+    }
   }, []);
 
   const speech = useSpeechRecognition(
-    gameState.phase === "challenge" && !gameState.isPaused,
+    gameState.phase === 'playing' && !gameState.isPaused,
     handleSpeechResult,
     handleSpeechError
   );
 
   const timer = useGameTimer(
-    gameState.phase === "challenge" && !gameState.isPaused && !gameState.isCompleted,
+    gameState.phase === 'playing' && !gameState.isPaused && !gameState.isCompleted,
     useCallback((elapsed) => {
       setGameState((prev) => ({ ...prev, timeElapsed: elapsed }));
     }, [])
   );
 
-  const handleToggleRecording = useCallback(() => {
-    if (!speech.isSupported) return;
-    speech.toggleRecognition();
-  }, [speech]);
+  const stats = useMemo(() => {
+    const recognizedCount = recognizedWords.length;
+    const totalWords = currentWords.length;
+    const currentIndex = Math.min(gameState.currentWordIndex + 1, totalWords);
+    
+    return {
+      progress: `${currentIndex}/${totalWords}`,
+      recognized: recognizedCount,
+      time: formatTime(gameState.timeElapsed),
+      accuracy: currentIndex > 0 ? Math.round((recognizedCount / currentIndex) * 100) : 0
+    };
+  }, [recognizedWords.length, currentWords.length, gameState.currentWordIndex, gameState.timeElapsed]);
 
-  const handlePause = useCallback(() => {
-    setGameState((prev) => ({ ...prev, isPaused: !prev.isPaused }));
-    if (speech.isRecording) {
-      speech.stopRecognition();
+  const handleStartGame = () => {
+    // Check if speech recognition is available before starting
+    if (!speech.isSupported) {
+      setGameState(prev => ({ ...prev, phase: 'permission' }));
+      setPermissionError('Speech recognition is not supported or microphone access is denied.');
+      return;
     }
-  }, [speech]);
+    setGameState(prev => ({ ...prev, phase: 'playing' }));
+  };
 
-  const handleReset = useCallback(() => {
-    setGameState(createInitialState());
+  const handlePermissionGranted = () => {
+    setGameState(prev => ({ ...prev, phase: 'setup' }));
+    setPermissionError(null);
+  };
+
+  const handlePause = () => {
+    setGameState(prev => ({ ...prev, isPaused: !prev.isPaused }));
+  };
+
+  const handleReset = () => {
+    setGameState({
+      phase: 'setup',
+      classGroup: gameState.classGroup,
+      currentWordIndex: 0,
+      timeElapsed: 0,
+      isPaused: false,
+      isCompleted: false,
+    });
     setRecognizedWords([]);
+    setLastRecognized(null);
+    setPermissionError(null);
     speech.stopRecognition();
     timer.resetTimer();
-  }, [speech, timer]);
+  };
+
+  const handleClassChange = (newClass) => {
+    setGameState(prev => ({ ...prev, classGroup: newClass }));
+  };
 
   // Clear animation after it plays
   useEffect(() => {
@@ -592,617 +747,82 @@ const WordReadingChallenge = () => {
     }
   }, [lastRecognized]);
 
-  // Check for completion
-  useEffect(() => {
-    if (
-      gameState.currentWordIndex >= currentWords.length &&
-      gameState.phase === "challenge"
-    ) {
-      setGameState((prev) => ({ ...prev, isCompleted: true }));
-      speech.stopRecognition();
-      setTimeout(() => {
-        setGameState((prev) => ({ ...prev, phase: "results" }));
-      }, 1000);
-    }
-  }, [gameState.currentWordIndex, currentWords.length, gameState.phase, speech]);
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-4">
+      <div className="max-w-7xl mx-auto">
+        <header className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Word Recognition Challenge
+          </h1>
+          <p className="text-xl text-gray-300">Speak the words as they appear highlighted!</p>
+        </header>
 
-  // Game action handlers
-  const handleStart = useCallback(() => {
-    setGameState((prev) => ({
-      ...prev,
-      phase: "challenge",
-      currentWordIndex: 0,
-      timeElapsed: 0,
-      isPaused: false,
-      isCompleted: false,
-    }));
-    setRecognizedWords([]);
-    timer.resetTimer();
-  }, [timer]);
+        {gameState.phase === 'permission' && (
+          <PermissionSetup 
+            onPermissionGranted={handlePermissionGranted}
+            error={permissionError}
+          />
+        )}
 
-  const handleNext = useCallback(() => {
-    if (gameState.currentWordIndex < currentWords.length - 1) {
-      setGameState((prev) => ({
-        ...prev,
-        currentWordIndex: prev.currentWordIndex + 1,
-      }));
-    }
-  }, [gameState.currentWordIndex, currentWords.length]);
-
-  const handlePrevious = useCallback(() => {
-    if (gameState.currentWordIndex > 0) {
-      setGameState((prev) => ({
-        ...prev,
-        currentWordIndex: prev.currentWordIndex - 1,
-      }));
-    }
-  }, [gameState.currentWordIndex]);
-
-  // Stats calculations
-  const stats = useMemo(() => {
-    const progress = `${Math.min(
-      gameState.currentWordIndex + 1,
-      currentWords.length
-    )} / ${gameState.wordCount}`;
-    const time = `${gameState.timeElapsed.toFixed(1)}s`;
-    const recognizedCount = recognizedWords.filter((rw) => rw.isCorrect).length;
-    const wpm =
-      gameState.timeElapsed > 0
-        ? Math.round((recognizedCount / gameState.timeElapsed) * 60)
-        : 0;
-    const accuracy =
-      gameState.currentWordIndex > 0
-        ? Math.round(
-            (recognizedWords.filter(
-              (rw) => rw.position < gameState.currentWordIndex && rw.isCorrect
-            ).length / gameState.currentWordIndex) * 100
-          )
-        : 100;
-
-    return {
-      progress,
-      time,
-      recognized: recognizedCount,
-      wpm,
-      accuracy,
-    };
-  }, [gameState, currentWords, recognizedWords]);
-
-  // Font size helper
-  const getFontClass = useCallback(() => {
-    const sizes = {
-      "I-II": "text-5xl md:text-7xl lg:text-8xl",
-      "III-V": "text-4xl md:text-6xl lg:text-7xl",
-      "VI-X": "text-3xl md:text-5xl lg:text-6xl",
-    };
-    return sizes[gameState.classGroup];
-  }, [gameState.classGroup]);
-
-  // SETUP PHASE
-  if (gameState.phase === "setup") {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-violet-900 via-blue-900 to-indigo-900 p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-pink-500 to-violet-500 rounded-3xl mb-6 shadow-2xl">
-              <BookOpen className="text-white" size={48} />
-            </div>
-            <h1 className="text-6xl font-black bg-gradient-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent mb-4">
-              Word Reading Challenge
-            </h1>
-            <p className="text-xl text-gray-300 font-medium">
-              Master your reading speed with intelligent adaptation
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-8">
-            <ClassSelector
-              classGroup={gameState.classGroup}
-              onClassChange={(classGroup) =>
-                setGameState((prev) => ({ ...prev, classGroup }))
-              }
+        {gameState.phase === 'setup' && (
+          <div className="space-y-6">
+            <ClassSelector 
+              classGroup={gameState.classGroup} 
+              onClassChange={handleClassChange} 
             />
-
-            <ChallengeSetup
-              wordCount={gameState.wordCount}
-              displayMode={gameState.displayMode}
-              onWordCountChange={(wordCount) =>
-                setGameState((prev) => ({ ...prev, wordCount }))
-              }
-              onDisplayModeChange={(displayMode) =>
-                setGameState((prev) => ({ ...prev, displayMode }))
-              }
-            />
-
-            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
-              <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                <Award className="text-emerald-400" size={28} />
-                Ready to Start
-              </h3>
-
-              <div className="space-y-4 mb-8">
-                <div className="bg-white/5 rounded-2xl p-4">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <div className="text-gray-400">Level</div>
-                      <div className="font-bold text-white">
-                        Class {gameState.classGroup}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-gray-400">Words</div>
-                      <div className="font-bold text-white">
-                        {gameState.wordCount}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-gray-400">Est. Time</div>
-                      <div className="font-bold text-white">
-                        {Math.round(
-                          gameState.wordCount * currentCollection.timePerWord
-                        )}
-                        s
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-gray-400">Mode</div>
-                      <div className="font-bold text-white capitalize">
-                        {gameState.displayMode}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-2xl p-4 border border-emerald-400/30">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Mic className="text-emerald-400" size={20} />
-                    <span className="font-semibold text-white">
-                      Voice Recognition
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-300">
-                    {speech.isSupported
-                      ? "Use the microphone to track your reading progress and get detailed analytics!"
-                      : "Speech recognition is not supported in this browser."}
-                  </p>
-                </div>
-              </div>
-
+            <div className="text-center">
               <button
-                onClick={handleStart}
-                className="w-full bg-gradient-to-r from-pink-500 to-violet-600 text-white py-6 rounded-2xl font-black text-xl hover:from-pink-600 hover:to-violet-700 transition-all shadow-2xl hover:shadow-pink-500/25 flex items-center justify-center gap-3 group"
+                onClick={handleStartGame}
+                className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-xl hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg"
               >
-                <Play
-                  className="group-hover:scale-110 transition-transform"
-                  size={28}
-                />
                 Start Challenge
               </button>
             </div>
           </div>
-        </div>
-      </div>
-    );
-  }
+        )}
 
-  // CHALLENGE PHASE
-  if (gameState.phase === "challenge") {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 p-4">
-        <div className="max-w-7xl mx-auto mb-6">
-          <GameControls
-            isPaused={gameState.isPaused}
-            speechState={speech}
-            onPause={handlePause}
-            onReset={handleReset}
-            onToggleRecording={handleToggleRecording}
-            stats={stats}
-          />
-        </div>
-
-        {/* Progress Bar */}
-        <div className="max-w-7xl mx-auto mb-8">
-          <div className="bg-white/10 rounded-full h-4 backdrop-blur-sm border border-white/20 overflow-hidden">
-            <div
-              className="bg-gradient-to-r from-pink-500 to-violet-500 h-full transition-all duration-500 ease-out shadow-lg"
-              style={{
-               width: `${(Math.min(gameState.currentWordIndex + 1, currentWords.length) / currentWords.length) * 100}%`,
-              }}
-              role="progressbar"
-              aria-valuenow={Math.min(gameState.currentWordIndex + 1, currentWords.length)}
-              aria-valuemax={currentWords.length}
+        {gameState.phase === 'playing' && (
+          <>
+            <GameControls
+              gameState={gameState}
+              speechState={speech}
+              onPause={handlePause}
+              onReset={handleReset}
+              onToggleRecording={speech.toggleRecognition}
+              stats={stats}
             />
-          </div>
-        </div>
 
-        {/* Word Display */}
-        <div className="max-w-7xl mx-auto">
-          {gameState.displayMode === "flow" && (
-            <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/20 p-12 min-h-[600px] flex flex-col items-center justify-center">
-              {gameState.currentWordIndex < currentWords.length && (
-                <div
-                  className={`${getFontClass()} font-black text-center transition-all duration-300 mb-12`}
-                >
-                  <div className="bg-gradient-to-r from-pink-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent animate-pulse">
-                    {currentWords[gameState.currentWordIndex]}
-                  </div>
-                </div>
-              )}
-              <div className="flex items-center justify-center gap-4 w-full">
-                <button
-                  onClick={handlePrevious}
-                  disabled={gameState.currentWordIndex === 0}
-                  className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
-                >
-                  <ChevronLeft size={20} />
-                  Previous
-                </button>
-                <button
-                  onClick={handleNext}
-                  disabled={gameState.currentWordIndex >= currentWords.length - 1}
-                  className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
-                >
-                  Next
-                  <ChevronRight size={20} />
-                </button>
-                <button
-                  onClick={handleComplete}
-                  className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all flex items-center gap-2"
-                >
-                  <Trophy size={20} />
-                  Complete
-                </button>
+            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20">
+              <h2 className="text-2xl font-bold text-white mb-6 text-center">
+                {currentCollection.emoji} {currentCollection.theme} Words
+              </h2>
+              <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+                {currentWords.map((word, index) => (
+                  <WordDisplay
+                    key={index}
+                    word={word}
+                    index={index}
+                    status={getWordStatus(index, gameState.currentWordIndex, recognizedWords)}
+                    isLastRecognized={lastRecognized?.position === index}
+                  />
+                ))}
               </div>
             </div>
-          )}
+          </>
+        )}
 
-          {gameState.displayMode === "pages" && (
-            <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/20 p-12 min-h-[600px]">
-              <div className="flex items-center justify-center min-h-[400px]">
-                {gameState.currentWordIndex < currentWords.length && (
-                  <div className={`${getFontClass()} font-black text-center`}>
-                    <div className="bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                      {currentWords[gameState.currentWordIndex]}
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className="flex items-center justify-center gap-4">
-                <button
-                  onClick={handlePrevious}
-                  disabled={gameState.currentWordIndex === 0}
-                  className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
-                >
-                  <ChevronLeft size={20} />
-                  Previous
-                </button>
-                <button
-                  onClick={handleNext}
-                  disabled={gameState.currentWordIndex >= currentWords.length - 1}
-                  className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
-                >
-                  Next
-                  <ChevronRight size={20} />
-                </button>
-                <button
-                  onClick={handleComplete}
-                  className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all flex items-center gap-2"
-                >
-                  <Trophy size={20} />
-                  Complete
-                </button>
-              </div>
-            </div>
-          )}
-
-          {gameState.displayMode === "grid" && (
-            <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/20 p-8">
-              <style jsx>{`
-                @keyframes pulse {
-                  0%, 100% { opacity: 0.4; transform: scale(0.8); }
-                  50% { opacity: 1; transform: scale(1.1); }
-                }
-                .animate-pulse { animation: pulse 1.5s infinite ease-in-out; }
-                .current-word-focus {
-                  transform: scale(1.05);
-                  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
-                  transition: all 0.3s ease;
-                }
-                @keyframes pulse {
-                  0% { transform: scale(1); }
-                  50% { transform: scale(1.1); }
-                  100% { transform: scale(1); }
-                }
-                .recognized-animation { animation: pulse 0.5s ease; }
-                .word-item {
-                  transition: all 0.3s ease;
-                  position: relative;
-                  overflow: hidden;
-                }
-                .word-item::after {
-                  content: "";
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  right: 0;
-                  bottom: 0;
-                  background: rgba(16, 185, 129, 0.2);
-                  opacity: 0;
-                  transition: opacity 0.3s ease;
-                }
-                .word-item.recognized::after { opacity: 1; }
-                .word-item.current-row {
-                  box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.5);
-                }
-              `}</style>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {currentWords.map((word, index) => {
-                  const isRecognized = recognizedWords.some(
-                    (rw) => rw.position === index && rw.isCorrect
-                  );
-                  const isCurrent = index === gameState.currentWordIndex;
-
-                  return (
-                    <div
-                      key={index}
-                      className={`word-item p-4 rounded-xl text-center font-bold transition-all ${
-                        isRecognized
-                          ? "bg-green-500/20 border-2 border-green-400"
-                          : isCurrent
-                          ? "bg-blue-500/20 border-2 border-blue-400"
-                          : "bg-white/10"
-                      }`}
-                    >
-                      <div className="text-lg md:text-xl">
-                        {word}
-                        {isRecognized && (
-                          <div className="text-xs text-green-400 mt-1">
-                            ✓ Recognized
-                          </div>
-                        )}
-                      </div>
-                      {isCurrent && speech.isRecording && (
-                        <div className="flex justify-center mt-2 space-x-1">
-                          {[0, 1, 2].map((i) => (
-                            <div
-                              key={i}
-                              className="h-2 w-2 bg-blue-400 rounded-full animate-pulse"
-                              style={{ animationDelay: `${i * 0.1}s` }}
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="mt-8 flex items-center justify-center gap-4">
-                <button
-                  onClick={handlePrevious}
-                  disabled={gameState.currentWordIndex === 0}
-                  className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
-                >
-                  <ChevronLeft size={20} />
-                  Previous
-                </button>
-                <button
-                  onClick={handleNext}
-                  disabled={gameState.currentWordIndex >= currentWords.length - 1}
-                  className="px-6 py-3 bg-white/20 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/30 transition-all flex items-center gap-2"
-                >
-                  Next
-                  <ChevronRight size={20} />
-                </button>
-                <button
-                  onClick={handleComplete}
-                  className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all flex items-center gap-2"
-                >
-                  <Trophy size={20} />
-                  Complete
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Pause Overlay */}
-        {gameState.isPaused && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-12 border border-white/20 text-center">
-              <Pause className="mx-auto mb-6 text-blue-400" size={64} />
-              <h2 className="text-4xl font-bold text-white mb-4">Paused</h2>
-              <p className="text-xl text-gray-300 mb-8">
-                Press play to continue your challenge
-              </p>
-              <button
-                onClick={handlePause}
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg flex items-center gap-3 mx-auto"
-              >
-                <Play size={24} />
-                Resume
-              </button>
-            </div>
-          </div>
+        {gameState.phase === 'completed' && (
+          <GameSummary
+            stats={stats}
+            gameState={gameState}
+            onReset={handleReset}
+            recognizedWords={recognizedWords}
+            totalWords={currentWords.length}
+          />
         )}
       </div>
-    );
-  }
-
-  // RESULTS PHASE
-  if (gameState.phase === "results") {
-    const finalStats = {
-      ...stats,
-      totalTime: gameState.timeElapsed,
-      wordsPerMinute:
-        gameState.timeElapsed > 0
-          ? Math.round((currentWords.length / gameState.timeElapsed) * 60)
-          : 0,
-      recognizedCount: recognizedWords.length,
-      totalWords: currentWords.length,
-      recognitionAccuracy:
-        recognizedWords.length > 0
-          ? Math.round(
-              (recognizedWords.filter((word) =>
-                currentWords.map((w) => w.toLowerCase()).includes(word.word)
-              ).length / recognizedWords.length) * 100
-            )
-          : 0,
-    };
-
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900 p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-32 h-32 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mb-8 shadow-2xl">
-              <Trophy className="text-white" size={64} />
-            </div>
-            <h1 className="text-6xl font-black bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mb-4">
-              Challenge Complete!
-            </h1>
-            <p className="text-2xl text-gray-300 font-medium">
-              Excellent work on your reading challenge
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            {/* Performance Metrics */}
-            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
-              <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                <BarChart3 className="text-emerald-400" size={28} />
-                Performance Metrics
-              </h3>
-              <div className="space-y-6">
-                <div className="flex justify-between items-center p-4 bg-white/5 rounded-xl">
-                  <span className="text-gray-300">Total Time</span>
-                  <span className="text-2xl font-bold text-white">
-                    {finalStats.totalTime.toFixed(1)}s
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-white/5 rounded-xl">
-                  <span className="text-gray-300">Words Per Minute</span>
-                  <span className="text-2xl font-bold text-emerald-400">
-                    {finalStats.wordsPerMinute}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-white/5 rounded-xl">
-                  <span className="text-gray-300">Words Read</span>
-                  <span className="text-2xl font-bold text-white">
-                    {finalStats.totalWords}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-white/5 rounded-xl">
-                  <span className="text-gray-300">Completion Rate</span>
-                  <span className="text-2xl font-bold text-teal-400">100%</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Voice Recognition Stats */}
-            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
-              <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                <Mic className="text-purple-400" size={28} />
-                Voice Recognition
-              </h3>
-              <div className="space-y-6">
-                <div className="flex justify-between items-center p-4 bg-white/5 rounded-xl">
-                  <span className="text-gray-300">Words Recognized</span>
-                  <span className="text-2xl font-bold text-white">
-                    {finalStats.recognizedCount}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-white/5 rounded-xl">
-                  <span className="text-gray-300">Recognition Accuracy</span>
-                  <span className="text-2xl font-bold text-purple-400">
-                    {finalStats.recognitionAccuracy}%
-                  </span>
-                </div>
-                <div className="text-center mt-6">
-                  <div className="text-sm text-gray-400 mb-2">
-                    Recognition Performance
-                  </div>
-                  <div className="bg-gray-700 rounded-full h-4 overflow-hidden">
-                    <div
-                      className="bg-gradient-to-r from-purple-500 to-pink-500 h-full transition-all duration-1000"
-                      style={{ width: `${finalStats.recognitionAccuracy}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Performance Level */}
-          <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 mb-8">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">
-              Performance Level
-            </h3>
-            <div className="text-center">
-              {finalStats.wordsPerMinute >= 200 && (
-                <div className="text-6xl mb-4">🏆</div>
-              )}
-              {finalStats.wordsPerMinute >= 150 &&
-                finalStats.wordsPerMinute < 200 && (
-                  <div className="text-6xl mb-4">🥇</div>
-                )}
-              {finalStats.wordsPerMinute >= 100 &&
-                finalStats.wordsPerMinute < 150 && (
-                  <div className="text-6xl mb-4">🥈</div>
-                )}
-              {finalStats.wordsPerMinute < 100 && (
-                <div className="text-6xl mb-4">🥉</div>
-              )}
-
-              <div className="text-3xl font-bold text-white mb-2">
-                {finalStats.wordsPerMinute >= 200 && "Reading Master!"}
-                {finalStats.wordsPerMinute >= 150 &&
-                  finalStats.wordsPerMinute < 200 &&
-                  "Excellent Reader!"}
-                {finalStats.wordsPerMinute >= 100 &&
-                  finalStats.wordsPerMinute < 150 &&
-                  "Good Reader!"}
-                {finalStats.wordsPerMinute < 100 && "Keep Practicing!"}
-              </div>
-              <p className="text-gray-300">
-                {finalStats.wordsPerMinute >= 200 &&
-                  "Outstanding speed and comprehension!"}
-                {finalStats.wordsPerMinute >= 150 &&
-                  finalStats.wordsPerMinute < 200 &&
-                  "Great reading speed with good accuracy!"}
-                {finalStats.wordsPerMinute >= 100 &&
-                  finalStats.wordsPerMinute < 150 &&
-                  "Solid reading performance!"}
-                {finalStats.wordsPerMinute < 100 &&
-                  "Practice makes perfect - try again!"}
-              </p>
-            </div>
-          </div>
-          {/* Action Buttons */}
-          <div className="flex gap-4 justify-center">
-            <button
-              onClick={() => {
-                handleStart();
-                setRecognizedWords([]);
-              }}
-              className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg flex items-center gap-3"
-            >
-              <RotateCcw size={24} />
-              Try Again
-            </button>
-            <button
-              onClick={() => {
-                setGameState(createInitialState());
-                setRecognizedWords([]);
-              }}
-              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-purple-600 hover:to-pink-600 transition-all shadow-lg flex items-center gap-3"
-            >
-              <Target size={24} />
-              New Challenge
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return null;
+    </div>
+  );
 };
 
-export default WordReadingChallenge;
+export default WordRecognitionGame;
