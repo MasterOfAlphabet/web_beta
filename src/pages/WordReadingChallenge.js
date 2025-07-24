@@ -902,12 +902,11 @@ const speech = useSpeechRecognition(
     // Don't toggle mic when pausing, let the useEffect handle it based on the enabled condition
   }, []);
 
-  const handleReset = useCallback(() => {
-    setGameState(createInitialState());
-    setRecognizedWords([]);
-    speech.stopRecognition();
-    timer.resetTimer();
-  }, [speech, timer]);
+const handleReset = useCallback(() => {
+  setGameState(createInitialState());
+  setRecognizedWords([]);
+  timer.resetTimer();
+}, [timer]);
 
   // Clear animation after it plays
   useEffect(() => {
@@ -1156,14 +1155,13 @@ window.testWordMatch = (spokenWord, targetWord) => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 p-4">
         <div className="max-w-7xl mx-auto mb-6">
-    <GameControls
-      isPaused={gameState.isPaused}
-      speechState={speech}
-      onPause={handlePause}
-      onReset={handleReset}
-      stats={stats}
-   
-    />
+<GameControls
+  isPaused={gameState.isPaused}
+  speechState={speech}
+  onPause={handlePause}
+  onReset={handleReset}
+  stats={stats}
+/>
 
      {/* Debug info for development */}
     <DebugInfo 
