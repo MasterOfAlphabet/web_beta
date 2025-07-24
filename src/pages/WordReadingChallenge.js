@@ -204,7 +204,8 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const isStoppingRef = useRef(false);
 
   const stopRecognition = useCallback(() => {
-    if (!recognitionRef.current || !state.isRecording || isStoppingRef.current) return;
+    if (!recognitionRef.current || !state.isRecording || isStoppingRef.current)
+      return;
 
     isStoppingRef.current = true;
     setState((prev) => ({ ...prev, isProcessing: true }));
@@ -374,7 +375,14 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         }
       }
     };
-  }, [isEnabled, onResult, onError, startRecognition, stopRecognition, state.isRecording]);
+  }, [
+    isEnabled,
+    onResult,
+    onError,
+    startRecognition,
+    stopRecognition,
+    state.isRecording,
+  ]);
 
   return {
     ...state,
@@ -766,43 +774,35 @@ const WordReadingChallenge = () => {
         return;
       }
 
-      // Get ONLY the current word that should be matched (the highlighted one)
-      const currentWord =
-        currentWords[gameState.currentWordIndex]?.toLowerCase();
+      const currentWord = currentWords[gameState.currentWordIndex]
+        ?.toLowerCase()
+        .trim();
       const spokenWords = transcript.toLowerCase().trim().split(/\s+/);
 
-      console.log(
-        "🎯 Current word to match (index " + gameState.currentWordIndex + "):",
-        currentWord
-      );
+      console.log("🎯 Current word index:", gameState.currentWordIndex);
+      console.log("🎯 Current word to match:", currentWord);
       console.log("🗣️ Spoken words:", spokenWords);
 
-      // EXACT MATCH ONLY - check if any spoken word exactly matches the current word
+      // Check for exact match only
       const hasExactMatch = spokenWords.some((spokenWord) => {
-        const cleanSpoken = spokenWord.replace(/[^\w]/g, ""); // Remove punctuation
-        const cleanCurrent = currentWord.replace(/[^\w]/g, "");
-
-        const isMatch = cleanSpoken === cleanCurrent;
-        if (isMatch) {
-          console.log(
-            "✅ EXACT MATCH found:",
-            cleanSpoken,
-            "===",
-            cleanCurrent
-          );
-        }
-        return isMatch;
+        const cleanSpoken = spokenWord.replace(/[^\w]/g, "").trim();
+        const cleanCurrent = currentWord.replace(/[^\w]/g, "").trim();
+        return cleanSpoken === cleanCurrent;
       });
 
-      if (hasExactMatch) {
-        console.log(
-          "🎉 MATCH CONFIRMED! Advancing from word",
-          gameState.currentWordIndex,
-          "to",
-          gameState.currentWordIndex + 1
-        );
+      console.log("✅ Match result:", hasExactMatch);
 
-        // Record the recognition for this specific word position
+      // 📣 Also show an alert
+      alert(
+        `Word Index: ${gameState.currentWordIndex}\n` +
+          `Current Word: ${currentWord}\n` +
+          `Spoken Words: ${spokenWords.join(", ")}\n` +
+          `Match: ${hasExactMatch ? "✅ MATCH!" : "❌ NO MATCH"}`
+      );
+
+      if (hasExactMatch) {
+        console.log("🎉 MATCH CONFIRMED! Advancing...");
+
         setLastRecognized({
           word: currentWord,
           position: gameState.currentWordIndex,
@@ -811,7 +811,6 @@ const WordReadingChallenge = () => {
 
         setRecognizedWords((prev) => {
           const newWords = [...prev];
-          // Only add if this position hasn't been recognized yet
           if (
             !newWords.some((w) => w.position === gameState.currentWordIndex)
           ) {
@@ -825,30 +824,23 @@ const WordReadingChallenge = () => {
           return newWords;
         });
 
-        // Auto-advance to next word after a short delay
         setTimeout(() => {
           setGameState((prev) => {
             if (prev.currentWordIndex < currentWords.length - 1) {
-              console.log(
-                "➡️ Advancing to next word index:",
-                prev.currentWordIndex + 1
-              );
               return {
                 ...prev,
                 currentWordIndex: prev.currentWordIndex + 1,
               };
             } else {
-              console.log("🏁 All words completed!");
               return {
                 ...prev,
                 isCompleted: true,
               };
             }
           });
-        }, 300); // Quick feedback
+        }, 300);
       } else {
-        console.log("❌ No EXACT match found for current word:", currentWord);
-        console.log("   Available spoken words:", spokenWords);
+        console.log("❌ No match for:", currentWord);
       }
     },
     [currentWords, gameState, handleComplete]
