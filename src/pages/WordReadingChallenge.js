@@ -282,7 +282,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
     if (!recognitionRef.current) {
       const recognition = new SpeechRecognition();
-      recognition.continuous = true;
+      recognition.continuous = false;
       recognition.interimResults = false;
       recognition.lang = "en-US";
       recognition.maxAlternatives = 1;
@@ -1218,15 +1218,6 @@ const WordReadingChallenge = () => {
                   Complete
                 </button>
 
-                <button
-                  onClick={() => {
-                    const testWord = currentWords[gameState.currentWordIndex];
-                    console.log("Testing speech with word:", testWord);
-                    handleSpeechResult(testWord); // Simulate perfect speech input
-                  }}
-                >
-                  Test Speech Match
-                </button>
               </div>
             </div>
           )}
@@ -1268,15 +1259,7 @@ const WordReadingChallenge = () => {
                   <Trophy size={20} />
                   Complete
                 </button>
-                <button
-                  onClick={() => {
-                    const testWord = currentWords[gameState.currentWordIndex];
-                    console.log("Testing speech with word:", testWord);
-                    handleSpeechResult(testWord); // Simulate perfect speech input
-                  }}
-                >
-                  Test Speech Match
-                </button>
+
               </div>
             </div>
           )}
@@ -1329,15 +1312,7 @@ const WordReadingChallenge = () => {
                   <Trophy size={20} />
                   Complete
                 </button>
-                <button
-                  onClick={() => {
-                    const testWord = currentWords[gameState.currentWordIndex];
-                    console.log("Testing speech with word:", testWord);
-                    handleSpeechResult(testWord); // Simulate perfect speech input
-                  }}
-                >
-                  Test Speech Match
-                </button>
+
               </div>
             </div>
           )}
