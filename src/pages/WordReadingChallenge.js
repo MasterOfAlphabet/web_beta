@@ -190,8 +190,6 @@ const WORD_COLLECTIONS = {
 };
 
 // Custom hook for speech recognition with continuous listening
-
-// 3. Updated useSpeechRecognition hook with better state management
 const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const [state, setState] = useState({
     isSupported: true,
@@ -205,10 +203,8 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const isStartingRef = useRef(false);
   const isStoppingRef = useRef(false);
 
-  // Cleanup function
-  const stopRecognition = useCallback(async () => {
-    if (!recognitionRef.current || !state.isRecording || isStoppingRef.current)
-      return;
+  const stopRecognition = useCallback(() => {
+    if (!recognitionRef.current || !state.isRecording || isStoppingRef.current) return;
 
     isStoppingRef.current = true;
     setState((prev) => ({ ...prev, isProcessing: true }));
@@ -217,7 +213,6 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       try {
         recognitionRef.current.stop();
 
-        // Set a timeout to ensure state is updated even if onend doesn't fire
         const timeout = setTimeout(() => {
           setState((prev) => ({
             ...prev,
@@ -240,50 +235,35 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     });
   }, [state.isRecording]);
 
-  const startRecognition = useCallback(async () => {
-    if (!recognitionRef.current || state.isRecording || isStartingRef.current)
+  const startRecognition = useCallback(() => {
+    if (!recognitionRef.current) return;
+
+    if (state.isRecording) {
+      console.log("Already recording — skip start.");
       return;
+    }
+
+    if (isStartingRef.current) {
+      console.log("Already starting — skip start.");
+      return;
+    }
 
     isStartingRef.current = true;
     setState((prev) => ({ ...prev, isProcessing: true }));
 
-    return new Promise((resolve, reject) => {
-      try {
-        // Add a small delay to ensure any previous instance is fully stopped
-        setTimeout(() => {
-          try {
-            recognitionRef.current.start();
-            setState((prev) => ({
-              ...prev,
-              isRecording: true,
-              error: null,
-              isProcessing: false,
-            }));
-            isStartingRef.current = false;
-            resolve();
-          } catch (error) {
-            console.error("Failed to start recognition:", error);
-            setState((prev) => ({
-              ...prev,
-              error: error.message,
-              isRecording: false,
-              isProcessing: false,
-            }));
-            isStartingRef.current = false;
-            reject(error);
-          }
-        }, 200);
-      } catch (error) {
-        setState((prev) => ({
-          ...prev,
-          error: error.message,
-          isRecording: false,
-          isProcessing: false,
-        }));
-        isStartingRef.current = false;
-        reject(error);
-      }
-    });
+    try {
+      recognitionRef.current.start();
+      // onstart event will handle setting isRecording true
+    } catch (error) {
+      console.error("Failed to start recognition:", error);
+      setState((prev) => ({
+        ...prev,
+        error: error.message,
+        isRecording: false,
+        isProcessing: false,
+      }));
+      isStartingRef.current = false;
+    }
   }, [state.isRecording]);
 
   useEffect(() => {
@@ -322,12 +302,12 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         if (!isMountedRef.current) return;
         console.error("Recognition error:", event.error);
 
-        // Don't treat 'aborted' as a real error - it happens during normal stop operations
         if (event.error !== "aborted") {
           setState((prev) => ({
             ...prev,
             error: `Error: ${event.error}`,
           }));
+          if (onError) onError(event.error);
         }
       };
 
@@ -337,8 +317,8 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         setState((prev) => ({
           ...prev,
           isRecording: true,
-          error: null,
           isProcessing: false,
+          error: null,
         }));
         isStartingRef.current = false;
       };
@@ -358,14 +338,13 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
             isProcessing: false,
           };
 
-          // ✅ Only restart if we were actually recording before onend fired!
           if (wasRecording && isEnabled && !isStoppingRef.current) {
             console.log("Restarting recognition from onend");
             setTimeout(() => {
               if (isMountedRef.current && isEnabled && !isStoppingRef.current) {
                 startRecognition();
               }
-            }, 500);
+            }, 300);
           } else {
             console.log(
               `onend skip restart: wasRecording=${wasRecording} isEnabled=${isEnabled}`
@@ -379,8 +358,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       recognitionRef.current = recognition;
     }
 
-    // Start/stop based on isEnabled
-    if (isEnabled && !state.isRecording) {
+    if (isEnabled && !state.isRecording && !isStartingRef.current) {
       startRecognition();
     } else if (!isEnabled && state.isRecording) {
       stopRecognition();
@@ -396,30 +374,10 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         }
       }
     };
-  }, [isEnabled, onResult, onError, startRecognition, stopRecognition]);
-
-  const toggleRecording = useCallback(async () => {
-    if (state.isProcessing) return;
-
-    try {
-      if (state.isRecording) {
-        await stopRecognition();
-      } else {
-        await startRecognition();
-      }
-    } catch (error) {
-      console.error("Toggle recording error:", error);
-    }
-  }, [
-    state.isRecording,
-    state.isProcessing,
-    startRecognition,
-    stopRecognition,
-  ]);
+  }, [isEnabled, onResult, onError, startRecognition, stopRecognition, state.isRecording]);
 
   return {
     ...state,
-    toggleRecording,
     startRecognition,
     stopRecognition,
   };
