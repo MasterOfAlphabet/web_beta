@@ -267,77 +267,84 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     }
   }, [state.isRecording]);
 
- useEffect(() => {
-  const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
+  useEffect(() => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
 
-  if (!SpeechRecognition) {
-    setState((prev) => ({
-      ...prev,
-      isSupported: false,
-      error: "Speech recognition not supported",
-    }));
-    return; // ✅ this returns from useEffect's body, NOT the cleanup
-  }
-
-  if (!recognitionRef.current) {
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = "en-US";
-    recognition.maxAlternatives = 1;
-
-    recognition.onresult = (event) => {
-      if (!isMountedRef.current) return;
-      const result = event.results[event.results.length - 1];
-      if (result.isFinal) {
-        const transcript = result[0].transcript.toLowerCase().trim();
-        console.log("Speech result:", transcript);
-        if (transcript && onResult) {
-          onResult(transcript);
-        }
-        recognition.stop(); // ✅ flush
-      }
-    };
-
-    recognition.onerror = (event) => {
-      console.error("Speech recognition error:", event.error);
-      if (event.error !== "aborted") {
-        setState((prev) => ({
-          ...prev,
-          error: `Error: ${event.error}`,
-        }));
-        if (onError) onError(event.error);
-      }
-    };
-
-    recognitionRef.current = recognition;
-  }
-
-  if (isEnabled) {
-    startRecognition();
-  }
-
-  // ✅ This cleanup must be INSIDE useEffect, not outside
-  return () => {
-    isMountedRef.current = false;
-    if (recognitionRef.current && state.isRecording) {
-      try {
-        recognitionRef.current.stop();
-      } catch (e) {
-        console.warn("Cleanup stop error:", e);
-      }
+    if (!SpeechRecognition) {
+      setState((prev) => ({
+        ...prev,
+        isSupported: false,
+        error: "Speech recognition not supported",
+      }));
+      return; // ✅ this returns from useEffect's body, NOT the cleanup
     }
-  };
-}, [
-  isEnabled,
-  onResult,
-  onError,
-  startRecognition,
-  stopRecognition,
-  state.isRecording, // include if used inside effect
-]);
 
+    if (!recognitionRef.current) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = "en-US";
+      recognition.maxAlternatives = 1;
+
+recognition.onresult = (event) => {
+  if (!isMountedRef.current) return;
+
+  const result = event.results[event.results.length - 1];
+  if (result.isFinal) {
+    const transcript = result[0].transcript.toLowerCase().trim();
+
+    // ✅ ALERT for Android debugging
+    alert(`🎤 Speech captured:\n"${transcript}"`);
+
+    console.log("Speech result:", transcript);
+
+    if (transcript && onResult) {
+      onResult(transcript); // Calls handleSpeechResult
+    }
+
+    recognition.stop(); // ✅ Force flush (especially for Android)
+  }
+};
+
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        if (event.error !== "aborted") {
+          setState((prev) => ({
+            ...prev,
+            error: `Error: ${event.error}`,
+          }));
+          if (onError) onError(event.error);
+        }
+      };
+
+      recognitionRef.current = recognition;
+    }
+
+    if (isEnabled) {
+      startRecognition();
+    }
+
+    // ✅ This cleanup must be INSIDE useEffect, not outside
+    return () => {
+      isMountedRef.current = false;
+      if (recognitionRef.current && state.isRecording) {
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          console.warn("Cleanup stop error:", e);
+        }
+      }
+    };
+  }, [
+    isEnabled,
+    onResult,
+    onError,
+    startRecognition,
+    stopRecognition,
+    state.isRecording, // include if used inside effect
+  ]);
 
   return {
     ...state,
@@ -619,28 +626,19 @@ const GameControls = ({
           >
             <RotateCcw size={24} />
           </button>
+
           <button
             disabled
             className={`p-3 rounded-xl transition-all duration-300 shadow-lg cursor-default ${
               speechState.isRecording
                 ? "bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse ring-4 ring-red-300"
-                : speechState.isProcessing
-                ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white"
                 : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white"
             }`}
             aria-label={
-              speechState.isProcessing
-                ? "Processing..."
-                : speechState.isRecording
-                ? "Listening..."
-                : "Not listening"
+              speechState.isRecording ? "Listening..." : "Not listening"
             }
           >
-            {speechState.isProcessing ? (
-              <div className="animate-spin">
-                <Mic size={24} />
-              </div>
-            ) : speechState.isRecording ? (
+            {speechState.isRecording ? (
               <div className="flex items-center gap-2">
                 <span className="relative flex h-3 w-3">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -714,92 +712,105 @@ const WordReadingChallenge = () => {
     setGameState((prev) => ({ ...prev, phase: "results", isCompleted: true }));
   }, []);
 
-  const handleSpeechResult = useCallback(
-    (transcript) => {
-      console.log("🎤 Received transcript:", transcript);
+ const handleSpeechResult = useCallback(
+  (transcript) => {
+    // 1️⃣ Alert: Received transcript
+    alert(`📤 Speech transcript received:\n"${transcript}"`);
+    console.log("🎤 Received transcript:", transcript);
 
-      if (gameState.phase !== "challenge" || gameState.isPaused) {
-        console.log("❌ Game not in challenge phase or paused");
-        return;
+    if (gameState.phase !== "challenge" || gameState.isPaused) {
+      console.log("❌ Game not in challenge phase or paused");
+      alert("⏸️ Game is paused or not in challenge phase.");
+      return;
+    }
+
+    if (gameState.currentWordIndex >= currentWords.length) {
+      console.log("✅ All words completed");
+      alert("✅ All words completed. Finishing game.");
+      handleComplete();
+      return;
+    }
+
+    const currentWord = currentWords[gameState.currentWordIndex]
+      ?.toLowerCase()
+      .trim();
+    const spokenWords = transcript.toLowerCase().trim().split(/\s+/);
+
+    // 2️⃣ Alert: Word index & target word
+    alert(
+      `🎯 Current Word Index: ${gameState.currentWordIndex}\n` +
+      `🔡 Target Word: "${currentWord}"`
+    );
+
+    // 3️⃣ Alert: Spoken words array
+    alert(`🗣️ Spoken Words:\n${spokenWords.join(", ")}`);
+
+    const hasExactMatch = spokenWords.some((spokenWord) => {
+      const cleanSpoken = spokenWord.replace(/[^\w]/g, "").trim();
+      const cleanCurrent = currentWord.replace(/[^\w]/g, "").trim();
+      const isMatch = cleanSpoken === cleanCurrent;
+
+      if (isMatch) {
+        console.log(`✅ Match found: "${cleanSpoken}" === "${cleanCurrent}"`);
       }
 
-      if (gameState.currentWordIndex >= currentWords.length) {
-        console.log("✅ All words completed");
-        handleComplete();
-        return;
-      }
+      return isMatch;
+    });
 
-      const currentWord = currentWords[gameState.currentWordIndex]
-        ?.toLowerCase()
-        .trim();
-      const spokenWords = transcript.toLowerCase().trim().split(/\s+/);
+    // 4️⃣ Final Alert: Match Result
+    alert(
+      `🔍 Match Result:\n` +
+      `👉 Target: "${currentWord}"\n` +
+      `👉 Heard: ${spokenWords.join(", ")}\n\n` +
+      `${hasExactMatch ? "✅ MATCH CONFIRMED!" : "❌ NO MATCH"}`
+    );
 
-      console.log("🎯 Current word index:", gameState.currentWordIndex);
-      console.log("🎯 Current word to match:", currentWord);
-      console.log("🗣️ Spoken words:", spokenWords);
+    if (hasExactMatch) {
+      console.log("🎉 MATCH CONFIRMED! Advancing...");
 
-      // Check for exact match only
-      const hasExactMatch = spokenWords.some((spokenWord) => {
-        const cleanSpoken = spokenWord.replace(/[^\w]/g, "").trim();
-        const cleanCurrent = currentWord.replace(/[^\w]/g, "").trim();
-        return cleanSpoken === cleanCurrent;
+      setLastRecognized({
+        word: currentWord,
+        position: gameState.currentWordIndex,
+        timestamp: Date.now(),
       });
 
-      console.log("✅ Match result:", hasExactMatch);
-
-      // 📣 Also show an alert
-      alert(
-        `Word Index: ${gameState.currentWordIndex}\n` +
-          `Current Word: ${currentWord}\n` +
-          `Spoken Words: ${spokenWords.join(", ")}\n` +
-          `Match: ${hasExactMatch ? "✅ MATCH!" : "❌ NO MATCH"}`
-      );
-
-      if (hasExactMatch) {
-        console.log("🎉 MATCH CONFIRMED! Advancing...");
-
-        setLastRecognized({
-          word: currentWord,
-          position: gameState.currentWordIndex,
-          timestamp: Date.now(),
-        });
-
-        setRecognizedWords((prev) => {
-          const newWords = [...prev];
-          if (
-            !newWords.some((w) => w.position === gameState.currentWordIndex)
-          ) {
-            newWords.push({
-              word: currentWord,
-              position: gameState.currentWordIndex,
-              isCorrect: true,
-              timestamp: Date.now(),
-            });
-          }
-          return newWords;
-        });
-
-        setTimeout(() => {
-          setGameState((prev) => {
-            if (prev.currentWordIndex < currentWords.length - 1) {
-              return {
-                ...prev,
-                currentWordIndex: prev.currentWordIndex + 1,
-              };
-            } else {
-              return {
-                ...prev,
-                isCompleted: true,
-              };
-            }
+      setRecognizedWords((prev) => {
+        const newWords = [...prev];
+        if (
+          !newWords.some((w) => w.position === gameState.currentWordIndex)
+        ) {
+          newWords.push({
+            word: currentWord,
+            position: gameState.currentWordIndex,
+            isCorrect: true,
+            timestamp: Date.now(),
           });
-        }, 300);
-      } else {
-        console.log("❌ No match for:", currentWord);
-      }
-    },
-    [currentWords, gameState, handleComplete]
-  );
+        }
+        return newWords;
+      });
+
+      setTimeout(() => {
+        setGameState((prev) => {
+          if (prev.currentWordIndex < currentWords.length - 1) {
+            return {
+              ...prev,
+              currentWordIndex: prev.currentWordIndex + 1,
+            };
+          } else {
+            return {
+              ...prev,
+              isCompleted: true,
+            };
+          }
+        });
+      }, 300);
+    } else {
+      console.log("❌ No match for:", currentWord);
+    }
+  },
+  [currentWords, gameState, handleComplete]
+);
+
 
   const testExactWordMatch = (spokenWord, targetWord) => {
     const spoken = spokenWord.toLowerCase().replace(/[^\w]/g, "");
