@@ -244,10 +244,15 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const resetSilenceTimer = useCallback(() => {
     clearTimeout(silenceTimerRef.current);
     silenceTimerRef.current = setTimeout(() => {
-      if (state.isRecording) {
-        stopRecognition();
+      if (state.isRecording && recognitionRef.current) {
+        console.log("Stopping due to silence");
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          console.warn("Error stopping recognition:", e);
+        }
       }
-    }, 1500); // Auto-stop after 1.5s of silence
+    }, 1500);
   }, [state.isRecording]);
 
   const startRecognition = useCallback(() => {
@@ -283,6 +288,11 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   }, [state.isRecording]);
 
   useEffect(() => {
+    // Reset error state when isEnabled changes
+    if (isEnabled) {
+      setState((prev) => ({ ...prev, error: null }));
+    }
+
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -353,8 +363,13 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         setState((prev) => ({ ...prev, isRecording: false }));
         clearTimeout(silenceTimerRef.current);
 
+        // Simple restart with proper delay
         if (isEnabled) {
-          setTimeout(startRecognition, 400);
+          setTimeout(() => {
+            if (isEnabled && isMountedRef.current && !state.isRecording) {
+              startRecognition();
+            }
+          }, 1000); // Longer delay to prevent beeping
         }
       };
 
@@ -370,13 +385,25 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
       recognition.onerror = (event) => {
         console.error("Speech recognition error:", event.error);
-        if (event.error !== "aborted") {
+        alert(" Speech recognition error: " + event.error);
+        clearTimeout(silenceTimerRef.current);
+
+        // Don't restart on certain errors
+        const noRestartErrors = [
+          "aborted",
+          "not-allowed",
+          "service-not-allowed",
+        ];
+
+        if (!noRestartErrors.includes(event.error)) {
           setState((prev) => ({
             ...prev,
             error: `Error: ${event.error}`,
             isRecording: false,
           }));
           onError?.(event.error);
+        } else {
+          setState((prev) => ({ ...prev, isRecording: false }));
         }
       };
 
@@ -756,6 +783,7 @@ const ChallengeSetup = ({
 const GameControls = ({ isPaused, speechState, onPause, onReset, stats }) => (
   <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20">
     <div className="flex items-center justify-between flex-wrap gap-4">
+
       <div className="flex items-center gap-3">
         <button
           onClick={onPause}
@@ -771,34 +799,49 @@ const GameControls = ({ isPaused, speechState, onPause, onReset, stats }) => (
           <RotateCcw size={24} />
         </button>
 
-        <div
-          className={`p-3 rounded-xl transition-all duration-300 shadow-lg ${
-            speechState.isRecording
-              ? "bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse ring-4 ring-red-300"
-              : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white"
-          }`}
-        >
-          {speechState.isRecording ? (
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-              </span>
-              <Mic size={24} />
+        {/* ENHANCED SPEECH STATUS */}
+        <div className="flex items-center gap-3">
+          <div
+            className={`px-4 py-3 rounded-xl transition-all duration-300 shadow-lg flex items-center gap-3 ${
+              speechState.isRecording
+                ? "bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse ring-4 ring-red-300"
+                : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white"
+            }`}
+          >
+            {speechState.isRecording ? (
+              <>
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                </span>
+                <Mic size={20} />
+                <span className="text-sm font-semibold">Listening...</span>
+              </>
+            ) : (
+              <>
+                <MicOff size={20} />
+                <span className="text-sm font-semibold">Ready</span>
+              </>
+            )}
+          </div>
+
+          {/* LIVE TRANSCRIPT DISPLAY */}
+          {speechState.interimTranscript && (
+            <div className="bg-yellow-500/20 border border-yellow-400/30 px-4 py-2 rounded-xl">
+              <div className="text-yellow-400 text-sm font-medium">
+                "{speechState.interimTranscript}"
+              </div>
             </div>
-          ) : (
-            <MicOff size={24} />
+          )}
+
+          {speechState.error && (
+            <div className="flex items-center gap-2 text-red-400 text-sm bg-red-500/10 px-3 py-2 rounded-xl border border-red-400/30">
+              <AlertCircle size={16} />
+              <span>{speechState.error}</span>
+            </div>
           )}
         </div>
-
-        {speechState.error && (
-          <div className="flex items-center gap-2 text-red-400 text-sm">
-            <AlertCircle size={16} />
-            <span>{speechState.error}</span>
-          </div>
-        )}
       </div>
-
       <div className="flex items-center gap-4 text-white text-sm flex-wrap">
         <div className="flex items-center gap-2">
           <BookOpen size={16} className="text-blue-400" />
@@ -1232,12 +1275,6 @@ const WordReadingChallenge = () => {
                       {currentWords[gameState.currentWordIndex]}
                     </div>
                   </div>
-
-                  {/* ADD THIS LINE */}
-                  <SpeechFeedback
-                    speechState={speech}
-                    currentWord={currentWords[gameState.currentWordIndex]}
-                  />
                 </>
               )}
               <div className="flex items-center justify-center gap-4 w-full mt-8">
@@ -1282,12 +1319,6 @@ const WordReadingChallenge = () => {
                         {currentWords[gameState.currentWordIndex]}
                       </div>
                     </div>
-
-                    {/* ADD THIS LINE */}
-                    <SpeechFeedback
-                      speechState={speech}
-                      currentWord={currentWords[gameState.currentWordIndex]}
-                    />
                   </>
                 )}
               </div>
@@ -1342,20 +1373,6 @@ const WordReadingChallenge = () => {
                     />
                   );
                 })}
-              </div>
-
-              {/* ADD THIS SECTION - Speech Feedback for Grid Mode */}
-              <div className="mt-6 flex justify-center">
-                <div className="max-w-lg w-full">
-                  <SpeechFeedback
-                    speechState={speech}
-                    currentWord={
-                      gameState.currentWordIndex < currentWords.length
-                        ? currentWords[gameState.currentWordIndex]
-                        : ""
-                    }
-                  />
-                </div>
               </div>
 
               <div className="mt-8 flex items-center justify-center gap-4">
@@ -1414,131 +1431,172 @@ const WordReadingChallenge = () => {
 
   // RESULTS PHASE
   if (gameState.phase === "results") {
-  const finalStats = {
-    ...stats,
-    totalTime: gameState.timeElapsed,
-    wordsPerMinute: gameState.timeElapsed > 0 
-      ? Math.round((currentWords.length / gameState.timeElapsed) * 60) 
-      : 0,
-    recognizedCount: recognizedWords.length,
-    totalWords: currentWords.length,
-    recognitionAccuracy: recognizedWords.length > 0
-      ? Math.round((recognizedWords.filter(word => 
-          currentWords.map(w => w.toLowerCase()).includes(word.word)
-        ).length / recognizedWords.length) * 100)
-      : 0,
-    // NEW: Enhanced analytics from timer
-    averageWordTime: timer.averageWordTime,
-    fastestWordTime: timer.fastestWord?.time || 0,
-    slowestWordTime: timer.slowestWord?.time || 0,
-    consistencyScore: stats.consistencyScore,
-    wordTimeBreakdown: timer.wordTimes,
-    // Confidence analytics
-    averageConfidence: recognizedWords.length > 0 
-      ? Math.round((recognizedWords.reduce((sum, w) => sum + (w.confidence || 0), 0) / recognizedWords.length) * 100)
-      : 0
-  };
+    const finalStats = {
+      ...stats,
+      totalTime: gameState.timeElapsed,
+      wordsPerMinute:
+        gameState.timeElapsed > 0
+          ? Math.round((currentWords.length / gameState.timeElapsed) * 60)
+          : 0,
+      recognizedCount: recognizedWords.length,
+      totalWords: currentWords.length,
+      recognitionAccuracy:
+        recognizedWords.length > 0
+          ? Math.round(
+              (recognizedWords.filter((word) =>
+                currentWords.map((w) => w.toLowerCase()).includes(word.word)
+              ).length /
+                recognizedWords.length) *
+                100
+            )
+          : 0,
+      // NEW: Enhanced analytics from timer
+      averageWordTime: timer.averageWordTime,
+      fastestWordTime: timer.fastestWord?.time || 0,
+      slowestWordTime: timer.slowestWord?.time || 0,
+      consistencyScore: stats.consistencyScore,
+      wordTimeBreakdown: timer.wordTimes,
+      // Confidence analytics
+      averageConfidence:
+        recognizedWords.length > 0
+          ? Math.round(
+              (recognizedWords.reduce(
+                (sum, w) => sum + (w.confidence || 0),
+                0
+              ) /
+                recognizedWords.length) *
+                100
+            )
+          : 0,
+    };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900 p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-32 h-32 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mb-8 shadow-2xl">
-            <Trophy className="text-white" size={64} />
-          </div>
-          <h1 className="text-6xl font-black bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mb-4">
-            Challenge Complete!
-          </h1>
-          <p className="text-2xl text-gray-300 font-medium">Excellent work on your reading challenge</p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          {/* Performance Metrics */}
-          <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20">
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
-              <BarChart3 className="text-emerald-400" size={24} />
-              Performance
-            </h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                <span className="text-gray-300 text-sm">Total Time</span>
-                <span className="text-lg font-bold text-white">{finalStats.totalTime.toFixed(1)}s</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                <span className="text-gray-300 text-sm">Words/Min</span>
-                <span className="text-lg font-bold text-emerald-400">{finalStats.wordsPerMinute}</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                <span className="text-gray-300 text-sm">Avg/Word</span>
-                <span className="text-lg font-bold text-cyan-400">{finalStats.averageWordTime.toFixed(1)}s</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                <span className="text-gray-300 text-sm">Consistency</span>
-                <span className="text-lg font-bold text-teal-400">{finalStats.consistencyScore}%</span>
-              </div>
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-32 h-32 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mb-8 shadow-2xl">
+              <Trophy className="text-white" size={64} />
             </div>
+            <h1 className="text-6xl font-black bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mb-4">
+              Challenge Complete!
+            </h1>
+            <p className="text-2xl text-gray-300 font-medium">
+              Excellent work on your reading challenge
+            </p>
           </div>
 
-          {/* Voice Recognition Stats */}
-          <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20">
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
-              <Mic className="text-purple-400" size={24} />
-              Voice Analysis
-            </h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                <span className="text-gray-300 text-sm">Recognized</span>
-                <span className="text-lg font-bold text-white">{finalStats.recognizedCount}</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                <span className="text-gray-300 text-sm">Accuracy</span>
-                <span className="text-lg font-bold text-purple-400">{finalStats.recognitionAccuracy}%</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                <span className="text-gray-300 text-sm">Confidence</span>
-                <span className="text-lg font-bold text-pink-400">{finalStats.averageConfidence}%</span>
-              </div>
-              <div className="text-center mt-4">
-                <div className="bg-gray-700 rounded-full h-3 overflow-hidden">
-                  <div
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 h-full transition-all duration-1000"
-                    style={{ width: `${finalStats.recognitionAccuracy}%` }}
-                  />
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {/* Performance Metrics */}
+            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                <BarChart3 className="text-emerald-400" size={24} />
+                Performance
+              </h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="text-gray-300 text-sm">Total Time</span>
+                  <span className="text-lg font-bold text-white">
+                    {finalStats.totalTime.toFixed(1)}s
+                  </span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="text-gray-300 text-sm">Words/Min</span>
+                  <span className="text-lg font-bold text-emerald-400">
+                    {finalStats.wordsPerMinute}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="text-gray-300 text-sm">Avg/Word</span>
+                  <span className="text-lg font-bold text-cyan-400">
+                    {finalStats.averageWordTime.toFixed(1)}s
+                  </span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="text-gray-300 text-sm">Consistency</span>
+                  <span className="text-lg font-bold text-teal-400">
+                    {finalStats.consistencyScore}%
+                  </span>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Speed Analysis */}
-          <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20">
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
-              <Zap className="text-yellow-400" size={24} />
-              Speed Analysis
-            </h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                <span className="text-gray-300 text-sm">Fastest</span>
-                <span className="text-lg font-bold text-green-400">{finalStats.fastestWordTime.toFixed(1)}s</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                <span className="text-gray-300 text-sm">Slowest</span>
-                <span className="text-lg font-bold text-orange-400">{finalStats.slowestWordTime.toFixed(1)}s</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                <span className="text-gray-300 text-sm">Range</span>
-                <span className="text-lg font-bold text-blue-400">
-                  {(finalStats.slowestWordTime - finalStats.fastestWordTime).toFixed(1)}s
-                </span>
-              </div>
-              {timer.fastestWord && (
-                <div className="p-3 bg-green-500/10 rounded-xl border border-green-500/20">
-                  <div className="text-xs text-green-400 mb-1">Fastest Word</div>
-                  <div className="text-white font-bold">{timer.fastestWord.word}</div>
+            {/* Voice Recognition Stats */}
+            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                <Mic className="text-purple-400" size={24} />
+                Voice Analysis
+              </h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="text-gray-300 text-sm">Recognized</span>
+                  <span className="text-lg font-bold text-white">
+                    {finalStats.recognizedCount}
+                  </span>
                 </div>
-              )}
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="text-gray-300 text-sm">Accuracy</span>
+                  <span className="text-lg font-bold text-purple-400">
+                    {finalStats.recognitionAccuracy}%
+                  </span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="text-gray-300 text-sm">Confidence</span>
+                  <span className="text-lg font-bold text-pink-400">
+                    {finalStats.averageConfidence}%
+                  </span>
+                </div>
+                <div className="text-center mt-4">
+                  <div className="bg-gray-700 rounded-full h-3 overflow-hidden">
+                    <div
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 h-full transition-all duration-1000"
+                      style={{ width: `${finalStats.recognitionAccuracy}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Speed Analysis */}
+            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                <Zap className="text-yellow-400" size={24} />
+                Speed Analysis
+              </h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="text-gray-300 text-sm">Fastest</span>
+                  <span className="text-lg font-bold text-green-400">
+                    {finalStats.fastestWordTime.toFixed(1)}s
+                  </span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="text-gray-300 text-sm">Slowest</span>
+                  <span className="text-lg font-bold text-orange-400">
+                    {finalStats.slowestWordTime.toFixed(1)}s
+                  </span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                  <span className="text-gray-300 text-sm">Range</span>
+                  <span className="text-lg font-bold text-blue-400">
+                    {(
+                      finalStats.slowestWordTime - finalStats.fastestWordTime
+                    ).toFixed(1)}
+                    s
+                  </span>
+                </div>
+                {timer.fastestWord && (
+                  <div className="p-3 bg-green-500/10 rounded-xl border border-green-500/20">
+                    <div className="text-xs text-green-400 mb-1">
+                      Fastest Word
+                    </div>
+                    <div className="text-white font-bold">
+                      {timer.fastestWord.word}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
           {/* Performance Level */}
           <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 mb-8">
