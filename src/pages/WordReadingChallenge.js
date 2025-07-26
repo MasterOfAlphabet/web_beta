@@ -224,7 +224,7 @@ const WORD_COLLECTIONS = {
   },
 };
 
-// REPLACE the entire useSpeechRecognition hook with this version
+// FIXED: More robust useSpeechRecognition hook to prevent rapid beeps
 const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const [state, setState] = useState({
     isSupported: true,
@@ -239,17 +239,40 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const recognitionRef = useRef(null);
   const isMountedRef = useRef(true);
   const isEnabledRef = useRef(isEnabled);
+  const restartTimeoutRef = useRef(null);
+  const isManuallyStoppedRef = useRef(false);
 
   // Update the ref when isEnabled changes
   useEffect(() => {
     isEnabledRef.current = isEnabled;
+    // If disabled, mark as manually stopped to prevent restart
+    if (!isEnabled) {
+      isManuallyStoppedRef.current = true;
+    }
   }, [isEnabled]);
 
   const startRecognition = useCallback(() => {
-    if (!recognitionRef.current || state.isRecording) return;
+    if (!recognitionRef.current) return;
+
+    // Clear any pending restart
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
+    }
+
+    // Don't start if already recording or if disabled
+    if (state.isRecording || !isEnabledRef.current) return;
 
     try {
-      console.log("Starting recognition...");
+      // Check the readyState before starting
+      if (recognitionRef.current.readyState === "started") {
+        console.log("⚠️ Recognition already started, skipping...");
+        return;
+      }
+
+      console.log("🎤 Starting recognition...");
+      isManuallyStoppedRef.current = false;
+
       setState((prev) => ({
         ...prev,
         isRecording: true,
@@ -259,27 +282,44 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         confidence: 0,
         isFinal: false,
       }));
+
       recognitionRef.current.start();
     } catch (err) {
-      console.error("Start recognition error:", err);
-      setState((prev) => ({ ...prev, error: err.message, isRecording: false }));
+      console.error("❌ Start recognition error:", err);
+      // Only show critical errors, not "already started" errors
+      if (!err.message.includes("already started")) {
+        setState((prev) => ({
+          ...prev,
+          error: err.message,
+          isRecording: false,
+        }));
+      }
     }
   }, [state.isRecording]);
 
   const stopRecognition = useCallback(() => {
-    if (recognitionRef.current && state.isRecording) {
+    if (recognitionRef.current) {
       try {
-        console.log("Stopping recognition...");
+        console.log("⏹️ Manually stopping recognition...");
+        isManuallyStoppedRef.current = true;
+
+        // Clear any pending restart
+        if (restartTimeoutRef.current) {
+          clearTimeout(restartTimeoutRef.current);
+          restartTimeoutRef.current = null;
+        }
+
         recognitionRef.current.stop();
       } catch (e) {
         console.warn("Stop recognition error:", e);
       }
     }
-  }, [state.isRecording]);
+  }, []);
 
   // Initialize recognition only once
   useEffect(() => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
       setState((prev) => ({
@@ -299,7 +339,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
     recognition.onstart = () => {
       if (!isMountedRef.current) return;
-      console.log("✅ Recognition started");
+      console.log("✅ Recognition started successfully");
       setState((prev) => ({ ...prev, isRecording: true, error: null }));
     };
 
@@ -333,8 +373,13 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       // Handle final result
       if (finalTranscript.trim()) {
         const final = finalTranscript.trim();
-        console.log("🎯 Final transcript:", final, "Confidence:", maxConfidence);
-        
+        console.log(
+          "🎯 Final transcript:",
+          final,
+          "Confidence:",
+          maxConfidence
+        );
+
         setState((prev) => ({
           ...prev,
           finalTranscript: final,
@@ -342,7 +387,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
           confidence: maxConfidence,
           isFinal: true,
         }));
-        
+
         onResult?.(final, maxConfidence);
       }
     };
@@ -350,33 +395,55 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     recognition.onend = () => {
       if (!isMountedRef.current) return;
       console.log("⏹️ Recognition ended");
-      
+
       setState((prev) => ({ ...prev, isRecording: false }));
-      
-      // Only restart if still enabled and no error
-      if (isEnabledRef.current && isMountedRef.current) {
-        setTimeout(() => {
-          if (isEnabledRef.current && isMountedRef.current) {
+
+      // Only restart if:
+      // 1. Still enabled
+      // 2. Not manually stopped
+      // 3. Component is mounted
+      // 4. No pending restart already
+      if (
+        isEnabledRef.current &&
+        !isManuallyStoppedRef.current &&
+        isMountedRef.current &&
+        !restartTimeoutRef.current
+      ) {
+        console.log("🔄 Scheduling restart in 1.5 seconds...");
+        restartTimeoutRef.current = setTimeout(() => {
+          restartTimeoutRef.current = null;
+          if (
+            isEnabledRef.current &&
+            !isManuallyStoppedRef.current &&
+            isMountedRef.current
+          ) {
             startRecognition();
           }
-        }, 1000); // 1 second delay to prevent rapid restart
+        }, 1500); // 1.5 second delay to prevent rapid restart
       }
     };
 
     recognition.onerror = (event) => {
       console.error("❌ Speech recognition error:", event.error);
-      
+
       setState((prev) => ({
         ...prev,
         error: `Error: ${event.error}`,
         isRecording: false,
       }));
 
-      // Don't restart on certain errors
-      const noRestartErrors = ['aborted', 'not-allowed', 'service-not-allowed'];
-      if (!noRestartErrors.includes(event.error)) {
-        onError?.(event.error);
+      // Don't restart on certain critical errors
+      const noRestartErrors = [
+        "aborted",
+        "not-allowed",
+        "service-not-allowed",
+        "network",
+      ];
+      if (noRestartErrors.includes(event.error)) {
+        isManuallyStoppedRef.current = true;
       }
+
+      onError?.(event.error);
     };
 
     recognitionRef.current = recognition;
@@ -385,6 +452,13 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     return () => {
       console.log("🧹 Cleaning up recognition");
       isMountedRef.current = false;
+      isManuallyStoppedRef.current = true;
+
+      if (restartTimeoutRef.current) {
+        clearTimeout(restartTimeoutRef.current);
+        restartTimeoutRef.current = null;
+      }
+
       if (recognition) {
         try {
           recognition.stop();
@@ -395,14 +469,21 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     };
   }, []); // Empty dependency array - create only once
 
-  // Handle enable/disable
+  // Handle enable/disable - SIMPLIFIED
   useEffect(() => {
-    if (isEnabled && !state.isRecording) {
-      startRecognition();
+    if (isEnabled && !state.isRecording && !isManuallyStoppedRef.current) {
+      // Small delay before starting to avoid conflicts
+      const startTimeout = setTimeout(() => {
+        if (isEnabled && !state.isRecording) {
+          startRecognition();
+        }
+      }, 500);
+
+      return () => clearTimeout(startTimeout);
     } else if (!isEnabled && state.isRecording) {
       stopRecognition();
     }
-  }, [isEnabled, startRecognition, stopRecognition, state.isRecording]);
+  }, [isEnabled, state.isRecording, startRecognition, stopRecognition]);
 
   return {
     ...state,
@@ -581,51 +662,111 @@ const WordDisplay = ({ word, index, status, isLastRecognized }) => {
 };
 
 // Speech Feedback Component
-const SpeechFeedback = ({ speechState, currentWord }) => {
-  if (!speechState.isRecording && !speechState.interimTranscript) return null;
-
+const SpeechFeedback = ({ speechState, currentWord, lastRecognized }) => {
+  // Always render the container to prevent layout shifts
   return (
-    <div className="mt-4 p-4 bg-white/10 rounded-xl border border-white/20">
-      {speechState.isRecording && (
-        <div className="flex items-center gap-2 mb-2">
-          <div className="flex items-center gap-2 text-red-400">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-            </span>
-            <span className="text-sm font-semibold">Listening...</span>
-          </div>
-        </div>
-      )}
-
-      {/* LIVE TRANSCRIPT DISPLAY - Enhanced */}
+    <div className="space-y-4 min-h-[120px]">
+      {/* LIVE TRANSCRIPT DISPLAY - Shows while speaking */}
       {speechState.interimTranscript && (
-        <div className="bg-yellow-500/30 border-2 border-yellow-400/50 px-6 py-3 rounded-xl shadow-lg animate-pulse">
-          <div className="text-yellow-300 text-xs font-semibold mb-1">
-            You're saying:
+        <div className="bg-gradient-to-r from-yellow-500/30 to-orange-500/30 border-2 border-yellow-400/50 px-6 py-4 rounded-2xl shadow-lg animate-pulse">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="flex items-center gap-2 text-yellow-300">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
+              </span>
+              <span className="text-sm font-semibold">You're saying:</span>
+            </div>
+            {speechState.confidence > 0 && (
+              <div className="text-xs text-yellow-300 bg-yellow-500/20 px-2 py-1 rounded">
+                {Math.round(speechState.confidence * 100)}% confident
+              </div>
+            )}
           </div>
-          <div className="text-white text-lg font-bold">
+          <div className="text-white text-2xl font-bold">
             "{speechState.interimTranscript}"
           </div>
         </div>
       )}
 
-      {speechState.confidence > 0 && (
-        <div className="mt-2">
-          <div className="text-xs text-gray-400 mb-1">
-            Confidence: {Math.round(speechState.confidence * 100)}%
+      {/* LAST RECOGNIZED WORD - Shows when word is recognized */}
+      {lastRecognized && (
+        <div className="bg-gradient-to-r from-green-500/30 to-emerald-500/30 border-2 border-green-400/50 px-6 py-4 rounded-2xl shadow-lg animate-bounce">
+          <div className="flex items-center gap-3 mb-2">
+            <CheckCircle className="text-green-400" size={20} />
+            <span className="text-sm font-semibold text-green-300">
+              Word Recognized!
+            </span>
+            <div className="text-xs text-green-300 bg-green-500/20 px-2 py-1 rounded">
+              {Math.round((lastRecognized.confidence || 0) * 100)}% match
+            </div>
           </div>
-          <div className="bg-gray-700 rounded-full h-2 overflow-hidden">
-            <div
-              className={`h-full transition-all duration-300 ${
-                speechState.confidence > 0.7
-                  ? "bg-green-500"
-                  : speechState.confidence > 0.5
-                  ? "bg-yellow-500"
-                  : "bg-red-500"
-              }`}
-              style={{ width: `${speechState.confidence * 100}%` }}
-            />
+          <div className="text-white text-2xl font-bold">
+            "{lastRecognized.word}"
+          </div>
+        </div>
+      )}
+
+      {/* LISTENING STATUS - Shows when waiting for speech */}
+      {speechState.isRecording &&
+        !speechState.interimTranscript &&
+        !lastRecognized && (
+          <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-2 border-blue-400/40 px-6 py-3 rounded-2xl">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 text-blue-400">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                </span>
+                <Mic className="animate-pulse" size={16} />
+                <span className="text-sm font-semibold">
+                  Listening for: "{currentWord}"
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+      {/* ERROR MESSAGES - Separate area at bottom (only for critical errors) */}
+      {speechState.error && !speechState.error.includes("already started") && (
+        <div className="bg-red-500/20 border-2 border-red-400/50 px-4 py-3 rounded-xl">
+          <div className="flex items-center gap-2 text-red-400 text-sm">
+            <AlertCircle size={16} />
+            <span>Speech Error: {speechState.error}</span>
+          </div>
+        </div>
+      )}
+
+      {/* CONFIDENCE BAR - Only when we have confidence data and not showing other feedback */}
+      {speechState.confidence > 0 &&
+        !speechState.interimTranscript &&
+        !lastRecognized && (
+          <div className="bg-white/10 rounded-xl p-3">
+            <div className="text-xs text-gray-400 mb-2">
+              Last Speech Confidence: {Math.round(speechState.confidence * 100)}
+              %
+            </div>
+            <div className="bg-gray-700 rounded-full h-2 overflow-hidden">
+              <div
+                className={`h-full transition-all duration-300 ${
+                  speechState.confidence > 0.7
+                    ? "bg-green-500"
+                    : speechState.confidence > 0.5
+                    ? "bg-yellow-500"
+                    : "bg-red-500"
+                }`}
+                style={{ width: `${speechState.confidence * 100}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+      {/* SPEECH NOT SUPPORTED WARNING */}
+      {!speechState.isSupported && (
+        <div className="bg-orange-500/20 border-2 border-orange-400/50 px-4 py-3 rounded-xl">
+          <div className="flex items-center gap-2 text-orange-400 text-sm">
+            <AlertCircle size={16} />
+            <span>Speech recognition is not supported in this browser</span>
           </div>
         </div>
       )}
