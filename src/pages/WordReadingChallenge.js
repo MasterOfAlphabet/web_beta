@@ -236,67 +236,28 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     });
   }, [state.isRecording]);
 
-const startRecognition = useCallback(async () => {
-  if (!recognitionRef.current) {
-    alert("❌ recognitionRef is null – cannot start");
-    return;
-  }
-
-  if (state.isRecording || isStartingRef.current) {
-    console.log("⚠️ Already recording or starting");
-    return;
-  }
-
-  console.log("🎙️ Attempting to start recognition...");
-  isStartingRef.current = true;
-
-  setState((prev) => ({
-    ...prev,
-    isProcessing: true,
-  }));
+const startRecognition = useCallback(() => {
+  const recognition = recognitionRef.current;
+  if (!recognition || state.isRecording) return;
 
   try {
-    // Optional delay to ensure proper stop/start cycle
-    setTimeout(() => {
-      try {
-        recognitionRef.current.start();
-        console.log("✅ Recognition started");
-        alert("🎙️ Speech recognition started"); // 🔔 alert for Android/Chrome
+    alert("🎙️ Starting mic...");
+    recognition.start();
 
-        setState((prev) => ({
-          ...prev,
-          isRecording: true,
-          isProcessing: false,
-          error: null,
-        }));
-
-        isStartingRef.current = false;
-      } catch (err) {
-        console.error("❌ Error starting recognition:", err);
-        alert("❌ Failed to start speech recognition:\n" + err.message);
-
-        setState((prev) => ({
-          ...prev,
-          isRecording: false,
-          isProcessing: false,
-          error: err.message,
-        }));
-
-        isStartingRef.current = false;
-      }
-    }, 200); // Delay helps with Chrome Android sometimes
+    setState((prev) => ({
+      ...prev,
+      isRecording: true,
+      isProcessing: false,
+    }));
   } catch (err) {
-    console.error("❌ Outer catch in startRecognition:", err);
-    alert("❌ Unexpected error:\n" + err.message);
-
+    alert("❌ Failed to start recognition:\n" + err.message);
+    console.error("❌ startRecognition error:", err);
     setState((prev) => ({
       ...prev,
       isRecording: false,
       isProcessing: false,
       error: err.message,
     }));
-
-    isStartingRef.current = false;
   }
 }, [state.isRecording]);
 
@@ -316,7 +277,7 @@ const startRecognition = useCallback(async () => {
 
     if (!recognitionRef.current) {
       const recognition = new SpeechRecognition();
-      recognition.continuous = false;
+     recognition.continuous = true;
       recognition.interimResults = false;
       recognition.lang = "en-US";
       recognition.maxAlternatives = 1;
@@ -324,20 +285,19 @@ const startRecognition = useCallback(async () => {
 recognition.onresult = (event) => {
   if (!isMountedRef.current) return;
 
-  const result = event.results[event.results.length - 1];
-  if (result.isFinal) {
-    const transcript = result[0].transcript.toLowerCase().trim();
-
-    // ✅ ALERT for Android debugging
-    alert(`🎤 Speech captured:\n"${transcript}"`);
-
-    console.log("Speech result:", transcript);
-
-    if (transcript && onResult) {
-      onResult(transcript); // Calls handleSpeechResult
+  let transcript = "";
+  for (let i = event.resultIndex; i < event.results.length; ++i) {
+    const result = event.results[i];
+    if (result.isFinal) {
+      transcript += result[0].transcript;
     }
+  }
 
-    recognition.stop(); // ✅ Force flush (especially for Android)
+  transcript = transcript.toLowerCase().trim();
+  if (transcript) {
+    alert(`🎤 Final Transcript: "${transcript}"`);
+    console.log("🎤 Final transcript:", transcript);
+    onResult?.(transcript); // This calls handleSpeechResult
   }
 };
 
@@ -350,8 +310,8 @@ recognition.onstart = () => {
 
 recognition.onend = () => {
   if (!isMountedRef.current) return;
-
-  alert("📢 Speech recognition ended");
+  console.log("🛑 Mic onend fired");
+  alert("🛑 Mic stopped");
 
   setState((prev) => ({
     ...prev,
@@ -359,21 +319,10 @@ recognition.onend = () => {
     isProcessing: false,
   }));
 
-  isStoppingRef.current = false;
-
-  // ✅ Restart recognition if enabled and not stopping
   if (isEnabled && !isStoppingRef.current) {
-    console.log("🔁 Restarting recognition after onend...");
-    alert("Restarting recognition after onend...");
-
     setTimeout(() => {
-      if (isMountedRef.current && isEnabled && !isStoppingRef.current) {
-        startRecognition(); // 🔁 START AGAIN
-      }
-    }, 300);
-  } else {
-    console.log("⏹️ Not restarting: isEnabled=", isEnabled);
-    alert("⏹️ Not restarting: isEnabled=" + isEnabled);
+      startRecognition(); // 🔁 Restart
+    }, 400);
   }
 };
 
