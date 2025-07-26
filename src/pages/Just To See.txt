@@ -24,5 +24,3 @@ http://localhost:3000/word-reading-challenge
 
 
 	
-
-	

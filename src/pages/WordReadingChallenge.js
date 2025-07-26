@@ -307,7 +307,28 @@ recognition.onresult = (event) => {
   }
 };
 
+recognition.onend = () => {
+  
+    alert("onend fired");
 
+  if (!isMountedRef.current) return;
+  console.log("🎙️ Recognition ended");
+
+  setState((prev) => ({
+    ...prev,
+    isRecording: false,
+  }));
+
+  // ✅ RESTART only if enabled
+  if (isEnabled && !isStoppingRef.current) {
+    console.log("🔁 Restarting recognition...");
+    setTimeout(() => {
+      if (isMountedRef.current && !isStoppingRef.current) {
+        startRecognition();
+      }
+    }, 300); // slight delay before restart
+  }
+};
       recognition.onerror = (event) => {
         console.error("Speech recognition error:", event.error);
         if (event.error !== "aborted") {
