@@ -236,36 +236,70 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     });
   }, [state.isRecording]);
 
-  const startRecognition = useCallback(() => {
-    if (!recognitionRef.current) return;
+const startRecognition = useCallback(async () => {
+  if (!recognitionRef.current) {
+    alert("❌ recognitionRef is null – cannot start");
+    return;
+  }
 
-    if (state.isRecording) {
-      console.log("Already recording — skip start.");
-      return;
-    }
+  if (state.isRecording || isStartingRef.current) {
+    console.log("⚠️ Already recording or starting");
+    return;
+  }
 
-    if (isStartingRef.current) {
-      console.log("Already starting — skip start.");
-      return;
-    }
+  console.log("🎙️ Attempting to start recognition...");
+  isStartingRef.current = true;
 
-    isStartingRef.current = true;
-    setState((prev) => ({ ...prev, isProcessing: true }));
+  setState((prev) => ({
+    ...prev,
+    isProcessing: true,
+  }));
 
-    try {
-      recognitionRef.current.start();
-      // onstart event will handle setting isRecording true
-    } catch (error) {
-      console.error("Failed to start recognition:", error);
-      setState((prev) => ({
-        ...prev,
-        error: error.message,
-        isRecording: false,
-        isProcessing: false,
-      }));
-      isStartingRef.current = false;
-    }
-  }, [state.isRecording]);
+  try {
+    // Optional delay to ensure proper stop/start cycle
+    setTimeout(() => {
+      try {
+        recognitionRef.current.start();
+        console.log("✅ Recognition started");
+        alert("🎙️ Speech recognition started"); // 🔔 alert for Android/Chrome
+
+        setState((prev) => ({
+          ...prev,
+          isRecording: true,
+          isProcessing: false,
+          error: null,
+        }));
+
+        isStartingRef.current = false;
+      } catch (err) {
+        console.error("❌ Error starting recognition:", err);
+        alert("❌ Failed to start speech recognition:\n" + err.message);
+
+        setState((prev) => ({
+          ...prev,
+          isRecording: false,
+          isProcessing: false,
+          error: err.message,
+        }));
+
+        isStartingRef.current = false;
+      }
+    }, 200); // Delay helps with Chrome Android sometimes
+  } catch (err) {
+    console.error("❌ Outer catch in startRecognition:", err);
+    alert("❌ Unexpected error:\n" + err.message);
+
+    setState((prev) => ({
+      ...prev,
+      isRecording: false,
+      isProcessing: false,
+      error: err.message,
+    }));
+
+    isStartingRef.current = false;
+  }
+}, [state.isRecording]);
+
 
   useEffect(() => {
     const SpeechRecognition =
@@ -307,28 +341,42 @@ recognition.onresult = (event) => {
   }
 };
 
-recognition.onend = () => {
-  
-    alert("onend fired");
-
+recognition.onstart = () => {
   if (!isMountedRef.current) return;
-  console.log("🎙️ Recognition ended");
+  console.log("🎧 Recognition ONSTART triggered");
+  alert("🎧 Mic is now listening...");
+};
+
+
+recognition.onend = () => {
+  if (!isMountedRef.current) return;
+
+  alert("📢 Speech recognition ended");
 
   setState((prev) => ({
     ...prev,
     isRecording: false,
+    isProcessing: false,
   }));
 
-  // ✅ RESTART only if enabled
+  isStoppingRef.current = false;
+
+  // ✅ Restart recognition if enabled and not stopping
   if (isEnabled && !isStoppingRef.current) {
-    console.log("🔁 Restarting recognition...");
+    console.log("🔁 Restarting recognition after onend...");
+    alert("Restarting recognition after onend...");
+
     setTimeout(() => {
-      if (isMountedRef.current && !isStoppingRef.current) {
-        startRecognition();
+      if (isMountedRef.current && isEnabled && !isStoppingRef.current) {
+        startRecognition(); // 🔁 START AGAIN
       }
-    }, 300); // slight delay before restart
+    }, 300);
+  } else {
+    console.log("⏹️ Not restarting: isEnabled=", isEnabled);
+    alert("⏹️ Not restarting: isEnabled=" + isEnabled);
   }
 };
+
       recognition.onerror = (event) => {
         console.error("Speech recognition error:", event.error);
         if (event.error !== "aborted") {
