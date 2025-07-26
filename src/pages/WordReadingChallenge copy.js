@@ -558,6 +558,82 @@ const WordReadingChallenge = () => {
   const [gameState, setGameState] = useState(createInitialState);
   const [recognizedWords, setRecognizedWords] = useState([]);
 
+  const recognitionRef = useRef(null);
+  const [isListening, setIsListening] = useState(false);
+  const [permissionError, setPermissionError] = useState(null);
+
+  const micStatusLabel = isListening ? "🎤 Listening..." : "🛑 Not listening";
+
+  const startListening = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("❌ SpeechRecognition not supported in this browser.");
+      return;
+    }
+
+    if (!recognitionRef.current) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = "en-US";
+
+      recognitionRef.current.onstart = () => {
+        setIsListening(true);
+        alert("🎙️ Mic started");
+      };
+
+      recognitionRef.current.onresult = (event) => {
+        const result = event.results[event.results.length - 1];
+        if (result.isFinal) {
+          const transcript = result[0].transcript.toLowerCase().trim();
+          alert(`🎤 Final transcript:\n"${transcript}"`);
+          handleSpeechResult(transcript); // ✅ Your existing matching logic
+        }
+      };
+
+      recognitionRef.current.onerror = (event) => {
+        console.error("Speech error:", event.error);
+        alert(`⚠️ Speech error: ${event.error}`);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+        alert("🔕 Mic stopped (onend)");
+        // Restart for continuous recognition
+        if (gameState.phase === "challenge" && !gameState.isPaused) {
+          setTimeout(() => {
+            startListening(); // ✅ Auto-restart
+          }, 600);
+        }
+      };
+    }
+
+    try {
+      recognitionRef.current.start();
+    } catch (e) {
+      console.error("Mic start error:", e);
+      alert("❌ Could not start mic");
+    }
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+
+  useEffect(() => {
+    if (gameState.phase === "challenge" && !gameState.isPaused) {
+      startListening();
+    } else {
+      stopListening();
+    }
+  }, [gameState.phase, gameState.isPaused]);
+
   // Get current word data
   const currentCollection = WORD_COLLECTIONS[gameState.classGroup];
   const currentWords = useMemo(
