@@ -224,7 +224,7 @@ const WORD_COLLECTIONS = {
   },
 };
 
-// Enhanced Speech Recognition Hook
+// REPLACE the entire useSpeechRecognition hook with this version
 const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const [state, setState] = useState({
     isSupported: true,
@@ -238,28 +238,18 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
   const recognitionRef = useRef(null);
   const isMountedRef = useRef(true);
-  const silenceTimerRef = useRef(null);
+  const isEnabledRef = useRef(isEnabled);
 
-  // Silence detection and auto-stop
-  const resetSilenceTimer = useCallback(() => {
-    clearTimeout(silenceTimerRef.current);
-    silenceTimerRef.current = setTimeout(() => {
-      if (state.isRecording && recognitionRef.current) {
-        console.log("Stopping due to silence");
-        try {
-          recognitionRef.current.stop();
-        } catch (e) {
-          console.warn("Error stopping recognition:", e);
-        }
-      }
-    }, 1500);
-  }, [state.isRecording]);
+  // Update the ref when isEnabled changes
+  useEffect(() => {
+    isEnabledRef.current = isEnabled;
+  }, [isEnabled]);
 
   const startRecognition = useCallback(() => {
-    const recognition = recognitionRef.current;
-    if (!recognition || state.isRecording) return;
+    if (!recognitionRef.current || state.isRecording) return;
 
     try {
+      console.log("Starting recognition...");
       setState((prev) => ({
         ...prev,
         isRecording: true,
@@ -269,7 +259,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         confidence: 0,
         isFinal: false,
       }));
-      recognition.start();
+      recognitionRef.current.start();
     } catch (err) {
       console.error("Start recognition error:", err);
       setState((prev) => ({ ...prev, error: err.message, isRecording: false }));
@@ -279,22 +269,17 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const stopRecognition = useCallback(() => {
     if (recognitionRef.current && state.isRecording) {
       try {
+        console.log("Stopping recognition...");
         recognitionRef.current.stop();
-        clearTimeout(silenceTimerRef.current);
       } catch (e) {
         console.warn("Stop recognition error:", e);
       }
     }
   }, [state.isRecording]);
 
+  // Initialize recognition only once
   useEffect(() => {
-    // Reset error state when isEnabled changes
-    if (isEnabled) {
-      setState((prev) => ({ ...prev, error: null }));
-    }
-
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
       setState((prev) => ({
@@ -305,133 +290,124 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       return;
     }
 
-    if (!recognitionRef.current) {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = true;
-      recognition.lang = "en-GB";
+    // Create recognition instance only once
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = "en-GB";
+    recognition.maxAlternatives = 1;
 
-      recognition.onresult = (event) => {
-        if (!isMountedRef.current) return;
+    recognition.onstart = () => {
+      if (!isMountedRef.current) return;
+      console.log("✅ Recognition started");
+      setState((prev) => ({ ...prev, isRecording: true, error: null }));
+    };
 
-        let finalTranscript = "";
-        let interim = "";
-        let maxConfidence = 0;
+    recognition.onresult = (event) => {
+      if (!isMountedRef.current) return;
 
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcript = event.results[i][0].transcript;
-          const confidence = event.results[i][0].confidence || 0;
+      let finalTranscript = "";
+      let interim = "";
+      let maxConfidence = 0;
 
-          maxConfidence = Math.max(maxConfidence, confidence);
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        const confidence = event.results[i][0].confidence || 0.8;
+        maxConfidence = Math.max(maxConfidence, confidence);
 
-          if (event.results[i].isFinal) {
-            finalTranscript += transcript + " ";
-          } else {
-            interim += transcript + " ";
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript + " ";
+        } else {
+          interim += transcript + " ";
+        }
+      }
+
+      // Update state immediately
+      setState((prev) => ({
+        ...prev,
+        interimTranscript: interim.trim(),
+        confidence: maxConfidence,
+        isFinal: false,
+      }));
+
+      // Handle final result
+      if (finalTranscript.trim()) {
+        const final = finalTranscript.trim();
+        console.log("🎯 Final transcript:", final, "Confidence:", maxConfidence);
+        
+        setState((prev) => ({
+          ...prev,
+          finalTranscript: final,
+          interimTranscript: "",
+          confidence: maxConfidence,
+          isFinal: true,
+        }));
+        
+        onResult?.(final, maxConfidence);
+      }
+    };
+
+    recognition.onend = () => {
+      if (!isMountedRef.current) return;
+      console.log("⏹️ Recognition ended");
+      
+      setState((prev) => ({ ...prev, isRecording: false }));
+      
+      // Only restart if still enabled and no error
+      if (isEnabledRef.current && isMountedRef.current) {
+        setTimeout(() => {
+          if (isEnabledRef.current && isMountedRef.current) {
+            startRecognition();
           }
-        }
+        }, 1000); // 1 second delay to prevent rapid restart
+      }
+    };
 
-        if (finalTranscript.trim()) {
-          setState((prev) => ({
-            ...prev,
-            finalTranscript: finalTranscript.trim(),
-            interimTranscript: "",
-            confidence: maxConfidence,
-            isFinal: true,
-          }));
-          onResult?.(finalTranscript.trim(), maxConfidence);
-        } else {
-          setState((prev) => ({
-            ...prev,
-            interimTranscript: interim.trim(),
-            confidence: maxConfidence,
-            isFinal: false,
-          }));
-        }
+    recognition.onerror = (event) => {
+      console.error("❌ Speech recognition error:", event.error);
+      
+      setState((prev) => ({
+        ...prev,
+        error: `Error: ${event.error}`,
+        isRecording: false,
+      }));
 
-        resetSilenceTimer();
-      };
+      // Don't restart on certain errors
+      const noRestartErrors = ['aborted', 'not-allowed', 'service-not-allowed'];
+      if (!noRestartErrors.includes(event.error)) {
+        onError?.(event.error);
+      }
+    };
 
-      recognition.onstart = () => {
-        if (!isMountedRef.current) return;
-        console.log("Recognition started");
-        setState((prev) => ({ ...prev, isRecording: true }));
-      };
+    recognitionRef.current = recognition;
 
-      recognition.onend = () => {
-        if (!isMountedRef.current) return;
-        setState((prev) => ({ ...prev, isRecording: false }));
-        clearTimeout(silenceTimerRef.current);
-
-        // Simple restart with proper delay
-        if (isEnabled) {
-          setTimeout(() => {
-            if (isEnabled && isMountedRef.current && !state.isRecording) {
-              startRecognition();
-            }
-          }, 1000); // Longer delay to prevent beeping
-        }
-      };
-
-      recognition.onspeechstart = () => {
-        console.log("Speech detected");
-        resetSilenceTimer();
-      };
-
-      recognition.onspeechend = () => {
-        console.log("Speech ended");
-        clearTimeout(silenceTimerRef.current);
-      };
-
-      recognition.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
-        alert(" Speech recognition error: " + event.error);
-        clearTimeout(silenceTimerRef.current);
-
-        // Don't restart on certain errors
-        const noRestartErrors = [
-          "aborted",
-          "not-allowed",
-          "service-not-allowed",
-        ];
-
-        if (!noRestartErrors.includes(event.error)) {
-          setState((prev) => ({
-            ...prev,
-            error: `Error: ${event.error}`,
-            isRecording: false,
-          }));
-          onError?.(event.error);
-        } else {
-          setState((prev) => ({ ...prev, isRecording: false }));
-        }
-      };
-
-      recognitionRef.current = recognition;
-    }
-
-    if (isEnabled) {
-      startRecognition();
-    }
-
+    // Cleanup function
     return () => {
+      console.log("🧹 Cleaning up recognition");
       isMountedRef.current = false;
-      clearTimeout(silenceTimerRef.current);
-      if (recognitionRef.current && state.isRecording) {
+      if (recognition) {
         try {
-          recognitionRef.current.stop();
+          recognition.stop();
         } catch (e) {
-          console.warn("Cleanup stop error:", e);
+          console.warn("Cleanup error:", e);
         }
       }
     };
-  }, [isEnabled, onResult, onError, startRecognition, resetSilenceTimer]);
+  }, []); // Empty dependency array - create only once
+
+  // Handle enable/disable
+  useEffect(() => {
+    if (isEnabled && !state.isRecording) {
+      startRecognition();
+    } else if (!isEnabled && state.isRecording) {
+      stopRecognition();
+    }
+  }, [isEnabled, startRecognition, stopRecognition, state.isRecording]);
 
   return {
     ...state,
     startRecognition,
     stopRecognition,
-    resetSilenceTimer,
   };
 };
 
@@ -622,9 +598,15 @@ const SpeechFeedback = ({ speechState, currentWord }) => {
         </div>
       )}
 
+      {/* LIVE TRANSCRIPT DISPLAY - Enhanced */}
       {speechState.interimTranscript && (
-        <div className="text-yellow-400 italic text-lg">
-          "{speechState.interimTranscript}"
+        <div className="bg-yellow-500/30 border-2 border-yellow-400/50 px-6 py-3 rounded-xl shadow-lg animate-pulse">
+          <div className="text-yellow-300 text-xs font-semibold mb-1">
+            You're saying:
+          </div>
+          <div className="text-white text-lg font-bold">
+            "{speechState.interimTranscript}"
+          </div>
         </div>
       )}
 
@@ -783,7 +765,6 @@ const ChallengeSetup = ({
 const GameControls = ({ isPaused, speechState, onPause, onReset, stats }) => (
   <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20">
     <div className="flex items-center justify-between flex-wrap gap-4">
-
       <div className="flex items-center gap-3">
         <button
           onClick={onPause}
@@ -825,10 +806,13 @@ const GameControls = ({ isPaused, speechState, onPause, onReset, stats }) => (
             )}
           </div>
 
-          {/* LIVE TRANSCRIPT DISPLAY */}
+          {/* LIVE TRANSCRIPT DISPLAY - Enhanced */}
           {speechState.interimTranscript && (
-            <div className="bg-yellow-500/20 border border-yellow-400/30 px-4 py-2 rounded-xl">
-              <div className="text-yellow-400 text-sm font-medium">
+            <div className="bg-yellow-500/30 border-2 border-yellow-400/50 px-6 py-3 rounded-xl shadow-lg animate-pulse">
+              <div className="text-yellow-300 text-xs font-semibold mb-1">
+                You're saying:
+              </div>
+              <div className="text-white text-lg font-bold">
                 "{speechState.interimTranscript}"
               </div>
             </div>
