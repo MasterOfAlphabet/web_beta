@@ -224,14 +224,6 @@ const WORD_COLLECTIONS = {
   },
 };
 
-// FIXED VERSION - No more double beeps!
-
-// The key changes:
-// 1. Added restartRecognition function to the hook
-// 2. Consolidated all recognition restart logic into one useEffect
-// 3. Removed startFreshRecognition references
-// 4. Manual navigation now just updates state, letting useEffect handle recognition
-
 const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const [state, setState] = useState({
     isSupported: true,
@@ -269,7 +261,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     activeSessionRef.current = Symbol('recognition-session');
     const currentSession = activeSessionRef.current;
 
-    console.log("🎤 Starting fresh recognition session");
+    console.log("Starting fresh recognition session");
     
     try {
       isRecordingRef.current = true;
@@ -286,10 +278,8 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       recognitionRef.current.start();
       
       timeoutRef.current = setTimeout(() => {
-        if (isMountedRef.current && 
-            activeSessionRef.current === currentSession && 
-            isRecordingRef.current) {
-          console.log("⏰ Auto-stopping recognition after timeout");
+        if (isMountedRef.current && activeSessionRef.current === currentSession && isRecordingRef.current) {
+          console.log("Auto-stopping recognition after timeout");
           try {
             recognitionRef.current.stop();
           } catch (e) {
@@ -307,7 +297,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   }, []);
 
   const stopRecognition = useCallback(() => {
-    console.log("🛑 Manual stop requested");
+    console.log("Manual stop requested");
     
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -326,31 +316,15 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     }
   }, []);
 
-  // NEW: Add restartRecognition function as suggested by DeepSeek
   const restartRecognition = useCallback(() => {
-    if (!recognitionRef.current) return;
-    
-    console.log("🔄 Restarting recognition with clean slate");
-    
-    // Stop current recognition if running
-    try {
-      if (isRecordingRef.current) {
-        recognitionRef.current.stop();
-      }
-    } catch (e) {
-      console.warn("Stop error during restart:", e);
-    }
-    
-    // Clear any active session to prevent auto-restart
-    activeSessionRef.current = null;
-    
-    // Start fresh recognition after a small delay
+    console.log("Restarting recognition");
+    stopRecognition();
     setTimeout(() => {
       if (isMountedRef.current && isEnabledRef.current) {
         startRecognition();
       }
     }, 300);
-  }, [startRecognition]);
+  }, [startRecognition, stopRecognition]);
 
   // Initialize recognition only once
   useEffect(() => {
@@ -369,7 +343,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     recognition.continuous = false;
     recognition.interimResults = true;
     recognition.lang = "en-GB";
-    recognition.maxAlternatives = 3;
+    recognition.maxAlternatives = 1;
 
     recognition.onstart = () => {
       if (!isMountedRef.current) return;
@@ -381,22 +355,16 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     recognition.onresult = (event) => {
       if (!isMountedRef.current || !activeSessionRef.current) return;
 
-      console.log("📝 Recognition result received");
-
       let finalTranscript = "";
       let interim = "";
       let maxConfidence = 0;
 
       for (let i = event.resultIndex; i < event.results.length; i++) {
-        const result = event.results[i];
-        const transcript = result[0].transcript;
-        const confidence = result[0].confidence || 0.8;
-        
-        console.log(`   Result ${i}: "${transcript}" (confidence: ${confidence}, final: ${result.isFinal})`);
-        
+        const transcript = event.results[i][0].transcript;
+        const confidence = event.results[i][0].confidence || 0.8;
         maxConfidence = Math.max(maxConfidence, confidence);
 
-        if (result.isFinal) {
+        if (event.results[i].isFinal) {
           finalTranscript += transcript + " ";
         } else {
           interim += transcript + " ";
@@ -412,7 +380,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
       if (finalTranscript.trim()) {
         const final = finalTranscript.trim();
-        console.log("🎯 FINAL transcript:", final, "Confidence:", maxConfidence);
+        console.log("🎯 Final transcript:", final, "Confidence:", maxConfidence);
         
         setState(prev => ({
           ...prev,
@@ -422,15 +390,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
           isFinal: true,
         }));
         
-        console.log("🔥 Firing onResult callback");
         onResult?.(final, maxConfidence);
-        
-        activeSessionRef.current = null;
-        try {
-          recognitionRef.current.stop();
-        } catch (e) {
-          console.warn("Result stop error:", e);
-        }
       }
     };
 
@@ -446,22 +406,12 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         timeoutRef.current = null;
       }
       
-      // MODIFIED: Only restart if enabled AND session is still active
-      if (isEnabledRef.current && 
-          isMountedRef.current && 
-          activeSessionRef.current) {
-        
-        console.log("🔄 Auto-restarting recognition");
+      if (isEnabledRef.current && isMountedRef.current && activeSessionRef.current) {
         setTimeout(() => {
-          if (isEnabledRef.current && 
-              isMountedRef.current && 
-              !isRecordingRef.current &&
-              activeSessionRef.current) {
+          if (isEnabledRef.current && isMountedRef.current && activeSessionRef.current) {
             startRecognition();
           }
         }, 500);
-      } else {
-        console.log("❌ Not restarting - conditions not met");
       }
     };
 
@@ -507,7 +457,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     };
   }, [onResult, onError]);
 
-  // Handle enable/disable - SIMPLIFIED to avoid double starts
+  // Handle enable/disable
   useEffect(() => {
     if (isEnabled && !isRecordingRef.current) {
       console.log("🟢 Enabling speech recognition");
@@ -522,7 +472,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     ...state,
     startRecognition,
     stopRecognition,
-    restartRecognition, // ADD this new function
+    restartRecognition,
   };
 };
 
@@ -1147,52 +1097,40 @@ const speech = useSpeechRecognition(
     timer.resetTimer();
   }, [timer]);
 
-
-  
-// ADD this effect to start fresh recognition when moving to next word:
+// Add this effect to handle word changes
 useEffect(() => {
   if (gameState.phase === "challenge" && 
       !gameState.isPaused && 
       gameState.currentWordIndex < currentWords.length) {
     
-    console.log(`🎤 Starting fresh recognition for word: "${currentWords[gameState.currentWordIndex]}"`);
+    console.log(`🔄 Restarting recognition for word: "${currentWords[gameState.currentWordIndex]}"`);
+    speech.restartRecognition();
     
-    // Start fresh recognition for the current word
-    setTimeout(() => {
-      if (speech.startFreshRecognition) {
-        speech.startFreshRecognition();
-      }
-    }, 500); // Small delay to ensure clean state
+    // Start timer for the new word
+    timer.startWordTimer(gameState.currentWordIndex);
   }
-}, [gameState.currentWordIndex, gameState.phase, gameState.isPaused, currentWords, speech]);
+}, [gameState.currentWordIndex, gameState.phase, gameState.isPaused, currentWords, speech, timer]);
 
-  // UPDATE the manual navigation handlers:
+// Update navigation handlers
 const handleNext = useCallback(() => {
   if (gameState.currentWordIndex < currentWords.length - 1) {
     console.log("👆 Manual next clicked");
-    speech.stopRecognition(); // Stop current recognition
-    
     setGameState((prev) => ({
       ...prev,
       currentWordIndex: prev.currentWordIndex + 1,
     }));
-    // Fresh recognition will start via the useEffect above
   }
-}, [gameState.currentWordIndex, currentWords.length, speech]);
+}, [gameState.currentWordIndex, currentWords.length]);
 
-
- const handlePrevious = useCallback(() => {
+const handlePrevious = useCallback(() => {
   if (gameState.currentWordIndex > 0) {
     console.log("👆 Manual previous clicked");
-    speech.stopRecognition(); // Stop current recognition
-    
     setGameState((prev) => ({
       ...prev,
       currentWordIndex: prev.currentWordIndex - 1,
     }));
-    // Fresh recognition will start via the useEffect above
   }
-}, [gameState.currentWordIndex, speech]);
+}, [gameState.currentWordIndex]);
 
   // Stats calculations
   // STEP 7: REPLACE your stats calculation with this enhanced version:
