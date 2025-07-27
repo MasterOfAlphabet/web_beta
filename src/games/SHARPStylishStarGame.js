@@ -40,6 +40,8 @@ const SHARPStylishStarGame = () => {
   const [categoryScores, setCategoryScores] = useState({});
   const [gameMode, setGameMode] = useState("practice"); // 'practice', 'test', 'quiz'
 
+  const [isProcessingAnswer, setIsProcessingAnswer] = useState(false);
+
   const categories = {
     S: { name: "Synonyms", icon: "🔗", color: "from-purple-400 to-pink-400" },
     H: { name: "Homonyms", icon: "🔊", color: "from-blue-400 to-cyan-400" },
@@ -94,6 +96,8 @@ const SHARPStylishStarGame = () => {
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   // Add this function to handle submit button click
   const handleSubmitClick = () => {
+    if (isProcessingAnswer) return;
+
     const currentData =
       selectedCategory === "SHARP"
         ? allInOneQuestions
@@ -228,6 +232,11 @@ const SHARPStylishStarGame = () => {
   };
 
   const handleAnswer = (answer) => {
+    // Prevent rapid clicking
+    if (isProcessingAnswer) return;
+
+    setIsProcessingAnswer(true);
+
     const currentData =
       selectedCategory === "SHARP"
         ? allInOneQuestions
@@ -236,8 +245,10 @@ const SHARPStylishStarGame = () => {
     if (
       !currentData ||
       currentQuestion >= Math.min(questionsLimit, currentData.length)
-    )
+    ) {
+      setIsProcessingAnswer(false);
       return;
+    }
 
     const correct = currentData[currentQuestion].answer;
     const isCorrect = answer === correct;
@@ -287,10 +298,17 @@ const SHARPStylishStarGame = () => {
           setTimeLeft(30);
         }
       }
+      // Re-enable clicking after processing is complete
+      setIsProcessingAnswer(false);
     }, feedbackDelay);
   };
 
   const handleNavigation = (direction) => {
+    // Prevent rapid clicking
+    if (isProcessingAnswer) return;
+
+    setIsProcessingAnswer(true);
+
     const currentData =
       selectedCategory === "SHARP"
         ? allInOneQuestions
@@ -331,6 +349,11 @@ const SHARPStylishStarGame = () => {
         endGame();
       }
     }
+
+    // Small delay to prevent rapid navigation clicks
+    setTimeout(() => {
+      setIsProcessingAnswer(false);
+    }, 300);
   };
 
   const endGame = () => {
@@ -366,6 +389,8 @@ const SHARPStylishStarGame = () => {
   };
 
   const resetGame = () => {
+    setIsProcessingAnswer(false);
+
     setCurrentScreen("home");
     setSelectedClass("");
     setSelectedCategory("");
