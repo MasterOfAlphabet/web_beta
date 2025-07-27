@@ -316,15 +316,18 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     }
   }, []);
 
-  const restartRecognition = useCallback(() => {
-    console.log("Restarting recognition");
-    stopRecognition();
-    setTimeout(() => {
-      if (isMountedRef.current && isEnabledRef.current) {
-        startRecognition();
-      }
-    }, 300);
-  }, [startRecognition, stopRecognition]);
+const restartRecognition = useCallback(() => {
+  console.log("🔄 Restarting recognition");
+   alert("🔄 Restarting recognition");
+  stopRecognition();
+  setTimeout(() => {
+    if (isMountedRef.current && isEnabledRef.current) {
+      alert("🟢 Starting fresh recognition");
+      console.log("🟢 Starting fresh recognition");
+      startRecognition();
+    }
+  }, 500); // Slightly longer delay for more reliable restart
+}, [startRecognition, stopRecognition]);
 
   // Initialize recognition only once
   useEffect(() => {
@@ -353,6 +356,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     };
 
     recognition.onresult = (event) => {
+      alert("RAW RECOGNITION RESULTS:" + event.results);
       if (!isMountedRef.current || !activeSessionRef.current) return;
 
       let finalTranscript = "";
@@ -945,10 +949,8 @@ const WordReadingChallenge = () => {
     }, [])
   );
 
-  // UPDATE the handleSpeechResult function in your main component:
-
 const handleSpeechResult = useCallback(
-  (transcript, confidence = 0.8) => {
+  (transcript, confidence = 0) => {
     console.log("🎯 RECEIVED TRANSCRIPT:", transcript, "Confidence:", confidence);
 
     if (gameState.phase !== "challenge" || gameState.isPaused) {
@@ -967,22 +969,35 @@ const handleSpeechResult = useCallback(
 
     console.log(`🔍 Checking "${transcript}" against current word: "${currentWord}"`);
 
-    // Simplified word matching - check each spoken word against current word
-    const hasExactMatch = spokenWords.some((spokenWord) => {
-      const cleanSpoken = spokenWord.toLowerCase().replace(/[^\w]/g, '').trim();
-      const cleanCurrent = currentWord.toLowerCase().replace(/[^\w]/g, '').trim();
-      const isMatch = cleanSpoken === cleanCurrent || areWordsEquivalent(cleanSpoken, cleanCurrent);
-      console.log(`   Comparing "${cleanSpoken}" vs "${cleanCurrent}": ${isMatch}`);
-      return isMatch;
+    // Enhanced matching - check all alternatives
+    const hasMatch = spokenWords.some(spokenWord => {
+      const cleanSpoken = cleanWord(spokenWord);
+      const cleanCurrent = cleanWord(currentWord);
+      
+      // Direct match
+      if (areWordsEquivalent(cleanSpoken, cleanCurrent)) {
+        console.log("✅ Exact match found");
+        return true;
+      }
+
+      // Check for partial matches (for longer words)
+      if (cleanCurrent.length > 5 && cleanSpoken.length > 3) {
+        if (cleanCurrent.includes(cleanSpoken) || cleanSpoken.includes(cleanCurrent)) {
+          console.log("✅ Partial match found");
+          return true;
+        }
+      }
+      
+      return false;
     });
 
-    // Lower confidence threshold for testing
-    const minConfidence = 0.3; // Much lower threshold
+    // Confidence threshold based on word difficulty
+    const minConfidence = currentCollection.theme.includes("Advanced") ? 0.6 : 0.4;
     const isConfidentMatch = confidence >= minConfidence;
 
-    console.log(`Match: ${hasExactMatch}, Confident: ${isConfidentMatch} (${confidence} >= ${minConfidence})`);
+    console.log(`Match: ${hasMatch}, Confident: ${isConfidentMatch} (${confidence} >= ${minConfidence})`);
 
-    if (hasExactMatch && isConfidentMatch) {
+    if (hasMatch && isConfidentMatch) {
       console.log("✅ WORD MATCHED! Advancing...");
       
       // End timing for this word
@@ -1026,11 +1041,11 @@ const handleSpeechResult = useCallback(
         });
       }, 300);
     } else {
-      console.log(`❌ No match or low confidence. Match: ${hasExactMatch}, Confidence: ${confidence}`);
+      console.log(`❌ No match or low confidence. Match: ${hasMatch}, Confidence: ${confidence}`);
       // Recognition will continue listening for the correct word
     }
   },
-  [currentWords, gameState, handleComplete, timer]
+  [currentWords, gameState, handleComplete, currentCollection, timer]
 );
 
   const handleSpeechError = useCallback((error) => {
