@@ -91,6 +91,45 @@ const SHARPStylishStarGame = () => {
       : [];
   };
 
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
+  // Add this function to handle submit button click
+  const handleSubmitClick = () => {
+    const currentData =
+      selectedCategory === "SHARP"
+        ? allInOneQuestions
+        : gameData[selectedClass][categories[selectedCategory].name];
+    const totalQuestions = Math.min(questionsLimit, currentData.length);
+    const answeredQuestions = answers.length;
+    const remainingQuestions = totalQuestions - answeredQuestions;
+
+    if (remainingQuestions > 0) {
+      setShowSubmitModal(true);
+    } else {
+      endGame();
+    }
+  };
+
+  // Add this helper function at the component level
+  const getOptionLabel = (index) => {
+    return String.fromCharCode(65 + index); // A, B, C, D
+  };
+
+  const getTextCase = (text) => {
+    return selectedClass === "I-II" || selectedClass === "III-V"
+      ? text.toUpperCase()
+      : text;
+  };
+
+  // Add this helper function to process question text
+  const formatQuestionText = (questionText) => {
+    // Look for text within single quotes and make it bold and uppercase
+    const formatted = questionText.replace(/'([^']+)'/g, (match, word) => {
+      return `<span class="font-bold text-yellow-300 text-3xl uppercase">'${word}'</span>`;
+    });
+
+    return formatted;
+  };
+
   const getCategoryWiseScores = () => {
     if (selectedCategory !== "SHARP" || !allInOneQuestions) return null;
 
@@ -608,7 +647,7 @@ const SHARPStylishStarGame = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 relative overflow-hidden">
         <div className="bg-white/10 backdrop-blur-lg border-b border-white/20 p-6 shadow-2xl">
-          <div className="flex justify-between items-center max-w-7xl mx-auto">
+          <div className="flex justify-between items-center w-full px-4">
             <div className="flex items-center gap-6">
               <button
                 onClick={resetGame}
@@ -680,7 +719,7 @@ const SHARPStylishStarGame = () => {
         </div>
 
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-120px)] p-8">
-          <div className="w-full max-w-2xl mb-8">
+          <div className="w-full mb-8 px-4">
             <div className="bg-white/10 rounded-full h-3 overflow-hidden">
               <div
                 className="bg-gradient-to-r from-green-400 to-emerald-500 h-full transition-all duration-500"
@@ -691,45 +730,106 @@ const SHARPStylishStarGame = () => {
             </div>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 max-w-2xl w-full border border-white/20 shadow-2xl">
-            <div className="text-center mb-8">
-              <div className="text-6xl mb-4">
-                {selectedCategory === "SHARP"
-                  ? "✨"
-                  : categories[selectedCategory].icon}
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-2">
-                {question.question}
-              </h2>
-              <div className="text-purple-200 mb-2">
-                Choose the correct answer
-              </div>
-              <div className="text-lg font-semibold text-yellow-300">
-                Question {currentQuestion + 1} of {totalQuestions}
-              </div>
-              {selectedCategory === "SHARP" && question.category && (
-                <div className="text-md font-medium text-cyan-300 mt-2">
-                  Category: {question.category}
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 w-full mx-4 border border-white/20 shadow-2xl">
+            <div className="w-full mb-6">
+              {/* Simplified Game Info Bar - Just the instruction line */}
+              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 border border-white/20 text-center">
+                <div className="text-white/90 text-lg">
+                  {gameMode === "practice" && (
+                    <div>
+                      <span className="font-bold text-green-300">
+                        📚 Practice Mode:
+                      </span>{" "}
+                      Take your time, get instant feedback, and learn from
+                      mistakes!
+                    </div>
+                  )}
+                  {gameMode === "test" && (
+                    <div>
+                      <span className="font-bold text-blue-300">
+                        📝 Test Mode:
+                      </span>{" "}
+                      No timer, no feedback during the game. Review answers at
+                      the end.
+                    </div>
+                  )}
+                  {gameMode === "quiz" && (
+                    <div>
+                      <span className="font-bold text-orange-300">
+                        ⏱️ Quiz Mode:
+                      </span>{" "}
+                      30 seconds per question! Quick thinking required. No
+                      feedback during the game.
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
+            </div>
+            <div className="text-center mb-8">
+              {/* Icon and Category - Same Line */}
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="text-4xl">
+                  {selectedCategory === "SHARP"
+                    ? "✨"
+                    : categories[selectedCategory].icon}
+                </div>
+                <div className="text-2xl font-bold text-cyan-300">
+                  {selectedCategory === "SHARP" && question.category && (
+                    <div className="text-md font-medium text-cyan-300 mt-2">
+                      Category: {question.category}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center mb-6">
+                <div className="text-purple-200 text-lg">
+                  Choose the correct answer
+                </div>
+                <div className="text-lg font-semibold text-yellow-300">
+                  Question {currentQuestion + 1} of {totalQuestions}
+                </div>
+              </div>
+
+              <h2
+                className="text-2xl font-bold text-white mb-2"
+                dangerouslySetInnerHTML={{
+                  __html: formatQuestionText(question.question),
+                }}
+              />
             </div>
 
-            <div className="grid grid-cols-2 gap-6 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 w-full">
               {question.options.map((option, index) => (
                 <button
                   key={index}
                   onClick={() => handleAnswer(option)}
                   disabled={showFeedback}
-                  className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 border border-white/20 text-white font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-lg"
+                  className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/15 to-white/5 hover:from-white/25 hover:to-white/15 border-2 border-white/20 hover:border-white/40 text-white font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-lg text-left min-h-[80px] flex items-center w-full"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative z-10 text-lg">{option}</div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative z-10 flex items-center gap-4 w-full">
+                    {/* Option Label Circle */}
+                    <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+                      {getOptionLabel(index)}
+                    </div>
+                    {/* Option Text */}
+                    <div
+                      className={`${
+                        selectedClass === "I-II" || selectedClass === "III-V"
+                          ? "text-2xl"
+                          : "text-xl"
+                      } flex-1 leading-tight`}
+                    >
+                      {getTextCase(option)}
+                    </div>
+                  </div>
                 </button>
               ))}
             </div>
 
             {gameMode === "quiz" && (
-              <div className="mb-6">
+              <div className="mb-6 w-full">
                 <div className="bg-white/10 rounded-full h-2 overflow-hidden">
                   <div
                     className={`h-full transition-all duration-1000 ${getTimerColor()}`}
@@ -739,7 +839,7 @@ const SHARPStylishStarGame = () => {
               </div>
             )}
 
-            <div className="flex justify-center gap-6">
+            <div className="flex justify-center gap-6 flex-wrap">
               <button
                 onClick={() => handleNavigation("prev")}
                 disabled={currentQuestion === 0 || showFeedback}
@@ -759,7 +859,7 @@ const SHARPStylishStarGame = () => {
               </button>
 
               <button
-                onClick={endGame}
+                onClick={handleSubmitClick}
                 disabled={showFeedback}
                 className="flex items-center gap-2 bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
               >
@@ -769,6 +869,55 @@ const SHARPStylishStarGame = () => {
             </div>
           </div>
 
+          {showSubmitModal && (
+            <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+              <div className="bg-white/15 backdrop-blur-lg rounded-2xl p-8 border border-white/30 shadow-2xl max-w-md mx-4">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">⚠️</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">
+                    Submit Game?
+                  </h3>
+                  <p className="text-white/80 mb-6">
+                    You still have{" "}
+                    {(() => {
+                      const currentData =
+                        selectedCategory === "SHARP"
+                          ? allInOneQuestions
+                          : gameData[selectedClass][
+                              categories[selectedCategory].name
+                            ];
+                      const totalQuestions = Math.min(
+                        questionsLimit,
+                        currentData.length
+                      );
+                      const remaining = totalQuestions - answers.length;
+                      return `${remaining} question${
+                        remaining > 1 ? "s" : ""
+                      } left to answer`;
+                    })()}{" "}
+                    Are you sure you want to submit now?
+                  </p>
+                  <div className="flex gap-4 justify-center">
+                    <button
+                      onClick={() => setShowSubmitModal(false)}
+                      className="bg-gradient-to-r from-gray-500 to-gray-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
+                    >
+                      Continue Playing
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowSubmitModal(false);
+                        endGame();
+                      }}
+                      className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
+                    >
+                      Yes, Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           {showFeedback && gameMode === "practice" && (
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
               <div
