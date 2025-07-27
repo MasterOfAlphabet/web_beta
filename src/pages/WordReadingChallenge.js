@@ -247,72 +247,39 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     isEnabledRef.current = isEnabled;
   }, [isEnabled]);
 
-  const startRecognition = useCallback(() => {
-    if (!recognitionRef.current || isRecordingRef.current) {
-      console.log("Recognition already running or not available");
-      return;
-    }
+const startRecognition = useCallback(() => {
+    if (!recognitionRef.current || isRecordingRef.current) return;
 
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-
-    activeSessionRef.current = Symbol('recognition-session');
+    console.log("🎤 Starting recognition");
+    activeSessionRef.current = Symbol('session');
     const currentSession = activeSessionRef.current;
 
-    console.log("Starting fresh recognition session");
-    
     try {
       isRecordingRef.current = true;
-      setState(prev => ({
-        ...prev,
-        isRecording: true,
-        error: null,
-        interimTranscript: "",
-        finalTranscript: "",
-        confidence: 0,
-        isFinal: false,
-      }));
+      setState(prev => ({ ...prev, isRecording: true, error: null }));
       
       recognitionRef.current.start();
-      
+
+      // Auto-stop after 5 seconds if no speech detected
       timeoutRef.current = setTimeout(() => {
-        if (isMountedRef.current && activeSessionRef.current === currentSession && isRecordingRef.current) {
-          console.log("Auto-stopping recognition after timeout");
-          try {
-            recognitionRef.current.stop();
-          } catch (e) {
-            console.warn("Timeout stop error:", e);
-          }
+        if (isMountedRef.current && activeSessionRef.current === currentSession) {
+          console.log("🕒 Auto-stopping after silence");
+          recognitionRef.current.stop();
         }
-      }, 6000);
+      }, 5000);
 
     } catch (err) {
-      console.error("Start recognition error:", err);
-      isRecordingRef.current = false;
-      activeSessionRef.current = null;
+      console.error("Start error:", err);
       setState(prev => ({ ...prev, error: err.message, isRecording: false }));
     }
   }, []);
 
   const stopRecognition = useCallback(() => {
-    console.log("Manual stop requested");
-    
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-
-    activeSessionRef.current = null;
-    
     if (recognitionRef.current && isRecordingRef.current) {
-      try {
-        isRecordingRef.current = false;
-        recognitionRef.current.stop();
-      } catch (e) {
-        console.warn("Stop recognition error:", e);
-      }
+      console.log("🛑 Stopping recognition");
+      activeSessionRef.current = null;
+      isRecordingRef.current = false;
+      recognitionRef.current.stop();
     }
   }, []);
 
@@ -398,26 +365,30 @@ const restartRecognition = useCallback(() => {
       }
     };
 
-    recognition.onend = () => {
-      if (!isMountedRef.current) return;
-      console.log("⏹️ Recognition ended");
-      
-      isRecordingRef.current = false;
-      setState(prev => ({ ...prev, isRecording: false }));
-      
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-      
-      if (isEnabledRef.current && isMountedRef.current && activeSessionRef.current) {
-        setTimeout(() => {
-          if (isEnabledRef.current && isMountedRef.current && activeSessionRef.current) {
-            startRecognition();
-          }
-        }, 500);
-      }
-    };
+  // Modify the onend handler to prevent auto-restart loops:
+  recognition.onend = () => {
+    if (!isMountedRef.current) return;
+    console.log("⏹️ Recognition ended");
+    
+    isRecordingRef.current = false;
+    setState(prev => ({ ...prev, isRecording: false }));
+    
+    // Clear any pending timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    
+    // Only restart if still enabled AND wasn't manually stopped
+    if (isEnabledRef.current && activeSessionRef.current) {
+      console.log("🔁 Auto-restarting recognition");
+      setTimeout(() => {
+        if (isEnabledRef.current && activeSessionRef.current && !isRecordingRef.current) {
+          startRecognition();
+        }
+      }, 300);
+    }
+  };
 
     recognition.onerror = (event) => {
       console.error("❌ Speech recognition error:", event.error);
@@ -949,104 +920,58 @@ const WordReadingChallenge = () => {
     }, [])
   );
 
-const handleSpeechResult = useCallback(
-  (transcript, confidence = 0) => {
-    console.log("🎯 RECEIVED TRANSCRIPT:", transcript, "Confidence:", confidence);
+const handleSpeechResult = useCallback((transcript, confidence = 0) => {
+  console.log("Heard:", transcript, "Confidence:", confidence);
+alert("Heard:" + transcript +  "Confidence:" + confidence);
+  if (gameState.phase !== "challenge" || gameState.isPaused) return;
 
-    if (gameState.phase !== "challenge" || gameState.isPaused) {
-      console.log("❌ Game not in challenge phase or paused");
-      return;
-    }
+  const currentWord = currentWords[gameState.currentWordIndex];
+  const cleanTranscript = cleanWord(transcript);
+  const cleanCurrent = cleanWord(currentWord);
+
+  // Enhanced matching with tolerance
+  const isMatch = areWordsEquivalent(cleanTranscript, cleanCurrent) || 
+                 cleanCurrent.includes(cleanTranscript) || 
+                 cleanTranscript.includes(cleanCurrent);
+
+  const minConfidence = currentCollection.theme.includes("Advanced") ? 0.6 : 0.4;
+  
+  if (isMatch && confidence >= minConfidence) {
+    console.log("✅ Match found! Advancing...");
     
-    if (gameState.currentWordIndex >= currentWords.length) {
-      console.log("❌ All words completed");
-      handleComplete();
-      return;
-    }
-
-    const currentWord = currentWords[gameState.currentWordIndex];
-    const spokenWords = transcript.toLowerCase().trim().split(/\s+/);
-
-    console.log(`🔍 Checking "${transcript}" against current word: "${currentWord}"`);
-
-    // Enhanced matching - check all alternatives
-    const hasMatch = spokenWords.some(spokenWord => {
-      const cleanSpoken = cleanWord(spokenWord);
-      const cleanCurrent = cleanWord(currentWord);
-      
-      // Direct match
-      if (areWordsEquivalent(cleanSpoken, cleanCurrent)) {
-        console.log("✅ Exact match found");
-        return true;
+    // 1. Stop current recognition
+    speech.stopRecognition();
+    
+    // 2. Record the match
+    setRecognizedWords(prev => [...prev, {
+      word: currentWord,
+      position: gameState.currentWordIndex,
+      isCorrect: true,
+      timestamp: Date.now()
+    }]);
+    
+    // 3. Advance after brief delay
+    setTimeout(() => {
+      const newIndex = gameState.currentWordIndex + 1;
+      if (newIndex < currentWords.length) {
+        setGameState(prev => ({ ...prev, currentWordIndex: newIndex }));
+        // Restart recognition via the useEffect below
+      } else {
+        handleComplete();
       }
+    }, 300);
+  }
+}, [currentWords, gameState, speech, handleComplete, currentCollection]);
 
-      // Check for partial matches (for longer words)
-      if (cleanCurrent.length > 5 && cleanSpoken.length > 3) {
-        if (cleanCurrent.includes(cleanSpoken) || cleanSpoken.includes(cleanCurrent)) {
-          console.log("✅ Partial match found");
-          return true;
-        }
-      }
-      
-      return false;
-    });
-
-    // Confidence threshold based on word difficulty
-    const minConfidence = currentCollection.theme.includes("Advanced") ? 0.6 : 0.4;
-    const isConfidentMatch = confidence >= minConfidence;
-
-    console.log(`Match: ${hasMatch}, Confident: ${isConfidentMatch} (${confidence} >= ${minConfidence})`);
-
-    if (hasMatch && isConfidentMatch) {
-      console.log("✅ WORD MATCHED! Advancing...");
-      
-      // End timing for this word
-      timer.endWordTimer(currentWord, true);
-
-      setLastRecognized({
-        word: currentWord,
-        position: gameState.currentWordIndex,
-        timestamp: Date.now(),
-        confidence: confidence,
-      });
-
-      setRecognizedWords((prev) => {
-        const newWords = [...prev];
-        if (!newWords.some((w) => w.position === gameState.currentWordIndex)) {
-          newWords.push({
-            word: currentWord,
-            position: gameState.currentWordIndex,
-            isCorrect: true,
-            timestamp: Date.now(),
-            confidence: confidence,
-            transcript: transcript,
-          });
-        }
-        return newWords;
-      });
-
-      // Advance to next word after brief delay
-      setTimeout(() => {
-        setGameState((prev) => {
-          const newIndex = prev.currentWordIndex + 1;
-          if (newIndex < currentWords.length) {
-            console.log(`📍 Moving to word ${newIndex}: "${currentWords[newIndex]}"`);
-            // Start timing for next word
-            timer.startWordTimer(newIndex);
-            return { ...prev, currentWordIndex: newIndex };
-          } else {
-            console.log("🏁 All words completed!");
-            return { ...prev, isCompleted: true };
-          }
-        });
-      }, 300);
-    } else {
-      console.log(`❌ No match or low confidence. Match: ${hasMatch}, Confidence: ${confidence}`);
-      // Recognition will continue listening for the correct word
-    }
-  },
-  [currentWords, gameState, handleComplete, currentCollection, timer]
-);
+// This effect handles starting recognition when word changes
+useEffect(() => {
+  if (gameState.phase === "challenge" && 
+      !gameState.isPaused && 
+      !speech.isRecording) {
+    console.log("🔄 Starting recognition for new word");
+    setTimeout(() => speech.startRecognition(), 100);
+  }
+}, [gameState.currentWordIndex, gameState.phase, gameState.isPaused, speech]);
 
   const handleSpeechError = useCallback((error) => {
     console.error("Speech recognition error:", error);
@@ -1124,26 +1049,26 @@ useEffect(() => {
   }
 }, [gameState.currentWordIndex, gameState.phase, gameState.isPaused, currentWords, speech, timer]);
 
-// Update navigation handlers
+
 const handleNext = useCallback(() => {
   if (gameState.currentWordIndex < currentWords.length - 1) {
-    console.log("👆 Manual next clicked");
-    setGameState((prev) => ({
+    speech.stopRecognition();
+    setGameState(prev => ({
       ...prev,
-      currentWordIndex: prev.currentWordIndex + 1,
+      currentWordIndex: prev.currentWordIndex + 1
     }));
   }
-}, [gameState.currentWordIndex, currentWords.length]);
+}, [gameState.currentWordIndex, currentWords.length, speech]);
 
 const handlePrevious = useCallback(() => {
   if (gameState.currentWordIndex > 0) {
-    console.log("👆 Manual previous clicked");
-    setGameState((prev) => ({
+    speech.stopRecognition();
+    setGameState(prev => ({
       ...prev,
-      currentWordIndex: prev.currentWordIndex - 1,
+      currentWordIndex: prev.currentWordIndex - 1
     }));
   }
-}, [gameState.currentWordIndex]);
+}, [gameState.currentWordIndex, speech]);
 
   // Stats calculations
   // STEP 7: REPLACE your stats calculation with this enhanced version:
