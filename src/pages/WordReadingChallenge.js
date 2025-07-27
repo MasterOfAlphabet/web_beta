@@ -948,7 +948,7 @@ const WordReadingChallenge = () => {
   // UPDATE the handleSpeechResult function in your main component:
 
 const handleSpeechResult = useCallback(
-  (transcript, confidence = 0) => {
+  (transcript, confidence = 0.8) => {
     console.log("🎯 RECEIVED TRANSCRIPT:", transcript, "Confidence:", confidence);
 
     if (gameState.phase !== "challenge" || gameState.isPaused) {
@@ -967,17 +967,17 @@ const handleSpeechResult = useCallback(
 
     console.log(`🔍 Checking "${transcript}" against current word: "${currentWord}"`);
 
-    // Use enhanced word matching
+    // Simplified word matching - check each spoken word against current word
     const hasExactMatch = spokenWords.some((spokenWord) => {
-      const cleanSpoken = cleanWord(spokenWord);
-      const cleanCurrent = cleanWord(currentWord);
-      const isMatch = areWordsEquivalent(cleanSpoken, cleanCurrent);
+      const cleanSpoken = spokenWord.toLowerCase().replace(/[^\w]/g, '').trim();
+      const cleanCurrent = currentWord.toLowerCase().replace(/[^\w]/g, '').trim();
+      const isMatch = cleanSpoken === cleanCurrent || areWordsEquivalent(cleanSpoken, cleanCurrent);
       console.log(`   Comparing "${cleanSpoken}" vs "${cleanCurrent}": ${isMatch}`);
       return isMatch;
     });
 
-    // Only accept high-confidence matches for difficult words
-    const minConfidence = currentCollection.theme.includes("Advanced") ? 0.7 : 0.5;
+    // Lower confidence threshold for testing
+    const minConfidence = 0.3; // Much lower threshold
     const isConfidentMatch = confidence >= minConfidence;
 
     console.log(`Match: ${hasExactMatch}, Confident: ${isConfidentMatch} (${confidence} >= ${minConfidence})`);
@@ -987,8 +987,6 @@ const handleSpeechResult = useCallback(
       
       // End timing for this word
       timer.endWordTimer(currentWord, true);
-
-      // Recognition will auto-stop after onResult, so we don't need to manually stop
 
       setLastRecognized({
         word: currentWord,
@@ -1032,7 +1030,7 @@ const handleSpeechResult = useCallback(
       // Recognition will continue listening for the correct word
     }
   },
-  [currentWords, gameState, handleComplete, currentCollection, timer]
+  [currentWords, gameState, handleComplete, timer]
 );
 
   const handleSpeechError = useCallback((error) => {
