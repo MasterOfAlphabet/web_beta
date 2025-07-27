@@ -224,7 +224,14 @@ const WORD_COLLECTIONS = {
   },
 };
 
-// IMPROVED DeepSeek approach with fixes
+// FIXED VERSION - No more double beeps!
+
+// The key changes:
+// 1. Added restartRecognition function to the hook
+// 2. Consolidated all recognition restart logic into one useEffect
+// 3. Removed startFreshRecognition references
+// 4. Manual navigation now just updates state, letting useEffect handle recognition
+
 const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const [state, setState] = useState({
     isSupported: true,
@@ -240,8 +247,8 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const isMountedRef = useRef(true);
   const isEnabledRef = useRef(isEnabled);
   const activeSessionRef = useRef(null);
-  const isRecordingRef = useRef(false); // Fix stale closure issue
-  const timeoutRef = useRef(null); // Track timeout for cleanup
+  const isRecordingRef = useRef(false);
+  const timeoutRef = useRef(null);
 
   // Update ref when isEnabled changes
   useEffect(() => {
@@ -249,26 +256,23 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   }, [isEnabled]);
 
   const startRecognition = useCallback(() => {
-    // Use ref instead of state to avoid stale closures
     if (!recognitionRef.current || isRecordingRef.current) {
       console.log("Recognition already running or not available");
       return;
     }
 
-    // Clear any existing timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
 
-    // Generate a new session ID
     activeSessionRef.current = Symbol('recognition-session');
     const currentSession = activeSessionRef.current;
 
     console.log("🎤 Starting fresh recognition session");
     
     try {
-      isRecordingRef.current = true; // Update ref immediately
+      isRecordingRef.current = true;
       setState(prev => ({
         ...prev,
         isRecording: true,
@@ -281,7 +285,6 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       
       recognitionRef.current.start();
       
-      // Set timeout to automatically stop after 6 seconds if no result
       timeoutRef.current = setTimeout(() => {
         if (isMountedRef.current && 
             activeSessionRef.current === currentSession && 
@@ -306,13 +309,11 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
   const stopRecognition = useCallback(() => {
     console.log("🛑 Manual stop requested");
     
-    // Clear timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
 
-    // Invalidate session to prevent restart
     activeSessionRef.current = null;
     
     if (recognitionRef.current && isRecordingRef.current) {
@@ -324,6 +325,32 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       }
     }
   }, []);
+
+  // NEW: Add restartRecognition function as suggested by DeepSeek
+  const restartRecognition = useCallback(() => {
+    if (!recognitionRef.current) return;
+    
+    console.log("🔄 Restarting recognition with clean slate");
+    
+    // Stop current recognition if running
+    try {
+      if (isRecordingRef.current) {
+        recognitionRef.current.stop();
+      }
+    } catch (e) {
+      console.warn("Stop error during restart:", e);
+    }
+    
+    // Clear any active session to prevent auto-restart
+    activeSessionRef.current = null;
+    
+    // Start fresh recognition after a small delay
+    setTimeout(() => {
+      if (isMountedRef.current && isEnabledRef.current) {
+        startRecognition();
+      }
+    }, 300);
+  }, [startRecognition]);
 
   // Initialize recognition only once
   useEffect(() => {
@@ -339,10 +366,10 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     }
 
     const recognition = new SpeechRecognition();
-    recognition.continuous = false; // Single utterance mode
+    recognition.continuous = false;
     recognition.interimResults = true;
     recognition.lang = "en-GB";
-    recognition.maxAlternatives = 3; // Get more alternatives for better matching
+    recognition.maxAlternatives = 3;
 
     recognition.onstart = () => {
       if (!isMountedRef.current) return;
@@ -376,7 +403,6 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         }
       }
 
-      // Update state with interim results
       setState(prev => ({
         ...prev,
         interimTranscript: interim.trim(),
@@ -384,7 +410,6 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         isFinal: false,
       }));
 
-      // Handle final result
       if (finalTranscript.trim()) {
         const final = finalTranscript.trim();
         console.log("🎯 FINAL transcript:", final, "Confidence:", maxConfidence);
@@ -400,8 +425,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
         console.log("🔥 Firing onResult callback");
         onResult?.(final, maxConfidence);
         
-        // Stop recognition after getting final result
-        activeSessionRef.current = null; // Prevent restart
+        activeSessionRef.current = null;
         try {
           recognitionRef.current.stop();
         } catch (e) {
@@ -417,27 +441,25 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       isRecordingRef.current = false;
       setState(prev => ({ ...prev, isRecording: false }));
       
-      // Clear timeout since recognition ended
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
       }
       
-      // MODIFIED: Only restart if enabled AND session is still active (not manually stopped)
+      // MODIFIED: Only restart if enabled AND session is still active
       if (isEnabledRef.current && 
           isMountedRef.current && 
-          activeSessionRef.current) { // This is the key - only restart if session wasn't invalidated
+          activeSessionRef.current) {
         
         console.log("🔄 Auto-restarting recognition");
         setTimeout(() => {
-          // Double-check conditions after delay
           if (isEnabledRef.current && 
               isMountedRef.current && 
               !isRecordingRef.current &&
               activeSessionRef.current) {
             startRecognition();
           }
-        }, 500); // Slightly longer delay for stability
+        }, 500);
       } else {
         console.log("❌ Not restarting - conditions not met");
       }
@@ -447,9 +469,8 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
       console.error("❌ Speech recognition error:", event.error);
       
       isRecordingRef.current = false;
-      activeSessionRef.current = null; // Invalidate session
+      activeSessionRef.current = null;
       
-      // Clear timeout
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
@@ -466,7 +487,6 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
 
     recognitionRef.current = recognition;
 
-    // Cleanup function
     return () => {
       console.log("🧹 Cleaning up recognition");
       isMountedRef.current = false;
@@ -487,7 +507,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     };
   }, [onResult, onError]);
 
-  // Handle enable/disable
+  // Handle enable/disable - SIMPLIFIED to avoid double starts
   useEffect(() => {
     if (isEnabled && !isRecordingRef.current) {
       console.log("🟢 Enabling speech recognition");
@@ -502,6 +522,7 @@ const useSpeechRecognition = (isEnabled, onResult, onError) => {
     ...state,
     startRecognition,
     stopRecognition,
+    restartRecognition, // ADD this new function
   };
 };
 
