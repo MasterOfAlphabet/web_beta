@@ -123,6 +123,11 @@ import ReadingPassage from "./pages/FlashCards/Reading/ReadingPassage";
 import ReadingWordsEmojis from "./pages/FlashCards/Reading/ReadingWordsEmojis";
 import WordReadingChallenge from "./pages/WordReadingChallenge";
 
+import WordSpeakingChallenge from "./pages/WordSpeakingChallenge";
+import WordSeriesCard from "./pages/WordSeriesCard";
+
+import TalentHub from "./pages/TalentHub";
+
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
 
@@ -444,6 +449,11 @@ function App() {
           />
 
           <Route path="/word-reading-challenge" element={< WordReadingChallenge />}/>
+
+
+<Route path="/word-speaking-challenge" element={< WordSpeakingChallenge />}/>
+<Route path="/word-series-card" element={< WordSeriesCard />}/>
+<Route path="/talent-hub" element={< TalentHub />}/>
 
         </Routes>
 

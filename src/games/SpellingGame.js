@@ -332,6 +332,10 @@ const SpellingGame = () => {
 
   const [selectedVoice, setSelectedVoice] = useState(null);
 
+  const [isWordPlaying, setIsWordPlaying] = useState(false);
+  const [hasWordBeenPlayed, setHasWordBeenPlayed] = useState(false);
+  const [showWordHint, setShowWordHint] = useState(false);
+
   useEffect(() => {
     if ("speechSynthesis" in window) {
       synthRef.current = window.speechSynthesis;
@@ -382,37 +386,59 @@ const SpellingGame = () => {
 
   // Start game
   const startGame = () => {
-    const availableWords = wordBanks[classGroup][skillLevel];
-    const selectedWords = availableWords
-      .sort(() => Math.random() - 0.5)
-      .slice(0, wordCount);
+  const availableWords = wordBanks[classGroup][skillLevel];
+  const selectedWords = availableWords
+    .sort(() => Math.random() - 0.5)
+    .slice(0, wordCount);
 
-    setCurrentWords(selectedWords);
-    setCurrentWordIndex(0);
-    setUserSpelling("");
-    setResults([]);
-    setGameStartTime(Date.now());
-    setWordStartTime(Date.now());
-    setGameState("playing");
-  };
+  setCurrentWords(selectedWords);
+  setCurrentWordIndex(0);
+  setUserSpelling("");
+  setResults([]);
+  setGameStartTime(Date.now());
+  setWordStartTime(Date.now());
+  setGameState("playing");
+  
+  // Reset word-specific states
+  setHasWordBeenPlayed(false);
+  setIsWordPlaying(false);
+  setShowWordHint(false);
+};
 
   // Speak word
   const speakWord = (word) => {
-    if (synthRef.current) {
-      synthRef.current.cancel();
-      const utterance = new SpeechSynthesisUtterance(word);
-      utterance.rate = 0.8;
-      utterance.pitch = 1;
-      utterance.volume = 1;
+  if (synthRef.current) {
+    setIsWordPlaying(true);
+    synthRef.current.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.rate = 0.8;
+    utterance.pitch = 1;
+    utterance.volume = 1;
 
-      // Use the selected voice if available
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
-      }
-
-      synthRef.current.speak(utterance);
+    // Use the selected voice if available
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
     }
-  };
+
+    // Handle speech end
+    utterance.onend = () => {
+      setIsWordPlaying(false);
+      setHasWordBeenPlayed(true);
+    };
+
+    utterance.onerror = () => {
+      setIsWordPlaying(false);
+      setHasWordBeenPlayed(true);
+    };
+
+    synthRef.current.speak(utterance);
+  }
+};
+
+const toggleHint = () => {
+  setShowWordHint(!showWordHint);
+};
 
   // Initialize speech recognition
   const initSpeechRecognition = () => {
@@ -612,6 +638,11 @@ const SpellingGame = () => {
     setResults([...results, result]);
 
     if (currentWordIndex < currentWords.length - 1) {
+      // Reset word-specific states for next word
+      setHasWordBeenPlayed(false);
+      setIsWordPlaying(false);
+      setShowWordHint(false);
+
       setCurrentWordIndex(currentWordIndex + 1);
       setUserSpelling("");
       setWordStartTime(Date.now());
@@ -642,6 +673,11 @@ const SpellingGame = () => {
     setResults([...results, result]);
 
     if (currentWordIndex < currentWords.length - 1) {
+      // Reset word-specific states for next word
+      setHasWordBeenPlayed(false);
+      setIsWordPlaying(false);
+      setShowWordHint(false);
+
       setCurrentWordIndex(currentWordIndex + 1);
       setUserSpelling("");
       setWordStartTime(Date.now());
@@ -823,12 +859,20 @@ const SpellingGame = () => {
                   Listen and Spell This Word:
                 </h2>
                 <button
-                  onClick={() => speakWord(currentWord)}
-                  className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 text-white font-bold py-4 px-8 rounded-2xl shadow-lg transform transition-all duration-300 hover:scale-105 flex items-center gap-3 mx-auto"
-                >
-                  <Play className="w-6 h-6" />
-                  🔊 Read Me
-                </button>
+  onClick={() => speakWord(currentWord)}
+  disabled={isWordPlaying}
+  className={`${
+    isWordPlaying 
+      ? "bg-gradient-to-r from-gray-400 to-gray-500 cursor-not-allowed" 
+      : "bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600"
+  } text-white font-bold py-4 px-8 rounded-2xl shadow-lg transform transition-all duration-300 ${
+    !isWordPlaying ? "hover:scale-105" : ""
+  } flex items-center gap-3 mx-auto`}
+>
+  <Play className="w-6 h-6" />
+  {isWordPlaying ? "🔊 Reading..." : "🔊 Read Me"}
+</button>
+
               </div>
 
               {/* Speech Input */}
@@ -836,18 +880,29 @@ const SpellingGame = () => {
                 <div className="flex justify-center mb-4">
                   <button
                     onClick={toggleListening}
+                    disabled={!hasWordBeenPlayed || isWordPlaying}
                     className={`${
-                      isListening
+                      !hasWordBeenPlayed || isWordPlaying
+                        ? "bg-gradient-to-r from-gray-400 to-gray-500 cursor-not-allowed"
+                        : isListening
                         ? "bg-gradient-to-r from-red-400 to-red-600 animate-pulse"
                         : "bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700"
-                    } text-white font-bold py-4 px-8 rounded-2xl shadow-lg transform transition-all duration-300 hover:scale-105 flex items-center gap-3`}
+                    } text-white font-bold py-4 px-8 rounded-2xl shadow-lg transform transition-all duration-300 ${
+                      hasWordBeenPlayed && !isWordPlaying && !isListening
+                        ? "hover:scale-105"
+                        : ""
+                    } flex items-center gap-3`}
                   >
                     {isListening ? (
                       <MicOff className="w-6 h-6" />
                     ) : (
                       <Mic className="w-6 h-6" />
                     )}
-                    {isListening ? "🎤 Listening..." : "🎤 Start Spelling"}
+                    {!hasWordBeenPlayed || isWordPlaying
+                      ? "🎤 Listen to word first"
+                      : isListening
+                      ? "🎤 Listening..."
+                      : "🎤 Start Spelling"}
                   </button>
                 </div>
 
@@ -884,25 +939,70 @@ const SpellingGame = () => {
                     </p>
                   </div>
                 </div>
-              )}
+              )}{/* Word Display Section */}
+<div className="mb-6">
+  {/* Show Hint Button - Only show after word is played */}
+  {hasWordBeenPlayed && !isWordPlaying && (
+    <div className="text-center mb-4">
+      <button
+        onClick={toggleHint}
+        className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-2 px-6 rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105 flex items-center gap-2 mx-auto"
+      >
+        💡 {showWordHint ? "Hide Hint" : "Show Hint"}
+      </button>
+    </div>
+  )}
 
-              {/* Submit Button */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+  {/* Word Hint - Only show when user clicks hint button */}
+  {showWordHint && (
+    <div className="mb-4 bg-yellow-500/20 border border-yellow-400/30 rounded-xl p-4">
+      <p className="text-yellow-300 font-semibold mb-2 text-center">💡 Word Hint:</p>
+      <p className="text-white text-2xl font-mono tracking-widest text-center">
+        {currentWord.toUpperCase()}
+      </p>
+      <p className="text-yellow-200 text-sm mt-2 text-center">
+        (Use this as a reference while spelling)
+      </p>
+    </div>
+  )}
+  
+
                 <button
                   onClick={submitSpelling}
-                  disabled={!userSpelling}
-                  className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-2xl shadow-lg transform transition-all duration-300 hover:scale-105 flex items-center gap-3 mx-auto"
+                  disabled={
+                    !userSpelling || !hasWordBeenPlayed || isWordPlaying
+                  }
+                  className={`${
+                    !userSpelling || !hasWordBeenPlayed || isWordPlaying
+                      ? "bg-gradient-to-r from-gray-400 to-gray-500 cursor-not-allowed"
+                      : "bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600"
+                  } text-white font-bold py-4 px-8 rounded-2xl shadow-lg transform transition-all duration-300 ${
+                    userSpelling && hasWordBeenPlayed && !isWordPlaying
+                      ? "hover:scale-105"
+                      : ""
+                  } flex items-center gap-3 mx-auto`}
                 >
                   <CheckCircle className="w-6 h-6" />
-                  Submit Spelling
+                  {!hasWordBeenPlayed || isWordPlaying
+                    ? "Listen to word first"
+                    : "Submit Spelling"}
                 </button>
 
                 <button
                   onClick={skipWord}
-                  className="bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white font-bold py-4 px-8 rounded-2xl shadow-lg transform transition-all duration-300 hover:scale-105 flex items-center gap-3 mx-auto"
+                  disabled={!hasWordBeenPlayed || isWordPlaying}
+                  className={`${
+                    !hasWordBeenPlayed || isWordPlaying
+                      ? "bg-gradient-to-r from-gray-400 to-gray-500 cursor-not-allowed"
+                      : "bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600"
+                  } text-white font-bold py-4 px-8 rounded-2xl shadow-lg transform transition-all duration-300 ${
+                    hasWordBeenPlayed && !isWordPlaying ? "hover:scale-105" : ""
+                  } flex items-center gap-3 mx-auto`}
                 >
                   <SkipForward className="w-6 h-6" />
-                  Skip Word
+                  {!hasWordBeenPlayed || isWordPlaying
+                    ? "Listen to word first"
+                    : "Skip Word"}
                 </button>
               </div>
             </div>

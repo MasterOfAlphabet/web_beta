@@ -1,13 +1,15 @@
           <Route path="/vocabulary-builder" element={<VisualVocabularyBuilder />}/>
 
-<Route path="/reading-passage" element={< ReadingPassage />}/>
-<Route path="/word-reading-challenge" element={< WordReadingChallenge />}/>
+<Route path="/talent-hub" element={< TalentHub />}/>
 
-import AudioSpellingChallenger from "./pages/AudioSpellingChallenger";
+import TalentHub from "./pages/TalentHub";
 import VisualVocabularyBuilder from "./pages/VisualVocabularyBuilder";
 
 import ReadingPassage from "./pages/FlashCards/Reading/ReadingPassage";
-import WordReadingChallenge from "./pages/WordReadingChallenge";
+
+
+
+http://localhost:3000/word-series-card
 
 http://localhost:3000/vocabulary-builder
 http://localhost:3000/audio-spelling
@@ -17,22 +19,12 @@ http://localhost:3000/grammar-pattern-GrammarPatternDetective
 http://localhost:3000/reading-passage
 http://localhost:3000/word-reading-challenge
 
+http://localhost:3000/word-speaking-challenge
 
+http://localhost:3000/word-reading-challenge
 
 
 
 	
-
-
-
-
-
-
-
-
-
-
-
-
 
 

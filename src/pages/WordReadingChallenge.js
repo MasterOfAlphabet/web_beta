@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   BookOpen, Star, Trophy, Clock, RotateCcw, Play, Volume2, 
   Users, GraduationCap, Timer, BarChart3, CheckCircle, 
-  XCircle, Target, Zap, Brain, Award, Pause
+  XCircle, Target, Zap, Brain, Award, Pause, List, Mic, ArrowRight,
+  Eye, EyeOff, Settings, Shuffle, Volume1, VolumeX, SkipForward
 } from 'lucide-react';
 
-// Enhanced Time Tracking Hook
 const useTimeTracking = () => {
   const [sessionStartTime, setSessionStartTime] = useState(null);
   const [totalSessionTime, setTotalSessionTime] = useState(0);
@@ -111,7 +111,6 @@ const useTimeTracking = () => {
   };
 };
 
-// Time Display Component
 const TimeDisplay = ({ time, label, className = "" }) => {
   const formatTime = (milliseconds) => {
     const seconds = Math.floor(milliseconds / 1000);
@@ -131,7 +130,6 @@ const TimeDisplay = ({ time, label, className = "" }) => {
   );
 };
 
-// Enhanced Statistics Panel
 const StatisticsPanel = ({ stats, wordTimes, streak, bestStreak }) => {
   const formatTime = (milliseconds) => {
     const seconds = Math.floor(milliseconds / 1000);
@@ -172,7 +170,6 @@ const StatisticsPanel = ({ stats, wordTimes, streak, bestStreak }) => {
   );
 };
 
-// Word Card Component
 const WordCard = ({ 
   word, 
   isSelected, 
@@ -182,12 +179,15 @@ const WordCard = ({
   onClick, 
   difficulty,
   index,
-  isAnimating 
+  isAnimating,
+  isTarget,
+  showWordHints
 }) => {
   const getCardStyle = () => {
     if (isCorrect) return 'bg-gradient-to-br from-green-400/30 to-emerald-600/30 border-green-400/60 text-green-100 shadow-green-500/30';
     if (isWrong) return 'bg-gradient-to-br from-red-400/30 to-pink-600/30 border-red-400/60 text-red-100 shadow-red-500/30';
     if (isSelected) return 'bg-gradient-to-br from-yellow-400/30 to-orange-600/30 border-yellow-400/60 text-yellow-100 shadow-yellow-500/30';
+    if (isTarget && showWordHints) return 'bg-gradient-to-br from-cyan-400/20 to-blue-600/20 border-cyan-400/40 text-cyan-100 shadow-cyan-500/20 animate-pulse';
     return 'bg-gradient-to-br from-white/10 to-white/5 border-white/20 text-white hover:bg-white/15 hover:border-white/30';
   };
 
@@ -207,7 +207,7 @@ const WordCard = ({
         relative p-4 rounded-2xl border-2 transition-all duration-300 transform hover:scale-105 
         cursor-pointer backdrop-blur-lg shadow-xl hover:shadow-2xl
         ${getCardStyle()}
-        ${isAnimating ? 'animate-pulse scale-110' : ''}
+        ${isAnimating ? 'animate-bounce scale-110' : ''}
       `}
       style={{ 
         animationDelay: `${index * 50}ms`,
@@ -235,13 +235,17 @@ const WordCard = ({
           <div className="w-6 h-6 bg-yellow-400 rounded-full animate-pulse"></div>
         </div>
       )}
+
+      {isTarget && showWordHints && (
+        <div className="absolute -top-1 -left-1">
+          <div className="w-3 h-3 bg-cyan-400 rounded-full animate-ping"></div>
+        </div>
+      )}
     </div>
   );
 };
 
-// Main Word Reading Challenge Component
 const WordReadingChallenge = () => {
-  // Word sets for different difficulty levels
   const wordSets = {
     'Class I-II': {
       words: [
@@ -251,7 +255,7 @@ const WordReadingChallenge = () => {
       ],
       difficulty: 'Easy',
       gridSize: { cols: 5, rows: 6 },
-      timeLimit: 300000 // 5 minutes
+      timeLimit: 300000
     },
     'Class III-V': {
       words: [
@@ -262,7 +266,7 @@ const WordReadingChallenge = () => {
       ],
       difficulty: 'Medium',
       gridSize: { cols: 5, rows: 6 },
-      timeLimit: 420000 // 7 minutes
+      timeLimit: 420000
     },
     'Class VI-X': {
       words: [
@@ -275,12 +279,13 @@ const WordReadingChallenge = () => {
       ],
       difficulty: 'Hard',
       gridSize: { cols: 5, rows: 6 },
-      timeLimit: 600000 // 10 minutes
+      timeLimit: 600000
     }
   };
 
-  // Game state
   const [selectedClass, setSelectedClass] = useState('Class I-II');
+  const [wordCount, setWordCount] = useState(15);
+  const [dictationMode, setDictationMode] = useState('one-word');
   const [currentWords, setCurrentWords] = useState([]);
   const [targetWord, setTargetWord] = useState('');
   const [selectedWordIndex, setSelectedWordIndex] = useState(null);
@@ -290,23 +295,34 @@ const WordReadingChallenge = () => {
   const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
-  const [gameMode, setGameMode] = useState('listen'); // 'listen' or 'find'
+  const [gameMode, setGameMode] = useState('listen');
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [showInstructions, setShowInstructions] = useState(true);
   const [animatingWord, setAnimatingWord] = useState(null);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [gameEnded, setGameEnded] = useState(false);
+  const [isContinuousPlaying, setIsContinuousPlaying] = useState(false);
+  
+  // NEW: Enhanced UX features
+  const [autoAdvance, setAutoAdvance] = useState(true);
+  const [speechSpeed, setSpeechSpeed] = useState(1.0);
+  const [speechVolume, setSpeechVolume] = useState(1.0);
+  const [showWordHints, setShowWordHints] = useState(false);
+  const [wordsQueue, setWordsQueue] = useState([]);
+  const [completedWordsCount, setCompletedWordsCount] = useState(0);
+  const [showSettings, setShowSettings] = useState(false);
+  const [celebrationMode, setCelebrationMode] = useState(false);
 
-  // Refs and time tracking
   const speechSynthesis = useRef(window.speechSynthesis);
   const timeTracking = useTimeTracking();
   const [currentWordTime, setCurrentWordTime] = useState(0);
 
-  // Initialize game
+  const wordCountOptions = [5, 10, 15, 20, 25, 30];
+
   useEffect(() => {
     resetGame();
-  }, [selectedClass]);
+  }, [selectedClass, wordCount]);
 
-  // Current word timer
   useEffect(() => {
     let interval;
     if (timeTracking.currentWordStartTime && timeTracking.isActive && !timeTracking.isPaused) {
@@ -319,11 +335,30 @@ const WordReadingChallenge = () => {
     return () => clearInterval(interval);
   }, [timeTracking.currentWordStartTime, timeTracking.isActive, timeTracking.isPaused]);
 
-  // Game functions
-  const resetGame = () => {
+  useEffect(() => {
+    if (isContinuousPlaying && gameStarted && !gameCompleted && !gameEnded && !timeTracking.isPaused) {
+      const timer = setTimeout(() => {
+        if (completedWordsCount < wordCount) {
+          nextWord();
+        }
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [completedWordsCount, isContinuousPlaying, gameStarted, gameCompleted, gameEnded, timeTracking.isPaused, wordCount]);
+
+  // NEW: Create shuffled queue of words for better randomization
+  const createWordsQueue = () => {
     const words = [...wordSets[selectedClass].words];
     const shuffled = words.sort(() => Math.random() - 0.5);
-    setCurrentWords(shuffled.slice(0, wordSets[selectedClass].gridSize.cols * wordSets[selectedClass].gridSize.rows));
+    const selectedWords = shuffled.slice(0, wordCount);
+    const queue = selectedWords.sort(() => Math.random() - 0.5); // Double shuffle for true randomness
+    return queue;
+  };
+
+  const resetGame = () => {
+    const queue = createWordsQueue();
+    setWordsQueue(queue);
+    setCurrentWords(queue);
     setTargetWord('');
     setSelectedWordIndex(null);
     setCorrectWords(new Set());
@@ -332,8 +367,12 @@ const WordReadingChallenge = () => {
     setStreak(0);
     setGameStarted(false);
     setCurrentWordIndex(0);
+    setCompletedWordsCount(0);
     setGameCompleted(false);
+    setGameEnded(false);
     setAnimatingWord(null);
+    setIsContinuousPlaying(false);
+    setCelebrationMode(false);
     timeTracking.resetTracking();
   };
 
@@ -341,32 +380,41 @@ const WordReadingChallenge = () => {
     setGameStarted(true);
     setShowInstructions(false);
     timeTracking.startSession();
+    setIsContinuousPlaying(dictationMode === 'continuous');
     nextWord();
   };
 
+  // FIXED: Enhanced nextWord function with proper random word selection
   const nextWord = () => {
-    if (currentWordIndex >= currentWords.length) {
+    if (completedWordsCount >= wordCount) {
       endGame();
       return;
     }
 
-    const word = currentWords[currentWordIndex];
+    // Get the next word from the queue
+    const word = wordsQueue[completedWordsCount];
     setTargetWord(word);
     setSelectedWordIndex(null);
-    setAnimatingWord(currentWordIndex);
-    timeTracking.startWordTimer(currentWordIndex);
     
-    // Speak the word
+    // Find the index of this word in the currentWords array for animation
+    const wordIndexInGrid = currentWords.findIndex(w => w === word);
+    setAnimatingWord(wordIndexInGrid);
+    
+    timeTracking.startWordTimer(completedWordsCount);
+    
+    // Enhanced speech synthesis
     if (speechSynthesis.current) {
       const utterance = new SpeechSynthesisUtterance(word);
-      utterance.rate = selectedClass === 'Class I-II' ? 0.8 : selectedClass === 'Class III-V' ? 0.9 : 1.0;
+      utterance.rate = speechSpeed * (selectedClass === 'Class I-II' ? 0.8 : selectedClass === 'Class III-V' ? 0.9 : 1.0);
+      utterance.volume = speechVolume;
       utterance.lang = 'en-US';
       speechSynthesis.current.speak(utterance);
     }
 
-    setTimeout(() => setAnimatingWord(null), 1000);
+    setTimeout(() => setAnimatingWord(null), 1200);
   };
 
+  // FIXED: Enhanced selectWord function
   const selectWord = (wordIndex) => {
     if (!gameStarted || correctWords.has(wordIndex) || wrongWords.has(wordIndex)) return;
     
@@ -374,25 +422,31 @@ const WordReadingChallenge = () => {
     const selectedWord = currentWords[wordIndex];
     
     if (selectedWord === targetWord) {
-      // Correct answer
       setCorrectWords(prev => new Set([...prev, wordIndex]));
       setScore(prev => prev + 1);
       setStreak(prev => {
         const newStreak = prev + 1;
         if (newStreak > bestStreak) setBestStreak(newStreak);
+        if (newStreak === 5 || newStreak === 10 || newStreak === 15) {
+          setCelebrationMode(true);
+          setTimeout(() => setCelebrationMode(false), 2000);
+        }
         return newStreak;
       });
-      timeTracking.endWordTimer(currentWordIndex, true);
+      timeTracking.endWordTimer(completedWordsCount, true);
       
-      setTimeout(() => {
-        setCurrentWordIndex(prev => prev + 1);
-        nextWord();
-      }, 1000);
+      if (autoAdvance) {
+        setTimeout(() => {
+          setCompletedWordsCount(prev => prev + 1);
+          if (!isContinuousPlaying && completedWordsCount + 1 < wordCount) {
+            nextWord();
+          }
+        }, 1000);
+      }
     } else {
-      // Wrong answer
       setWrongWords(prev => new Set([...prev, wordIndex]));
       setStreak(0);
-      timeTracking.endWordTimer(currentWordIndex, false);
+      timeTracking.endWordTimer(completedWordsCount, false);
       
       setTimeout(() => {
         setSelectedWordIndex(null);
@@ -405,10 +459,29 @@ const WordReadingChallenge = () => {
     }
   };
 
+  // NEW: Manual advance function for better control
+  const advanceToNextWord = () => {
+    if (completedWordsCount < wordCount) {
+      setCompletedWordsCount(prev => prev + 1);
+      nextWord();
+    }
+  };
+
+  // NEW: Skip current word function
+  const skipCurrentWord = () => {
+    timeTracking.endWordTimer(completedWordsCount, false);
+    setStreak(0);
+    if (completedWordsCount < wordCount) {
+      setCompletedWordsCount(prev => prev + 1);
+      nextWord();
+    }
+  };
+
   const repeatWord = () => {
     if (targetWord && speechSynthesis.current) {
       const utterance = new SpeechSynthesisUtterance(targetWord);
-      utterance.rate = selectedClass === 'Class I-II' ? 0.8 : selectedClass === 'Class III-V' ? 0.9 : 1.0;
+      utterance.rate = speechSpeed * (selectedClass === 'Class I-II' ? 0.8 : selectedClass === 'Class III-V' ? 0.9 : 1.0);
+      utterance.volume = speechVolume;
       utterance.lang = 'en-US';
       speechSynthesis.current.speak(utterance);
     }
@@ -416,6 +489,16 @@ const WordReadingChallenge = () => {
 
   const endGame = () => {
     setGameCompleted(true);
+    setIsContinuousPlaying(false);
+    timeTracking.endSession();
+    setCelebrationMode(true);
+    setTimeout(() => setCelebrationMode(false), 3000);
+  };
+
+  const endGameEarly = () => {
+    setGameEnded(true);
+    setGameStarted(false);
+    setIsContinuousPlaying(false);
     timeTracking.endSession();
   };
 
@@ -441,7 +524,14 @@ const WordReadingChallenge = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 p-4 relative overflow-hidden">
-      {/* Animated Background */}
+      {/* Celebration overlay */}
+      {celebrationMode && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+          <div className="text-8xl animate-bounce">🎉</div>
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-600/20 animate-pulse"></div>
+        </div>
+      )}
+
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-pink-400/20 to-red-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -449,7 +539,6 @@ const WordReadingChallenge = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-2xl">
             <span className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
@@ -461,32 +550,160 @@ const WordReadingChallenge = () => {
           </p>
         </div>
 
-        {/* Class Selection */}
         {!gameStarted && (
           <div className="mb-8">
-            <h2 className="text-2xl font-semibold text-white mb-4 text-center">
-              Select Your Class Level
-            </h2>
-            <div className="flex justify-center gap-4 flex-wrap">
-              {Object.keys(wordSets).map((classLevel) => (
-                <button
-                  key={classLevel}
-                  onClick={() => setSelectedClass(classLevel)}
-                  className={`px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 backdrop-blur-lg border flex items-center gap-2 ${
-                    selectedClass === classLevel
-                      ? 'bg-white/20 border-white/40 text-white shadow-2xl shadow-white/20'
-                      : 'bg-white/10 border-white/20 text-white/80 hover:bg-white/15'
-                  }`}
-                >
-                  {getClassIcon(classLevel)}
-                  {classLevel}
-                </button>
-              ))}
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-semibold text-white">Game Settings</h2>
+              <button
+                onClick={() => setShowSettings(!showSettings)}
+                className="p-2 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
+              >
+                <Settings className="w-5 h-5" />
+              </button>
             </div>
+            
+            <div className="grid md:grid-cols-3 gap-6 mb-6">
+              <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <GraduationCap className="w-5 h-5" />
+                  Select Class Level
+                </h3>
+                <div className="flex flex-col gap-2">
+                  {Object.keys(wordSets).map((classLevel) => (
+                    <button
+                      key={classLevel}
+                      onClick={() => setSelectedClass(classLevel)}
+                      className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 backdrop-blur-lg border flex items-center gap-2 ${
+                        selectedClass === classLevel
+                          ? 'bg-white/20 border-white/40 text-white shadow-lg shadow-white/20'
+                          : 'bg-white/10 border-white/20 text-white/80 hover:bg-white/15'
+                      }`}
+                    >
+                      {getClassIcon(classLevel)}
+                      {classLevel}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <List className="w-5 h-5" />
+                  Number of Words
+                </h3>
+                <div className="grid grid-cols-3 gap-2">
+                  {wordCountOptions.map(count => (
+                    <button
+                      key={count}
+                      onClick={() => setWordCount(count)}
+                      className={`px-3 py-2 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
+                        wordCount === count
+                          ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/30'
+                          : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/15'
+                      }`}
+                    >
+                      {count}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <Mic className="w-5 h-5" />
+                  Dictation Mode
+                </h3>
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={() => setDictationMode('one-word')}
+                    className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
+                      dictationMode === 'one-word'
+                        ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/30'
+                        : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/15'
+                    }`}
+                  >
+                    One Word at a Time
+                  </button>
+                  <button
+                    onClick={() => setDictationMode('continuous')}
+                    className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
+                      dictationMode === 'continuous'
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg shadow-purple-500/30'
+                        : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/15'
+                    }`}
+                  >
+                    Continuous Play
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* NEW: Advanced Settings Panel */}
+            {showSettings && (
+              <div className="mb-6 backdrop-blur-lg bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <Settings className="w-5 h-5" />
+                  Advanced Settings
+                </h3>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-white/80 mb-2">
+                      Speech Speed: {speechSpeed.toFixed(1)}x
+                    </label>
+                    <input
+                      type="range"
+                      min="0.5"
+                      max="2.0"
+                      step="0.1"
+                      value={speechSpeed}
+                      onChange={(e) => setSpeechSpeed(parseFloat(e.target.value))}
+                      className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-white/80 mb-2">
+                      Speech Volume: {Math.round(speechVolume * 100)}%
+                    </label>
+                    <input
+                      type="range"
+                      min="0.1"
+                      max="1.0"
+                      step="0.1"
+                      value={speechVolume}
+                      onChange={(e) => setSpeechVolume(parseFloat(e.target.value))}
+                      className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
+                    />
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => setShowWordHints(!showWordHints)}
+                      className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 flex items-center gap-2 ${
+                        showWordHints
+                          ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30'
+                          : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/15'
+                      }`}
+                    >
+                      {showWordHints ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                      Word Hints
+                    </button>
+                    <button
+                      onClick={() => setAutoAdvance(!autoAdvance)}
+                      className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 flex items-center gap-2 ${
+                        autoAdvance
+                          ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/30'
+                          : 'bg-gradient-to-r from-gray-500 to-gray-600 text-white shadow-lg shadow-gray-500/30'
+                      }`}
+                    >
+                      {autoAdvance ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
+                      Auto-Advance
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
-        {/* Game Stats and Timer */}
         {gameStarted && (
           <div className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl">
@@ -520,18 +737,17 @@ const WordReadingChallenge = () => {
           </div>
         )}
 
-        {/* Game Progress */}
         {gameStarted && (
           <div className="mb-8">
             <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl">
               <div className="flex justify-between items-center mb-4">
                 <span className="text-white font-semibold">Progress</span>
-                <span className="text-white/80">{currentWordIndex} / {currentWords.length}</span>
+                <span className="text-white/80">{completedWordsCount} / {wordCount}</span>
               </div>
               <div className="w-full bg-white/20 rounded-full h-3 mb-4">
                 <div
                   className="bg-gradient-to-r from-cyan-400 to-blue-600 h-3 rounded-full transition-all duration-500 shadow-lg"
-                  style={{ width: `${(currentWordIndex / currentWords.length) * 100}%` }}
+                  style={{ width: `${(completedWordsCount / wordCount) * 100}%` }}
                 ></div>
               </div>
               <div className="flex justify-between">
@@ -553,29 +769,72 @@ const WordReadingChallenge = () => {
           </div>
         )}
 
-        {/* Current Word Display */}
-        {gameStarted && !gameCompleted && (
+        {gameStarted && !gameCompleted && !gameEnded && (
           <div className="mb-8">
             <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl text-center">
               <h3 className="text-2xl font-semibold text-white mb-4">
-                Find this word in the grid:
+                {dictationMode === 'continuous' ? 'Listen carefully for the words:' : 'Find this word in the grid:'}
               </h3>
               <div className="text-4xl font-bold text-cyan-400 mb-4 animate-pulse">
                 "{targetWord}"
               </div>
-              <button
-                onClick={repeatWord}
-                className="px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-2xl shadow-blue-500/30 flex items-center gap-2 mx-auto"
-              >
-                <Volume2 className="w-5 h-5" />
-                Repeat Word
-              </button>
+              <div className="flex justify-center gap-4 flex-wrap">
+                <button
+                  onClick={repeatWord}
+                  className="px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-2xl shadow-blue-500/30 flex items-center gap-2"
+                >
+                  {speechVolume > 0.5 ? <Volume2 className="w-5 h-5" /> : 
+                   speechVolume > 0 ? <Volume1 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+                  Repeat Word
+                </button>
+                
+                {!autoAdvance && (
+                  <button
+                    onClick={advanceToNextWord}
+                    className="px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-2xl shadow-green-500/30 flex items-center gap-2"
+                    disabled={completedWordsCount >= wordCount}
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                    Next Word
+                  </button>
+                )}
+                
+                <button
+                  onClick={skipCurrentWord}
+                  className="px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-2xl shadow-orange-500/30 flex items-center gap-2"
+                >
+                  <SkipForward className="w-5 h-5" />
+                  Skip Word
+                </button>
+                
+                {dictationMode === 'continuous' && (
+                  <button
+                    onClick={() => setIsContinuousPlaying(!isContinuousPlaying)}
+                    className={`px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center gap-2 ${
+                      isContinuousPlaying
+                        ? 'bg-gradient-to-r from-yellow-500 to-orange-600 text-white shadow-2xl shadow-yellow-500/30'
+                        : 'bg-gradient-to-r from-gray-500 to-gray-600 text-white shadow-2xl shadow-gray-500/30'
+                    }`}
+                  >
+                    {isContinuousPlaying ? (
+                      <>
+                        <Pause className="w-5 h-5" />
+                        Pause Auto-Play
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-5 h-5" />
+                        Resume Auto-Play
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         )}
 
-        {/* Word Grid */}
-        {gameStarted && !gameCompleted && (
+        {gameStarted && !gameCompleted && !gameEnded && (
           <div className="mb-8">
             <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl">
               <div className={`grid gap-4 ${
@@ -593,6 +852,8 @@ const WordReadingChallenge = () => {
                     difficulty={wordSets[selectedClass].difficulty}
                     index={index}
                     isAnimating={animatingWord === index}
+                    isTarget={word === targetWord}
+                    showWordHints={showWordHints}
                   />
                 ))}
               </div>
@@ -600,7 +861,6 @@ const WordReadingChallenge = () => {
           </div>
         )}
 
-        {/* Start Game Button */}
         {!gameStarted && (
           <div className="text-center mb-8">
             <button
@@ -613,14 +873,18 @@ const WordReadingChallenge = () => {
           </div>
         )}
 
-        {/* Game Completed */}
-        {gameCompleted && (
+        {(gameCompleted || gameEnded) && (
           <div className="mb-8">
             <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-8 border border-white/20 shadow-2xl text-center">
-              <div className="text-6xl mb-4">🎉</div>
-              <h2 className="text-4xl font-bold text-white mb-4">Congratulations!</h2>
+              <div className="text-6xl mb-4">{gameCompleted ? '🎉' : '📊'}</div>
+              <h2 className="text-4xl font-bold text-white mb-4">
+                {gameCompleted ? 'Congratulations!' : 'Game Summary'}
+              </h2>
               <p className="text-xl text-white/80 mb-6">
-                You've completed the {selectedClass} Word Reading Challenge!
+                {gameCompleted 
+                  ? `You've completed the ${selectedClass} Word Reading Challenge!`
+                  : `Here's your performance summary for ${selectedClass}`
+                }
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div className="bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-xl p-4">
@@ -628,7 +892,7 @@ const WordReadingChallenge = () => {
                   <div className="text-sm text-white/70">Words Found</div>
                 </div>
                 <div className="bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-xl p-4">
-                  <div className="text-3xl font-bold text-blue-400">{Math.round(stats.accuracyRate)}%</div>
+                  <div className="text-3xl font-bold text-blue-400">{Math.round(stats.accuracyRate) || 0}%</div>
                   <div className="text-sm text-white/70">Accuracy</div>
                 </div>
                 <div className="bg-gradient-to-br from-yellow-500/20 to-orange-600/20 rounded-xl p-4">
@@ -642,18 +906,99 @@ const WordReadingChallenge = () => {
                   <div className="text-sm text-white/70">Total Time</div>
                 </div>
               </div>
-              <button
-                onClick={resetGame}
-                className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-2xl shadow-cyan-500/30 flex items-center gap-2 mx-auto"
-              >
-                <RotateCcw className="w-5 h-5" />
-                Play Again
-              </button>
+              
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <div className="bg-gradient-to-br from-cyan-500/10 to-blue-600/10 rounded-xl p-4 border border-cyan-400/20">
+                  <h4 className="text-lg font-semibold text-cyan-400 mb-3">Performance Breakdown</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-white/70">Words Attempted:</span>
+                      <span className="text-white font-medium">{stats.totalWords || completedWordsCount}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-white/70">Correct Answers:</span>
+                      <span className="text-green-400 font-medium">{stats.correctWords || score}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-white/70">Wrong Answers:</span>
+                      <span className="text-red-400 font-medium">{(stats.totalWords || completedWordsCount) - (stats.correctWords || score)}</span>
+                    </div>
+                    {stats.averageTimePerWord > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-white/70">Avg Time/Word:</span>
+                        <span className="text-purple-400 font-medium">{Math.round(stats.averageTimePerWord / 1000)}s</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="bg-gradient-to-br from-green-500/10 to-emerald-600/10 rounded-xl p-4 border border-green-400/20">
+                  <h4 className="text-lg font-semibold text-green-400 mb-3">Achievement Status</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between items-center">
+                      <span className="text-white/70">Hot Streak (5+):</span>
+                      <span className={streak >= 5 ? 'text-yellow-400' : 'text-white/50'}>
+                        {streak >= 5 ? '🔥 Achieved!' : '❌ Not reached'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white/70">Sharp Shooter (90%+):</span>
+                      <span className={stats.accuracyRate >= 90 ? 'text-green-400' : 'text-white/50'}>
+                        {stats.accuracyRate >= 90 ? '🎯 Achieved!' : '❌ Not reached'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white/70">Word Master (20+):</span>
+                      <span className={stats.totalWords >= 20 ? 'text-blue-400' : 'text-white/50'}>
+                        {stats.totalWords >= 20 ? '📚 Achieved!' : '❌ Not reached'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white/70">Champion (10+ streak):</span>
+                      <span className={bestStreak >= 10 ? 'text-purple-400' : 'text-white/50'}>
+                        {bestStreak >= 10 ? '👑 Achieved!' : '❌ Not reached'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-indigo-500/20 to-purple-600/20 rounded-xl p-4 border border-indigo-400/30 mb-6">
+                <h4 className="text-lg font-semibold text-indigo-300 mb-2">Learning Progress</h4>
+                <p className="text-indigo-100/80 text-sm">
+                  {stats.accuracyRate >= 90 
+                    ? "Excellent work! Your reading and listening skills are developing beautifully. Keep up the great practice!"
+                    : stats.accuracyRate >= 70
+                    ? "Good progress! With more practice, you'll master these words. Try focusing on listening carefully to each word."
+                    : "Keep practicing! Reading and listening skills take time to develop. Each attempt makes you stronger!"
+                  }
+                </p>
+              </div>
+
+              <div className="flex gap-4 justify-center">
+                <button
+                  onClick={resetGame}
+                  className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-2xl shadow-cyan-500/30 flex items-center gap-2"
+                >
+                  <RotateCcw className="w-5 h-5" />
+                  Play Again
+                </button>
+                
+                <button
+                  onClick={() => {
+                    resetGame();
+                    setShowInstructions(true);
+                  }}
+                  className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-2xl shadow-purple-500/30 flex items-center gap-2"
+                >
+                  <BookOpen className="w-5 h-5" />
+                  Change Level
+                </button>
+              </div>
             </div>
           </div>
         )}
 
-        {/* Instructions Panel */}
         {showInstructions && !gameStarted && (
           <div className="mb-8">
             <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl">
@@ -672,37 +1017,35 @@ const WordReadingChallenge = () => {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-2">⚡ Game Features</h4>
+                  <h4 className="font-semibold text-white mb-2">⚡ Enhanced Features</h4>
                   <ul className="space-y-2">
-                    <li>• Three difficulty levels (Class I-II, III-V, VI-X)</li>
-                    <li>• Real-time performance tracking</li>
-                    <li>• Streak counter and accuracy metrics</li>
-                    <li>• Repeat word function for clarity</li>
+                    <li>• Adjustable speech speed and volume</li>
+                    <li>• Optional word hints to help learning</li>
+                    <li>• Skip difficult words when needed</li>
+                    <li>• Celebration effects for achievements</li>
                   </ul>
                 </div>
               </div>
               <div className="mt-6 p-4 bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-xl border border-blue-400/30">
                 <h4 className="font-semibold text-blue-200 mb-2">💡 Pro Tips</h4>
                 <div className="text-blue-100/80 text-sm">
-                  <p>• Use the "Repeat Word" button if you need to hear it again</p>
-                  <p>• Take your time - accuracy is more important than speed</p>
-                  <p>• Watch for visual feedback: green = correct, red = wrong</p>
+                  <p>• Enable word hints if you're having trouble finding words</p>
+                  <p>• Adjust speech speed to match your comfort level</p>
+                  <p>• Use manual advance mode for better control over pacing</p>
+                  <p>• Don't hesitate to skip challenging words and come back to them</p>
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Game Controls */}
-        {gameStarted && !gameCompleted && (
+        {gameStarted && !gameCompleted && !gameEnded && (
           <div className="mb-8">
             <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-4 border border-white/20 shadow-2xl">
-              <div className="flex justify-center gap-4">
+              <div className="flex justify-center gap-4 flex-wrap">
                 <button
                   onClick={() => {
-                    setGameStarted(false);
-                    setGameCompleted(false);
-                    timeTracking.endSession();
+                    endGameEarly();
                   }}
                   className="px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-2xl shadow-red-500/30 flex items-center gap-2"
                 >
@@ -716,13 +1059,23 @@ const WordReadingChallenge = () => {
                   <RotateCcw className="w-5 h-5" />
                   Restart
                 </button>
+                <button
+                  onClick={() => {
+                    const newQueue = createWordsQueue();
+                    setWordsQueue(newQueue);
+                    setCurrentWords(newQueue);
+                  }}
+                  className="px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-2xl shadow-indigo-500/30 flex items-center gap-2"
+                >
+                  <Shuffle className="w-5 h-5" />
+                  Shuffle Words
+                </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* Achievement Badges */}
-        {gameStarted && (
+        {gameStarted && !gameEnded && (
           <div className="mb-8">
             <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl">
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
@@ -766,7 +1119,6 @@ const WordReadingChallenge = () => {
           </div>
         )}
 
-        {/* Educational Information */}
         <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl">
           <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
             <Brain className="w-6 h-6" />
@@ -793,17 +1145,16 @@ const WordReadingChallenge = () => {
               <div className="w-16 h-16 bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Brain className="w-8 h-8 text-purple-400" />
               </div>
-              <h4 className="font-semibold text-white mb-2">Cognitive Development</h4>
+              <h4 className="font-semibant text-white mb-2">Cognitive Development</h4>
               <p className="text-sm">Strengthens memory, attention span, and pattern recognition through engaging gameplay.</p>
             </div>
           </div>
         </div>
 
-        {/* Footer */}
         <div className="text-center mt-8 text-white/60">
           <p className="text-sm">
-            Educational Word Reading Challenge • Designed for Classes I-X • 
-            <span className="text-cyan-400"> Enhanced Learning Experience</span>
+            Enhanced Educational Word Reading Challenge • Designed for Classes I-X • 
+            <span className="text-cyan-400"> Premium Learning Experience</span>
           </p>
         </div>
       </div>

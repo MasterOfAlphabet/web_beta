@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import { Link, useLocation, useNavigate} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Menu as MenuIcon,
   User,
   LogOut,
   UserCog,
   Bell,
-  UserCircle
+  UserCircle,
 } from "lucide-react";
 import { signOut } from "firebase/auth";
 import { auth } from "../services/firebase";
@@ -15,6 +15,25 @@ import { AuthContext } from "../App";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import {
+  FaHome,
+  FaCalendarAlt,
+  FaPuzzlePiece,
+  FaLightbulb,
+  FaStar,
+  FaTrophy,
+} from "react-icons/fa";
+
+const navItems = [
+  { label: "Home", path: "/", icon: FaHome },
+  { label: "Daily Series", path: "/daily-series", icon: FaCalendarAlt },
+  { label: "Play & Learn", path: "/english-skills-building-games", icon: FaPuzzlePiece },
+  { label: "Skills Hub", path: "/skills-hub", icon: FaLightbulb },
+  { label: "Talent Hub", path: "/talent-hub", icon: FaStar },
+  { label: "Leaderboards", path: "/leaderboards", icon: FaTrophy },
+];
+
+/**
 const navItems = [
   { label: "Home", path: "/" },
   { label: "Skills Hub", path: "/skills-hub" },
@@ -24,6 +43,7 @@ const navItems = [
   //{ label: "Winners", path: "/winners" },
   { label: "Leaderboards", path: "/leaderboards" },
 ];
+*/
 
 export default function MenuBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -51,33 +71,32 @@ export default function MenuBar() {
   }, [dropdownOpen]);
 
   async function handleSignOut() {
-  try {
-    await signOut(auth);
+    try {
+      await signOut(auth);
 
-    // Clear all relevant storage
-    localStorage.removeItem("studentUser");
-    localStorage.removeItem("classGroup");
-    localStorage.removeItem("moduleSelection");
-    sessionStorage.clear(); // optional but good cleanup
+      // Clear all relevant storage
+      localStorage.removeItem("studentUser");
+      localStorage.removeItem("classGroup");
+      localStorage.removeItem("moduleSelection");
+      sessionStorage.clear(); // optional but good cleanup
 
-    toast.success("You have been signed out.");
+      toast.success("You have been signed out.");
 
-    // Close dropdown
-    setDropdownOpen(false);
+      // Close dropdown
+      setDropdownOpen(false);
 
-    // Reset app state
-    if (typeof setLoggedInUser === "function") {
-      setLoggedInUser(null);
+      // Reset app state
+      if (typeof setLoggedInUser === "function") {
+        setLoggedInUser(null);
+      }
+
+      // Navigate to homepage or login
+      navigate("/"); // or "/" if you prefer
+    } catch (error) {
+      toast.error("Sign out failed. Please try again.");
+      console.error("Sign out error:", error);
     }
-
-    // Navigate to homepage or login
-    navigate("/"); // or "/" if you prefer
-  } catch (error) {
-    toast.error("Sign out failed. Please try again.");
-    console.error("Sign out error:", error);
   }
-}
-
 
   const getDaysRemaining = () => {
     const remaining = user?.subscriptionDaysRemaining;
@@ -108,6 +127,29 @@ export default function MenuBar() {
         </Link>
 
         {/* Desktop Nav */}
+
+        {/* To Show icons for the Menubar Items 
+        
+{navItems.map((item) => {
+  const Icon = item.icon;
+  return (
+    <Link
+      key={item.label}
+      to={item.path}
+      onClick={closeMenu}
+      className={`flex items-center gap-2 px-6 py-2 font-semibold transition ${
+        location.pathname === item.path
+          ? "bg-blue-100 text-blue-700"
+          : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+      }`}
+    >
+      <Icon className="w-5 h-5" />
+      {item.label}
+    </Link>
+  );
+})}
+
+        */}
         <div className="hidden md:flex items-center gap-6">
           {navItems.map((item) => (
             <Link
@@ -222,7 +264,11 @@ export default function MenuBar() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between px-4 py-3 border-b">
-              <Link to="/" onClick={closeMenu} className="flex items-center gap-2">
+              <Link
+                to="/"
+                onClick={closeMenu}
+                className="flex items-center gap-2"
+              >
                 <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-500 to-pink-400 flex items-center justify-center font-extrabold text-xl text-white shadow">
                   MOA
                 </div>
@@ -264,10 +310,16 @@ export default function MenuBar() {
                   </button>
                 ) : (
                   <>
-                    <Link to="/signin" className="block text-blue-700 py-2 font-semibold">
+                    <Link
+                      to="/signin"
+                      className="block text-blue-700 py-2 font-semibold"
+                    >
                       Sign In
                     </Link>
-                    <Link to="/signup" className="block bg-pink-500 text-white px-4 py-2 rounded-xl font-bold shadow hover:bg-pink-600 transition">
+                    <Link
+                      to="/signup"
+                      className="block bg-pink-500 text-white px-4 py-2 rounded-xl font-bold shadow hover:bg-pink-600 transition"
+                    >
                       Sign Up
                     </Link>
                   </>
