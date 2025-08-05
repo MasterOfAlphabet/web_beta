@@ -127,6 +127,7 @@ import WordSpeakingChallenge from "./pages/WordSpeakingChallenge";
 import WordSeriesCard from "./pages/WordSeriesCard";
 
 import TalentHub from "./pages/TalentHub";
+import PuzzlePunditGame from "./games/PuzzlePunditGame";
 
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
@@ -454,6 +455,8 @@ function App() {
 <Route path="/word-speaking-challenge" element={< WordSpeakingChallenge />}/>
 <Route path="/word-series-card" element={< WordSeriesCard />}/>
 <Route path="/talent-hub" element={< TalentHub />}/>
+<Route path="/puzzle-pundit" element={< PuzzlePunditGame />}/>
+
 
         </Routes>
 

@@ -1,8 +1,8 @@
           <Route path="/vocabulary-builder" element={<VisualVocabularyBuilder />}/>
 
-<Route path="/talent-hub" element={< TalentHub />}/>
+<Route path="/puzzle-pundit" element={< PuzzlePunditGame />}/>
 
-import TalentHub from "./pages/TalentHub";
+import PuzzlePunditGame from "./games/PuzzlePunditGame";
 import VisualVocabularyBuilder from "./pages/VisualVocabularyBuilder";
 
 import ReadingPassage from "./pages/FlashCards/Reading/ReadingPassage";
@@ -11,7 +11,7 @@ import ReadingPassage from "./pages/FlashCards/Reading/ReadingPassage";
 
 http://localhost:3000/word-series-card
 
-http://localhost:3000/vocabulary-builder
+http://localhost:3000/puzzle-pundit
 http://localhost:3000/audio-spelling
 http://localhost:3000/grammar-pattern-GrammarPatternDetective
 
