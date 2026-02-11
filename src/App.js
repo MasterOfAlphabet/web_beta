@@ -129,6 +129,8 @@ import WordSeriesCard from "./pages/WordSeriesCard";
 import TalentHub from "./pages/TalentHub";
 import PuzzlePunditGame from "./games/PuzzlePunditGame";
 
+import SkillAssessmentForCompetitionOrImprovementPage from "./pages/SkillAssessmentForCompetitionOrImprovementPage";
+
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
 
@@ -227,6 +229,9 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/leaderboards" element={<LeaderboardsPage />} />
+
+          <Route path="/skill-assessment-for-competition-or-improvement" element={<SkillAssessmentForCompetitionOrImprovementPage />} />
+
           <Route path="/skill-assessment" element={<SkillAssessmentPage />} />
           <Route
             path="/skill-assessment/spelling"

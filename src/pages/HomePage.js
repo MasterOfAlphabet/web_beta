@@ -146,6 +146,7 @@ const improveSkills = [
   { label: "Quiz", icon: <EmojiEventsIcon />, color: "success", path: "/quiz" },
   { label: "Battles", icon: <SportsKabaddiIcon />, color: "secondary", path: "/battles" },
   { label: "Challenges", icon: <EmojiEventsIcon />, color: "error", path: "/challenges" },
+  { label: "Competitions", icon: <EmojiEventsIcon />, color: "primary", path: "/competitions" },
 ];
 
 // --- Reusable Section ---

@@ -43,9 +43,10 @@ const progressSummary = [
   { type: "Learn", value: 88, history: [60, 75, 80, 88], icon: "📚", color: "from-blue-500 to-purple-600" },
   { type: "Practice", value: 92, history: [70, 80, 85, 92], icon: "🎯", color: "from-green-500 to-emerald-600" },
   { type: "Test", value: 85, history: [60, 70, 75, 85], icon: "📝", color: "from-orange-500 to-red-600" },
-  { type: "Battle", value: 80, history: [40, 60, 70, 80], icon: "⚔️", color: "from-purple-500 to-pink-600" },
-  { type: "Challenge", value: 90, history: [70, 75, 85, 90], icon: "🏆", color: "from-yellow-500 to-orange-600" },
-  { type: "Competition", value: 73, history: [40, 65, 70, 73], icon: "🎪", color: "from-indigo-500 to-blue-600" },
+  { type: "Quiz", value: 85, history: [60, 70, 75, 85], icon: "📝", color: "from-orange-500 to-red-600" },
+  { type: "Battles", value: 80, history: [40, 60, 70, 80], icon: "⚔️", color: "from-purple-500 to-pink-600" },
+  { type: "Challenges", value: 90, history: [70, 75, 85, 90], icon: "🏆", color: "from-yellow-500 to-orange-600" },
+  { type: "Competitions", value: 73, history: [40, 65, 70, 73], icon: "🎪", color: "from-indigo-500 to-blue-600" },
 ];
 
 const suggestions = [
