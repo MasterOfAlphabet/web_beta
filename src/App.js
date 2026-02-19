@@ -131,6 +131,36 @@ import PuzzlePunditGame from "./games/PuzzlePunditGame";
 
 import SkillAssessmentForCompetitionOrImprovementPage from "./pages/SkillAssessmentForCompetitionOrImprovementPage";
 
+
+// Skills Assessment Pages
+import ParentsAssessmentPage from './pages/ParentsAssessmentPage.jsx';
+import SchoolsAssessmentPage from './pages/SchoolsAssessmentPage.jsx';
+import ParentRegistrationPage from './pages/ParentRegistrationPage.jsx';
+import SchoolRegistrationPage from './pages/SchoolRegistrationPage.jsx';
+import RegistrationSummaryPage from './pages/RegistrationSummaryPage.jsx';
+import ParentRankingFieldsPage from './pages/ParentRankingFieldsPage.jsx';
+import ShareResultsPage from './pages/ShareResultsPage.jsx';
+import SchoolResultsAnalyticsPage from './pages/SchoolResultsAnalyticsPage.jsx';
+import ParentsLeaderboardsPage from './pages/ParentsLeaderboardsPage.jsx';
+
+// ============================================================================
+// ASSESSMENT MODULE IMPORTS - Add these to your App.jsx
+// ============================================================================
+
+import SpellingAssessment from './pages/SpellingAssessment';
+import ReadingAssessment from './pages/ReadingAssessment';
+import PronunciationAssessment from './pages/PronunciationAssessment';
+import GrammarAssessment from './pages/GrammarAssessment';
+import WritingAssessment from './pages/WritingAssessment';
+import ListeningAssessment from './pages/ListeningAssessment';
+import VocabularyAssessment from './pages/VocabularyAssessment';
+import SharpAssessment from './pages/SharpAssessment';
+import FullDiagnosticAssessment from './pages/FullDiagnosticAssessment';
+
+import ModuleSelectionPage from './pages/ModuleSelectionPage';
+
+import DiagnosticProfileOverview from './pages/DiagnosticProfileOverview';
+
 // 1. Create and export the AuthContext
 export const AuthContext = createContext();
 
@@ -462,6 +492,40 @@ function App() {
 <Route path="/talent-hub" element={< TalentHub />}/>
 <Route path="/puzzle-pundit" element={< PuzzlePunditGame />}/>
 
+
+{/* Landing Pages */}
+<Route path="/parents" element={<ParentsAssessmentPage />} />
+<Route path="/schools" element={<SchoolsAssessmentPage />} />
+
+{/* Registration */}
+<Route path="/register" element={<ParentRegistrationPage />} />
+<Route path="/schools/register" element={<SchoolRegistrationPage />} />
+<Route path="/registration-summary" element={<RegistrationSummaryPage />} />
+
+{/* Results - Parents */}
+<Route path="/results/ranking-fields" element={<ParentRankingFieldsPage />} />
+<Route path="/results/share" element={<ShareResultsPage />} />
+<Route path="/results/leaderboards" element={<ParentsLeaderboardsPage />} />
+
+{/* Results - Schools */}
+<Route path="/schools/analytics" element={<SchoolResultsAnalyticsPage />} />
+
+<Route path="/module-selection" element={<ModuleSelectionPage />} />
+
+{/* ROUTES - Add these inside your <Routes> component in App.jsx */}
+<Route path="/assessment/spelling" element={<SpellingAssessment />} />
+<Route path="/assessment/reading" element={<ReadingAssessment />} />
+<Route path="/assessment/pronunciation" element={<PronunciationAssessment />} />
+<Route path="/assessment/grammar" element={<GrammarAssessment />} />
+<Route path="/assessment/writing" element={<WritingAssessment />} />
+<Route path="/assessment/listening" element={<ListeningAssessment />} />
+<Route path="/assessment/vocabulary" element={<VocabularyAssessment />} />
+<Route path="/assessment/sharp" element={<SharpAssessment />} />
+
+{/* Full Diagnostic */}
+<Route path="/assessment/full-diagnostic" element={<FullDiagnosticAssessment />} />
+
+<Route path="/diagnostic-profile/:assessmentId" element={<DiagnosticProfileOverview />} />
 
         </Routes>
 
